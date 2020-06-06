@@ -2,31 +2,14 @@ package com.arbelkilani.bingetv.data.model.base
 
 import okhttp3.ResponseBody
 
-data class Resource<out T>(val code: Int?, val data: T?, val message: String?) {
+data class Resource<out T>(val status: Status?, val data: T?, val code: Int?) {
+
     companion object {
-        fun <T> success(data: T): Resource<T> {
-            return Resource(null, data, null)
-        }
 
-        fun <T> success(code : Int, data: T): Resource<T> {
-            return Resource(code, data, null)
-        }
+        fun <T> success(data: T, code: Int): Resource<T> = Resource(Status.SUCCESS, data, code)
 
-        fun <T> failure(message: String?, data: T?): Resource<T> {
-            return Resource(null, data, message)
-        }
+        fun <T> error(data: T?, code: Int): Resource<T> = Resource(Status.ERROR, data, code)
 
-        fun <T> failure(code: Int?, data: T?): Resource<T> {
-            return Resource(code, data, null)
-        }
-
-        fun <T> failure(code: Int?, message: String?): Resource<T> {
-            return Resource(code, null, message)
-        }
-
-        fun <T> failure(responseBody: ResponseBody?, data: T?): Resource<T> {
-            //TODO parse response body
-            return Resource(0, data, null)
-        }
     }
+
 }

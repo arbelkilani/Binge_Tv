@@ -3,6 +3,7 @@ package com.arbelkilani.bingetv.data.repositories.genre
 import android.util.Log
 import com.arbelkilani.bingetv.data.model.base.Resource
 import com.arbelkilani.bingetv.data.model.base.ResponseHandler
+import com.arbelkilani.bingetv.data.model.base.Status
 import com.arbelkilani.bingetv.data.model.genre.Genre
 import com.arbelkilani.bingetv.data.source.local.genre.GenreDao
 import com.arbelkilani.bingetv.data.source.remote.ApiService
@@ -25,27 +26,25 @@ class GenresRepositoryImp(
     }
 
     private suspend fun fetchLocal(): Resource<List<Genre>> {
-        Log.i(TAG, "fetchLocal : " + genreDao.getGenres())
-        return responseHandler.handleSuccess(200, genreDao.getGenres())
-        //TODO check if return a code or use Status enum.
+        Log.i(TAG, "fetchLocal()")
+        return Resource.success(genreDao.getGenres(), 200)
     }
 
     private suspend fun fetchRemote(): Resource<List<Genre>> {
-
+        Log.i(TAG, "fetchRemote()")
         return try {
             val response = apiService.getGenres()
-
-            if (response.isSuccessful && response.body() != null) {
+            return if (response.isSuccessful && response.body() != null) {
                 genreDao.saveGenres(response.body()!!.genres)
-                responseHandler.handleSuccess(response.code(), response.body()!!.genres)
+                Resource.success(response.body()!!.genres, response.code())
             } else {
-                responseHandler.handleFailure(response.code(), response.message())
+                Log.i(TAG, "fetchRemote() error : ${response.code()}")
+                Resource.error(null, response.code())
             }
 
         } catch (e: Exception) {
-            Log.i(TAG, "exception {${e.printStackTrace()}}")
-            responseHandler.handleFailure(-1, e.localizedMessage!!)
-            //TODO define -1 error
+            Log.i(TAG, "fetchRemote() exception : ${e.localizedMessage}")
+            Resource.error(null, -1)
         }
     }
 }

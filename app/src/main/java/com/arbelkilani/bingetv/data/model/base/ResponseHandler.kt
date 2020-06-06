@@ -4,7 +4,7 @@ import okhttp3.ResponseBody
 
 open class ResponseHandler {
 
-    fun <T : Any> handleSuccess(data: T): Resource<T> {
+    /*fun <T : Any> handleSuccess(data: T): Resource<T> {
         return Resource.success(data)
     }
 
@@ -26,6 +26,6 @@ open class ResponseHandler {
 
     fun <T : Any> handleFailure(responseBody: ResponseBody): Resource<T> {
         return Resource.failure(responseBody, null)
-    }
+    }*/
 
 }

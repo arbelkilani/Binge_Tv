@@ -1,7 +1,11 @@
 package com.arbelkilani.bingetv.data.model.tv
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class Tv(
-    val backdrop_path: String,
+    val backdrop_path: String?,
     val first_air_date: String,
     val genre_ids: List<Int>,
     val id: Int,
@@ -11,7 +15,15 @@ data class Tv(
     val original_name: String,
     val overview: String,
     val popularity: Double,
-    val poster_path: String,
+    val poster_path: String?,
     val vote_average: Double,
     val vote_count: Int
-)
+) : Parcelable {
+    fun getPosterPath(): String {
+        return "https://image.tmdb.org/t/p/w500$poster_path"
+    }
+
+    fun getBackdropPath(): String {
+        return "https://image.tmdb.org/t/p/w780$backdrop_path"
+    }
+}
