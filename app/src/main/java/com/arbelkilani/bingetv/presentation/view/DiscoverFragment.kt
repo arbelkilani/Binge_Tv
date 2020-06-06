@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.model.base.ApiResponse
 import com.arbelkilani.bingetv.data.model.tv.Tv
+import kotlinx.android.synthetic.main.fragment_discover.*
 
 private const val ARG_PARAM1 = "param1"
 
@@ -22,7 +23,6 @@ class DiscoverFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getParcelable(ARG_PARAM1)!!
-            Log.i(TAG, "data : $param1")
         }
     }
 
@@ -31,6 +31,11 @@ class DiscoverFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_discover, container, false)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        tv_test.text = param1.toString()
     }
 
     companion object {

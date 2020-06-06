@@ -14,43 +14,49 @@ import kotlinx.android.synthetic.main.activity_dashboard.*
 class DashboardActivity : AppCompatActivity(),
     BottomNavigationView.OnNavigationItemSelectedListener {
 
-    private val TAG = SplashActivity::class.java.simpleName
+    private val TAG = DashboardActivity::class.java.simpleName
 
-    private lateinit var airingTodayData : ApiResponse<Tv>
+    private lateinit var airingTodayData: ApiResponse<Tv>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
 
-        airingTodayData = intent.getParcelableExtra("DATA")!!
+        initViews()
+        initData()
 
         if (savedInstanceState == null) {
-            loadFragment(DiscoverFragment.newInstance(airingTodayData))
+            loadFragment(DiscoverFragment.newInstance(airingTodayData), R.string.title_discover)
         }
+    }
 
-        initViews()
-
+    private fun initData() {
+        airingTodayData = intent.getParcelableExtra("DATA")!!
     }
 
     private fun initViews() {
         bottom_navigation.setOnNavigationItemSelectedListener(this)
     }
 
-    private fun loadFragment(fragment: Fragment) {
+    private fun loadFragment(fragment: Fragment, title: Int) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.main_container, fragment, fragment::class.java.simpleName)
             .commit()
+        toolbar.setTitle(title)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
+
+        if (item.itemId == bottom_navigation.selectedItemId) return false
+
         when (item.itemId) {
             R.id.menu_discover -> {
-                loadFragment(DiscoverFragment())
+                loadFragment(DiscoverFragment.newInstance(airingTodayData), R.string.title_discover)
                 return true
             }
 
             R.id.menu_watch_list -> {
-                loadFragment(WatchlistFragment())
+                loadFragment(WatchlistFragment(), R.string.title_watch_list)
                 return true
             }
         }
