@@ -26,7 +26,7 @@ class DashboardActivity : AppCompatActivity(),
         initData()
 
         if (savedInstanceState == null) {
-            loadFragment(DiscoverFragment.newInstance(airingTodayData), R.string.title_discover)
+            loadFragment(DiscoverFragment.newInstance(airingTodayData), R.string.title_discovery)
         }
     }
 
@@ -51,7 +51,7 @@ class DashboardActivity : AppCompatActivity(),
 
         when (item.itemId) {
             R.id.menu_discover -> {
-                loadFragment(DiscoverFragment.newInstance(airingTodayData), R.string.title_discover)
+                loadFragment(DiscoverFragment.newInstance(airingTodayData), R.string.title_discovery)
                 return true
             }
 
