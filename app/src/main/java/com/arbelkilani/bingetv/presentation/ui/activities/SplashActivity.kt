@@ -1,4 +1,4 @@
-package com.arbelkilani.bingetv.presentation.view
+package com.arbelkilani.bingetv.presentation.ui.activities
 
 import android.animation.ObjectAnimator
 import android.content.Intent

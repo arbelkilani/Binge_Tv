@@ -1,16 +1,49 @@
 package com.arbelkilani.bingetv.presentation.adapters
 
+import android.text.Layout
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.PagerAdapter
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.model.tv.Tv
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_dicover_view.view.*
 
-class DiscoverAdapter(private val tvList: List<Tv>) :
+class DiscoverAdapter(private val tvList: List<Tv>) : PagerAdapter() {
+    override fun isViewFromObject(view: View, `object`: Any): Boolean {
+        return view == `object`
+    }
+
+    override fun getCount(): Int {
+        return Int.MAX_VALUE
+    }
+
+    private fun getRealCount(): Int {
+        return tvList.size
+    }
+
+    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
+        container.removeView(`object` as View)
+    }
+
+    override fun instantiateItem(container: ViewGroup, position: Int): Any {
+
+        val virtualPosition = position % getRealCount()
+        val layout = LayoutInflater.from(container.context)
+            .inflate(R.layout.item_dicover_view, container, false)
+
+        Picasso.get().load(tvList[virtualPosition].getBackdropPath()).fit().centerCrop()
+            .into(layout.iv_item_discover)
+        container.addView(layout)
+        return layout
+    }
+
+
+}
+/*class DiscoverAdapter(private val tvList: List<Tv>) :
     RecyclerView.Adapter<DiscoverAdapter.DiscoverHolder>() {
 
     private val TAG = DiscoverAdapter::class.java.simpleName
@@ -24,15 +57,12 @@ class DiscoverAdapter(private val tvList: List<Tv>) :
                 .load(tv.getBackdropPath())
                 .fit()
                 .centerCrop()
-                .error(R.drawable.ic_foreground)
-                .placeholder(R.mipmap.ic_launcher_foreground)
                 .into(itemView.iv_item_discover)
         }
 
         override fun onClick(v: View?) {
             Log.i(TAG, "item clicked")
         }
-
     }
 
     override fun onCreateViewHolder(
@@ -45,10 +75,10 @@ class DiscoverAdapter(private val tvList: List<Tv>) :
     }
 
     override fun getItemCount(): Int {
-        return tvList.size
+        return Int.MAX_VALUE
     }
 
     override fun onBindViewHolder(holder: DiscoverHolder, position: Int) {
-        holder.bind(tvList[position])
+        holder.bind(tvList[position % tvList.size])
     }
-}
+}*/

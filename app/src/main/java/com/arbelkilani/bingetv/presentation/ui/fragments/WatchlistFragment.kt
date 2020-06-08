@@ -1,4 +1,4 @@
-package com.arbelkilani.bingetv.presentation.view
+package com.arbelkilani.bingetv.presentation.ui.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -50,7 +50,8 @@ class WatchlistFragment : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            WatchlistFragment().apply {
+            WatchlistFragment()
+                .apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

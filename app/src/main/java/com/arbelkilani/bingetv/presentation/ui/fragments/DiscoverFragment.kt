@@ -1,17 +1,20 @@
-package com.arbelkilani.bingetv.presentation.view
+package com.arbelkilani.bingetv.presentation.ui.fragments
 
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.marginEnd
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.MarginPageTransformer
+import androidx.viewpager2.widget.ViewPager2
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.model.base.ApiResponse
 import com.arbelkilani.bingetv.data.model.tv.Tv
 import com.arbelkilani.bingetv.presentation.adapters.DiscoverAdapter
+import com.arbelkilani.bingetv.presentation.ui.view.CustomTransformer
 import kotlinx.android.synthetic.main.fragment_discover.*
 
 private const val ARG_PARAM1 = "param1"
@@ -22,8 +25,6 @@ class DiscoverFragment : Fragment() {
 
     private lateinit var param1: ApiResponse<Tv>
     private lateinit var airingTodayList: List<Tv>
-
-    private lateinit var linearLayoutManager: LinearLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,18 +50,26 @@ class DiscoverFragment : Fragment() {
     }
 
     private fun initViews() {
-        linearLayoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        recycler_view.layoutManager = linearLayoutManager
-        recycler_view.adapter = DiscoverAdapter(airingTodayList)
+
+        view_pager.apply {
+            adapter = DiscoverAdapter(airingTodayList)
+            currentItem = Int.MAX_VALUE/2
+            overScrollMode = 2
+            offscreenPageLimit = 3
+            pageMargin = 30
+            setPageTransformer(false, CustomTransformer())
+        }
+
     }
 
     companion object {
         @JvmStatic
         fun newInstance(param1: ApiResponse<Tv>) =
-            DiscoverFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(ARG_PARAM1, param1)
+            DiscoverFragment()
+                .apply {
+                    arguments = Bundle().apply {
+                        putParcelable(ARG_PARAM1, param1)
+                    }
                 }
-            }
     }
 }

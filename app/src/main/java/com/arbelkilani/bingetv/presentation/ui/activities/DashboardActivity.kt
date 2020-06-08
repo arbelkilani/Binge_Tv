@@ -1,13 +1,14 @@
-package com.arbelkilani.bingetv.presentation.view
+package com.arbelkilani.bingetv.presentation.ui.activities
 
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.model.base.ApiResponse
 import com.arbelkilani.bingetv.data.model.tv.Tv
+import com.arbelkilani.bingetv.presentation.ui.fragments.DiscoverFragment
+import com.arbelkilani.bingetv.presentation.ui.fragments.WatchlistFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_dashboard.*
 
@@ -26,7 +27,10 @@ class DashboardActivity : AppCompatActivity(),
         initData()
 
         if (savedInstanceState == null) {
-            loadFragment(DiscoverFragment.newInstance(airingTodayData), R.string.title_discovery)
+            loadFragment(
+                DiscoverFragment.newInstance(
+                    airingTodayData
+                ), R.string.title_discovery)
         }
     }
 
@@ -51,7 +55,10 @@ class DashboardActivity : AppCompatActivity(),
 
         when (item.itemId) {
             R.id.menu_discover -> {
-                loadFragment(DiscoverFragment.newInstance(airingTodayData), R.string.title_discovery)
+                loadFragment(
+                    DiscoverFragment.newInstance(
+                        airingTodayData
+                    ), R.string.title_discovery)
                 return true
             }
 
