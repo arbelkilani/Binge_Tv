@@ -18,6 +18,7 @@ class DashboardActivity : AppCompatActivity(),
     private val TAG = DashboardActivity::class.java.simpleName
 
     private lateinit var airingTodayData: ApiResponse<Tv>
+    private lateinit var trendingTv: ApiResponse<Tv>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,13 +30,15 @@ class DashboardActivity : AppCompatActivity(),
         if (savedInstanceState == null) {
             loadFragment(
                 DiscoverFragment.newInstance(
-                    airingTodayData
-                ), R.string.title_discovery)
+                    airingTodayData, trendingTv
+                ), R.string.title_discovery
+            )
         }
     }
 
     private fun initData() {
         airingTodayData = intent.getParcelableExtra("DATA")!!
+        trendingTv = intent.getParcelableExtra("DATA2")!!
     }
 
     private fun initViews() {
@@ -57,8 +60,9 @@ class DashboardActivity : AppCompatActivity(),
             R.id.menu_discover -> {
                 loadFragment(
                     DiscoverFragment.newInstance(
-                        airingTodayData
-                    ), R.string.title_discovery)
+                        airingTodayData,trendingTv
+                    ), R.string.title_discovery
+                )
                 return true
             }
 

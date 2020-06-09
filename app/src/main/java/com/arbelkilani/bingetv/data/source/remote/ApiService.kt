@@ -13,4 +13,7 @@ interface ApiService {
 
     @GET("tv/airing_today")
     suspend fun getAiringToday(): Response<ApiResponse<Tv>>
+
+    @GET("trending/tv/week")
+    suspend fun getTrendingTv() : Response<ApiResponse<Tv>>
 }

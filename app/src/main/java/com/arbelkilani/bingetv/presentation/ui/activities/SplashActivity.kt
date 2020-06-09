@@ -6,9 +6,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.animation.BounceInterpolator
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.arbelkilani.bingetv.R
+import com.arbelkilani.bingetv.data.enum.HttpStatusCode
 import com.arbelkilani.bingetv.data.model.base.Status.SUCCESS
 import com.arbelkilani.bingetv.presentation.viewmodel.SplashActivityViewModel
 import kotlinx.android.synthetic.main.activity_splash.*
@@ -45,18 +47,25 @@ class SplashActivity : AppCompatActivity() {
         handleStatus()
     }
 
+
     private fun handleStatus() {
         splashActivityViewModel.status.observe(this, Observer {
-            if (it == SUCCESS) {
-                val airingTodayData = splashActivityViewModel.airingToday.let { mutableLiveData ->
-                    mutableLiveData.value!!.data
+
+            when (it) {
+                HttpStatusCode.SUCCESS -> {
+                    Log.i(TAG, "navigate")
+                    startActivity(Intent(this, DashboardActivity::class.java).apply {
+                        putExtra("DATA", splashActivityViewModel.airingToday.value)
+                        putExtra("DATA2", splashActivityViewModel.trendingTv.value)
+                    })
+                    finish()
                 }
-                startActivity(Intent(this, DashboardActivity::class.java).apply {
-                    putExtra("DATA", airingTodayData)
-                })
-                finish()
-            } else {
-                Log.i(TAG, "Error")
+
+                HttpStatusCode.NETWORK_ERROR -> {
+                    Toast.makeText(this, "network error", Toast.LENGTH_SHORT).show()
+                }
+
+                else -> Toast.makeText(this, "other error", Toast.LENGTH_SHORT).show()
             }
         })
     }

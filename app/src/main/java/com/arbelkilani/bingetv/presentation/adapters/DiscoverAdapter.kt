@@ -2,6 +2,7 @@ package com.arbelkilani.bingetv.presentation.adapters
 
 import android.text.Layout
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,8 +36,12 @@ class DiscoverAdapter(private val tvList: List<Tv>) : PagerAdapter() {
         val layout = LayoutInflater.from(container.context)
             .inflate(R.layout.item_dicover_view, container, false)
 
-        Picasso.get().load(tvList[virtualPosition].getBackdropPath()).fit().centerCrop()
+        Picasso.get()
+            .load(tvList[virtualPosition].getBackdropPath())
+            .fit().centerCrop(Gravity.CENTER)
+            .error(R.mipmap.ic_launcher_round)
             .into(layout.iv_item_discover)
+
         container.addView(layout)
         return layout
     }
