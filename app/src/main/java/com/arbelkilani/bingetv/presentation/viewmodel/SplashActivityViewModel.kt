@@ -51,11 +51,11 @@ class SplashActivityViewModel constructor(
 
             when (it.code) {
                 HttpStatusCode.SUCCESS -> {
-                    airingToday.value = it.data
                     status.value = HttpStatusCode.SUCCESS
                     trendingTvResource.let {
                         when (it.code) {
                             HttpStatusCode.SUCCESS -> {
+                                airingToday.value = it.data
                                 trendingTv.value = it.data
                                 status.value = HttpStatusCode.SUCCESS
                             }

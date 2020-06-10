@@ -50,7 +50,6 @@ class SplashActivity : AppCompatActivity() {
 
     private fun handleStatus() {
         splashActivityViewModel.status.observe(this, Observer {
-
             when (it) {
                 HttpStatusCode.SUCCESS -> {
                     Log.i(TAG, "navigate")

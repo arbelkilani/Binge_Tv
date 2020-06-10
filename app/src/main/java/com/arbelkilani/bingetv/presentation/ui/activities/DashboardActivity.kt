@@ -1,6 +1,8 @@
 package com.arbelkilani.bingetv.presentation.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -27,6 +29,9 @@ class DashboardActivity : AppCompatActivity(),
         initViews()
         initData()
 
+        Log.i(TAG, "onCreate airingTodayData: $airingTodayData")
+        Log.i(TAG, "onCreate trendingTv: $trendingTv")
+
         if (savedInstanceState == null) {
             loadFragment(
                 DiscoverFragment.newInstance(
@@ -42,10 +47,12 @@ class DashboardActivity : AppCompatActivity(),
     }
 
     private fun initViews() {
+        Log.i(TAG, "initViews()")
         bottom_navigation.setOnNavigationItemSelectedListener(this)
     }
 
     private fun loadFragment(fragment: Fragment, title: Int) {
+        Log.i(TAG, "loadFragment() : ${fragment::class.java.simpleName}")
         supportFragmentManager.beginTransaction()
             .replace(R.id.main_container, fragment, fragment::class.java.simpleName)
             .commit()
@@ -60,7 +67,7 @@ class DashboardActivity : AppCompatActivity(),
             R.id.menu_discover -> {
                 loadFragment(
                     DiscoverFragment.newInstance(
-                        airingTodayData,trendingTv
+                        airingTodayData, trendingTv
                     ), R.string.title_discovery
                 )
                 return true
