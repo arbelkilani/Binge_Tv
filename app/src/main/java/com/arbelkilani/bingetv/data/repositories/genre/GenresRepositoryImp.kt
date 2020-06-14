@@ -29,7 +29,7 @@ class GenresRepositoryImp(
 
     private fun fetchRemote(): Resource<List<Genre>> {
         Log.i(TAG, "fetchRemote()")
-        return Resource.exception(Exception())
+        return Resource.exception(Exception(), null)
         /*return try {
             val response = apiService.getGenres()
             return if (response.isSuccessful && response.body() != null) {

@@ -12,8 +12,8 @@ interface ApiService {
     suspend fun getGenres(): Response<GenreResponse>
 
     @GET("tv/airing_today")
-    suspend fun getAiringToday(): Response<ApiResponse<Tv>>
+    suspend fun getAiringToday(): ApiResponse<Tv>
 
     @GET("trending/tv/week")
-    suspend fun getTrendingTv() : Response<ApiResponse<Tv>>
+    suspend fun getTrendingTv(): ApiResponse<Tv>
 }

@@ -1,21 +1,24 @@
 package com.arbelkilani.bingetv.presentation.viewmodel
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.arbelkilani.bingetv.data.enum.HttpStatusCode
 import com.arbelkilani.bingetv.data.model.base.ApiResponse
 import com.arbelkilani.bingetv.data.model.base.Resource
 import com.arbelkilani.bingetv.data.model.base.Status
+import com.arbelkilani.bingetv.data.model.tv.CombinedObjects
 import com.arbelkilani.bingetv.data.model.tv.Tv
 import com.arbelkilani.bingetv.domain.usecase.GetAiringTodayUseCase
 import com.arbelkilani.bingetv.domain.usecase.GetTrendingTvUseCase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.zip
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.net.UnknownHostException
 
+@ExperimentalCoroutinesApi
 class SplashActivityViewModel constructor(
     private val getAiringTodayUseCase: GetAiringTodayUseCase,
     private val getTrendingTvUseCase: GetTrendingTvUseCase
@@ -24,65 +27,31 @@ class SplashActivityViewModel constructor(
 
     private val TAG = SplashActivityViewModel::class.java.simpleName
 
-    val airingToday = MutableLiveData<ApiResponse<Tv>>()
-    val trendingTv = MutableLiveData<ApiResponse<Tv>>()
+    val resource = MutableLiveData<Resource<CombinedObjects>>()
 
-    val status: MutableLiveData<Int> by lazy {
-        MutableLiveData<Int>()
+    init {
+        fetchData()
     }
 
-    fun fetchData() {
+    private fun fetchData() {
+
+        //TODO check how to zip more than two flows in order to add a flow delay with 3 seconds value
+        val flowDelay = flow { emit(delay(3000)) }
 
         scope.launch {
 
-            val airingTodayAsync =
-                async((Dispatchers.IO)) { getAiringTodayUseCase.invoke() }
-            val trendingTvAsync = async((Dispatchers.IO)) { getTrendingTvUseCase.invoke() }
+            getAiringTodayUseCase.invoke()
+                .zip(getTrendingTvUseCase.invoke())
+                { airingToday, trending ->
+                    return@zip CombinedObjects(airingToday, trending)
+                }
 
-            handleResponse(airingTodayAsync.await(), trendingTvAsync.await())
+                .catch { cause: Throwable ->
+                    resource.postValue(Resource.exception(cause, null))
+                }
+                .collect { value ->
+                    resource.postValue(Resource.success(value))
+                }
         }
-    }
-
-    private fun handleResponse(
-        airingTodayResource: Resource<ApiResponse<Tv>>,
-        trendingTvResource: Resource<ApiResponse<Tv>>
-    ) {
-        airingTodayResource.let { it ->
-
-            when (it.code) {
-                HttpStatusCode.SUCCESS -> {
-                    status.value = HttpStatusCode.SUCCESS
-                    trendingTvResource.let {
-                        when (it.code) {
-                            HttpStatusCode.SUCCESS -> {
-                                airingToday.value = it.data
-                                trendingTv.value = it.data
-                                status.value = HttpStatusCode.SUCCESS
-                            }
-                            HttpStatusCode.NETWORK_ERROR -> {
-                                Log.i(TAG, "network error airing today")
-                                status.value = HttpStatusCode.NETWORK_ERROR
-                            }
-                            else -> {
-                                Log.i(TAG, "other error airing today")
-                                status.value = it.code
-                            }
-                        }
-                    }
-                }
-
-                HttpStatusCode.NETWORK_ERROR -> {
-                    Log.i(TAG, "network error airing today")
-                    status.value = HttpStatusCode.NETWORK_ERROR
-                }
-
-                else -> {
-                    Log.i(TAG, "other error airing today")
-                    status.value = it.code
-                }
-            }
-        }
-
-
     }
 }

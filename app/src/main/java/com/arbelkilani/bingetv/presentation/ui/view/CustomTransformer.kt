@@ -26,23 +26,18 @@ class CustomTransformer : ViewPager.PageTransformer {
         view.alpha = 1f
 
         if (scaleFactor > 0) {
-            view.scaleX = scaleFactor
-            view.scaleY = scaleFactor
-            view.translationX =
+            //view.scaleX = scaleFactor
+            //view.scaleY = scaleFactor
+            /*view.translationX =
                 -dp2px(
                     view.context,
-                    (view.measuredWidth - 2 * view.paddingLeft).toFloat()
-                ) * offsetRate
+                    (view.measuredWidth - view.paddingLeft).toFloat()
+                ) * offsetRate */
             view.alpha = alphaFactor
             ViewCompat.setElevation(view, 0.0f)
         }
 
         ViewCompat.setElevation(view, scaleFactor)
 
-    }
-
-    private fun dp2px(context: Context, dipValue: Float): Int {
-        val m: Float = context.resources.displayMetrics.density
-        return (dipValue * m + 0.5f).toInt()
     }
 }

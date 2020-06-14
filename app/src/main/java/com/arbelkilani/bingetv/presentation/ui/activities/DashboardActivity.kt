@@ -8,9 +8,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.model.base.ApiResponse
+import com.arbelkilani.bingetv.data.model.tv.CombinedObjects
 import com.arbelkilani.bingetv.data.model.tv.Tv
 import com.arbelkilani.bingetv.presentation.ui.fragments.DiscoverFragment
 import com.arbelkilani.bingetv.presentation.ui.fragments.WatchlistFragment
+import com.arbelkilani.bingetv.utils.Constants
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_dashboard.*
 
@@ -29,9 +31,6 @@ class DashboardActivity : AppCompatActivity(),
         initViews()
         initData()
 
-        Log.i(TAG, "onCreate airingTodayData: $airingTodayData")
-        Log.i(TAG, "onCreate trendingTv: $trendingTv")
-
         if (savedInstanceState == null) {
             loadFragment(
                 DiscoverFragment.newInstance(
@@ -42,8 +41,11 @@ class DashboardActivity : AppCompatActivity(),
     }
 
     private fun initData() {
-        airingTodayData = intent.getParcelableExtra("DATA")!!
-        trendingTv = intent.getParcelableExtra("DATA2")!!
+        Log.i(TAG, "initData")
+        val combinedExtra =
+            intent!!.getParcelableExtra<CombinedObjects>(Constants.SPLASH_DASHBOARD)!!
+        airingTodayData = combinedExtra.airing
+        trendingTv = combinedExtra.trending
     }
 
     private fun initViews() {

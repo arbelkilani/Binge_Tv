@@ -4,6 +4,7 @@ import android.R
 import android.content.Context
 import android.content.res.TypedArray
 import android.util.AttributeSet
+import android.util.Log
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.math.max
@@ -45,7 +46,7 @@ class AutofitRecyclerView : RecyclerView {
     override fun onMeasure(widthSpec: Int, heightSpec: Int) {
         super.onMeasure(widthSpec, heightSpec)
         if (columnWidth > 0) {
-            val spanCount = max(1, measuredWidth / columnWidth)
+            val spanCount = max(3, measuredWidth / columnWidth)
             manager!!.spanCount = spanCount
         }
     }

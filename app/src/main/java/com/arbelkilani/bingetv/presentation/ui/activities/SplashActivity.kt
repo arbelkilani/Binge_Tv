@@ -11,11 +11,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.enum.HttpStatusCode
+import com.arbelkilani.bingetv.data.model.base.Status.ERROR
 import com.arbelkilani.bingetv.data.model.base.Status.SUCCESS
 import com.arbelkilani.bingetv.presentation.viewmodel.SplashActivityViewModel
+import com.arbelkilani.bingetv.utils.Constants
 import kotlinx.android.synthetic.main.activity_splash.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+@ExperimentalCoroutinesApi
 class SplashActivity : AppCompatActivity() {
 
     private val TAG = SplashActivity::class.java.simpleName
@@ -26,7 +30,8 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        setBounceAnimation()
+        //TODO check if we add animation or rather fix the logo position
+        //setBounceAnimation()
     }
 
     private fun setBounceAnimation() {
@@ -43,31 +48,19 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        splashActivityViewModel.fetchData()
-        handleStatus()
-    }
-
-
-    private fun handleStatus() {
-        splashActivityViewModel.status.observe(this, Observer {
-            when (it) {
-                HttpStatusCode.SUCCESS -> {
-                    Log.i(TAG, "navigate")
-                    startActivity(Intent(this, DashboardActivity::class.java).apply {
-                        putExtra("DATA", splashActivityViewModel.airingToday.value)
-                        putExtra("DATA2", splashActivityViewModel.trendingTv.value)
-                    })
+        splashActivityViewModel.resource.observe(this, Observer {
+            when (it.status) {
+                SUCCESS -> {
+                    startActivity(
+                        Intent(this, DashboardActivity::class.java)
+                            .apply {
+                                putExtra(Constants.SPLASH_DASHBOARD, it.data)
+                            })
                     finish()
                 }
-
-                HttpStatusCode.NETWORK_ERROR -> {
-                    Toast.makeText(this, "network error", Toast.LENGTH_SHORT).show()
-                }
-
-                else -> Toast.makeText(this, "other error", Toast.LENGTH_SHORT).show()
+                ERROR -> Toast.makeText(this, it.message!!, Toast.LENGTH_SHORT).show()
             }
         })
     }
-
 
 }

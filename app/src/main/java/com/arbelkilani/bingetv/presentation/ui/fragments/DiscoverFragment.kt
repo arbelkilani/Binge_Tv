@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import androidx.fragment.app.Fragment
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.model.base.ApiResponse
@@ -12,18 +13,16 @@ import com.arbelkilani.bingetv.data.model.tv.Tv
 import com.arbelkilani.bingetv.presentation.adapters.DiscoverAdapter
 import com.arbelkilani.bingetv.presentation.adapters.TrendingAdapter
 import com.arbelkilani.bingetv.presentation.ui.view.CustomTransformer
+import com.arbelkilani.bingetv.utils.Constants
+import com.arbelkilani.bingetv.utils.dp2px
 import kotlinx.android.synthetic.main.fragment_discover.*
-
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 
 class DiscoverFragment : Fragment() {
 
     private val TAG = DiscoverFragment::class.java.simpleName
 
-    private lateinit var param1: ApiResponse<Tv>
-    private lateinit var param2: ApiResponse<Tv>
+    private lateinit var airingTodayTvResponse: ApiResponse<Tv>
+    private lateinit var trendingTvResponse: ApiResponse<Tv>
 
     private lateinit var airingTodayList: List<Tv>
     private lateinit var trendingTvList: List<Tv>
@@ -31,11 +30,11 @@ class DiscoverFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getParcelable(ARG_PARAM1)!!
-            airingTodayList = param1.results
+            airingTodayTvResponse = it.getParcelable(Constants.AIRING_TODAY_PARAM)!!
+            airingTodayList = airingTodayTvResponse.results
 
-            param2 = it.getParcelable(ARG_PARAM2)!!
-            trendingTvList = param2.results
+            trendingTvResponse = it.getParcelable(Constants.TRENDING_PARAM)!!
+            trendingTvList = trendingTvResponse.results
         }
     }
 
@@ -61,12 +60,14 @@ class DiscoverFragment : Fragment() {
             currentItem = Int.MAX_VALUE / 2
             overScrollMode = 2
             offscreenPageLimit = 3
-            pageMargin = 30
+            pageMargin = dp2px(this.context, 10f)
+            setPadding(dp2px(this.context, 40f), 0, dp2px(this.context, 40f), 0)
             setPageTransformer(false, CustomTransformer())
         }
 
         recycler_view.apply {
             setHasFixedSize(true)
+            kotlin.run { Log.i(TAG, "width = $width") }
             adapter = TrendingAdapter(trendingTvList)
         }
 
@@ -74,12 +75,12 @@ class DiscoverFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(param1: ApiResponse<Tv>, param2: ApiResponse<Tv>) =
+        fun newInstance(airingTodayTv: ApiResponse<Tv>, trendingTV: ApiResponse<Tv>) =
             DiscoverFragment()
                 .apply {
                     arguments = Bundle().apply {
-                        putParcelable(ARG_PARAM1, param1)
-                        putParcelable(ARG_PARAM2, param2)
+                        putParcelable(Constants.AIRING_TODAY_PARAM, airingTodayTv)
+                        putParcelable(Constants.TRENDING_PARAM, trendingTV)
                     }
                 }
     }
