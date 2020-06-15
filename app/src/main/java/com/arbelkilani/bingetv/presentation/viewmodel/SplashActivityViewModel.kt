@@ -39,13 +39,12 @@ class SplashActivityViewModel constructor(
         val flowDelay = flow { emit(delay(3000)) }
 
         scope.launch {
-
+            delay(1000) // set delay for the splash
             getAiringTodayUseCase.invoke()
                 .zip(getTrendingTvUseCase.invoke())
                 { airingToday, trending ->
                     return@zip CombinedObjects(airingToday, trending)
                 }
-
                 .catch { cause: Throwable ->
                     resource.postValue(Resource.exception(cause, null))
                 }

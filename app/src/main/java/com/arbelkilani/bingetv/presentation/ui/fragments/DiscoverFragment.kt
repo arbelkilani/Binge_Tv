@@ -1,23 +1,24 @@
 package com.arbelkilani.bingetv.presentation.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
 import androidx.fragment.app.Fragment
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.model.base.ApiResponse
 import com.arbelkilani.bingetv.data.model.tv.Tv
 import com.arbelkilani.bingetv.presentation.adapters.DiscoverAdapter
 import com.arbelkilani.bingetv.presentation.adapters.TrendingAdapter
+import com.arbelkilani.bingetv.presentation.listeners.OnTvClickListener
+import com.arbelkilani.bingetv.presentation.ui.activities.DetailsTvActivity
 import com.arbelkilani.bingetv.presentation.ui.view.CustomTransformer
 import com.arbelkilani.bingetv.utils.Constants
-import com.arbelkilani.bingetv.utils.dp2px
 import kotlinx.android.synthetic.main.fragment_discover.*
 
-class DiscoverFragment : Fragment() {
+class DiscoverFragment : Fragment(), OnTvClickListener {
 
     private val TAG = DiscoverFragment::class.java.simpleName
 
@@ -67,7 +68,7 @@ class DiscoverFragment : Fragment() {
         recycler_view.apply {
             setHasFixedSize(true)
             kotlin.run { Log.i(TAG, "width = $width") }
-            adapter = TrendingAdapter(trendingTvList)
+            adapter = TrendingAdapter(trendingTvList, this@DiscoverFragment)
         }
 
     }
@@ -82,5 +83,12 @@ class DiscoverFragment : Fragment() {
                         putParcelable(Constants.TRENDING_PARAM, trendingTV)
                     }
                 }
+    }
+
+    override fun onTvItemClicked(tv: Tv) {
+        startActivity(Intent(activity, DetailsTvActivity::class.java)
+            .apply {
+                putExtra(Constants.DISCOVER_DETAILS, tv)
+            })
     }
 }

@@ -1,25 +1,32 @@
 package com.arbelkilani.bingetv.presentation.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.model.tv.Tv
+import com.arbelkilani.bingetv.presentation.listeners.OnTvClickListener
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_trending_view.view.*
 
-class TrendingAdapter(private val trendingTv: List<Tv>) :
+class TrendingAdapter(
+    private val trendingTv: List<Tv>,
+    private val onTvClickListener: OnTvClickListener
+) :
     RecyclerView.Adapter<TrendingAdapter.TrendingHolder>() {
 
     private val TAG = TrendingAdapter::class.java.simpleName
 
-    class TrendingHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+    class TrendingHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val TAG = DiscoverAdapter::class.java.simpleName
 
-        fun bind(tv: Tv) {
+        fun bind(
+            tv: Tv,
+            onTvClickListener: OnTvClickListener
+        ) {
             Picasso.get()
                 .load(tv.getPosterPath())
                 .fit()
@@ -27,11 +34,13 @@ class TrendingAdapter(private val trendingTv: List<Tv>) :
                 .into(itemView.iv_item_trending)
 
             itemView.tv_trending_name.text = tv.name
+            itemView.setOnClickListener {
+                Toast.makeText(itemView.context, tv.name, Toast.LENGTH_SHORT).show()
+                onTvClickListener.onTvItemClicked(tv)
+            }
         }
 
-        override fun onClick(v: View?) {
-            Log.i(TAG, "item clicked")
-        }
+
     }
 
     override fun onCreateViewHolder(
@@ -48,6 +57,6 @@ class TrendingAdapter(private val trendingTv: List<Tv>) :
     }
 
     override fun onBindViewHolder(holder: TrendingHolder, position: Int) {
-        holder.bind(trendingTv[position])
+        holder.bind(trendingTv[position], onTvClickListener)
     }
 }

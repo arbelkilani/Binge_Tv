@@ -1,12 +1,13 @@
 package com.arbelkilani.bingetv.domain.repositories
 
+import TvDetails
 import com.arbelkilani.bingetv.data.model.base.ApiResponse
-import com.arbelkilani.bingetv.data.model.base.Resource
 import com.arbelkilani.bingetv.data.model.tv.Tv
+import com.google.gson.JsonElement
 import kotlinx.coroutines.flow.Flow
-import retrofit2.Response
 
 interface TvShowRepository {
     suspend fun getAiringToday(): Flow<ApiResponse<Tv>>
     suspend fun getTrendingTv(): Flow<ApiResponse<Tv>>
+    suspend fun getTvDetails(id: Int): Flow<JsonElement>
 }
