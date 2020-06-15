@@ -11,7 +11,7 @@ interface ApiService {
     @GET("genre/tv/list")
     suspend fun getGenres(): Response<GenreResponse>
 
-    @GET("tv/airing_today")
+    @GET("tv/popular")
     suspend fun getAiringToday(): ApiResponse<Tv>
 
     @GET("trending/tv/week")

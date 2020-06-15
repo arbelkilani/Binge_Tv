@@ -2,10 +2,13 @@ package com.arbelkilani.bingetv.presentation.ui.view
 
 import android.util.Log
 import android.view.View
+import android.widget.TextView
 import androidx.core.view.ViewCompat
 import androidx.core.view.marginStart
 import androidx.viewpager.widget.ViewPager
+import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.utils.dp2px
+import kotlinx.android.synthetic.main.item_dicover_view.view.*
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -17,6 +20,7 @@ class CustomTransformer : ViewPager.PageTransformer {
     companion object {
         const val DEFAULT_ELEVATION_VALUE = 0f
         const val DEFAULT_SCALE_VALUE = 1f
+        const val DEFAULT_ALPHA_VALUE = 1f
     }
 
     private lateinit var viewPager: ViewPager
@@ -58,7 +62,10 @@ class CustomTransformer : ViewPager.PageTransformer {
         val offsetRate = offsetX.toFloat() * 0.4f / viewPager.measuredWidth
         val scaleFactor = 1 - abs(offsetRate)
         val alphaFactor = 1 - 2 * abs(offsetRate)
-        view.alpha = DEFAULT_SCALE_VALUE
+        view.alpha = DEFAULT_ALPHA_VALUE
+
+        val titleView = viewPager.findViewById<TextView>(R.id.tv_title)
+        titleView.alpha = DEFAULT_ALPHA_VALUE
 
         val translationFactor =
             (2 * view.width.toFloat() + 4 * (view.paddingStart + viewPager.pageMargin)) * -offsetRate
@@ -69,8 +76,11 @@ class CustomTransformer : ViewPager.PageTransformer {
             view.translationX = translationFactor
             view.alpha = alphaFactor
             view.elevation = DEFAULT_ELEVATION_VALUE
+            titleView.alpha = alphaFactor
         }
 
         view.elevation = scaleFactor
+        titleView.alpha = DEFAULT_ALPHA_VALUE
+
     }
 }

@@ -41,6 +41,7 @@ class DiscoverAdapter(private val tvList: List<Tv>) : PagerAdapter() {
             .fit().centerCrop(Gravity.CENTER)
             .error(R.mipmap.ic_launcher_round)
             .into(layout.iv_item_discover)
+        layout.tv_title.text = tvList[virtualPosition].name
 
         container.addView(layout)
         return layout
