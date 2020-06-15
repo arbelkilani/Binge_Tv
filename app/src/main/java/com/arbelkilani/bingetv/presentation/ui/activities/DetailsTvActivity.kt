@@ -1,7 +1,9 @@
 package com.arbelkilani.bingetv.presentation.ui.activities
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.model.tv.Tv
 import com.arbelkilani.bingetv.presentation.viewmodel.DetailsTvActivityViewModel
@@ -24,6 +26,10 @@ class DetailsTvActivity : AppCompatActivity() {
 
         initViews()
         initData()
+
+        detailsTvhActivityViewModel.resource.observe(this, Observer {
+            Log.i(TAG, "resource = $it")
+        })
     }
 
     private fun initData() {
@@ -34,7 +40,6 @@ class DetailsTvActivity : AppCompatActivity() {
 
     private fun initViews() {
         selectedTv = intent!!.getParcelableExtra(Constants.DISCOVER_DETAILS)!!
-
         detailsTvhActivityViewModel.getDetails(selectedTv)
     }
 }

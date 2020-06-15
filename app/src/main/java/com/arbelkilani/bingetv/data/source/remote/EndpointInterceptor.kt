@@ -3,6 +3,7 @@ package com.arbelkilani.bingetv.data.source.remote
 import com.arbelkilani.bingetv.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.Response
+import java.util.*
 
 class EndpointInterceptor : Interceptor {
 
@@ -12,6 +13,7 @@ class EndpointInterceptor : Interceptor {
 
         val url = originalHttpUrl.newBuilder()
             .addQueryParameter("api_key", BuildConfig.API_KEY)
+            .addQueryParameter("language", Locale.getDefault().toLanguageTag())
             .build()
 
         val request = original.newBuilder()
