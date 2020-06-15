@@ -60,8 +60,7 @@ class DiscoverFragment : Fragment() {
             currentItem = Int.MAX_VALUE / 2
             overScrollMode = 2
             offscreenPageLimit = 3
-            pageMargin = dp2px(this.context, 10f)
-            setPadding(dp2px(this.context, 40f), 0, dp2px(this.context, 40f), 0)
+            pageMargin = resources.getDimensionPixelOffset(R.dimen.view_pager_margin)
             setPageTransformer(false, CustomTransformer())
         }
 
