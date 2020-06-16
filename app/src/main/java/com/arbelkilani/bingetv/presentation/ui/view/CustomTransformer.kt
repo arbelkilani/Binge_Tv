@@ -1,16 +1,10 @@
 package com.arbelkilani.bingetv.presentation.ui.view
 
-import android.util.Log
 import android.view.View
 import android.widget.TextView
-import androidx.core.view.ViewCompat
-import androidx.core.view.marginStart
 import androidx.viewpager.widget.ViewPager
 import com.arbelkilani.bingetv.R
-import com.arbelkilani.bingetv.utils.dp2px
-import kotlinx.android.synthetic.main.item_dicover_view.view.*
 import kotlin.math.abs
-import kotlin.math.roundToInt
 
 
 class CustomTransformer : ViewPager.PageTransformer {
@@ -19,38 +13,10 @@ class CustomTransformer : ViewPager.PageTransformer {
 
     companion object {
         const val DEFAULT_ELEVATION_VALUE = 0f
-        const val DEFAULT_SCALE_VALUE = 1f
         const val DEFAULT_ALPHA_VALUE = 1f
     }
 
     private lateinit var viewPager: ViewPager
-
-    /*override fun transformPage(page: View, position: Float) {
-        val scaleFactor = 1 - abs(position)
-        Log.i(TAG, "scaleFactor = $scaleFactor")
-
-        /*when {
-            position <= 0f -> {
-                //page.scaleX = scaleFactor
-                //page.scaleY = scaleFactor
-                page.translationX = page.width * -position
-                //page.elevation = scaleFactor
-            }
-            position <= 1f -> {
-                page.translationX = DEFAULT_VALUE
-                //page.scaleX = DEFAULT_VALUE
-                //page.scaleY = DEFAULT_VALUE
-                //page.elevation = DEFAULT_VALUE
-            }
-            position > 1 -> {
-                //page.scaleX = scaleFactor
-                //page.scaleY = scaleFactor
-                page.translationX = page.width * +position
-                //page.elevation = scaleFactor
-            }
-        }*/
-    } */
-
 
     override fun transformPage(view: View, position: Float) {
 

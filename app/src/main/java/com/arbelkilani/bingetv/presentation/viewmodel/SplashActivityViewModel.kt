@@ -30,7 +30,7 @@ class SplashActivityViewModel constructor(
     val resource = MutableLiveData<Resource<CombinedObjects>>()
 
     init {
-        fetchData()
+        //fetchData()
     }
 
     private fun fetchData() {

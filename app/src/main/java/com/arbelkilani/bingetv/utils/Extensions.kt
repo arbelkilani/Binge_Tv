@@ -1,9 +1,11 @@
 package com.arbelkilani.bingetv.utils
 
-import android.content.Context
-import android.view.View
+import android.widget.ImageView
+import androidx.databinding.BindingAdapter
+import com.squareup.picasso.Picasso
 
-fun dp2px(context: Context, dipValue: Float): Int {
-    val m: Float = context.resources.displayMetrics.density
-    return (dipValue * m + 0.5f).toInt()
+@BindingAdapter("android:src")
+fun setImageUrl(view: ImageView, url: String?) {
+    //TODO work on error and placeholder
+    Picasso.get().load(url).fit().centerCrop().into(view)
 }

@@ -29,7 +29,7 @@ data class TvDetails(
     @SerializedName("original_name") val originName: String,
     val overview: String,
     val popularity: Double,
-    @SerializedName("poster_path") val posterPath: String?,
+    @SerializedName("poster_path") val _posterPath: String?,
     @SerializedName("production_companies") val productionCompanies: List<ProductionCompany>,
     val seasons: List<Season>,
     val status: String,
@@ -38,11 +38,7 @@ data class TvDetails(
     @SerializedName("vote_count") val voteCount: Double
 ) : Parcelable {
 
-    fun getPoster(): String {
-        return "https://image.tmdb.org/t/p/w500$posterPath"
-    }
+    val posterPath: String?
+        get() = "https://image.tmdb.org/t/p/w500${this._posterPath}"
 
-    fun getBackdrop(): String {
-        return "https://image.tmdb.org/t/p/w780$backdropPath"
-    }
 }

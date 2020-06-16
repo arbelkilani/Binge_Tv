@@ -28,14 +28,13 @@ class TrendingAdapter(
             onTvClickListener: OnTvClickListener
         ) {
             Picasso.get()
-                .load(tv.getPosterPath())
+                .load(tv.posterPath)
                 .fit()
                 .centerCrop()
                 .into(itemView.iv_item_trending)
 
             itemView.tv_trending_name.text = tv.name
             itemView.setOnClickListener {
-                Toast.makeText(itemView.context, tv.name, Toast.LENGTH_SHORT).show()
                 onTvClickListener.onTvItemClicked(tv)
             }
         }
