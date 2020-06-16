@@ -15,6 +15,6 @@ data class EpisodeToAir(
     @SerializedName("season_number") val seasonNumber: Int,
     @SerializedName("show_id") val showId: Int,
     @SerializedName("still_path") val stillPath: String,
-    @SerializedName("vote_average") val voteAverage: Int,
-    @SerializedName("vote_count") val voteCount: Int
+    @SerializedName("vote_average") val voteAverage: Double,
+    @SerializedName("vote_count") val voteCount: Double
 ) : Parcelable

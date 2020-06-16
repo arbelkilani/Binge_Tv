@@ -10,6 +10,7 @@ import com.arbelkilani.bingetv.data.model.tv.CombinedObjects
 import com.arbelkilani.bingetv.data.model.tv.Tv
 import com.arbelkilani.bingetv.domain.usecase.GetAiringTodayUseCase
 import com.arbelkilani.bingetv.domain.usecase.GetTrendingTvUseCase
+import com.arbelkilani.bingetv.utils.Constants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
@@ -30,16 +31,15 @@ class SplashActivityViewModel constructor(
     val resource = MutableLiveData<Resource<CombinedObjects>>()
 
     init {
-        //fetchData()
+        fetchData()
     }
 
     private fun fetchData() {
 
-        //TODO check how to zip more than two flows in order to add a flow delay with 3 seconds value
-        val flowDelay = flow { emit(delay(3000)) }
+        //TODO check how to zip more than two flows
 
         scope.launch {
-            delay(1000) // set delay for the splash
+            delay(Constants.SPLASH_DELAY) // set delay for the splash
             getAiringTodayUseCase.invoke()
                 .zip(getTrendingTvUseCase.invoke())
                 { airingToday, trending ->

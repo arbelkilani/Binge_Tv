@@ -26,20 +26,14 @@ class DetailsTvActivityViewModel constructor(private val getTvDetailsUseCase: Ge
     fun getDetails(selectedTv: Tv) {
         scope.launch {
             val response = getTvDetailsUseCase.invoke(selectedTv.id)
-            Log.i(TAG, "response = $response")
+            Log.i(TAG, "response = ${response}")
+            //Log.i(TAG, "response = ${response.data!!.genres}")
 
-            if(response.status == Status.SUCCESS) {
+            if (response.status == Status.SUCCESS) {
                 resource.postValue(Resource.success(response.data))
             } else {
                 resource.postValue(Resource.exception(Exception(), null))
             }
-
-            /*when (response.status) {
-                Status.SUCCESS -> {
-                    resource.postValue(Resource.success(response.data))
-                }
-                Status.ERROR -> resource.postValue(Resource.exception(Exception(), null))
-            }*/
         }
     }
 
