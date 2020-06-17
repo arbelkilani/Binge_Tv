@@ -3,16 +3,15 @@ package com.arbelkilani.bingetv.presentation.ui.activities
 import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.animation.BounceInterpolator
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.arbelkilani.bingetv.R
-import com.arbelkilani.bingetv.data.enum.HttpStatusCode
 import com.arbelkilani.bingetv.data.model.base.Status.ERROR
 import com.arbelkilani.bingetv.data.model.base.Status.SUCCESS
+import com.arbelkilani.bingetv.data.model.genre.Genre
 import com.arbelkilani.bingetv.presentation.viewmodel.SplashActivityViewModel
 import com.arbelkilani.bingetv.utils.Constants
 import kotlinx.android.synthetic.main.activity_splash.*
