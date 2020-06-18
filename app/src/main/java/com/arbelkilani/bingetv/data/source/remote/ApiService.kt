@@ -5,8 +5,10 @@ import com.arbelkilani.bingetv.data.model.genre.GenreResponse
 import com.arbelkilani.bingetv.data.model.tv.Tv
 import com.arbelkilani.bingetv.data.model.tv.TvDetails
 import retrofit2.Response
+import retrofit2.http.Field
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
 

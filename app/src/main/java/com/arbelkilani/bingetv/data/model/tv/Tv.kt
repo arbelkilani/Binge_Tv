@@ -6,7 +6,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Tv(
-    val backdrop_path: String?,
+    @SerializedName("backdrop_path") val _backdropPath: String?,
     val first_air_date: String,
     val genre_ids: List<Int>,
     val id: Int,
@@ -24,7 +24,7 @@ data class Tv(
     val posterPath: String?
         get() = "https://image.tmdb.org/t/p/w500${this._posterPath}"
 
-    fun getBackdropPath(): String {
-        return "https://image.tmdb.org/t/p/w780$backdrop_path"
-    }
+    val backdropPath: String?
+        get() = "https://image.tmdb.org/t/p/w780${this._backdropPath}"
+
 }

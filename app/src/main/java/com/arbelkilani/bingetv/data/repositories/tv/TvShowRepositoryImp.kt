@@ -29,9 +29,10 @@ class TvShowRepositoryImp(
 
     override suspend fun getTvDetails(id: Int): Resource<TvDetails> {
         Log.i(TAG, "getTvDetails()")
+        //TODO check handling error
+        //TODO adding append_to_response
         return try {
             val response = apiService.getTvDetails(id)
-            Log.i(TAG, "response : $response")
             Resource.success(response)
         } catch (e: Exception) {
             Log.i(TAG, "exception : ${e.localizedMessage}")

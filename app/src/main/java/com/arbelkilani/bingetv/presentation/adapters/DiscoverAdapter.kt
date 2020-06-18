@@ -37,7 +37,7 @@ class DiscoverAdapter(private val tvList: List<Tv>) : PagerAdapter() {
             .inflate(R.layout.item_dicover_view, container, false)
 
         Picasso.get()
-            .load(tvList[virtualPosition].getBackdropPath())
+            .load(tvList[virtualPosition].backdropPath)
             .fit().centerCrop(Gravity.CENTER)
             .error(R.mipmap.ic_launcher_round)
             .into(layout.iv_item_discover)

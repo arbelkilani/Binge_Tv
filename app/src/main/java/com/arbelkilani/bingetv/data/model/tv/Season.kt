@@ -11,6 +11,9 @@ data class Season(
     val id: Int,
     val name: String,
     val overview: String,
-    @SerializedName("poster_path") val posterPah: String,
+    @SerializedName("poster_path") val _posterPath: String,
     @SerializedName("season_number") val seasonNumber: Int
-) : Parcelable
+) : Parcelable {
+    val posterPath: String?
+        get() = "https://image.tmdb.org/t/p/w500${this._posterPath}"
+}
