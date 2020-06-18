@@ -3,8 +3,11 @@ package com.arbelkilani.bingetv.presentation.ui.activities
 import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.WindowDecorActionBar
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.widget.NestedScrollView
 import androidx.databinding.DataBindingUtil
@@ -20,7 +23,9 @@ import com.arbelkilani.bingetv.presentation.listeners.OnSeasonClickListener
 import com.arbelkilani.bingetv.presentation.viewmodel.DetailsTvActivityViewModel
 import com.arbelkilani.bingetv.utils.Constants
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import kotlinx.android.synthetic.main.activity_details_tv.*
 import kotlinx.android.synthetic.main.details_bottom_sheet.*
+import kotlinx.android.synthetic.main.details_content_main.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailsTvActivity : AppCompatActivity(), OnSeasonClickListener {
@@ -36,6 +41,12 @@ class DetailsTvActivity : AppCompatActivity(), OnSeasonClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details_tv)
 
+        setSupportActionBar(toolbar)
+        supportActionBar?.let {
+            it.setDisplayHomeAsUpEnabled(true)
+            it.setDisplayShowHomeEnabled(true)
+        }
+
         detailsTvBinding = DataBindingUtil.setContentView(this, R.layout.activity_details_tv)
 
         val selectedTv = intent!!.getParcelableExtra<Tv>(Constants.DISCOVER_DETAILS)!!
@@ -47,6 +58,11 @@ class DetailsTvActivity : AppCompatActivity(), OnSeasonClickListener {
 
             //TODO work on custom tag view
             //TODO check if genres is empty
+
+            // FIXME click on toolbar
+            toolbar.setOnClickListener(View.OnClickListener {
+                Toast.makeText(this, "toolbar clicked", Toast.LENGTH_SHORT).show()
+            })
 
             fl_genres.removeAllViews()
             for (genre in tvDetailsResource.data!!.genres) {
@@ -91,7 +107,7 @@ class DetailsTvActivity : AppCompatActivity(), OnSeasonClickListener {
     }
 
     override fun onBackPressed() {
-        if(bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED)
+        if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED)
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         else
             super.onBackPressed()
