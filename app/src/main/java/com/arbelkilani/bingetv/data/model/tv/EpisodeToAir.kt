@@ -1,12 +1,13 @@
 package com.arbelkilani.bingetv.data.model.tv
 
 import android.os.Parcelable
+import com.arbelkilani.bingetv.utils.returnDuration
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class EpisodeToAir(
-    @SerializedName("air_date") val airDate: String,
+    @SerializedName("air_date") val _airDate: String,
     @SerializedName("episode_number") val episodeNumber: Int,
     val id: Int,
     val name: String,
@@ -17,4 +18,10 @@ data class EpisodeToAir(
     @SerializedName("still_path") val stillPath: String,
     @SerializedName("vote_average") val voteAverage: Double,
     @SerializedName("vote_count") val voteCount: Double
-) : Parcelable
+) : Parcelable {
+    val airDate: String
+        get() = _airDate // TODO format date
+
+    val tillAirDateDuration: String
+        get() = ", will be aired in ${returnDuration(_airDate)} days" //TODO workin on multilanguage value
+}
