@@ -14,6 +14,7 @@ class EndpointInterceptor : Interceptor {
         val url = originalHttpUrl.newBuilder()
             .addQueryParameter("api_key", BuildConfig.API_KEY)
             .addQueryParameter("language", Locale.getDefault().toLanguageTag())
+            .addQueryParameter("include_image_language", null)
             .build()
 
         val request = original.newBuilder()

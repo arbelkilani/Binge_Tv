@@ -2,13 +2,12 @@ package com.arbelkilani.bingetv.data.model.tv
 
 import android.os.Parcelable
 import com.arbelkilani.bingetv.data.model.genre.Genre
-import com.arbelkilani.bingetv.data.model.genre.GenreEntity
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class TvDetails(
-    @SerializedName("backdrop_path") val backdropPath: String?,
+    @SerializedName("backdrop_path") val _backdropPath: String?,
     @SerializedName("created_by") val createdBy: List<CreatedBy>,
     @SerializedName("episode_run_time") val episodeRunTime: List<Int>,
     @SerializedName("first_air_date") val firstAirData: String,
@@ -35,10 +34,15 @@ data class TvDetails(
     val status: String,
     val type: String,
     @SerializedName("vote_average") val voteAverage: Double,
-    @SerializedName("vote_count") val voteCount: Double
+    @SerializedName("vote_count") val voteCount: Double,
+    val videos: VideoResponse, //TODO perform action for type and size ( think about using enumerations instead)
+    val images: ImageResponse
 ) : Parcelable {
 
     val posterPath: String?
         get() = "https://image.tmdb.org/t/p/w500${this._posterPath}"
+
+    val backdropPath: String?
+        get() = "https://image.tmdb.org/t/p/w500${this._backdropPath}"
 
 }

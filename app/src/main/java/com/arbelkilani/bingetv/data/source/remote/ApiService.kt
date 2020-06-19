@@ -22,5 +22,8 @@ interface ApiService {
     suspend fun getTrendingTv(): ApiResponse<Tv>
 
     @GET("tv/{tv_id}")
-    suspend fun getTvDetails(@Path("tv_id") id: Int): TvDetails
+    suspend fun getTvDetails(
+        @Path("tv_id") id: Int,
+        @Query("append_to_response") appendToResponse: String
+    ): TvDetails
 }

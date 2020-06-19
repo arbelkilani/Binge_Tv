@@ -46,6 +46,7 @@ class SplashActivityViewModel constructor(
                     return@zip CombinedObjects(airingToday, trending)
                 }
                 .catch { cause: Throwable ->
+                    Log.i(TAG, "cause = ${cause.localizedMessage}")
                     resource.postValue(Resource.exception(cause, null))
                 }
                 .collect { value ->

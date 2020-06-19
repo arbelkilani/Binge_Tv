@@ -32,7 +32,7 @@ class TvShowRepositoryImp(
         //TODO check handling error
         //TODO adding append_to_response
         return try {
-            val response = apiService.getTvDetails(id)
+            val response = apiService.getTvDetails(id, "videos,images")
             Resource.success(response)
         } catch (e: Exception) {
             Log.i(TAG, "exception : ${e.localizedMessage}")

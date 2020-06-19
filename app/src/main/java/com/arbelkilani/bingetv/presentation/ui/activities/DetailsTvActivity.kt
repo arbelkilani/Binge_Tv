@@ -12,6 +12,7 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.widget.NestedScrollView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.arbelkilani.bingetv.R
@@ -41,28 +42,29 @@ class DetailsTvActivity : AppCompatActivity(), OnSeasonClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details_tv)
 
-        setSupportActionBar(toolbar)
-        supportActionBar?.let {
-            it.setDisplayHomeAsUpEnabled(true)
-            it.setDisplayShowHomeEnabled(true)
-        }
-
         detailsTvBinding = DataBindingUtil.setContentView(this, R.layout.activity_details_tv)
 
         val selectedTv = intent!!.getParcelableExtra<Tv>(Constants.DISCOVER_DETAILS)!!
         detailsTvhActivityViewModel.getDetails(selectedTv)
         detailsTvBinding.selectedTv = selectedTv
 
+        setSupportActionBar(toolbar)
+        supportActionBar?.let {
+            it.setDisplayShowHomeEnabled(true)
+            it.setDisplayShowTitleEnabled(false)
+        }
+
+        toolbar.setNavigationOnClickListener { onBackPressed() }
+
+        test.setOnClickListener(View.OnClickListener {
+            Toast.makeText(this, "ic play clicked", Toast.LENGTH_SHORT).show()
+        })
+
         detailsTvhActivityViewModel.resource.observe(this, Observer { tvDetailsResource ->
             detailsTvBinding.tvDetails = tvDetailsResource.data
 
             //TODO work on custom tag view
             //TODO check if genres is empty
-
-            // FIXME click on toolbar
-            toolbar.setOnClickListener(View.OnClickListener {
-                Toast.makeText(this, "toolbar clicked", Toast.LENGTH_SHORT).show()
-            })
 
             fl_genres.removeAllViews()
             for (genre in tvDetailsResource.data!!.genres) {

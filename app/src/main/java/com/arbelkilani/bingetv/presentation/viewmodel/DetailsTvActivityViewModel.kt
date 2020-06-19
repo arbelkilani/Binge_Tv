@@ -1,12 +1,14 @@
 package com.arbelkilani.bingetv.presentation.viewmodel
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.arbelkilani.bingetv.data.model.base.Resource
 import com.arbelkilani.bingetv.data.model.base.Status
 import com.arbelkilani.bingetv.data.model.tv.CombinedObjects
 import com.arbelkilani.bingetv.data.model.tv.Tv
 import com.arbelkilani.bingetv.data.model.tv.TvDetails
+import com.arbelkilani.bingetv.data.model.tv.VideoResponse
 import com.arbelkilani.bingetv.domain.usecase.GetTvDetailsUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -35,6 +37,10 @@ class DetailsTvActivityViewModel constructor(private val getTvDetailsUseCase: Ge
                 resource.postValue(Resource.exception(Exception(), null))
             }
         }
+    }
+
+    fun playTrailer(videoResponse: VideoResponse) {
+        Log.i(TAG, "videoResponse : $videoResponse")
     }
 
 }
