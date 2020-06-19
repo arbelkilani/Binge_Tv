@@ -1,5 +1,8 @@
 package com.arbelkilani.bingetv.utils
 
+import android.content.Context
+import android.content.res.Resources
+import android.util.DisplayMetrics
 import android.util.Log
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
@@ -14,17 +17,33 @@ fun setImageUrl(view: ImageView, url: String?) {
     Picasso.get().load(url).fit().centerCrop().into(view)
 }
 
+fun convertDpToPixel(dp: Float, context: Context?): Float {
+    return if (context != null) {
+        val resources = context.resources
+        val metrics = resources.displayMetrics
+        dp * (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+    } else {
+        val metrics = Resources.getSystem().displayMetrics
+        dp * (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+    }
+}
+
+fun convertPixelsToDp(px: Float, context: Context?): Float {
+    return if (context != null) {
+        val resources = context.resources
+        val metrics = resources.displayMetrics
+        px / (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+    } else {
+        val metrics = Resources.getSystem().displayMetrics
+        px / (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+    }
+}
+
 fun returnDuration(dateToValue: String): String {
-    val year = dateToValue.substring(0, 4)
-    val month = dateToValue.substring(5, 7)
-    val day = dateToValue.substring(8, dateToValue.length)
 
     val dateToFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     val dateTo: Date = dateToFormat.parse(dateToValue)!!
     val currentDate: Date = Date(System.currentTimeMillis())
-
-    Log.i("TAG**", "dateTo = $dateTo")
-    Log.i("TAG**", "currentDate = $currentDate")
 
     //INFO : we add + 1 because the returned date from the api does not consider time it starts from 00:00:00
     val duration =

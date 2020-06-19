@@ -1,4 +1,4 @@
-package com.arbelkilani.bingetv.data.model.tv
+package com.arbelkilani.bingetv.data.model.video
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

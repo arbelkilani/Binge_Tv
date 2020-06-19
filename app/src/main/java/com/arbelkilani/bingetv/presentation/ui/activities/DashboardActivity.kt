@@ -1,6 +1,7 @@
 package com.arbelkilani.bingetv.presentation.ui.activities
 
 import android.content.Intent
+import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem

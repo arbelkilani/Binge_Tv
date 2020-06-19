@@ -2,6 +2,9 @@ package com.arbelkilani.bingetv.data.model.tv
 
 import android.os.Parcelable
 import com.arbelkilani.bingetv.data.model.genre.Genre
+import com.arbelkilani.bingetv.data.model.image.ImageResponse
+import com.arbelkilani.bingetv.data.model.season.Season
+import com.arbelkilani.bingetv.data.model.video.VideoResponse
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 

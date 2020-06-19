@@ -8,12 +8,12 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class EpisodeToAir(
     @SerializedName("air_date") val _airDate: String,
-    @SerializedName("episode_number") val episodeNumber: Int,
+    @SerializedName("episode_number") val _episodeNumber: Int,
     val id: Int,
     val name: String,
     val overview: String,
     @SerializedName("production_code") val productionCode: String,
-    @SerializedName("season_number") val seasonNumber: Int,
+    @SerializedName("season_number") val _seasonNumber: Int,
     @SerializedName("show_id") val showId: Int,
     @SerializedName("still_path") val stillPath: String,
     @SerializedName("vote_average") val voteAverage: Double,
@@ -23,5 +23,9 @@ data class EpisodeToAir(
         get() = _airDate // TODO format date
 
     val tillAirDateDuration: String
-        get() = ", will be aired in ${returnDuration(_airDate)} days" //TODO workin on multilanguage value
+        get() = returnDuration(_airDate)
+
+
+
+
 }

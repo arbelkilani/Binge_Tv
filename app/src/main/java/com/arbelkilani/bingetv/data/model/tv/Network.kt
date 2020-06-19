@@ -8,6 +8,9 @@ import kotlinx.android.parcel.Parcelize
 data class Network(
     val name: String,
     val id: Int,
-    @SerializedName("logo_path") val logoPath: String,
+    @SerializedName("logo_path") val _logoPath: String,
     @SerializedName("origin_country") val originCountry: String
-) : Parcelable
+) : Parcelable {
+    val logoPath: String?
+        get() = "https://image.tmdb.org/t/p/w342${this._logoPath}"
+}

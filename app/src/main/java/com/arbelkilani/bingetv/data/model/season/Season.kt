@@ -1,4 +1,4 @@
-package com.arbelkilani.bingetv.data.model.tv
+package com.arbelkilani.bingetv.data.model.season
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
