@@ -2,6 +2,9 @@ package com.arbelkilani.bingetv.utils
 
 import android.content.Context
 import android.content.res.Resources
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.RelativeSizeSpan
 import android.util.DisplayMetrics
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
@@ -15,6 +18,19 @@ fun bindImageUrl(view: ImageView, url: String?) {
     url?.let {
         Picasso.get().load(url).fit().centerCrop().into(view)
     }
+}
+
+fun spannableVoteRate(v: String): String {
+    val on = "/10"
+    val value = String.format("%s%s", v, on, Locale.getDefault())
+    val spannableString = SpannableString(value)
+    spannableString.setSpan(
+        RelativeSizeSpan(1.8f),
+        value.length - on.length,
+        value.length,
+        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+    )
+    return spannableString.toString()
 }
 
 fun convertDpToPixel(dp: Float, context: Context?): Float {
