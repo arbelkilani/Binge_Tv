@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit
 @BindingAdapter("android:src")
 fun bindImageUrl(view: ImageView, url: String?) {
     url?.let {
-        Picasso.get().load(url).fit().centerCrop().into(view)
+        Picasso.get().load(url).into(view)
     }
 }
 

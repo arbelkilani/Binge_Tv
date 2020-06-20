@@ -124,9 +124,10 @@ class DetailsTvActivity : AppCompatActivity(), OnSeasonClickListener {
     }
 
     override fun onBackPressed() {
-        if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED)
+        if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+            bottom_sheet.smoothScrollTo(0, 0)
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        else
+        } else
             super.onBackPressed()
     }
 }
