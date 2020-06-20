@@ -4,34 +4,21 @@ import android.content.Intent
 import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.WindowDecorActionBar
 import androidx.appcompat.view.ContextThemeWrapper
-import androidx.core.view.setPadding
 import androidx.core.widget.NestedScrollView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.arbelkilani.bingetv.R
-import com.arbelkilani.bingetv.data.model.genre.Genre
 import com.arbelkilani.bingetv.data.model.tv.Tv
 import com.arbelkilani.bingetv.databinding.ActivityDetailsTvBinding
+import com.arbelkilani.bingetv.presentation.adapters.ImageAdapter
 import com.arbelkilani.bingetv.presentation.adapters.SeasonAdapter
 import com.arbelkilani.bingetv.presentation.listeners.OnSeasonClickListener
 import com.arbelkilani.bingetv.presentation.viewmodel.DetailsTvActivityViewModel
 import com.arbelkilani.bingetv.utils.Constants
-import com.arbelkilani.bingetv.utils.convertDpToPixel
-import com.arbelkilani.bingetv.utils.convertPixelsToDp
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_details_tv.*
 import kotlinx.android.synthetic.main.details_bottom_sheet.*
 import kotlinx.android.synthetic.main.details_content_main.*
@@ -67,6 +54,16 @@ class DetailsTvActivity : AppCompatActivity(), OnSeasonClickListener {
         detailsTvhActivityViewModel.resource.observe(this, Observer { tvDetailsResource ->
             detailsTvBinding.tvDetails = tvDetailsResource.data
             detailsTvBinding.detailsViewModel = detailsTvhActivityViewModel
+            tvDetailsResource.data?.let { tvDetails ->
+
+                rv_seasons.adapter = SeasonAdapter(tvDetails.seasons.asReversed(), this)
+
+                view_pager.apply {
+                    adapter = ImageAdapter(tvDetails.images.backdrops)
+                    offscreenPageLimit = 3
+                }
+            }
+
 
             //TODO work on custom tag view
             //TODO check if genres is empty
@@ -103,24 +100,14 @@ class DetailsTvActivity : AppCompatActivity(), OnSeasonClickListener {
                 fl_networks.addView(imageView) */
 
             }
-
-            //TODO data binding recyclerview
-            rv_seasons.apply {
-                layoutManager =
-                    LinearLayoutManager(
-                        this@DetailsTvActivity,
-                        LinearLayoutManager.HORIZONTAL,
-                        false
-                    )
-                adapter = SeasonAdapter(
-                    tvDetailsResource.data.seasons.asReversed(),
-                    this@DetailsTvActivity
-                )
-            }
         })
 
         detailsTvhActivityViewModel.trailerKey.observe(this, Observer { key ->
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:$key")))
+        })
+
+        detailsTvhActivityViewModel.homePageUrl.observe(this, Observer { url ->
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
         })
 
         initViews()
@@ -143,3 +130,5 @@ class DetailsTvActivity : AppCompatActivity(), OnSeasonClickListener {
             super.onBackPressed()
     }
 }
+
+

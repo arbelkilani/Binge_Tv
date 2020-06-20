@@ -38,8 +38,6 @@ class TrendingAdapter(
                 onTvClickListener.onTvItemClicked(tv)
             }
         }
-
-
     }
 
     override fun onCreateViewHolder(

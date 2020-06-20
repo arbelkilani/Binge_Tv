@@ -13,4 +13,8 @@ data class Image(
     @SerializedName("vote_average") val voteAverage: Double,
     @SerializedName("vote_count") val voteCount: Int,
     val width: Int
-) : Parcelable
+) : Parcelable {
+    val filePath: String?
+        get() = "https://image.tmdb.org/t/p/w780${this._filePath}"
+
+}

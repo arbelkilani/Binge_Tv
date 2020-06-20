@@ -3,7 +3,6 @@ package com.arbelkilani.bingetv.utils
 import android.content.Context
 import android.content.res.Resources
 import android.util.DisplayMetrics
-import android.util.Log
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.squareup.picasso.Picasso
@@ -12,9 +11,10 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 @BindingAdapter("android:src")
-fun setImageUrl(view: ImageView, url: String?) {
-    //TODO work on error and placeholder
-    Picasso.get().load(url).fit().centerCrop().into(view)
+fun bindImageUrl(view: ImageView, url: String?) {
+    url?.let {
+        Picasso.get().load(url).fit().centerCrop().into(view)
+    }
 }
 
 fun convertDpToPixel(dp: Float, context: Context?): Float {

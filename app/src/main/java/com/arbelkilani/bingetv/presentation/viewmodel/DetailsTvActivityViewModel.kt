@@ -19,15 +19,13 @@ class DetailsTvActivityViewModel constructor(private val getTvDetailsUseCase: Ge
 
     val resource = MutableLiveData<Resource<TvDetails>>()
     val trailerKey = MutableLiveData<String>()
+    val homePageUrl = MutableLiveData<String>()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     fun getDetails(selectedTv: Tv) {
         scope.launch {
             val response = getTvDetailsUseCase.invoke(selectedTv.id)
-            Log.i(TAG, "response = ${response}")
             //TODO recheck condition of error and success
-            //Log.i(TAG, "response = ${response.data!!.genres}")
-
             if (response.status == Status.SUCCESS) {
                 resource.postValue(Resource.success(response.data))
             } else {
@@ -38,6 +36,12 @@ class DetailsTvActivityViewModel constructor(private val getTvDetailsUseCase: Ge
 
     fun playTrailer(videoResponse: VideoResponse) {
         trailerKey.postValue(videoResponse.results[0].key)
+    }
+
+    fun openHomePage(homePageUrl: String) {
+        if (homePageUrl.isNotEmpty())
+            this.homePageUrl.postValue(homePageUrl)
+
     }
 
 }

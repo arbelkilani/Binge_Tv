@@ -3,9 +3,11 @@ package com.arbelkilani.bingetv.presentation.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.model.season.Season
+import com.arbelkilani.bingetv.databinding.ItemSeasonBindingImpl
 import com.arbelkilani.bingetv.presentation.listeners.OnSeasonClickListener
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_season.view.*
@@ -17,20 +19,14 @@ class SeasonAdapter(
 ) :
     RecyclerView.Adapter<SeasonAdapter.SeasonHolder>() {
 
-    class SeasonHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(season: Season, onSeasonClickListener: OnSeasonClickListener) {
-            Picasso.get()
-                .load(season.posterPath)
-                .fit().centerCrop()
-                .into(itemView.iv_season_poster)
-            itemView.tv_season_number.text = season.name
-        }
-    }
+    class SeasonHolder(val itemSeasonsBinding: ItemSeasonBindingImpl) :
+        RecyclerView.ViewHolder(itemSeasonsBinding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SeasonHolder {
-        val inflatedView =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_season, parent, false)
-        return SeasonHolder(inflatedView)
+        val itemSeasonBindingImpl = DataBindingUtil.inflate<ItemSeasonBindingImpl>(
+            LayoutInflater.from(parent.context), R.layout.item_season, parent, false
+        )
+        return SeasonHolder(itemSeasonBindingImpl)
     }
 
     override fun getItemCount(): Int {
@@ -38,6 +34,6 @@ class SeasonAdapter(
     }
 
     override fun onBindViewHolder(holder: SeasonHolder, position: Int) {
-        holder.bind(seasons[position], onSeasonClickListener)
+        holder.itemSeasonsBinding.season = seasons[position]
     }
 }
