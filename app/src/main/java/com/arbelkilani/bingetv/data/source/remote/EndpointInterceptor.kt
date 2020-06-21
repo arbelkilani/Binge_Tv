@@ -8,6 +8,7 @@ import java.util.*
 class EndpointInterceptor : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
+
         val original = chain.request()
         val originalHttpUrl = original.url
 

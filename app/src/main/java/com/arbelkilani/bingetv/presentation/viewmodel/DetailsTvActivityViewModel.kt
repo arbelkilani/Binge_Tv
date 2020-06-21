@@ -10,6 +10,7 @@ import com.arbelkilani.bingetv.data.model.tv.TvDetails
 import com.arbelkilani.bingetv.data.model.video.VideoResponse
 import com.arbelkilani.bingetv.domain.usecase.GetCreditsUseCase
 import com.arbelkilani.bingetv.domain.usecase.GetTvDetailsUseCase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import java.lang.Exception
@@ -28,12 +29,30 @@ class DetailsTvActivityViewModel constructor(
     val trailerKey = MutableLiveData<String>()
     val homePageUrl = MutableLiveData<String>()
 
+    fun playTrailer(videoResponse: VideoResponse) {
+        Log.i(TAG, "play trailer")
+        trailerKey.postValue(videoResponse.results[0].key)
+    }
+
+    fun test() {
+        Log.i(TAG, "play trailer")
+    }
+
+    fun openHomePage(homePageUrl: String) {
+        if (homePageUrl.isNotEmpty())
+            this.homePageUrl.postValue(homePageUrl)
+
+    }
+
     @OptIn(ExperimentalCoroutinesApi::class)
     fun getDetails(selectedTv: Tv) {
-        scope.launch {
-            getTvDetails(selectedTv)
+
+        scope.launch { getTvDetails(selectedTv) }
+
+        /*scope.launch(Dispatchers.IO) {
+
             getCredits(selectedTv)
-        }
+        }*/
     }
 
     private suspend fun getCredits(selectedTv: Tv) {
@@ -57,16 +76,6 @@ class DetailsTvActivityViewModel constructor(
         } else {
             tvDetailsLiveData.postValue(Resource.exception(Exception(), null))
         }
-    }
-
-    fun playTrailer(videoResponse: VideoResponse) {
-        trailerKey.postValue(videoResponse.results[0].key)
-    }
-
-    fun openHomePage(homePageUrl: String) {
-        if (homePageUrl.isNotEmpty())
-            this.homePageUrl.postValue(homePageUrl)
-
     }
 
 }

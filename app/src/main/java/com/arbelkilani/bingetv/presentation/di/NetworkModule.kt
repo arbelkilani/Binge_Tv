@@ -1,8 +1,10 @@
 package com.arbelkilani.bingetv.presentation.di
 
+import android.util.Log
 import com.arbelkilani.bingetv.BuildConfig
 import com.arbelkilani.bingetv.data.source.remote.EndpointInterceptor
-import com.arbelkilani.bingetv.data.source.remote.ApiService
+import com.arbelkilani.bingetv.data.source.remote.ApiTmdbService
+import com.arbelkilani.bingetv.data.source.remote.ApiTvMazeService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
@@ -14,14 +16,11 @@ val NetworkModule = module {
 
     single { createOkHttpClient() }
 
-    single {
-        createRetrofit(
-            get(),
-            BuildConfig.BASE_URL
-        )
-    }
+    single { createRetrofit(get()) }
 
-    single { createService(get()) }
+    single { createTmdbService(get()) }
+
+    single { createTvMazeService(get()) }
 
 }
 
@@ -38,15 +37,33 @@ fun createOkHttpClient(): OkHttpClient {
         .build()
 }
 
-fun createRetrofit(okHttpClient: OkHttpClient, baseUrl: String): Retrofit {
+fun createRetrofit(okHttpClient: OkHttpClient): Retrofit {
     return Retrofit.Builder()
-        .baseUrl(baseUrl)
+        .baseUrl(BuildConfig.TMDB_BASE_URL)
         .client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 }
 
-fun createService(retrofit: Retrofit): ApiService {
-    return retrofit.create(ApiService::class.java)
+fun createTmdbService(retrofit: Retrofit): ApiTmdbService {
+    Log.i("TAG++", "retrofit tmdb = $retrofit, api ${retrofit.baseUrl()}")
+    return retrofit.create(ApiTmdbService::class.java)
+}
+
+fun createTvMazeRetrofitBuilder(): Retrofit {
+    return Retrofit.Builder()
+        .baseUrl(BuildConfig.TVMAZE_BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+}
+
+fun createTvMazeService(okHttpClient: OkHttpClient): ApiTvMazeService {
+    val builder = Retrofit.Builder()
+        .baseUrl(BuildConfig.TVMAZE_BASE_URL)
+        .client(okHttpClient)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+    Log.i("TAG++", "retrofit tvmaze = $builder, api ${builder.baseUrl()}")
+    return builder.create(ApiTvMazeService::class.java)
 }
 

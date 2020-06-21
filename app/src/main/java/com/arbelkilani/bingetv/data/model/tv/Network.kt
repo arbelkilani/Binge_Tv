@@ -13,4 +13,8 @@ data class Network(
 ) : Parcelable {
     val logoPath: String?
         get() = "https://image.tmdb.org/t/p/w342${this._logoPath}"
+
+    override fun toString(): String {
+        return name
+    }
 }

@@ -11,15 +11,20 @@ import android.util.Log
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.databinding.BindingAdapter
+import com.arbelkilani.bingetv.R
+import com.arbelkilani.bingetv.data.model.genre.Genre
+import com.arbelkilani.bingetv.data.model.tv.Network
+import com.google.android.flexbox.FlexboxLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.details_bottom_sheet_seasons.view.*
-import kotlinx.android.synthetic.main.details_bottom_sheet_content.*
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.math.max
+
 
 @BindingAdapter("android:src")
 fun bindImageUrl(view: ImageView, url: String?) {
@@ -75,42 +80,75 @@ fun returnDuration(dateToValue: String): String {
     return duration.toString()
 }
 
+@BindingAdapter("genres")
+fun setGenres(view: FlexboxLayout, list: List<Genre>?) {
+    if (list == null)
+        return
+
+    view.removeAllViews()
+    for (item in list) {
+        val textView = TextView(ContextThemeWrapper(view.context, R.style.TextView_Genre), null, 0)
+        textView.text = item.name
+        view.addView(textView)
+    }
+
+    view.requestLayout()
+    view.invalidate()
+}
+
+@BindingAdapter("networks")
+fun setNetworks(view: FlexboxLayout, list: List<Network>?) {
+    if (list == null)
+        return
+
+    view.removeAllViews()
+    for (item in list) {
+        val textView =
+            TextView(ContextThemeWrapper(view.context, R.style.TextView_Network), null, 0)
+        textView.text = item.name
+        view.addView(textView)
+    }
+
+    view.requestLayout()
+    view.invalidate()
+}
+
+/**
+ * it : bottom sheet
+ */
 fun doOnBottomSheetDetailsSeason(it: View) {
 
     val behavior = BottomSheetBehavior.from(it)
+    val maxTransitionX: Float = (it.width - it.seasons_sheet_collapsed.width).toFloat()
 
-    it.seasons_sheet_collapsed.addOnLayoutChangeListener { _, left, _, right, _, _, _, _, _ ->
-        val maxTransitionX: Float = (it.width - right - left).toFloat()
-
-        when (behavior.state) {
-            BottomSheetBehavior.STATE_EXPANDED -> {
-                it.translationX = 0f
-                it.seasons_sheet_collapsed.alpha = 0f
-                it.seasons_sheet_expanded.alpha = 1f
-            }
-            BottomSheetBehavior.STATE_COLLAPSED -> {
-                //it.translationX = maxTransitionX
-                ObjectAnimator.ofFloat(it, "translationX",  it.width.toFloat(), maxTransitionX).apply {
+    when (behavior.state) {
+        BottomSheetBehavior.STATE_EXPANDED -> {
+            it.translationX = 0f
+            it.seasons_sheet_collapsed.alpha = 0f
+            it.seasons_sheet_expanded.alpha = 1f
+        }
+        BottomSheetBehavior.STATE_COLLAPSED -> {
+            ObjectAnimator.ofFloat(it, "translationX", it.width.toFloat(), maxTransitionX)
+                .apply {
                     interpolator = AccelerateDecelerateInterpolator()
                     start()
                 }
-                it.seasons_sheet_collapsed.alpha = 1f
-                it.seasons_sheet_expanded.alpha = 0f
-            }
+            it.seasons_sheet_collapsed.alpha = 1f
+            it.seasons_sheet_expanded.alpha = 0f
+        }
+    }
+
+    behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+        override fun onSlide(bottomSheet: View, slideOffset: Float) {
+            val inverseOffset = 1.0f - slideOffset
+            it.translationX = maxTransitionX * inverseOffset
+            it.seasons_sheet_collapsed.alpha = inverseOffset
+            it.seasons_sheet_expanded.alpha = slideOffset
         }
 
-        behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                val inverseOffset = 1.0f - slideOffset
-                it.translationX = maxTransitionX * inverseOffset
-                it.seasons_sheet_collapsed.alpha = inverseOffset
-                it.seasons_sheet_expanded.alpha = slideOffset
-            }
-
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-            }
-        })
-    }
+        override fun onStateChanged(bottomSheet: View, newState: Int) {
+        }
+    })
 
     it.seasons_sheet_collapsed.setOnClickListener {
         behavior.state = BottomSheetBehavior.STATE_EXPANDED

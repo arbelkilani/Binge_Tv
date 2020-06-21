@@ -4,11 +4,11 @@ import android.util.Log
 import com.arbelkilani.bingetv.data.model.base.Resource
 import com.arbelkilani.bingetv.data.model.genre.Genre
 import com.arbelkilani.bingetv.data.source.local.genre.GenreDao
-import com.arbelkilani.bingetv.data.source.remote.ApiService
+import com.arbelkilani.bingetv.data.source.remote.ApiTmdbService
 import com.arbelkilani.bingetv.domain.repositories.GenresRepository
 
 class GenresRepositoryImp(
-    private val apiService: ApiService,
+    private val apiTmdbService: ApiTmdbService,
     private val genreDao: GenreDao
 ) :
     GenresRepository {
