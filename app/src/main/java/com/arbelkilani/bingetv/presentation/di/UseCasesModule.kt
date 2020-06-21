@@ -2,10 +2,7 @@ package com.arbelkilani.bingetv.presentation.di
 
 import com.arbelkilani.bingetv.domain.repositories.TvShowRepository
 import com.arbelkilani.bingetv.domain.repositories.GenresRepository
-import com.arbelkilani.bingetv.domain.usecase.GetAiringTodayUseCase
-import com.arbelkilani.bingetv.domain.usecase.GetGenreUseCase
-import com.arbelkilani.bingetv.domain.usecase.GetTrendingTvUseCase
-import com.arbelkilani.bingetv.domain.usecase.GetTvDetailsUseCase
+import com.arbelkilani.bingetv.domain.usecase.*
 import org.koin.dsl.module
 
 val UseCasesModule = module {
@@ -17,6 +14,8 @@ val UseCasesModule = module {
     single { createTrendingTvUseCase(get()) }
 
     single { createTvDetailsUseCase(get()) }
+
+    single { createGetCreditsUseCase(get()) }
 
 }
 
@@ -35,4 +34,8 @@ fun createTrendingTvUseCase(tvShowRepository: TvShowRepository): GetTrendingTvUs
 
 fun createTvDetailsUseCase(tvShowRepository: TvShowRepository): GetTvDetailsUseCase {
     return GetTvDetailsUseCase(tvShowRepository)
+}
+
+fun createGetCreditsUseCase(tvShowRepository: TvShowRepository): GetCreditsUseCase {
+    return GetCreditsUseCase(tvShowRepository)
 }

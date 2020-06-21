@@ -1,8 +1,10 @@
 package com.arbelkilani.bingetv.data.repositories.tv
 
+import android.content.res.Resources
 import android.util.Log
 import com.arbelkilani.bingetv.data.model.base.ApiResponse
 import com.arbelkilani.bingetv.data.model.base.Resource
+import com.arbelkilani.bingetv.data.model.credit.CreditsResponse
 import com.arbelkilani.bingetv.data.model.tv.Tv
 import com.arbelkilani.bingetv.data.model.tv.TvDetails
 import com.arbelkilani.bingetv.data.source.remote.ApiService
@@ -39,5 +41,17 @@ class TvShowRepositoryImp(
             Resource.exception(e, null)
         }
 
+    }
+
+    override suspend fun getCredits(id: Int): Resource<CreditsResponse> {
+        Log.i(TAG, "getCredits()")
+        //TODO check handling error
+        //TODO adding append_to_response
+        return try {
+            val response = apiService.getCredits(id)
+            Resource.success(response)
+        } catch (e: Exception) {
+            Resource.exception(e, null)
+        }
     }
 }

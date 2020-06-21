@@ -9,7 +9,7 @@ import org.koin.dsl.module
 
 val ViewModelModule = module {
     viewModel { SplashActivityViewModel(get(), get()) }
-    viewModel { DetailsTvActivityViewModel(get()) }
+    viewModel { DetailsTvActivityViewModel(get(), get()) }
 }
 
 

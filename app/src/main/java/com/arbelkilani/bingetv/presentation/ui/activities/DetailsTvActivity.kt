@@ -4,12 +4,10 @@ import android.content.Intent
 import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
-import android.view.View
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
-import androidx.core.view.doOnLayout
 import androidx.core.widget.NestedScrollView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -24,9 +22,9 @@ import com.arbelkilani.bingetv.utils.Constants
 import com.arbelkilani.bingetv.utils.doOnBottomSheetDetailsSeason
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.activity_details_tv.*
-import kotlinx.android.synthetic.main.bottom_sheet_seasons.*
-import kotlinx.android.synthetic.main.details_bottom_sheet.*
-import kotlinx.android.synthetic.main.details_content_main.*
+import kotlinx.android.synthetic.main.details_bottom_sheet_seasons.*
+import kotlinx.android.synthetic.main.details_bottom_sheet_content.*
+import kotlinx.android.synthetic.main.details_content.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailsTvActivity : AppCompatActivity(), OnSeasonClickListener {
@@ -57,16 +55,18 @@ class DetailsTvActivity : AppCompatActivity(), OnSeasonClickListener {
 
         toolbar.setNavigationOnClickListener { onBackPressed() }
 
-        detailsTvhActivityViewModel.resource.observe(this, Observer { tvDetailsResource ->
+        detailsTvhActivityViewModel.tvDetailsLiveData.observe(this, Observer { tvDetailsResource ->
             detailsTvBinding.tvDetails = tvDetailsResource.data
             detailsTvBinding.detailsViewModel = detailsTvhActivityViewModel
             tvDetailsResource.data?.let { tvDetails ->
 
                 rv_seasons.adapter = SeasonAdapter(tvDetails.seasons.asReversed(), this)
 
+                //TODO check if view pager create lag when open interface
+                // could be deteted by the animaion of the seasons bottom sheet title
                 view_pager.apply {
                     adapter = ImageAdapter(tvDetails.images.backdrops)
-                    offscreenPageLimit = 3
+                    //offscreenPageLimit = 3
                 }
             }
 

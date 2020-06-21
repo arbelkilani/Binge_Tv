@@ -14,8 +14,8 @@ import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.bottom_sheet_seasons.view.*
-import kotlinx.android.synthetic.main.details_bottom_sheet.*
+import kotlinx.android.synthetic.main.details_bottom_sheet_seasons.view.*
+import kotlinx.android.synthetic.main.details_bottom_sheet_content.*
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit

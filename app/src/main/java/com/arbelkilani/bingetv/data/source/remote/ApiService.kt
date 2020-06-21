@@ -1,6 +1,7 @@
 package com.arbelkilani.bingetv.data.source.remote
 
 import com.arbelkilani.bingetv.data.model.base.ApiResponse
+import com.arbelkilani.bingetv.data.model.credit.CreditsResponse
 import com.arbelkilani.bingetv.data.model.genre.GenreResponse
 import com.arbelkilani.bingetv.data.model.tv.Tv
 import com.arbelkilani.bingetv.data.model.tv.TvDetails
@@ -26,4 +27,7 @@ interface ApiService {
         @Path("tv_id") id: Int,
         @Query("append_to_response") appendToResponse: String
     ): TvDetails
+
+    @GET("tv/{tv_id}/credits")
+    suspend fun getCredits(@Path("tv_id") id: Int): CreditsResponse
 }
