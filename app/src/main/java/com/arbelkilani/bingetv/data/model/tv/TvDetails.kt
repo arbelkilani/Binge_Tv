@@ -25,7 +25,7 @@ data class TvDetails(
     @SerializedName("next_episode_to_air") val nextEpisodeToAir: EpisodeToAir?,
     val networks: List<Network>,
     @SerializedName("number_of_episodes") val numberOfEpisodes: Int,
-    @SerializedName("number_of_seasons") val numberOfSeasons: Int,
+    @SerializedName("number_of_seasons") val _numberOfSeasons: Int,
     @SerializedName("origin_country") val originCountry: List<String>,
     @SerializedName("original_language") val originalLanguage: String,
     @SerializedName("original_name") val originName: String,
@@ -47,5 +47,8 @@ data class TvDetails(
 
     val backdropPath: String?
         get() = "https://image.tmdb.org/t/p/w500${this._backdropPath}"
+
+    val numberOfSeasons: String
+        get() = String.format("%d %s", _numberOfSeasons, "Seasons")
 
 }
