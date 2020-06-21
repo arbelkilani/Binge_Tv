@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimaryDark">#1f3354</color>
+    <color name="colorPrimary">@android:color/holo_red_dark</color>
+    <color name="colorAccent">@android:color/holo_orange_dark</color>
+
+    <color name="toolbar_title_color">@android:color/white</color>
+    <color name="toolbar_background_color">#1f3354</color>
+    <color name="bottom_navigation_view_background_color">#1f3354</color>
+    <color name="bottom_navigation_view_icon_color_active">#f0f6f7</color>
+    <color name="bottom_navigation_view_icon_color_inactive">#525965</color>
+    <color name="bottom_navigation_view_text_color">#f0f6f7</color>
+
+    <!-- splash screen -->
+    <color name="credit_text_color">#f0f6f7</color>
+    <color name="circle_color">#26a9c8f6</color>
+
+    <!-- fragment discover -->
+    <color name="item_discover_name_color">@android:color/white</color>
+    <color name="item_discover_name_background">#8Ccccccc</color>
+    <color name="item_trending_name_color">@android:color/white</color>
+
+    <!-- details tv -->
+    <color name="details_name_color">#444444</color>
+    <color name="details_bottom_sheet_background_color">#122038</color>
+    <color name="details_titles_text_color">@android:color/white</color>
+    <color name="details_network_text_color">@android:color/white</color>
+    <color name="details_network_border_color">@android:color/white</color>
+
+    <color name="details_season_sheet_title_color">#1f3354</color>
+
+</resources>

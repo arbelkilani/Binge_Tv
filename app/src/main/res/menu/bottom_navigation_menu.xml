@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_discover"
+        android:enabled="true"
+        android:icon="@drawable/ic_menu_discover"
+        android:title="@string/title_discover"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_watch_list"
+        android:enabled="true"
+        android:icon="@drawable/ic_menu_watchlist"
+        android:title="@string/title_watch_list"
+        app:showAsAction="ifRoom" />
+</menu>

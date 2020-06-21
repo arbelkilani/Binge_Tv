@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="tvDetails"
+            type="com.arbelkilani.bingetv.data.model.tv.TvDetails" />
+
+        <variable
+            name="selectedTv"
+            type="com.arbelkilani.bingetv.data.model.tv.Tv" />
+
+        <variable
+            name="viewModel"
+            type="com.arbelkilani.bingetv.presentation.viewmodel.DetailsTvActivityViewModel" />
+
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/bottom_sheet_details_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/details_tv_background_rounded"
+        android:clipToPadding="false"
+        android:fitsSystemWindows="true"
+        android:overScrollMode="never"
+        android:paddingBottom="?attr/actionBarSize"
+        android:scrollbars="none"
+        app:layout_behavior="@string/bottom_sheet_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_behavior="@string/bottom_sheet_behavior">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginBottom="@dimen/default_margin_min">
+
+                <!-- genres -->
+                <com.google.android.flexbox.FlexboxLayout
+                    android:id="@+id/fl_genres"
+                    genres="@{tvDetails.genres}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_toStartOf="@id/fl_networks"
+                    app:alignContent="flex_start"
+                    app:alignItems="flex_start"
+                    app:dividerDrawable="@drawable/divider"
+                    app:flexWrap="wrap"
+                    app:showDivider="middle" />
+
+                <!-- networks -->
+                <com.google.android.flexbox.FlexboxLayout
+                    android:id="@+id/fl_networks"
+                    networks="@{tvDetails.networks}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="end"
+                    app:alignContent="flex_end"
+                    app:alignItems="flex_end"
+                    app:dividerDrawable="@drawable/divider"
+                    app:flexWrap="wrap"
+                    app:showDivider="middle" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_toEndOf="@+id/tv_vote_average"
+                    android:fontFamily="@font/avenir_next_demi_bold"
+                    android:onClick="@{() -> viewModel.openHomePage(tvDetails.homepage)}"
+                    android:text="@{selectedTv.name}"
+                    android:textColor="@color/details_titles_text_color"
+                    android:textSize="@dimen/big_text_size" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/tv_name"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="3dp"
+                    android:layout_toStartOf="@+id/tv_vote_average"
+                    android:fontFamily="@font/avenir_next_regular"
+                    android:text="@{tvDetails.status}"
+                    android:textColor="@color/details_titles_text_color"
+                    android:textSize="@dimen/small_text_size" />
+
+                <TextView
+                    android:id="@+id/tv_vote_average"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:drawableTop="@drawable/ic_star"
+                    android:drawablePadding="@dimen/details_bottom_sheet_drawable_padding"
+                    android:fontFamily="@font/avenir_next_regular"
+                    android:gravity="center_horizontal"
+                    android:padding="@dimen/details_bottom_sheet_padding"
+                    android:text="@{selectedTv.voteAverage}"
+                    android:textSize="@dimen/details_bottom_sheet_rate_text_size" />
+
+            </RelativeLayout>
+
+            <!-- Next episode card view -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:visibility="@{tvDetails.nextEpisodeToAir == null ? View.GONE : View.VISIBLE}"
+                app:cardCornerRadius="@dimen/default_card_corner_radius"
+                app:contentPadding="@dimen/default_padding">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- NextEpisode label -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenir_next_demi_bold"
+                        android:text="@string/details_next_episode_label"
+                        android:textColor="@color/details_titles_text_color"
+                        android:textSize="@dimen/titles_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/default_margin_min"
+                        android:layout_marginTop="@dimen/default_margin_min"
+                        android:fontFamily="@font/avenir_next_regular"
+                        android:text="@{String.format(@string/next_episode_message, tvDetails.nextEpisodeToAir._seasonNumber, tvDetails.nextEpisodeToAir._episodeNumber, tvDetails.nextEpisodeToAir.name, tvDetails.nextEpisodeToAir.tillAirDateDuration, @string/days)}"
+                        android:textColor="@color/details_titles_text_color"
+                        android:textSize="@dimen/small_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/default_margin_min"
+                        android:fontFamily="@font/avenir_next_demi_bold"
+                        android:text="@string/details_story_label"
+                        android:textColor="@color/details_titles_text_color"
+                        android:textSize="@dimen/titles_text_size"
+                        android:visibility="@{tvDetails.nextEpisodeToAir.overview.empty ? View.GONE : View.VISIBLE}" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/default_margin_min"
+                        android:layout_marginTop="@dimen/default_margin_min"
+                        android:fontFamily="@font/avenir_next_regular"
+                        android:text="@{tvDetails.nextEpisodeToAir.overview}"
+                        android:textColor="@color/details_titles_text_color"
+                        android:textSize="@dimen/small_text_size"
+                        android:visibility="@{tvDetails.nextEpisodeToAir.overview.empty ? View.GONE : View.VISIBLE}" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- status  -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin"
+                android:fontFamily="@font/avenir_next_demi_bold"
+                android:text="@string/details_bottom_sheet_content_type_label"
+                android:textColor="@color/details_titles_text_color"
+                android:textSize="@dimen/titles_text_size" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin_medium"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:fontFamily="@font/avenir_next_regular"
+                android:text="@{tvDetails.type}"
+                android:textColor="@color/details_titles_text_color"
+                android:textSize="@dimen/small_text_size" />
+
+            <!-- overview  -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin"
+                android:fontFamily="@font/avenir_next_demi_bold"
+                android:text="@string/details_story_label"
+                android:textColor="@color/details_titles_text_color"
+                android:textSize="@dimen/titles_text_size" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin_medium"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:fontFamily="@font/avenir_next_regular"
+                android:text="@{selectedTv.overview}"
+                android:textColor="@color/details_titles_text_color"
+                android:textSize="@dimen/small_text_size" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin_medium"
+                android:fontFamily="@font/avenir_next_demi_bold"
+                android:text="@string/details_bottom_sheet_content_cast_label"
+                android:textColor="@color/details_titles_text_color"
+                android:textSize="@dimen/titles_text_size" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_seasons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin"
+                android:clipToPadding="false"
+                android:layoutMode="clipBounds"
+                android:nestedScrollingEnabled="false"
+                android:orientation="vertical"
+                android:overScrollMode="never"
+                android:paddingStart="@dimen/default_padding"
+                android:paddingEnd="@dimen/default_padding"
+                android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</layout>

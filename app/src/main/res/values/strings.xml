@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">Binge Tv</string>
+
+
+    <string name="title_discovery">Discovery</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_to_change_name">Trending This Week</string>
+
+    <!-- errors -->
+    <string name="error_server">Our servers are down.Please try later !</string>
+    <string name="error_network">Please check your internet connexion !</string>
+    <string name="error_unknown">We got some problems.Please try later !</string>
+
+    <!-- translatable="false" -->
+    <string name="credit" translatable="false">© 2020 arbelkilani </string>
+    <string name="title_discover">Discover</string>
+    <string name="title_watch_list">Watchlist</string>
+    <string name="details_story_label">Story</string>
+    <string name="details_seasons_label">Seasons</string>
+    <string name="details_next_episode_label">Next episode</string>
+
+    <string name="day">day</string>
+    <string name="days">days</string>
+    <plurals name="days">
+        <item quantity="one">@string/day</item>
+        <item quantity="other">@string/days</item>
+    </plurals>
+    <string name="next_episode_message">S%1$s-E%2$s : <b>%3$s</b>, will be aired in %4$s %5$s</string>
+    <string name="details_bottom_sheet_content_type_label">Status</string>
+    <string name="details_bottom_sheet_content_cast_label">Cast</string>
+    <!-- todo check plurals for days with data binding -->
+
+</resources>

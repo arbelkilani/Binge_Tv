@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="season"
+            type="com.arbelkilani.bingetv.data.model.season.Season" />
+    </data>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="152dp"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:background="@android:color/transparent"
+        android:minHeight="152dp">
+
+        <!-- content -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="2dp"
+            app:cardCornerRadius="@dimen/item_season_large_corner_radius">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:paddingStart="145dp"
+                android:paddingEnd="@dimen/default_padding">
+
+                <TextView
+                    android:id="@+id/tv_season_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenir_next_demi_bold"
+                    android:text="@{season.seasonNumber}"
+                    android:textColor="@color/details_titles_text_color"
+                    android:textSize="@dimen/titles_text_size" />
+
+                <TextView
+                    android:id="@+id/tv_episode_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_season_number"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="@dimen/default_margin_min"
+                    android:fontFamily="@font/avenir_next_regular"
+                    android:text="@{season.episodeCount}"
+                    android:textColor="@color/details_titles_text_color"
+                    android:textSize="@dimen/small_text_size" />
+
+                <TextView
+                    android:id="@+id/tv_air_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_episode_count"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="@dimen/default_margin_min"
+                    android:fontFamily="@font/avenir_next_regular"
+                    android:text="@{season.airDate}"
+                    android:textColor="@color/details_titles_text_color"
+                    android:textSize="@dimen/small_text_size" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_episode_count"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="@dimen/default_margin_min"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/avenir_next_regular"
+                    android:maxLines="3"
+                    android:text="@{season.overview}"
+                    android:textColor="@color/details_titles_text_color"
+                    android:textSize="@dimen/small_text_size"
+                    android:visibility="gone" />
+
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- image view -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="110dp"
+            android:layout_height="125dp"
+            android:layout_marginStart="25dp"
+            app:cardCornerRadius="@dimen/item_season_large_corner_radius">
+
+            <ImageView
+                android:id="@+id/iv_season_poster"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/poster_height"
+                android:scaleType="centerCrop"
+                android:src="@{season.posterPath185}" />
+
+        </androidx.cardview.widget.CardView>
+
+    </FrameLayout>
+
+
+</layout>

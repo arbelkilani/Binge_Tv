@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="tvDetails"
+            type="com.arbelkilani.bingetv.data.model.tv.TvDetails" />
+
+        <variable
+            name="selectedTv"
+            type="com.arbelkilani.bingetv.data.model.tv.Tv" />
+
+        <variable
+            name="viewModel"
+            type="com.arbelkilani.bingetv.presentation.viewmodel.DetailsTvActivityViewModel" />
+
+    </data>
+
+    <data>
+
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include
+                layout="@layout/details_content"
+                bind:selectedTv="@{selectedTv}"
+                bind:tvDetails="@{tvDetails}"
+                bind:viewModel="@{viewModel}" />
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBarLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:backgroundTint="@android:color/transparent"
+                android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+                app:elevation="0dp">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@android:color/transparent"
+                    android:backgroundTint="@android:color/transparent"
+                    android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar"
+                    app:navigationIcon="@drawable/ic_arrow_left" />
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+        </FrameLayout>
+
+        <include
+            layout="@layout/details_bottom_sheet_content"
+            bind:selectedTv="@{selectedTv}"
+            bind:tvDetails="@{tvDetails}"
+            bind:viewModel="@{viewModel}" />
+
+        <include
+            layout="@layout/details_bottom_sheet_seasons"
+            bind:tvDetails="@{tvDetails}"
+            bind:viewModel="@{viewModel}" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

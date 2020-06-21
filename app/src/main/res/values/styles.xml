@@ -1,0 +1,58 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="Toolbar.TextTitle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">@dimen/toolbar_title_text_size</item>
+        <item name="android:textColor">@color/toolbar_title_color</item>
+        <item name="fontFamily">@font/avenir_next_demi_bold</item>
+        <item name="background">@color/toolbar_background_color</item>
+        <item name="backgroundTint">@color/toolbar_background_color</item>
+    </style>
+
+    <style name="BottomNavigationView.Style" parent="Widget.Design.BottomNavigationView">
+        <item name="android:background">@color/bottom_navigation_view_background_color</item>
+        <item name="itemBackground">@color/bottom_navigation_view_background_color</item>
+        <item name="itemIconTint">@drawable/bottom_navigation_view_selector</item>
+        <item name="itemTextColor">@drawable/bottom_navigation_view_selector</item>
+        <item name="labelVisibilityMode">labeled</item>
+        <item name="itemTextAppearanceActive">@style/BottomNavigationView.TextAppearance</item>
+        <item name="itemTextAppearanceInactive">@style/BottomNavigationView.TextAppearance</item>
+    </style>
+
+    <style name="BottomNavigationView.TextAppearance" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="fontFamily">@font/avenir_next_regular</item>
+        <item name="android:textSize">@dimen/bottom_navigation_view_text_size</item>
+    </style>
+
+    <style name="TextView.Genre" parent="Widget.AppCompat.TextView">
+        <item name="fontFamily">@font/avenir_next_regular</item>
+        <item name="android:textColor">#444444</item>
+        <item name="android:textSize">@dimen/small_text_size</item>
+        <item name="android:paddingStart">@dimen/tag_padding_start_end</item>
+        <item name="android:paddingEnd">@dimen/tag_padding_start_end</item>
+        <item name="android:paddingTop">@dimen/tag_padding_top_bottom</item>
+        <item name="android:paddingBottom">@dimen/tag_padding_top_bottom</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/details_genre_drawable</item>
+    </style>
+
+    <style name="TextView_Network" parent="Widget.AppCompat.TextView">
+        <item name="fontFamily">@font/avenir_next_demi_bold</item>
+        <item name="android:textColor">@color/details_network_text_color</item>
+        <item name="android:textSize">@dimen/small_text_size</item>
+        <item name="android:paddingStart">@dimen/tag_padding_start_end</item>
+        <item name="android:paddingEnd">@dimen/tag_padding_start_end</item>
+        <item name="android:paddingTop">@dimen/tag_padding_top_bottom</item>
+        <item name="android:paddingBottom">@dimen/tag_padding_top_bottom</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/details_network_drawable</item>
+    </style>
+
+</resources>
