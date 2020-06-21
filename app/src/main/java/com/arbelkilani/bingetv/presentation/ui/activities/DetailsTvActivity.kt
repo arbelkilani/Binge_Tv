@@ -5,6 +5,7 @@ import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
@@ -36,6 +37,7 @@ class DetailsTvActivity : AppCompatActivity(), OnSeasonClickListener {
     private lateinit var detailsTvBinding: ActivityDetailsTvBinding
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<NestedScrollView>
+    private lateinit var bottomSheetBehaviorSeasons: BottomSheetBehavior<RelativeLayout>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -121,9 +123,10 @@ class DetailsTvActivity : AppCompatActivity(), OnSeasonClickListener {
         val height = Resources.getSystem().displayMetrics.heightPixels
         bottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet_details_content)
         bottomSheetBehavior.peekHeight = (height * 0.65).toInt()
+
+        bottomSheetBehaviorSeasons = BottomSheetBehavior.from(bottom_sheet_details_seasons)
         kotlin.run {
             doOnBottomSheetDetailsSeason(bottom_sheet_details_seasons)
-
         }
     }
 
@@ -133,11 +136,15 @@ class DetailsTvActivity : AppCompatActivity(), OnSeasonClickListener {
     }
 
     override fun onBackPressed() {
-        if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
-            bottom_sheet_details_content.smoothScrollTo(0, 0)
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        } else
-            super.onBackPressed()
+        when {
+            bottomSheetBehaviorSeasons.state == BottomSheetBehavior.STATE_EXPANDED ->
+                bottomSheetBehaviorSeasons.state = BottomSheetBehavior.STATE_COLLAPSED
+            bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED -> {
+                bottom_sheet_details_content.smoothScrollTo(0, 0)
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            }
+            else -> super.onBackPressed()
+        }
     }
 }
 
