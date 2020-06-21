@@ -121,9 +121,9 @@ class DetailsTvActivity : AppCompatActivity(), OnSeasonClickListener {
         val height = Resources.getSystem().displayMetrics.heightPixels
         bottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet_details_content)
         bottomSheetBehavior.peekHeight = (height * 0.65).toInt()
+        kotlin.run {
+            doOnBottomSheetDetailsSeason(bottom_sheet_details_seasons)
 
-        bottom_sheet_details_seasons.doOnLayout {
-            doOnBottomSheetDetailsSeason(it)
         }
     }
 

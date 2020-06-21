@@ -1,5 +1,6 @@
 package com.arbelkilani.bingetv.utils
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.res.Resources
 import android.text.Spannable
@@ -8,6 +9,7 @@ import android.text.style.RelativeSizeSpan
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -87,7 +89,11 @@ fun doOnBottomSheetDetailsSeason(it: View) {
                 it.seasons_sheet_expanded.alpha = 1f
             }
             BottomSheetBehavior.STATE_COLLAPSED -> {
-                it.translationX = maxTransitionX
+                //it.translationX = maxTransitionX
+                ObjectAnimator.ofFloat(it, "translationX",  it.width.toFloat(), maxTransitionX).apply {
+                    interpolator = AccelerateDecelerateInterpolator()
+                    start()
+                }
                 it.seasons_sheet_collapsed.alpha = 1f
                 it.seasons_sheet_expanded.alpha = 0f
             }
