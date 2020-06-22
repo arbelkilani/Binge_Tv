@@ -21,8 +21,10 @@
         android:layout_height="match_parent"
         android:background="@drawable/season_sheet_background"
         android:elevation="@dimen/default_elevation"
+        android:clickable="true"
         app:behavior_peekHeight="?attr/actionBarSize"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        android:focusable="true">
 
         <RelativeLayout
             android:id="@+id/seasons_sheet_collapsed"
