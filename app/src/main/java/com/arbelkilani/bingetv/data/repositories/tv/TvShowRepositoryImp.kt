@@ -6,10 +6,13 @@ import com.arbelkilani.bingetv.data.model.base.Resource
 import com.arbelkilani.bingetv.data.model.credit.CreditsResponse
 import com.arbelkilani.bingetv.data.model.tv.Tv
 import com.arbelkilani.bingetv.data.model.tv.TvDetails
-import com.arbelkilani.bingetv.data.model.tv.maze.NextEpisodeData
+import com.arbelkilani.bingetv.data.model.tv.maze.TvDetailsMaze
+import com.arbelkilani.bingetv.data.model.tv.maze.channel.WebChannel
+import com.arbelkilani.bingetv.data.model.tv.maze.details.NextEpisodeData
 import com.arbelkilani.bingetv.data.source.remote.ApiTmdbService
 import com.arbelkilani.bingetv.data.source.remote.ApiTvMazeService
 import com.arbelkilani.bingetv.domain.repositories.TvShowRepository
+import com.arbelkilani.bingetv.utils.formatAirDate
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -18,7 +21,7 @@ class TvShowRepositoryImp(
     private val apiTvMazeService: ApiTvMazeService
 ) : TvShowRepository {
 
-    private val TAG = TvShowRepository::class.java.simpleName
+    private val TAG = TvShowRepositoryImp::class.java.simpleName
 
     override suspend fun getAiringToday(): Flow<ApiResponse<Tv>> {
         Log.i(TAG, "getAiringToday()")
@@ -31,14 +34,12 @@ class TvShowRepositoryImp(
     }
 
     override suspend fun getTvDetails(id: Int): Resource<TvDetails> = try {
-        Log.i(TAG, "getTrendingTv() for item $id")
+        Log.i(TAG, "getTvDetails() for item $id")
         val response = apiTmdbService.getTvDetails(id, "videos")
         Resource.success(response)
     } catch (e: Exception) {
-        Log.i(TAG, "exception : ${e.localizedMessage}")
         Resource.exception(e, null)
     }
-
 
     override suspend fun getCredits(id: Int): Resource<CreditsResponse> = try {
         Log.i(TAG, "getCredits() for item $id")
@@ -50,12 +51,14 @@ class TvShowRepositoryImp(
 
     override suspend fun getNextEpisodeData(id: Int): Resource<NextEpisodeData> {
         Log.i(TAG, "getNextEpisodeData() for item $id")
-        val nextEpisodeId = getNextEpisodeId(id)
-        if (nextEpisodeId!!.isEmpty())
+        val nextEpisodeHashMap = getNextEpisodeId(id)
+        if (nextEpisodeHashMap!!.isEmpty())
             return Resource.exception(Exception("next episode id is empty"), null)
 
         return try {
-            val response = apiTvMazeService.getNextEpisode(nextEpisodeId)
+            val response = apiTvMazeService.getNextEpisode(nextEpisodeHashMap[0]!!)
+            response.timezone = nextEpisodeHashMap[1]!!
+            response.formattedAirDate = formatAirDate(response)
             Resource.success(response)
         } catch (e: Exception) {
             Resource.exception(e, null)
@@ -66,23 +69,30 @@ class TvShowRepositoryImp(
         val externalIdsResponse = apiTmdbService.getExternalIds(id)
         externalIdsResponse.imdbId!!.toString()
     } catch (e: Exception) {
-        Log.e(TAG, "getImdbId exception $e")
         ""
     }
 
-    private suspend fun getNextEpisodeId(id: Int): String? = try {
+    private suspend fun getNextEpisodeId(id: Int): HashMap<Int, String>? = try {
         val response = apiTvMazeService.getShow(getImdbId(id), "nextepisode")
         val links = response.links
-
+        val values = hashMapOf<Int, String>()
         if (links?.nextEpisode != null) {
-            links.nextEpisode.href.substringAfterLast("/")
+            values[0] = links.nextEpisode.href.substringAfterLast("/")
+            if (getChannel(response)?.country != null) {
+                val timezone = getChannel(response)?.country!!.timezone
+                values[1] = timezone
+            }
+            values
         } else {
             Log.e(TAG, "exception either on links or next episode values")
-            ""
+            hashMapOf()
         }
     } catch (e: Exception) {
-        Log.e(TAG, "getNextEpisodeId exception $e")
-        ""
+        hashMapOf()
+    }
+
+    private fun getChannel(response: TvDetailsMaze): WebChannel? {
+        return response.network ?: response.webChannel
     }
 
 }

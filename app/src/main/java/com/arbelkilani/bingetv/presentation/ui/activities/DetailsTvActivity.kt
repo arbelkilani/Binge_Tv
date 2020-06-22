@@ -4,12 +4,8 @@ import android.content.Intent
 import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
-import android.view.View
 import android.widget.RelativeLayout
-import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.view.doOnLayout
 import androidx.core.widget.NestedScrollView
 import androidx.databinding.DataBindingUtil
@@ -23,9 +19,8 @@ import com.arbelkilani.bingetv.utils.Constants
 import com.arbelkilani.bingetv.utils.doOnBottomSheetDetailsSeason
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.activity_details_tv.*
-import kotlinx.android.synthetic.main.details_bottom_sheet_seasons.*
 import kotlinx.android.synthetic.main.details_bottom_sheet_content.*
-import kotlinx.android.synthetic.main.details_content.*
+import kotlinx.android.synthetic.main.details_bottom_sheet_seasons.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailsTvActivity : AppCompatActivity(), OnSeasonClickListener {
@@ -60,6 +55,10 @@ class DetailsTvActivity : AppCompatActivity(), OnSeasonClickListener {
             tvDetailsResource.data?.let {
                 binding.tvDetails = it
             }
+        })
+
+        viewModel.nextEpisodeData.observe(this, Observer { nextEpisodeData ->
+            binding.nextEpisodeData = nextEpisodeData
         })
 
         viewModel.trailerKey.observe(this, Observer { key ->

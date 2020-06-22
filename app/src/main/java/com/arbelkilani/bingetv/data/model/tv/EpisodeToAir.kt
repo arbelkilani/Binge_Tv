@@ -26,6 +26,8 @@ data class EpisodeToAir(
         get() = returnDuration(_airDate)
 
 
-
+    fun formattedSeasonEpisode(): String {
+        return String.format("%02dx%02d", _seasonNumber, _episodeNumber)
+    }
 
 }

@@ -6,6 +6,8 @@
 
         <import type="android.view.View" />
 
+        <import type="android.text.Html" />
+
         <variable
             name="tvDetails"
             type="com.arbelkilani.bingetv.data.model.tv.TvDetails" />
@@ -13,6 +15,10 @@
         <variable
             name="selectedTv"
             type="com.arbelkilani.bingetv.data.model.tv.Tv" />
+
+        <variable
+            name="nextEpisodeData"
+            type="com.arbelkilani.bingetv.data.model.tv.maze.details.NextEpisodeData" />
 
         <variable
             name="viewModel"
@@ -130,7 +136,7 @@
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginTop="@dimen/default_margin"
                 android:layout_marginEnd="@dimen/default_margin"
-                android:visibility="@{tvDetails.nextEpisodeToAir == null ? View.GONE : View.VISIBLE}"
+                android:visibility="@{nextEpisodeData==null ? View.GONE : View.VISIBLE}"
                 app:cardCornerRadius="@dimen/default_card_corner_radius"
                 app:contentPadding="@dimen/default_padding">
 
@@ -154,7 +160,7 @@
                         android:layout_marginStart="@dimen/default_margin_min"
                         android:layout_marginTop="@dimen/default_margin_min"
                         android:fontFamily="@font/avenir_next_regular"
-                        android:text="@{String.format(@string/next_episode_message, tvDetails.nextEpisodeToAir._seasonNumber, tvDetails.nextEpisodeToAir._episodeNumber, tvDetails.nextEpisodeToAir.name, tvDetails.nextEpisodeToAir.tillAirDateDuration, @string/days)}"
+                        android:text="@{Html.fromHtml(String.format(@string/next_episode_message, tvDetails.nextEpisodeToAir.formattedSeasonEpisode(), tvDetails.nextEpisodeToAir.name, nextEpisodeData.formattedAirDate))}"
                         android:textColor="@color/details_titles_text_color"
                         android:textSize="@dimen/small_text_size" />
 

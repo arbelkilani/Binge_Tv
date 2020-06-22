@@ -19,6 +19,7 @@ import androidx.databinding.BindingAdapter
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.model.genre.Genre
 import com.arbelkilani.bingetv.data.model.tv.Network
+import com.arbelkilani.bingetv.data.model.tv.maze.details.NextEpisodeData
 import com.google.android.flexbox.FlexboxLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.squareup.picasso.Picasso
@@ -123,9 +124,6 @@ private fun blendColors(from: Int, to: Int, ratio: Float): Int {
     return Color.rgb(r.toInt(), g.toInt(), b.toInt())
 }
 
-/**
- * it : bottom sheet
- */
 fun doOnBottomSheetDetailsSeason(it: View) {
 
     val behavior = BottomSheetBehavior.from(it)
@@ -175,5 +173,29 @@ fun doOnBottomSheetDetailsSeason(it: View) {
 
     it.seasons_sheet_collapsed.setOnClickListener {
         behavior.state = BottomSheetBehavior.STATE_EXPANDED
+    }
+}
+
+fun formatAirDate(data: NextEpisodeData?): String {
+
+    if (data == null) return ""
+
+    data.apply {
+
+        val hourOfDay = airTime.substringBefore(":").toInt()
+        val minute = airTime.substringAfter(":").toInt()
+
+        val year = airDate.substringBefore("-").toInt()
+        val month = airDate.substringBeforeLast("-").substringAfter("-").toInt()
+        val date = airDate.substringAfterLast("-").toInt()
+
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone(timezone))
+        calendar.set(year, month, date, hourOfDay, minute)
+
+        val simpleDateFormat =
+            SimpleDateFormat("EEEE, d MMMM yyyy 'at' HH:mm a", Locale.getDefault())
+
+        return simpleDateFormat.format(calendar.timeInMillis)
+
     }
 }

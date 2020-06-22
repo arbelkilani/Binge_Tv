@@ -1,7 +1,7 @@
 package com.arbelkilani.bingetv.data.source.remote
 
-import com.arbelkilani.bingetv.data.model.tv.maze.NextEpisodeData
 import com.arbelkilani.bingetv.data.model.tv.maze.TvDetailsMaze
+import com.arbelkilani.bingetv.data.model.tv.maze.details.NextEpisodeData
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

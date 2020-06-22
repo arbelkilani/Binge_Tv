@@ -14,6 +14,10 @@
             type="com.arbelkilani.bingetv.data.model.tv.Tv" />
 
         <variable
+            name="nextEpisodeData"
+            type="com.arbelkilani.bingetv.data.model.tv.maze.details.NextEpisodeData" />
+
+        <variable
             name="viewModel"
             type="com.arbelkilani.bingetv.presentation.viewmodel.DetailsTvActivityViewModel" />
 
@@ -57,6 +61,7 @@
 
         <include
             layout="@layout/details_bottom_sheet_content"
+            bind:nextEpisodeData="@{nextEpisodeData}"
             bind:selectedTv="@{selectedTv}"
             bind:tvDetails="@{tvDetails}"
             bind:viewModel="@{viewModel}" />
