@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class TvDetailsMaze(
-    val id: Int,
-    @SerializedName("_links") val links: Links?
+data class Links(
+    @SerializedName("previousepisode") val previousEpisode: PreviousEpisode?,
+    @SerializedName("nextepisode") val nextEpisode: NextEpisode?
 ) : Parcelable
