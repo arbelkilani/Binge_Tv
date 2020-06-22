@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.model.tv.Tv
 import com.arbelkilani.bingetv.databinding.ActivityDetailsTvBinding
+import com.arbelkilani.bingetv.presentation.adapters.CreditAdapter
 import com.arbelkilani.bingetv.presentation.listeners.OnSeasonClickListener
 import com.arbelkilani.bingetv.presentation.viewmodel.DetailsTvActivityViewModel
 import com.arbelkilani.bingetv.utils.Constants
@@ -69,17 +70,23 @@ class DetailsTvActivity : AppCompatActivity(), OnSeasonClickListener {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
         })
 
+        viewModel.creditsLiveData.observe(this, Observer { credits ->
+            credits?.let {
+                rv_credits.adapter = CreditAdapter(it)
+            }
+        })
+
         initViews()
 
         /*
-           rv_seasons.adapter = SeasonAdapter(tvDetails.seasons.asReversed(), this)
+        rv_seasons.adapter = SeasonAdapter(tvDetails.seasons.asReversed(), this)
 
-                //TODO check if view pager create lag when open interface
-                // could be deteted by the animaion of the seasons bottom sheet title
-                /*view_pager.apply {
-                    adapter = ImageAdapter(tvDetails.images.backdrops)
-                    //offscreenPageLimit = 3
-                }*/
+        //TODO check if view pager create lag when open interface
+        // could be deteted by the animaion of the seasons bottom sheet title
+        /*view_pager.apply {
+            adapter = ImageAdapter(tvDetails.images.backdrops)
+            //offscreenPageLimit = 3
+        }*/
          */
 
     }

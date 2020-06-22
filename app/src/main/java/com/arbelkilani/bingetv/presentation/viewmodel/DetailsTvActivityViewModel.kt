@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.arbelkilani.bingetv.data.model.base.Resource
 import com.arbelkilani.bingetv.data.model.base.Status
-import com.arbelkilani.bingetv.data.model.credit.Cast
+import com.arbelkilani.bingetv.data.model.credit.Credit
 import com.arbelkilani.bingetv.data.model.tv.Tv
 import com.arbelkilani.bingetv.data.model.tv.TvDetails
 import com.arbelkilani.bingetv.data.model.tv.maze.details.NextEpisodeData
@@ -12,7 +12,6 @@ import com.arbelkilani.bingetv.data.model.video.VideoResponse
 import com.arbelkilani.bingetv.domain.usecase.GetCreditsUseCase
 import com.arbelkilani.bingetv.domain.usecase.GetNextEpisodeDataUseCase
 import com.arbelkilani.bingetv.domain.usecase.GetTvDetailsUseCase
-import com.arbelkilani.bingetv.utils.formatAirDate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
@@ -27,7 +26,7 @@ class DetailsTvActivityViewModel constructor(
     private val TAG = DetailsTvActivityViewModel::class.java.simpleName
 
     val tvDetailsLiveData = MutableLiveData<Resource<TvDetails>>()
-    val creditsLiveData = MutableLiveData<List<Cast>>()
+    val creditsLiveData = MutableLiveData<List<Credit>>()
     val nextEpisodeData = MutableLiveData<NextEpisodeData>()
 
     val trailerKey = MutableLiveData<String>()
@@ -46,6 +45,7 @@ class DetailsTvActivityViewModel constructor(
     fun getDetails(selectedTv: Tv) {
         scope.launch(Dispatchers.IO) {
             getTvDetails(selectedTv)
+            getCredits(selectedTv)
         }
     }
 
@@ -71,9 +71,8 @@ class DetailsTvActivityViewModel constructor(
     }
 
     private suspend fun getNextEpisodeDetails(id: Int) {
+        Log.i(TAG, "getNextEpisodeDetails()")
         val response = getNextEpisodeDataUseCase.invoke(id)
-        formatAirDate(response.data)
-
         if (response.status == Status.SUCCESS)
             nextEpisodeData.postValue(response.data)
     }

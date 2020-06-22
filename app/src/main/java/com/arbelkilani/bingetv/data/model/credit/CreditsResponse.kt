@@ -5,6 +5,6 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class CreditsResponse(
-    val cast: List<Cast>,
+    val cast: List<Credit>,
     val id: Int
 ) : Parcelable
