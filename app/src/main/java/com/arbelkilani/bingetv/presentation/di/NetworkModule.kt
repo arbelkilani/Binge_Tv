@@ -1,10 +1,9 @@
 package com.arbelkilani.bingetv.presentation.di
 
-import android.util.Log
 import com.arbelkilani.bingetv.BuildConfig
-import com.arbelkilani.bingetv.data.source.remote.EndpointInterceptor
 import com.arbelkilani.bingetv.data.source.remote.ApiTmdbService
 import com.arbelkilani.bingetv.data.source.remote.ApiTvMazeService
+import com.arbelkilani.bingetv.data.source.remote.EndpointInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
@@ -46,7 +45,6 @@ fun createRetrofit(okHttpClient: OkHttpClient): Retrofit {
 }
 
 fun createTmdbService(retrofit: Retrofit): ApiTmdbService {
-    Log.i("TAG++", "retrofit tmdb = $retrofit, api ${retrofit.baseUrl()}")
     return retrofit.create(ApiTmdbService::class.java)
 }
 
@@ -63,7 +61,6 @@ fun createTvMazeService(okHttpClient: OkHttpClient): ApiTvMazeService {
         .client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
-    Log.i("TAG++", "retrofit tvmaze = $builder, api ${builder.baseUrl()}")
     return builder.create(ApiTvMazeService::class.java)
 }
 

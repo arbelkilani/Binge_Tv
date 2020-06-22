@@ -37,5 +37,6 @@
     <dimen name="details_bottom_sheet_padding">5dp</dimen>
     <dimen name="details_bottom_sheet_drawable_padding">2dp</dimen>
 
+    <dimen name="season_sheet_background_radius">24dp</dimen>
 
 </resources>

@@ -3,16 +3,18 @@ package com.arbelkilani.bingetv.utils
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.res.Resources
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.view.ContextThemeWrapper
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.model.genre.Genre
@@ -113,6 +115,14 @@ fun setNetworks(view: FlexboxLayout, list: List<Network>?) {
     view.invalidate()
 }
 
+private fun blendColors(from: Int, to: Int, ratio: Float): Int {
+    val inverseRatio = 1f - ratio
+    val r: Float = Color.red(to) * ratio + Color.red(from) * inverseRatio
+    val g: Float = Color.green(to) * ratio + Color.green(from) * inverseRatio
+    val b: Float = Color.blue(to) * ratio + Color.blue(from) * inverseRatio
+    return Color.rgb(r.toInt(), g.toInt(), b.toInt())
+}
+
 /**
  * it : bottom sheet
  */
@@ -120,6 +130,10 @@ fun doOnBottomSheetDetailsSeason(it: View) {
 
     val behavior = BottomSheetBehavior.from(it)
     val maxTransitionX: Float = (it.width - it.seasons_sheet_collapsed.width).toFloat()
+
+    val initialColor =
+        ContextCompat.getColor(it.context, R.color.season_sheet_background_color_initial)
+    val endColor = ContextCompat.getColor(it.context, R.color.season_sheet_background_color_end)
 
     when (behavior.state) {
         BottomSheetBehavior.STATE_EXPANDED -> {
@@ -140,13 +154,25 @@ fun doOnBottomSheetDetailsSeason(it: View) {
 
     behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
         override fun onSlide(bottomSheet: View, slideOffset: Float) {
+
             val inverseOffset = 1.0f - slideOffset
             it.translationX = maxTransitionX * inverseOffset
             it.seasons_sheet_collapsed.alpha = inverseOffset
             it.seasons_sheet_expanded.alpha = slideOffset
+
+            val drawable = it.background
+
+            (drawable.mutate() as GradientDrawable).setColor(
+                blendColors(
+                    initialColor,
+                    endColor,
+                    slideOffset
+                )
+            )
         }
 
         override fun onStateChanged(bottomSheet: View, newState: Int) {
+
         }
     })
 

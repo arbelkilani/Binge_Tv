@@ -19,7 +19,7 @@
         android:id="@+id/bottom_sheet_details_seasons"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/season_sheet_shape"
+        android:background="@drawable/season_sheet_background"
         android:elevation="@dimen/default_elevation"
         app:behavior_peekHeight="?attr/actionBarSize"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">

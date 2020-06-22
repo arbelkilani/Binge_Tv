@@ -28,6 +28,8 @@
     <color name="details_network_text_color">@android:color/white</color>
     <color name="details_network_border_color">@android:color/white</color>
 
-    <color name="details_season_sheet_title_color">#1f3354</color>
+    <color name="details_season_sheet_title_color">@android:color/white</color>
+    <color name="season_sheet_background_color_initial">#1f3354</color>
+    <color name="season_sheet_background_color_end">#1f3354</color>
 
 </resources>

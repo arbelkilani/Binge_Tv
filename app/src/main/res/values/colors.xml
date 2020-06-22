@@ -30,4 +30,7 @@
     <color name="details_network_border_color">#778bd9</color>
 
     <color name="details_season_sheet_title_color">@android:color/white</color>
+    <color name="season_sheet_background_color_initial">#778bd9</color>
+    <color name="season_sheet_background_color_end">#fefefe</color>
+
 </resources>
