@@ -9,6 +9,7 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
@@ -180,6 +181,7 @@ fun formatAirDate(data: NextEpisodeData?): String {
 
     if (data == null) return ""
 
+    Log.i("TAG++", "data = $data")
     data.apply {
 
         val hourOfDay = airTime.substringBefore(":").toInt()
@@ -190,11 +192,18 @@ fun formatAirDate(data: NextEpisodeData?): String {
         val date = airDate.substringAfterLast("-").toInt()
 
         val calendar = Calendar.getInstance(TimeZone.getTimeZone(timezone))
-        calendar.set(year, month, date, hourOfDay, minute)
+        calendar.set(year, month - 1, date, hourOfDay, minute)
 
         val simpleDateFormat =
             SimpleDateFormat("EEEE, d MMMM yyyy 'at' HH:mm a", Locale.getDefault())
 
+        Log.i(
+            "TAG++",
+            "simple date format = ${SimpleDateFormat(
+                "EEEE, d MMMM yyyy 'at' HH:mm a",
+                Locale.getDefault()
+            )}"
+        )
         return simpleDateFormat.format(calendar.timeInMillis)
 
     }

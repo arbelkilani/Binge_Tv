@@ -44,6 +44,7 @@
             android:orientation="vertical"
             app:layout_behavior="@string/bottom_sheet_behavior">
 
+            <!-- genres and networks -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -82,6 +83,7 @@
 
             </RelativeLayout>
 
+            <!-- name and vote -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -129,7 +131,7 @@
 
             </RelativeLayout>
 
-            <!-- Next episode card view -->
+            <!-- next episode -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -160,7 +162,7 @@
                         android:layout_marginStart="@dimen/default_margin_min"
                         android:layout_marginTop="@dimen/default_margin_min"
                         android:fontFamily="@font/avenir_next_regular"
-                        android:text="@{Html.fromHtml(String.format(@string/next_episode_message, tvDetails.nextEpisodeToAir.formattedSeasonEpisode(), tvDetails.nextEpisodeToAir.name, nextEpisodeData.formattedAirDate))}"
+                        android:text="@{Html.fromHtml(String.format(@string/next_episode_message, nextEpisodeData.formattedSeasonEpisode(), nextEpisodeData.name, nextEpisodeData.formattedAirDate))}"
                         android:textColor="@color/details_titles_text_color"
                         android:textSize="@dimen/small_text_size" />
 
@@ -172,7 +174,7 @@
                         android:text="@string/details_story_label"
                         android:textColor="@color/details_titles_text_color"
                         android:textSize="@dimen/titles_text_size"
-                        android:visibility="@{tvDetails.nextEpisodeToAir.overview.empty ? View.GONE : View.VISIBLE}" />
+                        android:visibility="@{nextEpisodeData.summary.empty ? View.GONE : View.VISIBLE}" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -180,10 +182,10 @@
                         android:layout_marginStart="@dimen/default_margin_min"
                         android:layout_marginTop="@dimen/default_margin_min"
                         android:fontFamily="@font/avenir_next_regular"
-                        android:text="@{tvDetails.nextEpisodeToAir.overview}"
+                        android:text="@{nextEpisodeData.summary}"
                         android:textColor="@color/details_titles_text_color"
                         android:textSize="@dimen/small_text_size"
-                        android:visibility="@{tvDetails.nextEpisodeToAir.overview.empty ? View.GONE : View.VISIBLE}" />
+                        android:visibility="@{nextEpisodeData.summary.empty ? View.GONE : View.VISIBLE}" />
 
                 </LinearLayout>
 
@@ -233,6 +235,7 @@
                 android:textColor="@color/details_titles_text_color"
                 android:textSize="@dimen/small_text_size" />
 
+            <!-- cast -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
