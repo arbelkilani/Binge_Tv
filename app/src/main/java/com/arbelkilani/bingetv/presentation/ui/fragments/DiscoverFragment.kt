@@ -2,7 +2,6 @@ package com.arbelkilani.bingetv.presentation.ui.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,9 +48,6 @@ class DiscoverFragment : Fragment(), OnTvClickListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initViews()
-        for (tv in trendingTvList) {
-            Log.i(TAG, "title : ${tv.name}\n")
-        }
     }
 
     private fun initViews() {
@@ -67,8 +63,11 @@ class DiscoverFragment : Fragment(), OnTvClickListener {
 
         recycler_view.apply {
             setHasFixedSize(true)
-            kotlin.run { Log.i(TAG, "width = $width") }
-            adapter = TrendingAdapter(trendingTvList, this@DiscoverFragment)
+            adapter =
+                TrendingAdapter(
+                    trendingTvList.sortedByDescending { it.voteAverage },
+                    this@DiscoverFragment
+                )
         }
 
     }

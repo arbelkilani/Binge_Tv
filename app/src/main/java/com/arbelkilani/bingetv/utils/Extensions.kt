@@ -131,9 +131,12 @@ fun doOnBottomSheetDetailsSeason(it: View) {
     val behavior = BottomSheetBehavior.from(it)
     val maxTransitionX: Float = (it.width - it.seasons_sheet_collapsed.width).toFloat()
 
+    val drawable = it.background.mutate() as GradientDrawable
+
     val initialColor =
         ContextCompat.getColor(it.context, R.color.season_sheet_background_color_initial)
     val endColor = ContextCompat.getColor(it.context, R.color.season_sheet_background_color_end)
+    val cornerRadius = it.resources.getDimension(R.dimen.details_bottom_sheet_corner_radius)
 
     when (behavior.state) {
         BottomSheetBehavior.STATE_EXPANDED -> {
@@ -160,15 +163,9 @@ fun doOnBottomSheetDetailsSeason(it: View) {
             it.seasons_sheet_collapsed.alpha = inverseOffset
             it.seasons_sheet_expanded.alpha = slideOffset
 
-            val drawable = it.background
+            drawable.setColor(blendColors(initialColor, endColor, slideOffset))
+            drawable.cornerRadius = cornerRadius * inverseOffset
 
-            (drawable.mutate() as GradientDrawable).setColor(
-                blendColors(
-                    initialColor,
-                    endColor,
-                    slideOffset
-                )
-            )
         }
 
         override fun onStateChanged(bottomSheet: View, newState: Int) {
