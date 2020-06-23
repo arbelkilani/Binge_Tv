@@ -24,6 +24,31 @@
         app:behavior_peekHeight="?attr/actionBarSize"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
+        <!-- circles design -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="?attr/actionBarSize">
+
+            <ImageView
+                android:layout_width="@dimen/circle_radius"
+                android:layout_height="@dimen/circle_radius"
+                android:layout_gravity="start"
+                android:layout_marginStart="@dimen/circle_margin_start"
+                android:layout_marginTop="@dimen/circle_margin_top"
+                android:background="@drawable/circle"
+                android:fitsSystemWindows="true" />
+
+            <ImageView
+                android:layout_width="@dimen/circle_radius"
+                android:layout_height="@dimen/circle_radius"
+                android:layout_gravity="end"
+                android:layout_marginEnd="@dimen/circle_margin_end"
+                android:background="@drawable/circle"
+                android:fitsSystemWindows="true" />
+
+        </FrameLayout>
+
         <!-- expanded content -->
         <LinearLayout
             android:id="@+id/seasons_sheet_expanded"
