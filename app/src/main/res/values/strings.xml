@@ -32,6 +32,7 @@
 
     <string name="details_bottom_sheet_content_type_label">Status</string>
     <string name="details_bottom_sheet_content_cast_label">Cast</string>
+    <string name="search_title">Search</string>
     <!-- todo check plurals for days with data binding -->
 
 </resources>

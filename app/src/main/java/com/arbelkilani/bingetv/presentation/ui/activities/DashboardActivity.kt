@@ -1,7 +1,5 @@
 package com.arbelkilani.bingetv.presentation.ui.activities
 
-import android.content.Intent
-import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -52,6 +50,8 @@ class DashboardActivity : AppCompatActivity(),
     private fun initViews() {
         Log.i(TAG, "initViews()")
         bottom_navigation.setOnNavigationItemSelectedListener(this)
+
+        setSupportActionBar(toolbar)
     }
 
     private fun loadFragment(fragment: Fragment, title: Int) {
@@ -59,7 +59,6 @@ class DashboardActivity : AppCompatActivity(),
         supportFragmentManager.beginTransaction()
             .replace(R.id.main_container, fragment, fragment::class.java.simpleName)
             .commit()
-        toolbar.setTitle(title)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
