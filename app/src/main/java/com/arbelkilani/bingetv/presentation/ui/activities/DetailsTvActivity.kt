@@ -14,6 +14,7 @@ import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.model.tv.Tv
 import com.arbelkilani.bingetv.databinding.ActivityDetailsTvBinding
 import com.arbelkilani.bingetv.presentation.adapters.CreditAdapter
+import com.arbelkilani.bingetv.presentation.adapters.SeasonAdapter
 import com.arbelkilani.bingetv.presentation.listeners.OnSeasonClickListener
 import com.arbelkilani.bingetv.presentation.viewmodel.DetailsTvActivityViewModel
 import com.arbelkilani.bingetv.utils.Constants
@@ -63,6 +64,7 @@ class DetailsTvActivity : AppCompatActivity(), OnSeasonClickListener {
         viewModel.tvDetailsLiveData.observe(this, Observer { tvDetailsResource ->
             tvDetailsResource.data?.let {
                 binding.tvDetails = it
+                rv_seasons.adapter = SeasonAdapter(it.seasons.asReversed(), this)
             }
         })
 
@@ -87,7 +89,6 @@ class DetailsTvActivity : AppCompatActivity(), OnSeasonClickListener {
         initViews()
 
         /*
-        rv_seasons.adapter = SeasonAdapter(tvDetails.seasons.asReversed(), this)
 
         //TODO check if view pager create lag when open interface
         // could be deteted by the animaion of the seasons bottom sheet title

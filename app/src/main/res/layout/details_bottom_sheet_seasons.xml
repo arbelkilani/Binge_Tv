@@ -24,10 +24,12 @@
         app:behavior_peekHeight="?attr/actionBarSize"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
+        <!-- expanded content -->
         <LinearLayout
             android:id="@+id/seasons_sheet_expanded"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
@@ -43,13 +45,27 @@
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:navigationIcon="@drawable/ic_arrow_left_colored"
+                    app:title="@{tvDetails.name}"
                     app:titleTextAppearance="@style/Toolbar.TextTitle"
                     app:titleTextColor="@color/toolbar_title_color" />
 
             </com.google.android.material.appbar.AppBarLayout>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_seasons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:layoutMode="clipBounds"
+                android:nestedScrollingEnabled="true"
+                android:orientation="vertical"
+                android:overScrollMode="never"
+                android:padding="@dimen/default_padding"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
         </LinearLayout>
 
+        <!-- collapsed content -->
         <RelativeLayout
             android:id="@+id/seasons_sheet_collapsed"
             android:layout_width="130dp"

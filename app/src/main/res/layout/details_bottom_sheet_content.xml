@@ -260,21 +260,6 @@
                 android:paddingEnd="@dimen/default_padding"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_seasons"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/default_margin"
-                android:clipToPadding="false"
-                android:layoutMode="clipBounds"
-                android:nestedScrollingEnabled="false"
-                android:orientation="vertical"
-                android:overScrollMode="never"
-                android:paddingStart="@dimen/default_padding"
-                android:paddingEnd="@dimen/default_padding"
-                android:visibility="gone"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
