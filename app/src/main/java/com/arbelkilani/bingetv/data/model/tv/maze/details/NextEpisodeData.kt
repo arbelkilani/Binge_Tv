@@ -13,7 +13,7 @@ data class NextEpisodeData(
     @SerializedName("airdate") val airDate: String,
     @SerializedName("airstamp") val airStamp: String,
     @SerializedName("airtime") val _airTime: String,
-    @SerializedName("summary") val _summary: String,
+    @SerializedName("summary") val _summary: String?,
     var timezone: String,
     var formattedAirDate: String
 ) : Parcelable {
@@ -28,5 +28,8 @@ data class NextEpisodeData(
     }
 
     val summary: String
-        get() = HtmlCompat.fromHtml(_summary, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
+        get() {
+            return if (_summary == null)
+                "" else HtmlCompat.fromHtml(_summary, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
+        }
 }
