@@ -15,16 +15,40 @@
             type="com.arbelkilani.bingetv.presentation.viewmodel.DetailsTvActivityViewModel" />
     </data>
 
-    <RelativeLayout
+    <FrameLayout
         android:id="@+id/bottom_sheet_details_seasons"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/season_sheet_background"
         android:elevation="@dimen/default_elevation"
-        android:clickable="true"
         app:behavior_peekHeight="?attr/actionBarSize"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-        android:focusable="true">
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <LinearLayout
+            android:id="@+id/seasons_sheet_expanded"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/toolbar_background_color"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <!-- Toolbar -->
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar_seasons"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:navigationIcon="@drawable/ic_arrow_left_colored"
+                    app:titleTextAppearance="@style/Toolbar.TextTitle"
+                    app:titleTextColor="@color/toolbar_title_color" />
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+        </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/seasons_sheet_collapsed"
@@ -47,11 +71,6 @@
 
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/seasons_sheet_expanded"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </RelativeLayout>
+    </FrameLayout>
 
 </layout>

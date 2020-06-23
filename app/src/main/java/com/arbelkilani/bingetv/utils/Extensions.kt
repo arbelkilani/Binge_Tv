@@ -9,7 +9,6 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
@@ -168,7 +167,17 @@ fun doOnBottomSheetDetailsSeason(it: View) {
         }
 
         override fun onStateChanged(bottomSheet: View, newState: Int) {
+            when (newState) {
+                BottomSheetBehavior.STATE_EXPANDED -> {
+                    it.seasons_sheet_collapsed.isClickable = false
+                    it.seasons_sheet_collapsed.isFocusable = false
+                }
 
+                BottomSheetBehavior.STATE_COLLAPSED -> {
+                    it.seasons_sheet_collapsed.isClickable = true
+                    it.seasons_sheet_collapsed.isFocusable = true
+                }
+            }
         }
     })
 
@@ -181,7 +190,6 @@ fun formatAirDate(data: NextEpisodeData?): String {
 
     if (data == null) return ""
 
-    Log.i("TAG++", "data = $data")
     data.apply {
 
         val hourOfDay = airTime.substringBefore(":").toInt()
@@ -197,13 +205,6 @@ fun formatAirDate(data: NextEpisodeData?): String {
         val simpleDateFormat =
             SimpleDateFormat("EEEE, d MMMM yyyy 'at' HH:mm a", Locale.getDefault())
 
-        Log.i(
-            "TAG++",
-            "simple date format = ${SimpleDateFormat(
-                "EEEE, d MMMM yyyy 'at' HH:mm a",
-                Locale.getDefault()
-            )}"
-        )
         return simpleDateFormat.format(calendar.timeInMillis)
 
     }

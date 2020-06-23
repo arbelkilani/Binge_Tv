@@ -4,7 +4,7 @@ import android.content.Intent
 import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
-import android.widget.RelativeLayout
+import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.doOnLayout
 import androidx.core.widget.NestedScrollView
@@ -32,7 +32,7 @@ class DetailsTvActivity : AppCompatActivity(), OnSeasonClickListener {
     private lateinit var binding: ActivityDetailsTvBinding
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<NestedScrollView>
-    private lateinit var bottomSheetBehaviorSeasons: BottomSheetBehavior<RelativeLayout>
+    private lateinit var bottomSheetBehaviorSeasons: BottomSheetBehavior<FrameLayout>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +51,14 @@ class DetailsTvActivity : AppCompatActivity(), OnSeasonClickListener {
             it.setDisplayShowTitleEnabled(false)
         }
         toolbar.setNavigationOnClickListener { onBackPressed() }
+
+        setSupportActionBar(toolbar_seasons)
+        supportActionBar?.let {
+            it.setDisplayShowHomeEnabled(true)
+            it.setDisplayShowTitleEnabled(false)
+        }
+
+        toolbar_seasons.setNavigationOnClickListener { onBackPressed() }
 
         viewModel.tvDetailsLiveData.observe(this, Observer { tvDetailsResource ->
             tvDetailsResource.data?.let {
@@ -98,6 +106,7 @@ class DetailsTvActivity : AppCompatActivity(), OnSeasonClickListener {
         bottomSheetBehavior.peekHeight = (height * 0.65).toInt()
 
         bottomSheetBehaviorSeasons = BottomSheetBehavior.from(bottom_sheet_details_seasons)
+
         bottom_sheet_details_seasons.doOnLayout { view ->
             doOnBottomSheetDetailsSeason(view)
         }
