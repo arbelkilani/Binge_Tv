@@ -1,6 +1,7 @@
 package com.arbelkilani.bingetv.presentation.ui.activities
 
 import android.os.Bundle
+import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.presentation.ui.view.RevealAnimation
@@ -30,6 +31,11 @@ class SearchActivity : AppCompatActivity() {
     override fun onBackPressed() {
         overridePendingTransition(0, 0)
         revealAnimation.unRevealActivity()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.dashboard_toolbar_menu, menu)
+        return true
     }
 
 }
