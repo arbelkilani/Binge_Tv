@@ -13,8 +13,10 @@ import android.util.DisplayMetrics
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
@@ -241,4 +243,20 @@ fun getMenuItemAxis(item: MenuItem, context: Context?): HashMap<Int, Int> {
     }
 
     return axis
+}
+
+fun AppCompatActivity.hideKeyboard() {
+    val view = this.currentFocus
+    view?.apply {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+}
+
+fun AppCompatActivity.showKeyboard(view: View) {
+    view.apply {
+        requestFocus()
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+    }
 }

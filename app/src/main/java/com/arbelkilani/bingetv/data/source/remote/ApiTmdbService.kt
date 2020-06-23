@@ -33,4 +33,10 @@ interface ApiTmdbService {
 
     @GET("tv/{tv_id}/external_ids")
     suspend fun getExternalIds(@Path("tv_id") id: Int): ExternalIds
+
+    @GET("search/tv")
+    suspend fun searchTvShow(
+        @Query("query") query: String,
+        @Query("include_adult") adult: Boolean
+    ): ApiResponse<Tv>
 }

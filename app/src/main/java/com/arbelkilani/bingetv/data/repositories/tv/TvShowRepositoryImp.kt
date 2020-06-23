@@ -44,7 +44,6 @@ class TvShowRepositoryImp(
     override suspend fun getCredits(id: Int): Resource<CreditsResponse> = try {
         Log.i(TAG, "getCredits() for item $id")
         val response = apiTmdbService.getCredits(id)
-        Log.i(TAG, "credits = $response")
         Resource.success(response)
     } catch (e: Exception) {
         Log.e(TAG, "exception = $e")
@@ -65,6 +64,13 @@ class TvShowRepositoryImp(
         } catch (e: Exception) {
             Resource.exception(e, null)
         }
+    }
+
+    override suspend fun searchTvShow(query: String): Resource<ApiResponse<Tv>> = try {
+        val response = apiTmdbService.searchTvShow(query, false)
+        Resource.success(response)
+    } catch (e: Exception) {
+        Resource.exception(e, null)
     }
 
     private suspend fun getImdbId(id: Int): String = try {

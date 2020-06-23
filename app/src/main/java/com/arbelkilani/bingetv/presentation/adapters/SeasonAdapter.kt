@@ -9,7 +9,6 @@ import com.arbelkilani.bingetv.data.model.season.Season
 import com.arbelkilani.bingetv.databinding.ItemSeasonLargeBindingImpl
 import com.arbelkilani.bingetv.presentation.listeners.OnSeasonClickListener
 
-//TODO check how to bind data to recycler view using data binding jetpack
 class SeasonAdapter(
     private val seasons: List<Season>,
     private val onSeasonClickListener: OnSeasonClickListener
