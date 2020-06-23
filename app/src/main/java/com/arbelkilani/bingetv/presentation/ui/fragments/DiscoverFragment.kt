@@ -3,7 +3,6 @@ package com.arbelkilani.bingetv.presentation.ui.fragments
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.model.base.ApiResponse
@@ -13,8 +12,10 @@ import com.arbelkilani.bingetv.presentation.adapters.TrendingAdapter
 import com.arbelkilani.bingetv.presentation.listeners.OnTvClickListener
 import com.arbelkilani.bingetv.presentation.ui.activities.DashboardActivity
 import com.arbelkilani.bingetv.presentation.ui.activities.DetailsTvActivity
+import com.arbelkilani.bingetv.presentation.ui.activities.SearchActivity
 import com.arbelkilani.bingetv.presentation.ui.view.CustomTransformer
 import com.arbelkilani.bingetv.utils.Constants
+import com.arbelkilani.bingetv.utils.getMenuItemAxis
 import kotlinx.android.synthetic.main.fragment_discover.*
 
 class DiscoverFragment : Fragment(), OnTvClickListener {
@@ -102,11 +103,19 @@ class DiscoverFragment : Fragment(), OnTvClickListener {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
-        if (id == R.id.action_search) {
-            Toast.makeText(activity, "Clicked !", Toast.LENGTH_SHORT).show()
-            return true
+        when (item.itemId) {
+            R.id.action_search -> {
+                val x = getMenuItemAxis(item, context)[0]
+                val y = getMenuItemAxis(item, context)[1]
+                startActivity(Intent(this.activity, SearchActivity::class.java).apply {
+                    putExtra("x", x)
+                    putExtra("y", y)
+                })
+                requireActivity().overridePendingTransition(0, 0)
+                return true
+            }
         }
+
         return super.onOptionsItemSelected(item)
     }
 }

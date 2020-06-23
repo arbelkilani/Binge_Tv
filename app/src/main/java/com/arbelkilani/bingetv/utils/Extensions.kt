@@ -4,11 +4,13 @@ import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.GradientDrawable
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
 import android.util.DisplayMetrics
+import android.view.MenuItem
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
@@ -208,4 +210,35 @@ fun formatAirDate(data: NextEpisodeData?): String {
         return simpleDateFormat.format(calendar.timeInMillis)
 
     }
+}
+
+/**
+ * Return type HashMap<Int, Int>
+ *     hashMap[0] -> x axis
+ *     hashMap[1] -> y axis
+ */
+fun getMenuItemAxis(item: MenuItem, context: Context?): HashMap<Int, Int> {
+
+    val axis = hashMapOf<Int, Int>()
+    context?.let {
+
+        val contextWidth = context.resources.displayMetrics.widthPixels
+        val contextHeight = context.resources.displayMetrics.heightPixels
+
+        if (item.icon != null) {
+            (item.icon.mutate() as BitmapDrawable).bitmap?.apply {
+                axis[0] = (contextWidth - ((2 - item.order) * width)) - width / 2
+                axis[1] = contextHeight - (contextHeight - height / 2)
+            }
+        } else {
+            TextView(context).apply {
+                text = item.title
+                measure(0, 0)
+                axis[0] = (contextWidth - ((2 - item.order) * measuredWidth)) - measuredWidth
+                axis[1] = contextHeight - (contextHeight - measuredHeight / 2)
+            }
+        }
+    }
+
+    return axis
 }

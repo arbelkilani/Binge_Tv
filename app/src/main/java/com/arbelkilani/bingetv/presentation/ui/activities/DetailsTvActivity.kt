@@ -54,11 +54,6 @@ class DetailsTvActivity : AppCompatActivity(), OnSeasonClickListener {
         toolbar.setNavigationOnClickListener { onBackPressed() }
 
         setSupportActionBar(toolbar_seasons)
-        supportActionBar?.let {
-            it.setDisplayShowHomeEnabled(true)
-            it.setDisplayShowTitleEnabled(false)
-        }
-
         toolbar_seasons.setNavigationOnClickListener { onBackPressed() }
 
         viewModel.tvDetailsLiveData.observe(this, Observer { tvDetailsResource ->
