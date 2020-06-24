@@ -100,6 +100,9 @@ dependencies {
     def circle_image_view = "3.1.0"
     implementation "de.hdodenhof:circleimageview:$circle_image_view"
 
+    def paging_version = "2.1.2"
+    implementation "androidx.paging:paging-runtime:$paging_version"
+
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

@@ -3,17 +3,16 @@ package com.arbelkilani.bingetv.presentation.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.model.tv.Tv
-import com.arbelkilani.bingetv.presentation.listeners.OnTvClickListener
+import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_trending_view.view.*
 
 class TrendingAdapter(
     private val trendingTv: List<Tv>,
-    private val onTvClickListener: OnTvClickListener
+    private val onTvShowClickListener: OnTvShowClickListener
 ) :
     RecyclerView.Adapter<TrendingAdapter.TrendingHolder>() {
 
@@ -25,7 +24,7 @@ class TrendingAdapter(
 
         fun bind(
             tv: Tv,
-            onTvClickListener: OnTvClickListener
+            onTvShowClickListener: OnTvShowClickListener
         ) {
             Picasso.get()
                 .load(tv.posterPath)
@@ -35,7 +34,7 @@ class TrendingAdapter(
 
             itemView.tv_trending_name.text = tv.name
             itemView.setOnClickListener {
-                onTvClickListener.onTvItemClicked(tv)
+                onTvShowClickListener.onTvItemClicked(tv)
             }
         }
     }
@@ -54,6 +53,6 @@ class TrendingAdapter(
     }
 
     override fun onBindViewHolder(holder: TrendingHolder, position: Int) {
-        holder.bind(trendingTv[position], onTvClickListener)
+        holder.bind(trendingTv[position], onTvShowClickListener)
     }
 }

@@ -21,6 +21,8 @@ val UseCasesModule = module {
 
     single { createGetSearchTvShowUseCase(get()) }
 
+    single { createRequestMoreUseCase(get()) }
+
 }
 
 
@@ -50,4 +52,8 @@ fun createGetNextEpisodeDataUseCase(tvShowRepository: TvShowRepository): GetNext
 
 fun createGetSearchTvShowUseCase(tvShowRepository: TvShowRepository): GetSearchTvShowUseCase {
     return GetSearchTvShowUseCase(tvShowRepository)
+}
+
+fun createRequestMoreUseCase(tvShowRepository: TvShowRepository): GetRequestMoreUseCase {
+    return GetRequestMoreUseCase(tvShowRepository)
 }

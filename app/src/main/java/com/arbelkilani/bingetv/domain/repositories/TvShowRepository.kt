@@ -15,4 +15,5 @@ interface TvShowRepository {
     suspend fun getCredits(id: Int): Resource<CreditsResponse>
     suspend fun getNextEpisodeData(id: Int): Resource<NextEpisodeData>
     suspend fun searchTvShow(query: String): Resource<ApiResponse<Tv>>
+    suspend fun requestMore()
 }

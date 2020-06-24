@@ -4,23 +4,29 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.model.base.ApiResponse
 import com.arbelkilani.bingetv.data.model.tv.Tv
 import com.arbelkilani.bingetv.presentation.adapters.DiscoverAdapter
 import com.arbelkilani.bingetv.presentation.adapters.TrendingAdapter
-import com.arbelkilani.bingetv.presentation.listeners.OnTvClickListener
+import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
 import com.arbelkilani.bingetv.presentation.ui.activities.DashboardActivity
 import com.arbelkilani.bingetv.presentation.ui.activities.DetailsTvActivity
 import com.arbelkilani.bingetv.presentation.ui.activities.SearchActivity
 import com.arbelkilani.bingetv.presentation.ui.view.CustomTransformer
+import com.arbelkilani.bingetv.presentation.viewmodel.DiscoverFragmentViewModel
 import com.arbelkilani.bingetv.utils.Constants
 import com.arbelkilani.bingetv.utils.getMenuItemAxis
 import kotlinx.android.synthetic.main.fragment_discover.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class DiscoverFragment : Fragment(), OnTvClickListener {
+class DiscoverFragment : Fragment(), OnTvShowClickListener {
 
     private val TAG = DiscoverFragment::class.java.simpleName
+
+    private val viewModel: DiscoverFragmentViewModel by viewModel()
 
     private lateinit var airingTodayTvResponse: ApiResponse<Tv>
     private lateinit var trendingTvResponse: ApiResponse<Tv>
@@ -51,6 +57,7 @@ class DiscoverFragment : Fragment(), OnTvClickListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initViews()
+        setupScrollListener()
     }
 
     private fun initViews() {
@@ -117,5 +124,19 @@ class DiscoverFragment : Fragment(), OnTvClickListener {
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun setupScrollListener() {
+        val layoutManager = recycler_view.layoutManager as GridLayoutManager
+        recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val totalItemCount = layoutManager.itemCount
+                val visibleItemCount = layoutManager.childCount
+                val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
+
+                viewModel.listScrolled(visibleItemCount, lastVisibleItem, totalItemCount)
+            }
+        })
     }
 }

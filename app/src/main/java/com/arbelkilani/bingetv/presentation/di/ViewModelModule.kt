@@ -1,6 +1,7 @@
 package com.arbelkilani.bingetv.presentation.di
 
 import com.arbelkilani.bingetv.presentation.viewmodel.DetailsTvActivityViewModel
+import com.arbelkilani.bingetv.presentation.viewmodel.DiscoverFragmentViewModel
 import com.arbelkilani.bingetv.presentation.viewmodel.SearchViewModel
 import com.arbelkilani.bingetv.presentation.viewmodel.SplashActivityViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -11,6 +12,7 @@ val ViewModelModule = module {
     viewModel { SplashActivityViewModel(get(), get()) }
     viewModel { DetailsTvActivityViewModel(get(), get(), get()) }
     viewModel { SearchViewModel(get()) }
+    viewModel { DiscoverFragmentViewModel(get()) }
 }
 
 

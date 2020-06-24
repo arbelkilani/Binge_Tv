@@ -17,7 +17,7 @@ interface ApiTmdbService {
     suspend fun getGenres(): Response<GenreResponse>
 
     @GET("discover/tv?sort_by=popularity.desc")
-    suspend fun getAiringToday(): ApiResponse<Tv>
+    suspend fun getAiringToday(@Query("page") page: Int): ApiResponse<Tv>
 
     @GET("trending/tv/week")
     suspend fun getTrendingTv(): ApiResponse<Tv>

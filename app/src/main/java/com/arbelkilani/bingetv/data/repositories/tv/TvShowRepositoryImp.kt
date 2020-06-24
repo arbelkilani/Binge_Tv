@@ -13,8 +13,13 @@ import com.arbelkilani.bingetv.data.source.remote.ApiTmdbService
 import com.arbelkilani.bingetv.data.source.remote.ApiTvMazeService
 import com.arbelkilani.bingetv.domain.repositories.TvShowRepository
 import com.arbelkilani.bingetv.utils.formatAirDate
+import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import retrofit2.HttpException
+import java.io.IOException
+
+private const val STARTING_PAGE_INDEX = 1
 
 class TvShowRepositoryImp(
     private val apiTmdbService: ApiTmdbService,
@@ -23,10 +28,52 @@ class TvShowRepositoryImp(
 
     private val TAG = TvShowRepositoryImp::class.java.simpleName
 
+
+    private val airingTodayResults = ConflatedBroadcastChannel<Flow<ApiResponse<Tv>>>()
+
+    private var lastRequestedPage = STARTING_PAGE_INDEX
+    private var isRequestInProgress = false
+
     override suspend fun getAiringToday(): Flow<ApiResponse<Tv>> {
         Log.i(TAG, "getAiringToday()")
-        return flow { emit(apiTmdbService.getAiringToday()) }
+        lastRequestedPage = 1
+        request()
+        return flow { emit(apiTmdbService.getAiringToday(lastRequestedPage)) }
     }
+
+    override suspend fun requestMore() {
+        if (isRequestInProgress) return
+        val successful = request()
+        if (successful) {
+            Log.i(TAG, "request more updating index")
+            lastRequestedPage++
+        }
+    }
+
+    private suspend fun request(): Boolean {
+        Log.i(TAG, "request")
+
+        isRequestInProgress = true
+        var successful = false
+
+        try {
+            Log.i(TAG, "lastRequestedPage $lastRequestedPage")
+            val response = apiTmdbService.getAiringToday(lastRequestedPage)
+            Log.i(TAG, "response $response")
+            val results = response.results
+            // searchResults.offer(RepoSearchResult.Success(reposByName))
+            successful = true
+        } catch (exception: IOException) {
+            Log.e(TAG, "exception = ${exception.localizedMessage}")
+            // searchResults.offer(RepoSearchResult.Error(exception))
+        } catch (exception: HttpException) {
+            Log.e(TAG, "exception = ${exception.localizedMessage}")
+            // searchResults.offer(RepoSearchResult.Error(exception))
+        }
+        isRequestInProgress = false
+        return successful
+    }
+
 
     override suspend fun getTrendingTv(): Flow<ApiResponse<Tv>> {
         Log.i(TAG, "getTrendingTv()")
