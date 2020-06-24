@@ -9,10 +9,12 @@ import android.view.MenuItem
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.presentation.adapters.TvSearchAdapter
 import com.arbelkilani.bingetv.presentation.listeners.KeyboardListener
+import com.arbelkilani.bingetv.presentation.listeners.RevealAnimationListener
 import com.arbelkilani.bingetv.presentation.ui.view.GridAutoFitLayoutManager
 import com.arbelkilani.bingetv.presentation.ui.view.RevealAnimation
 import com.arbelkilani.bingetv.presentation.viewmodel.SearchViewModel
@@ -23,7 +25,7 @@ import kotlinx.android.synthetic.main.activity_search.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener {
+class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener, RevealAnimationListener {
 
     private val TAG = SearchActivity::class.java.simpleName
 
@@ -44,21 +46,17 @@ class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener {
     }
 
     private fun initViews() {
-        showRevealAnimation()
-        showKeyboard(root_layout)
+        revealAnimation = RevealAnimation(root_layout, intent, this, this)
         initToolbar()
         edit_text_search.addTextChangedListener(this)
         interceptKeyboardVisibility(this)
 
-        //TODO recode other adapters like this to prevent recreating adapter each observation
         rv_shows.apply {
             adapter = TvSearchAdapter()
+            itemAnimator = DefaultItemAnimator()
+            (itemAnimator as DefaultItemAnimator).changeDuration = 0
 
         }
-    }
-
-    private fun showRevealAnimation() {
-        revealAnimation = RevealAnimation(root_layout, intent, this)
     }
 
     private fun initToolbar() {
@@ -71,12 +69,10 @@ class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener {
     }
 
     override fun onBackPressed() {
-        hideKeyboard()
-        reverseRevealAnimation()
+        unRevealAnimation()
     }
 
-    private fun reverseRevealAnimation() {
-        overridePendingTransition(0, 0)
+    private fun unRevealAnimation() {
         revealAnimation.unRevealActivity()
     }
 
@@ -92,11 +88,6 @@ class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener {
             R.id.action_close -> edit_text_search.text.clear()
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        showKeyboard(edit_text_search)
     }
 
     override fun onPause() {
@@ -119,7 +110,6 @@ class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener {
         if (start >= 3) {
             searchViewModel.searchTvShow(s.toString())
         }
-
     }
 
     override fun onKeyboardShown(currentKeyboardHeight: Int) {
@@ -128,13 +118,23 @@ class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener {
     }
 
     override fun onKeyboardHidden() {
-        val gridLayoutManager = GridAutoFitLayoutManager(this, 160)
-        rv_shows.layoutManager = gridLayoutManager
+
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
+        val gridLayoutManager = GridAutoFitLayoutManager(this, 160)
+        rv_shows.layoutManager = gridLayoutManager
         hideKeyboard()
         return true
+    }
+
+    override fun onRevealEnded() {
+        showKeyboard(root_layout)
+    }
+
+    override fun onUnRevealEnd() {
+        overridePendingTransition(0, 0)
+        hideKeyboard()
     }
 
 }
