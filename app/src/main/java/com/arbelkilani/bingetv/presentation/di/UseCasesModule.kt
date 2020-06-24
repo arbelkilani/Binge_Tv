@@ -23,6 +23,8 @@ val UseCasesModule = module {
 
     single { createRequestMoreUseCase(get()) }
 
+    single { createTest(get()) }
+
 }
 
 
@@ -56,4 +58,8 @@ fun createGetSearchTvShowUseCase(tvShowRepository: TvShowRepository): GetSearchT
 
 fun createRequestMoreUseCase(tvShowRepository: TvShowRepository): GetRequestMoreUseCase {
     return GetRequestMoreUseCase(tvShowRepository)
+}
+
+fun createTest(tvShowRepository: TvShowRepository): TestUseCase {
+    return TestUseCase(tvShowRepository)
 }

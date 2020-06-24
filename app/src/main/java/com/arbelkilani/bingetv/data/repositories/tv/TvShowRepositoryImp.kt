@@ -2,6 +2,7 @@ package com.arbelkilani.bingetv.data.repositories.tv
 
 import android.util.Log
 import com.arbelkilani.bingetv.data.model.base.ApiResponse
+import com.arbelkilani.bingetv.data.model.base.RepoResult
 import com.arbelkilani.bingetv.data.model.base.Resource
 import com.arbelkilani.bingetv.data.model.credit.CreditsResponse
 import com.arbelkilani.bingetv.data.model.tv.Tv
@@ -13,14 +14,18 @@ import com.arbelkilani.bingetv.data.source.remote.ApiTmdbService
 import com.arbelkilani.bingetv.data.source.remote.ApiTvMazeService
 import com.arbelkilani.bingetv.domain.repositories.TvShowRepository
 import com.arbelkilani.bingetv.utils.formatAirDate
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
 
-private const val STARTING_PAGE_INDEX = 1
 
+@FlowPreview
+@ExperimentalCoroutinesApi
 class TvShowRepositoryImp(
     private val apiTmdbService: ApiTmdbService,
     private val apiTvMazeService: ApiTvMazeService
@@ -28,8 +33,11 @@ class TvShowRepositoryImp(
 
     private val TAG = TvShowRepositoryImp::class.java.simpleName
 
+    companion object {
+        private const val STARTING_PAGE_INDEX = 1
+    }
 
-    private val airingTodayResults = ConflatedBroadcastChannel<Flow<ApiResponse<Tv>>>()
+    private val airingTodayResults = ConflatedBroadcastChannel<RepoResult>()
 
     private var lastRequestedPage = STARTING_PAGE_INDEX
     private var isRequestInProgress = false
@@ -40,6 +48,14 @@ class TvShowRepositoryImp(
         request()
         return flow { emit(apiTmdbService.getAiringToday(lastRequestedPage)) }
     }
+
+
+    override suspend fun test(): Flow<RepoResult> {
+        lastRequestedPage = 1
+        request()
+        return airingTodayResults.asFlow()
+    }
+
 
     override suspend fun requestMore() {
         if (isRequestInProgress) return
@@ -59,16 +75,16 @@ class TvShowRepositoryImp(
         try {
             Log.i(TAG, "lastRequestedPage $lastRequestedPage")
             val response = apiTmdbService.getAiringToday(lastRequestedPage)
-            Log.i(TAG, "response $response")
             val results = response.results
-            // searchResults.offer(RepoSearchResult.Success(reposByName))
+            Log.i(TAG, "results $results")
+            airingTodayResults.offer(RepoResult.Success(response.results))
             successful = true
         } catch (exception: IOException) {
             Log.e(TAG, "exception = ${exception.localizedMessage}")
-            // searchResults.offer(RepoSearchResult.Error(exception))
+            airingTodayResults.offer(RepoResult.Error(exception))
         } catch (exception: HttpException) {
             Log.e(TAG, "exception = ${exception.localizedMessage}")
-            // searchResults.offer(RepoSearchResult.Error(exception))
+            airingTodayResults.offer(RepoResult.Error(exception))
         }
         isRequestInProgress = false
         return successful

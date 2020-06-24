@@ -12,7 +12,7 @@ val ViewModelModule = module {
     viewModel { SplashActivityViewModel(get(), get()) }
     viewModel { DetailsTvActivityViewModel(get(), get(), get()) }
     viewModel { SearchViewModel(get()) }
-    viewModel { DiscoverFragmentViewModel(get()) }
+    viewModel { DiscoverFragmentViewModel(get(), get()) }
 }
 
 

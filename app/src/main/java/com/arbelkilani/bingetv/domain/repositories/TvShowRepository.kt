@@ -1,6 +1,7 @@
 package com.arbelkilani.bingetv.domain.repositories
 
 import com.arbelkilani.bingetv.data.model.base.ApiResponse
+import com.arbelkilani.bingetv.data.model.base.RepoResult
 import com.arbelkilani.bingetv.data.model.base.Resource
 import com.arbelkilani.bingetv.data.model.credit.CreditsResponse
 import com.arbelkilani.bingetv.data.model.tv.Tv
@@ -16,4 +17,5 @@ interface TvShowRepository {
     suspend fun getNextEpisodeData(id: Int): Resource<NextEpisodeData>
     suspend fun searchTvShow(query: String): Resource<ApiResponse<Tv>>
     suspend fun requestMore()
+    suspend fun test(): Flow<RepoResult>
 }
