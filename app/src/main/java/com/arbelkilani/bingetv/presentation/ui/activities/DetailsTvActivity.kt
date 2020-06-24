@@ -2,8 +2,11 @@ package com.arbelkilani.bingetv.presentation.ui.activities
 
 import android.content.Intent
 import android.content.res.Resources
+import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.doOnLayout
@@ -32,7 +35,7 @@ class DetailsTvActivity : AppCompatActivity(), OnSeasonClickListener {
     private val viewModel: DetailsTvActivityViewModel by viewModel()
     private lateinit var binding: ActivityDetailsTvBinding
 
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<NestedScrollView>
+    private lateinit var bottomSheetBehaviorContent: BottomSheetBehavior<NestedScrollView>
     private lateinit var bottomSheetBehaviorSeasons: BottomSheetBehavior<FrameLayout>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,15 +49,7 @@ class DetailsTvActivity : AppCompatActivity(), OnSeasonClickListener {
         viewModel.getDetails(selectedTv)
         binding.selectedTv = selectedTv
 
-        setSupportActionBar(toolbar)
-        supportActionBar?.let {
-            it.setDisplayShowHomeEnabled(true)
-            it.setDisplayShowTitleEnabled(false)
-        }
-        toolbar.setNavigationOnClickListener { onBackPressed() }
-
-        setSupportActionBar(toolbar_seasons)
-        toolbar_seasons.setNavigationOnClickListener { onBackPressed() }
+        initializeToolbars()
 
         viewModel.tvDetailsLiveData.observe(this, Observer { tvDetailsResource ->
             tvDetailsResource.data?.let {
@@ -95,11 +90,37 @@ class DetailsTvActivity : AppCompatActivity(), OnSeasonClickListener {
 
     }
 
+    private fun initializeToolbars() {
+        setSupportActionBar(toolbar)
+        supportActionBar?.let {
+            it.setDisplayShowHomeEnabled(true)
+            it.setDisplayShowTitleEnabled(false)
+        }
+        toolbar.setNavigationOnClickListener { onBackPressed() }
+
+        setSupportActionBar(toolbar_seasons)
+        toolbar_seasons.setNavigationOnClickListener { onBackPressed() }
+    }
+
     private fun initViews() {
 
         val height = Resources.getSystem().displayMetrics.heightPixels
-        bottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet_details_content)
-        bottomSheetBehavior.peekHeight = (height * 0.65).toInt()
+        bottomSheetBehaviorContent = BottomSheetBehavior.from(bottom_sheet_details_content)
+        bottomSheetBehaviorContent.peekHeight = (height * 0.65).toInt()
+        bottomSheetBehaviorContent.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                val drawable = bottomSheet.background.mutate() as GradientDrawable
+                val cornerRadius =
+                    resources.getDimension(R.dimen.details_bottom_sheet_corner_radius)
+                drawable.cornerRadius = cornerRadius * (1.0f - slideOffset)
+            }
+
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                Log.i(TAG, "onStateChanged : $newState")
+            }
+
+        })
 
         bottomSheetBehaviorSeasons = BottomSheetBehavior.from(bottom_sheet_details_seasons)
 
@@ -117,13 +138,12 @@ class DetailsTvActivity : AppCompatActivity(), OnSeasonClickListener {
         when {
             bottomSheetBehaviorSeasons.state == BottomSheetBehavior.STATE_EXPANDED ->
                 bottomSheetBehaviorSeasons.state = BottomSheetBehavior.STATE_COLLAPSED
-            bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED -> {
+            bottomSheetBehaviorContent.state == BottomSheetBehavior.STATE_EXPANDED -> {
                 bottom_sheet_details_content.smoothScrollTo(0, 0)
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                bottomSheetBehaviorContent.state = BottomSheetBehavior.STATE_COLLAPSED
             }
             else -> super.onBackPressed()
         }
     }
 }
-
 

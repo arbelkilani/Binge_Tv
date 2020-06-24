@@ -74,6 +74,7 @@ class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener, Revea
 
     private fun unRevealAnimation() {
         revealAnimation.unRevealActivity()
+        hideKeyboard()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
