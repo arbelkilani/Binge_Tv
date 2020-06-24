@@ -18,7 +18,8 @@
         <activity
             android:name=".presentation.ui.activities.SearchActivity"
             android:launchMode="singleTop"
-            android:theme="@style/Theme.Transparent" />
+            android:theme="@style/Theme.Transparent"
+            android:windowSoftInputMode="adjustPan" />
 
         <activity
             android:name=".presentation.ui.activities.SplashActivity"

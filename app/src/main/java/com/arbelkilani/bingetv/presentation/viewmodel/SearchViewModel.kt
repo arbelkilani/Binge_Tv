@@ -11,6 +11,8 @@ class SearchViewModel(
 
     private val TAG = SearchViewModel::class.java.simpleName
 
+    //TODO
+    // Re understand live data and mutable live data for best performance
     val tvListLiveData = MutableLiveData<List<Tv>>()
 
     fun searchTvShow(query: String) {

@@ -8,8 +8,10 @@ import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.model.tv.Tv
 import com.arbelkilani.bingetv.databinding.ItemTvShowSearchBinding
 
-class TvSearchAdapter(private val tvShows: List<Tv>) :
+class TvSearchAdapter :
     RecyclerView.Adapter<TvSearchAdapter.TvSearchHolder>() {
+
+    private var tvShows = listOf<Tv>()
 
     class TvSearchHolder(val itemTvShowSearchBinding: ItemTvShowSearchBinding) :
         RecyclerView.ViewHolder(itemTvShowSearchBinding.root)
@@ -27,5 +29,18 @@ class TvSearchAdapter(private val tvShows: List<Tv>) :
 
     override fun onBindViewHolder(holder: TvSearchHolder, position: Int) {
         holder.itemTvShowSearchBinding.tv = tvShows[position]
+    }
+
+    override fun getItemId(position: Int): Long {
+        val tvShow = tvShows[position]
+        return tvShow.id.toLong()
+    }
+
+
+    fun notify(it: List<Tv>?) {
+        it?.let {
+            tvShows = it
+            notifyDataSetChanged()
+        }
     }
 }

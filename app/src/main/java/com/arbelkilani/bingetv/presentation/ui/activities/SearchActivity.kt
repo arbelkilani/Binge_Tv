@@ -6,25 +6,31 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.presentation.adapters.TvSearchAdapter
+import com.arbelkilani.bingetv.presentation.listeners.KeyboardListener
+import com.arbelkilani.bingetv.presentation.ui.view.GridAutoFitLayoutManager
 import com.arbelkilani.bingetv.presentation.ui.view.RevealAnimation
 import com.arbelkilani.bingetv.presentation.viewmodel.SearchViewModel
 import com.arbelkilani.bingetv.utils.hideKeyboard
+import com.arbelkilani.bingetv.utils.interceptKeyboardVisibility
 import com.arbelkilani.bingetv.utils.showKeyboard
 import kotlinx.android.synthetic.main.activity_search.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class SearchActivity : AppCompatActivity(), TextWatcher {
+class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener {
 
     private val TAG = SearchActivity::class.java.simpleName
 
     private val searchViewModel: SearchViewModel by viewModel()
 
     private lateinit var revealAnimation: RevealAnimation
+    lateinit var closeMenuItem: MenuItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +39,7 @@ class SearchActivity : AppCompatActivity(), TextWatcher {
         initViews()
 
         searchViewModel.tvListLiveData.observe(this, Observer {
-            rv_shows.adapter = TvSearchAdapter(it)
+            (rv_shows.adapter as TvSearchAdapter).notify(it)
         })
     }
 
@@ -42,6 +48,13 @@ class SearchActivity : AppCompatActivity(), TextWatcher {
         showKeyboard(root_layout)
         initToolbar()
         edit_text_search.addTextChangedListener(this)
+        interceptKeyboardVisibility(this)
+
+        //TODO recode other adapters like this to prevent recreating adapter each observation
+        rv_shows.apply {
+            adapter = TvSearchAdapter()
+
+        }
     }
 
     private fun showRevealAnimation() {
@@ -69,12 +82,14 @@ class SearchActivity : AppCompatActivity(), TextWatcher {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_search_activity, menu)
+        closeMenuItem = menu!!.getItem(0)
+        closeMenuItem.isVisible = false
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_close -> onBackPressed()
+            R.id.action_close -> edit_text_search.text.clear()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -90,16 +105,37 @@ class SearchActivity : AppCompatActivity(), TextWatcher {
     }
 
     override fun afterTextChanged(s: Editable?) {
-        Log.i(TAG, "s = $s")
+        Log.i(TAG, "afterTextChanged = $s")
+        if (s!!.isEmpty())
+            closeMenuItem.isVisible = false
     }
 
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-        Log.i(TAG, "s = $s")
+        Log.i(TAG, "beforeTextChanged = $s")
     }
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        if (start >= 3)
+        closeMenuItem.isVisible = true
+        if (start >= 3) {
             searchViewModel.searchTvShow(s.toString())
+        }
+
+    }
+
+    override fun onKeyboardShown(currentKeyboardHeight: Int) {
+        val linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        rv_shows.layoutManager = linearLayoutManager
+    }
+
+    override fun onKeyboardHidden() {
+        val gridLayoutManager = GridAutoFitLayoutManager(this, 160)
+        rv_shows.layoutManager = gridLayoutManager
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        hideKeyboard()
+        return true
     }
 
 }
+

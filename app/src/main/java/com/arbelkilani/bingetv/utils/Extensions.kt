@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
+import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.GradientDrawable
 import android.text.Spannable
@@ -12,7 +13,9 @@ import android.text.style.RelativeSizeSpan
 import android.util.DisplayMetrics
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewTreeObserver
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.AlphaAnimation
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.TextView
@@ -24,6 +27,7 @@ import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.model.genre.Genre
 import com.arbelkilani.bingetv.data.model.tv.Network
 import com.arbelkilani.bingetv.data.model.tv.maze.details.NextEpisodeData
+import com.arbelkilani.bingetv.presentation.listeners.KeyboardListener
 import com.google.android.flexbox.FlexboxLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.squareup.picasso.Picasso
@@ -258,5 +262,39 @@ fun AppCompatActivity.showKeyboard(view: View) {
         requestFocus()
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+    }
+}
+
+fun AppCompatActivity.interceptKeyboardVisibility(keyboardListener: KeyboardListener) {
+    val decorView = this.window.decorView
+    decorView.viewTreeObserver.addOnGlobalLayoutListener(object :
+        ViewTreeObserver.OnGlobalLayoutListener {
+
+        val windowVisibleDisplayFrame = Rect()
+        var lastVisibleDecorViewHeight: Int = 0
+
+        override fun onGlobalLayout() {
+            decorView.getWindowVisibleDisplayFrame(windowVisibleDisplayFrame)
+            val visibleDecorViewHeight = windowVisibleDisplayFrame.height()
+
+            if (lastVisibleDecorViewHeight != 0) {
+                if (lastVisibleDecorViewHeight > visibleDecorViewHeight + 150) {
+                    val currentKeyboardHeight = decorView.height - windowVisibleDisplayFrame.bottom
+                    keyboardListener.onKeyboardShown(currentKeyboardHeight)
+                } else if (lastVisibleDecorViewHeight + 150 < visibleDecorViewHeight) {
+                    keyboardListener.onKeyboardHidden()
+                }
+            }
+
+            lastVisibleDecorViewHeight = visibleDecorViewHeight
+        }
+    })
+}
+
+fun setFadeAnimation(view: View) {
+    view.apply {
+        val anim = AlphaAnimation(0.0f, 1.0f)
+        anim.duration = 400
+        startAnimation(anim)
     }
 }
