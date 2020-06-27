@@ -3,6 +3,8 @@ package com.arbelkilani.bingetv.presentation.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.model.tv.Tv
@@ -12,8 +14,7 @@ import kotlinx.android.synthetic.main.item_trending_view.view.*
 
 class TrendingAdapter(
     private val onTvShowClickListener: OnTvShowClickListener
-) :
-    RecyclerView.Adapter<TrendingAdapter.TrendingHolder>() {
+) : PagingDataAdapter<Tv, RecyclerView.ViewHolder>(TvShowComparator) {
 
     private val TAG = TrendingAdapter::class.java.simpleName
 
@@ -24,18 +25,19 @@ class TrendingAdapter(
         private val TAG = DiscoverAdapter::class.java.simpleName
 
         fun bind(
-            tv: Tv,
+            tv: Tv?,
             onTvShowClickListener: OnTvShowClickListener
         ) {
-            Picasso.get()
-                .load(tv.posterPath)
-                .fit()
-                .centerCrop()
-                .into(itemView.iv_item_trending)
-
-            itemView.tv_trending_name.text = tv.name
-            itemView.setOnClickListener {
-                onTvShowClickListener.onTvItemClicked(tv)
+            tv?.apply {
+                Picasso.get()
+                    .load(posterPath)
+                    .fit()
+                    .centerCrop()
+                    .into(itemView.iv_item_trending)
+                itemView.tv_trending_name.text = name
+                itemView.setOnClickListener {
+                    onTvShowClickListener.onTvItemClicked(this)
+                }
             }
         }
     }
@@ -49,18 +51,21 @@ class TrendingAdapter(
         return TrendingHolder(inflatedView)
     }
 
-    override fun getItemCount(): Int {
-        return tvList.size
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val tvShow = getItem(position)
+        if (tvShow != null)
+            (holder as TrendingHolder).bind(tvShow, onTvShowClickListener)
     }
 
-    override fun onBindViewHolder(holder: TrendingHolder, position: Int) {
-        holder.bind(tvList[position], onTvShowClickListener)
-    }
+    companion object {
+        private val TvShowComparator = object : DiffUtil.ItemCallback<Tv>() {
+            override fun areItemsTheSame(oldItem: Tv, newItem: Tv): Boolean {
+                return oldItem.id == newItem.id
+            }
 
-    fun setData(it: List<Tv>?) {
-        it?.let {
-            tvList = it
-            notifyDataSetChanged()
+            override fun areContentsTheSame(oldItem: Tv, newItem: Tv): Boolean {
+                return oldItem == newItem
+            }
         }
     }
 }

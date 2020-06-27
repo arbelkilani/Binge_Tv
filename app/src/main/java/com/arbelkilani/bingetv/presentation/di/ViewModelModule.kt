@@ -15,7 +15,7 @@ val ViewModelModule = module {
     viewModel { SplashViewModel(get(), get()) }
     viewModel { DetailsTvActivityViewModel(get(), get(), get()) }
     viewModel { SearchViewModel(get()) }
-    viewModel { (combined: CombinedObjects) -> DiscoverViewModel(combined, get(), get()) }
+    viewModel { (combined: CombinedObjects) -> DiscoverViewModel(combined, get()) }
 }
 
 

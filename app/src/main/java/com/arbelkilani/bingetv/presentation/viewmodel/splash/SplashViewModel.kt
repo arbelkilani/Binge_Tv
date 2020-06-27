@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.arbelkilani.bingetv.data.model.base.Resource
 import com.arbelkilani.bingetv.data.model.tv.CombinedObjects
-import com.arbelkilani.bingetv.domain.usecase.GetAiringTodayUseCase
+import com.arbelkilani.bingetv.domain.usecase.DiscoverUseCase
 import com.arbelkilani.bingetv.domain.usecase.GetTrendingTvUseCase
 import com.arbelkilani.bingetv.presentation.viewmodel.BaseViewModel
 import com.arbelkilani.bingetv.utils.Constants
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
 class SplashViewModel constructor(
-    private val getAiringTodayUseCase: GetAiringTodayUseCase,
+    private val discoverUseCase: DiscoverUseCase,
     private val getTrendingTvUseCase: GetTrendingTvUseCase
 ) :
     BaseViewModel() {
@@ -39,8 +39,8 @@ class SplashViewModel constructor(
 
         scope.launch {
             delay(Constants.SPLASH_DELAY) // set delay for the splash
-            getAiringTodayUseCase.invoke()
-                .zip(getAiringTodayUseCase.invoke()) //TODO remove after testing paging
+            discoverUseCase.invoke()
+                .zip(getTrendingTvUseCase.invoke())
                 { airingToday, trending ->
                     return@zip CombinedObjects(airingToday, trending)
                 }

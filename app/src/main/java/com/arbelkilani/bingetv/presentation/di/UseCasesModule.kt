@@ -32,8 +32,8 @@ fun createGetGenreUseCase(genresRepository: GenresRepository): GetGenreUseCase {
     return GetGenreUseCase(genresRepository)
 }
 
-fun createAiringTodayUseCase(tvShowRepository: TvShowRepository): GetAiringTodayUseCase {
-    return GetAiringTodayUseCase(tvShowRepository)
+fun createAiringTodayUseCase(tvShowRepository: TvShowRepository): DiscoverUseCase {
+    return DiscoverUseCase(tvShowRepository)
 }
 
 fun createTrendingTvUseCase(tvShowRepository: TvShowRepository): GetTrendingTvUseCase {

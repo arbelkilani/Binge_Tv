@@ -1,6 +1,9 @@
 package com.arbelkilani.bingetv.data.repositories.tv
 
 import android.util.Log
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.arbelkilani.bingetv.data.model.base.ApiResponse
 import com.arbelkilani.bingetv.data.model.base.RepoResult
 import com.arbelkilani.bingetv.data.model.base.Resource
@@ -10,6 +13,7 @@ import com.arbelkilani.bingetv.data.model.tv.TvDetails
 import com.arbelkilani.bingetv.data.model.tv.maze.TvDetailsMaze
 import com.arbelkilani.bingetv.data.model.tv.maze.channel.WebChannel
 import com.arbelkilani.bingetv.data.model.tv.maze.details.NextEpisodeData
+import com.arbelkilani.bingetv.data.pagingsource.TvShowPagingSource
 import com.arbelkilani.bingetv.data.source.remote.ApiTmdbService
 import com.arbelkilani.bingetv.data.source.remote.ApiTvMazeService
 import com.arbelkilani.bingetv.domain.repositories.TvShowRepository
@@ -18,7 +22,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
@@ -35,6 +38,7 @@ class TvShowRepositoryImp(
 
     companion object {
         private const val STARTING_PAGE_INDEX = 1
+        private const val NETWORK_PAGE_SIZE = 20
     }
 
     private val airingTodayResults = ConflatedBroadcastChannel<RepoResult>()
@@ -49,14 +53,6 @@ class TvShowRepositoryImp(
         return flow { emit(apiTmdbService.getAiringToday(lastRequestedPage)) }
     }
 
-
-    override suspend fun test(): Flow<RepoResult> {
-        lastRequestedPage = 1
-        request()
-        return airingTodayResults.asFlow()
-    }
-
-
     override suspend fun requestMore() {
         if (isRequestInProgress) return
         val successful = request()
@@ -64,6 +60,13 @@ class TvShowRepositoryImp(
             Log.i(TAG, "request more updating index")
             lastRequestedPage++
         }
+    }
+
+    override suspend fun test(): Flow<PagingData<Tv>> {
+        return Pager(
+            config = PagingConfig(NETWORK_PAGE_SIZE),
+            pagingSourceFactory = { TvShowPagingSource(apiTmdbService) }
+        ).flow
     }
 
     private suspend fun request(): Boolean {

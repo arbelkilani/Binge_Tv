@@ -48,13 +48,6 @@ fun createTmdbService(retrofit: Retrofit): ApiTmdbService {
     return retrofit.create(ApiTmdbService::class.java)
 }
 
-fun createTvMazeRetrofitBuilder(): Retrofit {
-    return Retrofit.Builder()
-        .baseUrl(BuildConfig.TVMAZE_BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-}
-
 fun createTvMazeService(okHttpClient: OkHttpClient): ApiTvMazeService {
     val builder = Retrofit.Builder()
         .baseUrl(BuildConfig.TVMAZE_BASE_URL)
