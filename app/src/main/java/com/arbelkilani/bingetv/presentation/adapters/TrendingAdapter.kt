@@ -11,12 +11,13 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_trending_view.view.*
 
 class TrendingAdapter(
-    private val trendingTv: List<Tv>,
     private val onTvShowClickListener: OnTvShowClickListener
 ) :
     RecyclerView.Adapter<TrendingAdapter.TrendingHolder>() {
 
     private val TAG = TrendingAdapter::class.java.simpleName
+
+    private var tvList = listOf<Tv>()
 
     class TrendingHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -49,10 +50,17 @@ class TrendingAdapter(
     }
 
     override fun getItemCount(): Int {
-        return trendingTv.size
+        return tvList.size
     }
 
     override fun onBindViewHolder(holder: TrendingHolder, position: Int) {
-        holder.bind(trendingTv[position], onTvShowClickListener)
+        holder.bind(tvList[position], onTvShowClickListener)
+    }
+
+    fun setData(it: List<Tv>?) {
+        it?.let {
+            tvList = it
+            notifyDataSetChanged()
+        }
     }
 }

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/splash_background_color"
-    tools:context=".presentation.ui.activities.SplashActivity">
+    tools:context=".presentation.ui.splash.SplashActivity">
 
     <ImageView
         android:layout_width="@dimen/circle_radius"

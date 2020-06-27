@@ -33,8 +33,9 @@ class DashboardActivity : AppCompatActivity(),
         if (savedInstanceState == null) {
             loadFragment(
                 DiscoverFragment.newInstance(
-                    airingTodayData, trendingTv
-                ), R.string.title_discovery
+                    intent.getParcelableExtra(Constants.SPLASH_DASHBOARD)!!
+                ),
+                R.string.title_discovery
             )
         }
     }
@@ -69,7 +70,7 @@ class DashboardActivity : AppCompatActivity(),
             R.id.menu_discover -> {
                 loadFragment(
                     DiscoverFragment.newInstance(
-                        airingTodayData, trendingTv
+                        intent.getParcelableExtra(Constants.SPLASH_DASHBOARD)!!
                     ), R.string.title_discovery
                 )
                 return true

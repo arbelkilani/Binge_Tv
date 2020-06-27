@@ -22,7 +22,7 @@
             android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name=".presentation.ui.activities.SplashActivity"
+            android:name=".presentation.ui.splash.SplashActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden">
