@@ -40,7 +40,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginTop="@dimen/default_margin_min"
+                android:layout_marginTop="@dimen/default_margin"
                 android:layout_weight="0.35"
                 android:orientation="vertical">
 
@@ -57,12 +57,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:clipToPadding="false"
-                    android:columnWidth="@dimen/item_tv_width"
                     android:layoutMode="clipBounds"
                     android:orientation="horizontal"
                     android:overScrollMode="never"
-                    android:paddingStart="@dimen/default_padding_min"
-                    android:paddingEnd="@dimen/default_padding_min"
+                    android:paddingStart="@dimen/default_padding"
+                    android:paddingEnd="@dimen/default_padding"
                     android:scrollbars="none"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior" />
@@ -90,7 +89,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:clipToPadding="false"
-                    android:columnWidth="@dimen/item_tv_width"
                     android:layoutMode="clipBounds"
                     android:orientation="horizontal"
                     android:overScrollMode="never"

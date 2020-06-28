@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="130dp"
     android:layout_height="match_parent"
+    android:clickable="false"
     android:orientation="vertical"
     android:padding="@dimen/default_padding_min">
 
-    <androidx.cardview.widget.CardView
+    <com.arbelkilani.bingetv.presentation.ui.view.CustomCardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layoutMode="opticalBounds"
@@ -17,7 +18,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </androidx.cardview.widget.CardView>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/background_backdrop_gradient" />
+
+    </com.arbelkilani.bingetv.presentation.ui.view.CustomCardView>
+    >
+
 
     <TextView
         android:id="@+id/tv_trending_name"
@@ -27,9 +35,10 @@
         android:layout_marginTop="@dimen/small_margin"
         android:ellipsize="end"
         android:fontFamily="@font/avenir_next_medium"
+        android:text="azeaze aeazeaze "
         android:textColor="@color/item_trending_name_color"
-        android:textSize="@dimen/small_text_size" />
+        android:textSize="@dimen/small_text_size"
+        android:visibility="gone" />
 
-
-</LinearLayout>
+</FrameLayout>
 
