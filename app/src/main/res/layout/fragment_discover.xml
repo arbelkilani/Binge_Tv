@@ -32,6 +32,7 @@
                 android:layout_weight="0.3"
                 android:clipChildren="false"
                 android:clipToPadding="false"
+                android:overScrollMode="never"
                 android:paddingStart="@dimen/view_pager_padding"
                 android:paddingEnd="@dimen/view_pager_padding" />
 

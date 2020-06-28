@@ -6,7 +6,7 @@ import com.arbelkilani.bingetv.data.source.remote.ApiTmdbService
 import retrofit2.HttpException
 import java.io.IOException
 
-class TvShowPagingSource(
+class DiscoverPagingSource(
     private val service: ApiTmdbService
 ) : PagingSource<Int, Tv>() {
 
@@ -18,7 +18,7 @@ class TvShowPagingSource(
         val position = params.key ?: STARTING_PAGE_INDEX
 
         return try {
-            val response = service.getTest(position)
+            val response = service.discover(position, "primary_release_date.desc")
             val tvShows = response.results
             LoadResult.Page(
                 data = tvShows,

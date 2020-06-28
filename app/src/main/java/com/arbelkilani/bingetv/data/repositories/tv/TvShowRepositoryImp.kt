@@ -5,7 +5,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.arbelkilani.bingetv.data.model.base.ApiResponse
-import com.arbelkilani.bingetv.data.model.base.RepoResult
 import com.arbelkilani.bingetv.data.model.base.Resource
 import com.arbelkilani.bingetv.data.model.credit.CreditsResponse
 import com.arbelkilani.bingetv.data.model.tv.Tv
@@ -13,18 +12,15 @@ import com.arbelkilani.bingetv.data.model.tv.TvDetails
 import com.arbelkilani.bingetv.data.model.tv.maze.TvDetailsMaze
 import com.arbelkilani.bingetv.data.model.tv.maze.channel.WebChannel
 import com.arbelkilani.bingetv.data.model.tv.maze.details.NextEpisodeData
-import com.arbelkilani.bingetv.data.pagingsource.TvShowPagingSource
+import com.arbelkilani.bingetv.data.pagingsource.DiscoverPagingSource
 import com.arbelkilani.bingetv.data.source.remote.ApiTmdbService
 import com.arbelkilani.bingetv.data.source.remote.ApiTvMazeService
 import com.arbelkilani.bingetv.domain.repositories.TvShowRepository
 import com.arbelkilani.bingetv.utils.formatAirDate
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import retrofit2.HttpException
-import java.io.IOException
 
 
 @FlowPreview
@@ -41,62 +37,17 @@ class TvShowRepositoryImp(
         private const val NETWORK_PAGE_SIZE = 20
     }
 
-    private val airingTodayResults = ConflatedBroadcastChannel<RepoResult>()
-
-    private var lastRequestedPage = STARTING_PAGE_INDEX
-    private var isRequestInProgress = false
-
-    override suspend fun getAiringToday(): Flow<ApiResponse<Tv>> {
-        Log.i(TAG, "getAiringToday()")
-        lastRequestedPage = 1
-        request()
-        return flow { emit(apiTmdbService.getAiringToday(lastRequestedPage)) }
+    override suspend fun trending(): Flow<ApiResponse<Tv>> {
+        Log.i(TAG, "trending()")
+        return flow { emit(apiTmdbService.trending("tv", "day")) }
     }
 
-    override suspend fun requestMore() {
-        if (isRequestInProgress) return
-        val successful = request()
-        if (successful) {
-            Log.i(TAG, "request more updating index")
-            lastRequestedPage++
-        }
-    }
-
-    override suspend fun test(): Flow<PagingData<Tv>> {
+    override suspend fun discover(): Flow<PagingData<Tv>> {
+        Log.i(TAG, "discover()")
         return Pager(
             config = PagingConfig(NETWORK_PAGE_SIZE),
-            pagingSourceFactory = { TvShowPagingSource(apiTmdbService) }
+            pagingSourceFactory = { DiscoverPagingSource(apiTmdbService) }
         ).flow
-    }
-
-    private suspend fun request(): Boolean {
-        Log.i(TAG, "request")
-
-        isRequestInProgress = true
-        var successful = false
-
-        try {
-            Log.i(TAG, "lastRequestedPage $lastRequestedPage")
-            val response = apiTmdbService.getAiringToday(lastRequestedPage)
-            val results = response.results
-            Log.i(TAG, "results $results")
-            airingTodayResults.offer(RepoResult.Success(response.results))
-            successful = true
-        } catch (exception: IOException) {
-            Log.e(TAG, "exception = ${exception.localizedMessage}")
-            airingTodayResults.offer(RepoResult.Error(exception))
-        } catch (exception: HttpException) {
-            Log.e(TAG, "exception = ${exception.localizedMessage}")
-            airingTodayResults.offer(RepoResult.Error(exception))
-        }
-        isRequestInProgress = false
-        return successful
-    }
-
-
-    override suspend fun getTrendingTv(): Flow<ApiResponse<Tv>> {
-        Log.i(TAG, "getTrendingTv()")
-        return flow { emit(apiTmdbService.getTrendingTv()) }
     }
 
     override suspend fun getTvDetails(id: Int): Resource<TvDetails> = try {

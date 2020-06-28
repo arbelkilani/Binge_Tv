@@ -1,43 +1,35 @@
 package com.arbelkilani.bingetv.presentation.viewmodel.discover
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.arbelkilani.bingetv.data.model.tv.CombinedObjects
+import com.arbelkilani.bingetv.data.model.base.ApiResponse
 import com.arbelkilani.bingetv.data.model.tv.Tv
-import com.arbelkilani.bingetv.domain.usecase.TestUseCase
+import com.arbelkilani.bingetv.domain.usecase.DiscoverUseCase
+import com.arbelkilani.bingetv.domain.usecase.TrendingUseCase
 import com.arbelkilani.bingetv.presentation.viewmodel.BaseViewModel
 import kotlinx.coroutines.flow.Flow
 
 class DiscoverViewModel(
-    data: CombinedObjects,
-    private val testUseCase: TestUseCase
+    private val trendingUseCase: TrendingUseCase,
+    private val discoverUseCase: DiscoverUseCase
 ) : BaseViewModel() {
 
     companion object {
         private const val TAG = "DiscoverViewModel"
     }
 
-    private val _combined = MutableLiveData<CombinedObjects>(data)
-
-    val trending = Transformations.map(_combined) {
-        _combined.value!!.trending.results
-    }
-
-    private var currentResult: Flow<PagingData<Tv>>? = null
-
     init {
         Log.i(TAG, "init")
     }
 
-    suspend fun getTvShows(): Flow<PagingData<Tv>> {
-        val lastResult = currentResult
-        val newResult = testUseCase.invoke().cachedIn(viewModelScope)
-        currentResult = newResult
-        return newResult
+    suspend fun getTrending(): Flow<ApiResponse<Tv>> {
+        return trendingUseCase.invoke()
+    }
+
+    suspend fun getDiscover(): Flow<PagingData<Tv>> {
+        return discoverUseCase.invoke().cachedIn(viewModelScope)
     }
 
 }

@@ -6,12 +6,8 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.arbelkilani.bingetv.R
-import com.arbelkilani.bingetv.data.model.base.ApiResponse
-import com.arbelkilani.bingetv.data.model.tv.CombinedObjects
-import com.arbelkilani.bingetv.data.model.tv.Tv
 import com.arbelkilani.bingetv.presentation.ui.fragments.DiscoverFragment
 import com.arbelkilani.bingetv.presentation.ui.fragments.WatchlistFragment
-import com.arbelkilani.bingetv.utils.Constants
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_dashboard.*
 
@@ -20,32 +16,15 @@ class DashboardActivity : AppCompatActivity(),
 
     private val TAG = DashboardActivity::class.java.simpleName
 
-    private lateinit var airingTodayData: ApiResponse<Tv>
-    private lateinit var trendingTv: ApiResponse<Tv>
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
 
         initViews()
-        initData()
 
         if (savedInstanceState == null) {
-            loadFragment(
-                DiscoverFragment.newInstance(
-                    intent.getParcelableExtra(Constants.SPLASH_DASHBOARD)!!
-                ),
-                R.string.title_discovery
-            )
+            loadFragment(DiscoverFragment.newInstance(), R.string.title_discovery)
         }
-    }
-
-    private fun initData() {
-        Log.i(TAG, "initData")
-        val combinedExtra =
-            intent!!.getParcelableExtra<CombinedObjects>(Constants.SPLASH_DASHBOARD)!!
-        airingTodayData = combinedExtra.airing
-        trendingTv = combinedExtra.trending
     }
 
     private fun initViews() {
@@ -68,11 +47,7 @@ class DashboardActivity : AppCompatActivity(),
 
         when (item.itemId) {
             R.id.menu_discover -> {
-                loadFragment(
-                    DiscoverFragment.newInstance(
-                        intent.getParcelableExtra(Constants.SPLASH_DASHBOARD)!!
-                    ), R.string.title_discovery
-                )
+                loadFragment(DiscoverFragment.newInstance(), R.string.title_discovery)
                 return true
             }
 

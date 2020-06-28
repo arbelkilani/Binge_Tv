@@ -20,11 +20,6 @@ val UseCasesModule = module {
     single { createGetNextEpisodeDataUseCase(get()) }
 
     single { createGetSearchTvShowUseCase(get()) }
-
-    single { createRequestMoreUseCase(get()) }
-
-    single { createTest(get()) }
-
 }
 
 
@@ -36,8 +31,8 @@ fun createAiringTodayUseCase(tvShowRepository: TvShowRepository): DiscoverUseCas
     return DiscoverUseCase(tvShowRepository)
 }
 
-fun createTrendingTvUseCase(tvShowRepository: TvShowRepository): GetTrendingTvUseCase {
-    return GetTrendingTvUseCase(tvShowRepository)
+fun createTrendingTvUseCase(tvShowRepository: TvShowRepository): TrendingUseCase {
+    return TrendingUseCase(tvShowRepository)
 }
 
 fun createTvDetailsUseCase(tvShowRepository: TvShowRepository): GetTvDetailsUseCase {
@@ -54,12 +49,4 @@ fun createGetNextEpisodeDataUseCase(tvShowRepository: TvShowRepository): GetNext
 
 fun createGetSearchTvShowUseCase(tvShowRepository: TvShowRepository): GetSearchTvShowUseCase {
     return GetSearchTvShowUseCase(tvShowRepository)
-}
-
-fun createRequestMoreUseCase(tvShowRepository: TvShowRepository): GetRequestMoreUseCase {
-    return GetRequestMoreUseCase(tvShowRepository)
-}
-
-fun createTest(tvShowRepository: TvShowRepository): TestUseCase {
-    return TestUseCase(tvShowRepository)
 }

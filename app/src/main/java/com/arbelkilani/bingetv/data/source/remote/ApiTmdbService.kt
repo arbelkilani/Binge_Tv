@@ -13,17 +13,22 @@ import retrofit2.http.Query
 
 interface ApiTmdbService {
 
+    @GET("trending/{media_type}/{time_window}")
+    suspend fun trending(
+        @Path("media_type") mediaType: String,
+        @Path("time_window") timeWindow: String
+    ): ApiResponse<Tv>
+
+    @GET("discover/tv")
+    suspend fun discover(
+        @Query("page") page: Int,
+        @Query("sort_by") sortBy: String
+    ): ApiResponse<Tv>
+
+
     @GET("genre/tv/list")
     suspend fun getGenres(): Response<GenreResponse>
 
-    @GET("discover/tv?sort_by=popularity.desc")
-    suspend fun getAiringToday(@Query("page") page: Int): ApiResponse<Tv>
-
-    @GET("discover/tv?sort_by=popularity.desc")
-    suspend fun getTest(@Query("page") page: Int): ApiResponse<Tv>
-
-    @GET("trending/tv/week")
-    suspend fun getTrendingTv(): ApiResponse<Tv>
 
     @GET("tv/{tv_id}")
     suspend fun getTvDetails(

@@ -6,10 +6,8 @@ import android.util.Log
 import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.arbelkilani.bingetv.R
-import com.arbelkilani.bingetv.data.model.tv.CombinedObjects
 import com.arbelkilani.bingetv.data.model.tv.Tv
 import com.arbelkilani.bingetv.databinding.FragmentDiscoverBinding
 import com.arbelkilani.bingetv.presentation.adapters.DiscoverAdapter
@@ -23,29 +21,42 @@ import com.arbelkilani.bingetv.presentation.viewmodel.discover.DiscoverViewModel
 import com.arbelkilani.bingetv.utils.Constants
 import com.arbelkilani.bingetv.utils.getMenuItemAxis
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 
 class DiscoverFragment : Fragment(), OnTvShowClickListener {
 
-    private val viewModel: DiscoverViewModel by viewModel {
-        parametersOf(
-            arguments?.getParcelable(Constants.SPLASH_DASHBOARD)
-        )
-    }
+    private val viewModel: DiscoverViewModel by viewModel()
 
     private lateinit var binding: FragmentDiscoverBinding
 
-    private val trendingAdapter = TrendingAdapter(this)
+    private val discoverAdapter = DiscoverAdapter(this)
 
-    private var listJob: Job? = null
+    private var discoverJob: Job? = null
+    private var trendingJob: Job? = null
+
+    private fun getDiscoverList() {
+        discoverJob?.cancel()
+        discoverJob = lifecycleScope.launch {
+            viewModel.getDiscover().collectLatest {
+                discoverAdapter.submitData(it)
+            }
+        }
+    }
+
     private fun getTrendingList() {
-        listJob?.cancel()
-        listJob = lifecycleScope.launch {
-            viewModel.getTvShows().collectLatest {
-                trendingAdapter.submitData(it)
+        trendingJob?.cancel()
+        trendingJob = lifecycleScope.launch {
+            viewModel.getTrending().collect {
+                binding.viewPager.apply {
+                    adapter = TrendingAdapter(it.results)
+                    currentItem = it.results.size / 2
+                    offscreenPageLimit = 3
+                    pageMargin = resources.getDimensionPixelOffset(R.dimen.view_pager_margin)
+                    setPageTransformer(false, CustomTransformer())
+                }
             }
         }
     }
@@ -68,17 +79,6 @@ class DiscoverFragment : Fragment(), OnTvShowClickListener {
             false
         )
 
-        viewModel.trending.observe(viewLifecycleOwner, Observer {
-            binding.viewPager.apply {
-                adapter = DiscoverAdapter(it)
-                currentItem = Int.MAX_VALUE / 2
-                overScrollMode = 2
-                offscreenPageLimit = 3
-                pageMargin = resources.getDimensionPixelOffset(R.dimen.view_pager_margin)
-                setPageTransformer(false, CustomTransformer())
-            }
-        })
-
         binding.viewmodel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
@@ -87,13 +87,15 @@ class DiscoverFragment : Fragment(), OnTvShowClickListener {
         }
 
         initAdapter()
+
+        getDiscoverList()
         getTrendingList()
 
         return binding.root
     }
 
     private fun initAdapter() {
-        binding.recyclerView.adapter = trendingAdapter
+        binding.recyclerView.adapter = discoverAdapter
     }
 
     companion object {
@@ -101,13 +103,7 @@ class DiscoverFragment : Fragment(), OnTvShowClickListener {
         private const val TAG = "DiscoverFragment"
 
         @JvmStatic
-        fun newInstance(combinedObjects: CombinedObjects) =
-            DiscoverFragment()
-                .apply {
-                    arguments = Bundle().apply {
-                        putParcelable(Constants.SPLASH_DASHBOARD, combinedObjects)
-                    }
-                }
+        fun newInstance() = DiscoverFragment()
     }
 
     override fun onTvItemClicked(tv: Tv) {

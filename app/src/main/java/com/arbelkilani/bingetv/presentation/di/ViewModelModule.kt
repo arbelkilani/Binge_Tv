@@ -1,6 +1,5 @@
 package com.arbelkilani.bingetv.presentation.di
 
-import com.arbelkilani.bingetv.data.model.tv.CombinedObjects
 import com.arbelkilani.bingetv.presentation.viewmodel.DetailsTvActivityViewModel
 import com.arbelkilani.bingetv.presentation.viewmodel.SearchViewModel
 import com.arbelkilani.bingetv.presentation.viewmodel.discover.DiscoverViewModel
@@ -15,7 +14,9 @@ val ViewModelModule = module {
     viewModel { SplashViewModel(get(), get()) }
     viewModel { DetailsTvActivityViewModel(get(), get(), get()) }
     viewModel { SearchViewModel(get()) }
-    viewModel { (combined: CombinedObjects) -> DiscoverViewModel(combined, get()) }
+    //viewModel { (combined: CombinedObjects) -> DiscoverViewModel(combined, get()) }
+    viewModel { DiscoverViewModel(get(), get()) }
+
 }
 
 
