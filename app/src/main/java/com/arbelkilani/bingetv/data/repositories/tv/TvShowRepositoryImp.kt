@@ -12,7 +12,9 @@ import com.arbelkilani.bingetv.data.model.tv.TvDetails
 import com.arbelkilani.bingetv.data.model.tv.maze.TvDetailsMaze
 import com.arbelkilani.bingetv.data.model.tv.maze.channel.WebChannel
 import com.arbelkilani.bingetv.data.model.tv.maze.details.NextEpisodeData
+import com.arbelkilani.bingetv.data.pagingsource.AiringTodayPagingSource
 import com.arbelkilani.bingetv.data.pagingsource.DiscoverPagingSource
+import com.arbelkilani.bingetv.data.pagingsource.PopularPagingSource
 import com.arbelkilani.bingetv.data.source.remote.ApiTmdbService
 import com.arbelkilani.bingetv.data.source.remote.ApiTvMazeService
 import com.arbelkilani.bingetv.domain.repositories.TvShowRepository
@@ -47,6 +49,22 @@ class TvShowRepositoryImp(
         return Pager(
             config = PagingConfig(NETWORK_PAGE_SIZE),
             pagingSourceFactory = { DiscoverPagingSource(apiTmdbService) }
+        ).flow
+    }
+
+    override suspend fun airingToday(): Flow<PagingData<Tv>> {
+        Log.i(TAG, "airingToday()")
+        return Pager(
+            config = PagingConfig(NETWORK_PAGE_SIZE),
+            pagingSourceFactory = { AiringTodayPagingSource(apiTmdbService) }
+        ).flow
+    }
+
+    override suspend fun popular(): Flow<PagingData<Tv>> {
+        Log.i(TAG, "popular()")
+        return Pager(
+            config = PagingConfig(NETWORK_PAGE_SIZE),
+            pagingSourceFactory = { PopularPagingSource(apiTmdbService) }
         ).flow
     }
 

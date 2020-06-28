@@ -12,6 +12,8 @@ import kotlinx.coroutines.flow.Flow
 interface TvShowRepository {
     suspend fun trending(): Flow<ApiResponse<Tv>>
     suspend fun discover(): Flow<PagingData<Tv>>
+    suspend fun airingToday(): Flow<PagingData<Tv>>
+    suspend fun popular(): Flow<PagingData<Tv>>
 
     suspend fun getTvDetails(id: Int): Resource<TvDetails>
     suspend fun getCredits(id: Int): Resource<CreditsResponse>

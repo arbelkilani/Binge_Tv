@@ -25,6 +25,16 @@ interface ApiTmdbService {
         @Query("sort_by") sortBy: String
     ): ApiResponse<Tv>
 
+    @GET("tv/airing_today")
+    suspend fun airingToday(
+        @Query("page") page: Int
+    ): ApiResponse<Tv>
+
+    @GET("tv/popular")
+    suspend fun popular(
+        @Query("page") page: Int
+    ): ApiResponse<Tv>
+
 
     @GET("genre/tv/list")
     suspend fun getGenres(): Response<GenreResponse>

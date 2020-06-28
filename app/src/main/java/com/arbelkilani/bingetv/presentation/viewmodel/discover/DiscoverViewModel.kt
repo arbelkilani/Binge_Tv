@@ -6,14 +6,14 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.arbelkilani.bingetv.data.model.base.ApiResponse
 import com.arbelkilani.bingetv.data.model.tv.Tv
-import com.arbelkilani.bingetv.domain.usecase.DiscoverUseCase
+import com.arbelkilani.bingetv.domain.usecase.PopularUseCase
 import com.arbelkilani.bingetv.domain.usecase.TrendingUseCase
 import com.arbelkilani.bingetv.presentation.viewmodel.BaseViewModel
 import kotlinx.coroutines.flow.Flow
 
 class DiscoverViewModel(
     private val trendingUseCase: TrendingUseCase,
-    private val discoverUseCase: DiscoverUseCase
+    private val popularUseCase: PopularUseCase
 ) : BaseViewModel() {
 
     companion object {
@@ -29,7 +29,7 @@ class DiscoverViewModel(
     }
 
     suspend fun getDiscover(): Flow<PagingData<Tv>> {
-        return discoverUseCase.invoke().cachedIn(viewModelScope)
+        return popularUseCase.invoke().cachedIn(viewModelScope)
     }
 
 }

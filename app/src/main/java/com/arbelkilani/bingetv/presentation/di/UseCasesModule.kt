@@ -7,11 +7,15 @@ import org.koin.dsl.module
 
 val UseCasesModule = module {
 
-    single { createGetGenreUseCase(get()) }
+    single { createDiscoverUseCase(get()) }
+
+    single { createTrendingUseCase(get()) }
 
     single { createAiringTodayUseCase(get()) }
 
-    single { createTrendingTvUseCase(get()) }
+    single { createPopularUseCase(get()) }
+
+    single { createGetGenreUseCase(get()) }
 
     single { createTvDetailsUseCase(get()) }
 
@@ -22,17 +26,24 @@ val UseCasesModule = module {
     single { createGetSearchTvShowUseCase(get()) }
 }
 
-
-fun createGetGenreUseCase(genresRepository: GenresRepository): GetGenreUseCase {
-    return GetGenreUseCase(genresRepository)
-}
-
-fun createAiringTodayUseCase(tvShowRepository: TvShowRepository): DiscoverUseCase {
+fun createDiscoverUseCase(tvShowRepository: TvShowRepository): DiscoverUseCase {
     return DiscoverUseCase(tvShowRepository)
 }
 
-fun createTrendingTvUseCase(tvShowRepository: TvShowRepository): TrendingUseCase {
+fun createTrendingUseCase(tvShowRepository: TvShowRepository): TrendingUseCase {
     return TrendingUseCase(tvShowRepository)
+}
+
+fun createAiringTodayUseCase(tvShowRepository: TvShowRepository): AiringTodayUseCase {
+    return AiringTodayUseCase(tvShowRepository)
+}
+
+fun createPopularUseCase(tvShowRepository: TvShowRepository): PopularUseCase {
+    return PopularUseCase(tvShowRepository)
+}
+
+fun createGetGenreUseCase(genresRepository: GenresRepository): GetGenreUseCase {
+    return GetGenreUseCase(genresRepository)
 }
 
 fun createTvDetailsUseCase(tvShowRepository: TvShowRepository): GetTvDetailsUseCase {

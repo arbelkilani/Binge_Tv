@@ -21,6 +21,7 @@ import com.arbelkilani.bingetv.presentation.viewmodel.discover.DiscoverViewModel
 import com.arbelkilani.bingetv.utils.Constants
 import com.arbelkilani.bingetv.utils.getMenuItemAxis
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -40,24 +41,28 @@ class DiscoverFragment : Fragment(), OnTvShowClickListener {
     private fun getDiscoverList() {
         discoverJob?.cancel()
         discoverJob = lifecycleScope.launch {
-            viewModel.getDiscover().collectLatest {
-                discoverAdapter.submitData(it)
-            }
+            viewModel.getDiscover()
+                .catch { cause -> Log.i(TAG, "cause = ${cause.localizedMessage}") }
+                .collectLatest {
+                    discoverAdapter.submitData(it)
+                }
         }
     }
 
     private fun getTrendingList() {
         trendingJob?.cancel()
         trendingJob = lifecycleScope.launch {
-            viewModel.getTrending().collect {
-                binding.viewPager.apply {
-                    adapter = TrendingAdapter(it.results)
-                    currentItem = it.results.size / 2
-                    offscreenPageLimit = 3
-                    pageMargin = resources.getDimensionPixelOffset(R.dimen.view_pager_margin)
-                    setPageTransformer(false, CustomTransformer())
+            viewModel.getTrending()
+                .catch { cause -> Log.i(TAG, "cause = ${cause.localizedMessage}") }
+                .collect {
+                    binding.viewPager.apply {
+                        adapter = TrendingAdapter(it.results)
+                        currentItem = it.results.size / 2
+                        offscreenPageLimit = 3
+                        pageMargin = resources.getDimensionPixelOffset(R.dimen.view_pager_margin)
+                        setPageTransformer(false, CustomTransformer())
+                    }
                 }
-            }
         }
     }
 
