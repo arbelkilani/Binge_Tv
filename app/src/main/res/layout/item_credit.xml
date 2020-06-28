@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="credit"
+            type="com.arbelkilani.bingetv.data.model.credit.Credit" />
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/default_margin">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_cast"
+            android:layout_width="@dimen/item_credit_image_size"
+            android:layout_height="@dimen/item_credit_image_size"
+            android:scaleType="centerCrop"
+            android:src="@{credit.profilePath}"
+            app:civ_border_overlay="true" />
+
+        <TextView
+            android:id="@+id/tv_cast"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_cast"
+            android:layout_alignStart="@+id/iv_cast"
+            android:layout_alignEnd="@id/iv_cast"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/default_margin_min"
+            android:fontFamily="@font/avenir_next_regular"
+            android:gravity="center_horizontal"
+            android:text="@{credit.name}"
+            android:textSize="@dimen/item_credit_name_text_size" />
+
+
+    </RelativeLayout>
+</layout>
