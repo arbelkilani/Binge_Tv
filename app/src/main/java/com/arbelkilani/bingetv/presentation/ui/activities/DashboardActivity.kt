@@ -16,6 +16,10 @@ class DashboardActivity : AppCompatActivity(),
 
     private val TAG = DashboardActivity::class.java.simpleName
 
+    private val discoverFragment = DiscoverFragment()
+    private val watchlistFragment = WatchlistFragment()
+    private var active: Fragment = discoverFragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
@@ -23,7 +27,10 @@ class DashboardActivity : AppCompatActivity(),
         initViews()
 
         if (savedInstanceState == null) {
-            loadFragment(DiscoverFragment.newInstance(), R.string.title_discovery)
+            supportFragmentManager.beginTransaction().add(R.id.main_container, watchlistFragment)
+                .hide(watchlistFragment).commit()
+            supportFragmentManager.beginTransaction().add(R.id.main_container, discoverFragment)
+                .commit()
         }
     }
 
@@ -34,25 +41,22 @@ class DashboardActivity : AppCompatActivity(),
         setSupportActionBar(toolbar)
     }
 
-    private fun loadFragment(fragment: Fragment, title: Int) {
-        Log.i(TAG, "loadFragment() : ${fragment::class.java.simpleName}")
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.main_container, fragment, fragment::class.java.simpleName)
-            .commit()
-    }
-
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
         if (item.itemId == bottom_navigation.selectedItemId) return false
 
         when (item.itemId) {
             R.id.menu_discover -> {
-                loadFragment(DiscoverFragment.newInstance(), R.string.title_discovery)
+                supportFragmentManager.beginTransaction().hide(active).show(discoverFragment)
+                    .commit()
+                active = discoverFragment
                 return true
             }
 
             R.id.menu_watch_list -> {
-                loadFragment(WatchlistFragment(), R.string.title_watch_list)
+                supportFragmentManager.beginTransaction().hide(active).show(watchlistFragment)
+                    .commit()
+                active = watchlistFragment
                 return true
             }
         }
