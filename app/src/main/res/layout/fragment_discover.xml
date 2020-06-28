@@ -36,32 +36,68 @@
                 android:paddingStart="@dimen/view_pager_padding"
                 android:paddingEnd="@dimen/view_pager_padding" />
 
+            <!-- airing today -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginTop="@dimen/default_margin"
-                android:layout_weight="0.7"
-                android:orientation="vertical"
-                android:paddingStart="@dimen/default_padding_min"
-                android:paddingEnd="@dimen/default_padding_min">
+                android:layout_marginTop="@dimen/default_margin_min"
+                android:layout_weight="0.35"
+                android:orientation="vertical">
 
                 <TextView
                     style="@style/Toolbar.TextTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/default_margin_min"
+                    android:layout_marginStart="@dimen/default_margin"
                     android:layout_marginBottom="@dimen/default_margin_min"
-                    android:text="@string/title_to_change_name" />
+                    android:text="@string/airing_today" />
 
-                <com.arbelkilani.bingetv.presentation.ui.view.AutofitRecyclerView
-                    android:id="@+id/recycler_view"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_airing_today"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:clipToPadding="false"
                     android:columnWidth="@dimen/item_tv_width"
                     android:layoutMode="clipBounds"
+                    android:orientation="horizontal"
                     android:overScrollMode="never"
+                    android:paddingStart="@dimen/default_padding_min"
+                    android:paddingEnd="@dimen/default_padding_min"
                     android:scrollbars="none"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+            </LinearLayout>
+
+            <!-- popular -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/default_margin_min"
+                android:layout_weight="0.35"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Toolbar.TextTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_marginBottom="@dimen/default_margin_min"
+                    android:text="@string/popular" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_popular"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:columnWidth="@dimen/item_tv_width"
+                    android:layoutMode="clipBounds"
+                    android:orientation="horizontal"
+                    android:overScrollMode="never"
+                    android:paddingStart="@dimen/default_padding_min"
+                    android:paddingEnd="@dimen/default_padding_min"
+                    android:scrollbars="none"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
             </LinearLayout>

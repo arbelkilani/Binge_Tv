@@ -33,6 +33,8 @@
     <string name="details_bottom_sheet_content_type_label">Status</string>
     <string name="details_bottom_sheet_content_cast_label">Cast</string>
     <string name="search_title">Search</string>
+    <string name="airing_today">Airing Today</string>
+    <string name="popular">Popular</string>
     <!-- todo check plurals for days with data binding -->
 
 </resources>
