@@ -15,7 +15,7 @@
 
         <variable
             name="viewModel"
-            type="com.arbelkilani.bingetv.presentation.viewmodel.DetailsTvActivityViewModel" />
+            type="com.arbelkilani.bingetv.presentation.viewmodel.TvDetailsActivityViewModel" />
 
     </data>
 

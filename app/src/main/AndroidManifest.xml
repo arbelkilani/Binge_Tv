@@ -37,7 +37,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.ui.activities.DetailsTvActivity"
+            android:name=".presentation.ui.activities.TvDetailsActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />

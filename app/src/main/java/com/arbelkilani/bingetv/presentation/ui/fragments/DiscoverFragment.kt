@@ -18,8 +18,8 @@ import com.arbelkilani.bingetv.presentation.adapters.OnTheAirAdapter
 import com.arbelkilani.bingetv.presentation.adapters.TrendingAdapter
 import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
 import com.arbelkilani.bingetv.presentation.ui.activities.DashboardActivity
-import com.arbelkilani.bingetv.presentation.ui.activities.DetailsTvActivity
 import com.arbelkilani.bingetv.presentation.ui.activities.SearchActivity
+import com.arbelkilani.bingetv.presentation.ui.activities.TvDetailsActivity
 import com.arbelkilani.bingetv.presentation.ui.view.CustomTransformer
 import com.arbelkilani.bingetv.presentation.viewmodel.discover.DiscoverViewModel
 import com.arbelkilani.bingetv.utils.Constants
@@ -159,7 +159,7 @@ class DiscoverFragment : Fragment(), OnTvShowClickListener {
     }
 
     override fun onTvItemClicked(tv: Tv) {
-        startActivity(Intent(activity, DetailsTvActivity::class.java)
+        startActivity(Intent(activity, TvDetailsActivity::class.java)
             .apply {
                 putExtra(Constants.DISCOVER_DETAILS, tv)
             })

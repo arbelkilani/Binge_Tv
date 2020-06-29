@@ -13,44 +13,52 @@ import com.arbelkilani.bingetv.data.model.video.VideoResponse
 import com.arbelkilani.bingetv.domain.usecase.GetCreditsUseCase
 import com.arbelkilani.bingetv.domain.usecase.GetNextEpisodeDataUseCase
 import com.arbelkilani.bingetv.domain.usecase.GetTvDetailsUseCase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
-class DetailsTvActivityViewModel constructor(
+class TvDetailsActivityViewModel constructor(
+    private val selectedTvData: Tv,
     private val getTvDetailsUseCase: GetTvDetailsUseCase,
     private val getCreditsUseCase: GetCreditsUseCase,
     private val getNextEpisodeDataUseCase: GetNextEpisodeDataUseCase
 ) :
     BaseViewModel() {
 
+    private val _selectedTv = MutableLiveData<Tv>(selectedTvData)
+    val selectedTv: LiveData<Tv>
+        get() = _selectedTv
+
     private val _tvId = MutableLiveData<Int>()
     val tvId: LiveData<Int>
         get() = _tvId
 
-    private val TAG = DetailsTvActivityViewModel::class.java.simpleName
+    private val TAG = TvDetailsActivityViewModel::class.java.simpleName
 
-    val tvDetailsLiveData = MutableLiveData<Resource<TvDetails>>()
-    val creditsLiveData = MutableLiveData<List<Credit>>()
-    val nextEpisodeData = MutableLiveData<NextEpisodeData>()
+    private val _tvDetails = MutableLiveData<Resource<TvDetails>>()
+    val tvDetails: LiveData<Resource<TvDetails>>
+        get() = _tvDetails
 
-    val trailerKey = MutableLiveData<String>()
-    val homePageUrl = MutableLiveData<String>()
+    private val _credits = MutableLiveData<List<Credit>>()
+    val credits: LiveData<List<Credit>>
+        get() = _credits
 
-    fun playTrailer(videoResponse: VideoResponse) =
-        trailerKey.postValue(videoResponse.results[0].key)
+    private val _nextEpisodeData = MutableLiveData<NextEpisodeData>()
+    val nextEpisodeData: LiveData<NextEpisodeData>
+        get() = _nextEpisodeData
 
-    fun openHomePage(homePageUrl: String) {
-        if (homePageUrl.isNotEmpty())
-            this.homePageUrl.postValue(homePageUrl)
+    private val _trailerKey = MutableLiveData<String>()
+    val trailerKey: LiveData<String>
+        get() = _trailerKey
 
-    }
+    private val _homePageUrl = MutableLiveData<String>()
+    val homePageUrl: LiveData<String>
+        get() = _homePageUrl
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    fun getDetails(selectedTv: Tv) {
-        scope.launch(Dispatchers.IO) {
-            getTvDetails(selectedTv)
-            getCredits(selectedTv)
+    init {
+        scope.launch {
+            _selectedTv.value?.let {
+                getTvDetails(it)
+                getCredits(it)
+            }
         }
     }
 
@@ -59,7 +67,7 @@ class DetailsTvActivityViewModel constructor(
         val response = getCreditsUseCase.invoke(selectedTv.id)
         if (response.status == Status.SUCCESS) {
             Log.i(TAG, "credits response = ${response.data}")
-            creditsLiveData.postValue(response.data!!.cast)
+            _credits.postValue(response.data!!.cast)
         }
     }
 
@@ -68,11 +76,11 @@ class DetailsTvActivityViewModel constructor(
         _tvId.postValue(selectedTv.id)
         val response = getTvDetailsUseCase.invoke(selectedTv.id)
         if (response.status == Status.SUCCESS) {
-            tvDetailsLiveData.postValue(Resource.success(response.data))
+            _tvDetails.postValue(Resource.success(response.data))
             if (response.data?.nextEpisodeToAir != null)
                 getNextEpisodeDetails(response.data.id)
         } else {
-            tvDetailsLiveData.postValue(Resource.exception(Exception(), null))
+            _tvDetails.postValue(Resource.exception(Exception(), null))
         }
     }
 
@@ -80,7 +88,16 @@ class DetailsTvActivityViewModel constructor(
         Log.i(TAG, "getNextEpisodeDetails()")
         val response = getNextEpisodeDataUseCase.invoke(id)
         if (response.status == Status.SUCCESS)
-            nextEpisodeData.postValue(response.data)
+            _nextEpisodeData.postValue(response.data)
+    }
+
+    fun playTrailer(videoResponse: VideoResponse) =
+        _trailerKey.postValue(videoResponse.results[0].key)
+
+    fun openHomePage(homePageUrl: String) {
+        if (homePageUrl.isNotEmpty())
+            _homePageUrl.postValue(homePageUrl)
+
     }
 
 }

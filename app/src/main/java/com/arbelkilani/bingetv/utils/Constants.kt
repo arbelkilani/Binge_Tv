@@ -9,5 +9,6 @@ object Constants {
     const val SPLASH_DELAY = 1000L
     const val SEASON_DETAILS = "season_details"
     const val TV_ID = "tv_id"
+    const val SELECTED_TV = "selected_tv"
 
 }

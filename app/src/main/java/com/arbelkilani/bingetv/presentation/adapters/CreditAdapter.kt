@@ -8,8 +8,10 @@ import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.model.credit.Credit
 import com.arbelkilani.bingetv.databinding.ItemCreditBindingImpl
 
-class CreditAdapter(private val credits: List<Credit>) :
+class CreditAdapter :
     RecyclerView.Adapter<CreditAdapter.CreditHolder>() {
+
+    private var credits = listOf<Credit>()
 
     class CreditHolder(val itemCreditBindingImpl: ItemCreditBindingImpl) :
         RecyclerView.ViewHolder(itemCreditBindingImpl.root)
@@ -27,5 +29,10 @@ class CreditAdapter(private val credits: List<Credit>) :
 
     override fun onBindViewHolder(holder: CreditHolder, position: Int) {
         holder.itemCreditBindingImpl.credit = credits[position]
+    }
+
+    fun notifyDataSetChanged(it: List<Credit>) {
+        credits = it
+        notifyDataSetChanged()
     }
 }

@@ -20,12 +20,11 @@ class SeasonDetailsActivity : AppCompatActivity(), OnEpisodeClickListener {
 
     private val viewModel: SeasonDetailsViewModel by viewModel {
         parametersOf(
-            intent.getIntExtra(Constants.TV_ID, 0),
+            intent.getParcelableExtra(Constants.SELECTED_TV),
             intent.getParcelableExtra(Constants.SEASON_DETAILS)
         )
     }
     private lateinit var binding: ActivitySeasonDetailsBinding
-
 
     private val episodeAdapter = EpisodeAdapter(this)
 
@@ -36,15 +35,16 @@ class SeasonDetailsActivity : AppCompatActivity(), OnEpisodeClickListener {
 
         binding.viewModel = viewModel
         binding.season = viewModel.season.value
-        binding.lifecycleOwner = this
+        binding.tvDetails = viewModel.selectedTv.value
 
-        initAdapter()
-        initToolbar()
+        binding.lifecycleOwner = this
 
         viewModel.episodes.observe(this, Observer {
             (binding.recyclerEpisodes.adapter as EpisodeAdapter).notifyDataSetChanged(it)
         })
 
+        initAdapter()
+        initToolbar()
     }
 
     private fun initToolbar() {

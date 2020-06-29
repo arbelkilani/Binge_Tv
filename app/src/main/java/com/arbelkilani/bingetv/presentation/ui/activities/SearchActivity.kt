@@ -167,7 +167,7 @@ class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener, Revea
 
     override fun onTvItemClicked(tv: Tv) {
         startActivity(
-            Intent(this, DetailsTvActivity::class.java)
+            Intent(this, TvDetailsActivity::class.java)
                 .apply {
                     putExtra(Constants.DISCOVER_DETAILS, tv)
                 })

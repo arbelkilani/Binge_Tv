@@ -10,10 +10,11 @@ import com.arbelkilani.bingetv.databinding.ItemSeasonLargeBindingImpl
 import com.arbelkilani.bingetv.presentation.listeners.OnSeasonClickListener
 
 class SeasonAdapter(
-    private val seasons: List<Season>,
     private val seasonClickListener: OnSeasonClickListener
 ) :
     RecyclerView.Adapter<SeasonAdapter.SeasonHolder>() {
+
+    private var seasons = listOf<Season>()
 
     class SeasonHolder(val itemSeasonsBinding: ItemSeasonLargeBindingImpl) :
         RecyclerView.ViewHolder(itemSeasonsBinding.root)
@@ -32,5 +33,10 @@ class SeasonAdapter(
     override fun onBindViewHolder(holder: SeasonHolder, position: Int) {
         holder.itemSeasonsBinding.season = seasons[position]
         holder.itemSeasonsBinding.seasonClickListener = seasonClickListener
+    }
+
+    fun notifyDataSetChanged(seasons: List<Season>) {
+        this.seasons = seasons
+        notifyDataSetChanged()
     }
 }

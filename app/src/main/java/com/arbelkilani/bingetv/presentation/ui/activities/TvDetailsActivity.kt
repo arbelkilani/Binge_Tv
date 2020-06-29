@@ -15,12 +15,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.model.season.Season
-import com.arbelkilani.bingetv.data.model.tv.Tv
 import com.arbelkilani.bingetv.databinding.ActivityDetailsTvBinding
 import com.arbelkilani.bingetv.presentation.adapters.CreditAdapter
 import com.arbelkilani.bingetv.presentation.adapters.SeasonAdapter
 import com.arbelkilani.bingetv.presentation.listeners.OnSeasonClickListener
-import com.arbelkilani.bingetv.presentation.viewmodel.DetailsTvActivityViewModel
+import com.arbelkilani.bingetv.presentation.viewmodel.TvDetailsActivityViewModel
 import com.arbelkilani.bingetv.utils.Constants
 import com.arbelkilani.bingetv.utils.doOnBottomSheetDetailsSeason
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -28,16 +27,22 @@ import kotlinx.android.synthetic.main.activity_details_tv.*
 import kotlinx.android.synthetic.main.details_bottom_sheet_content.*
 import kotlinx.android.synthetic.main.details_bottom_sheet_seasons.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
-class DetailsTvActivity : AppCompatActivity(), OnSeasonClickListener {
+class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener {
 
-    private val TAG = DetailsTvActivity::class.java.simpleName
+    private val TAG = TvDetailsActivity::class.java.simpleName
 
-    private val viewModel: DetailsTvActivityViewModel by viewModel()
+    private val viewModel: TvDetailsActivityViewModel by viewModel {
+        parametersOf(intent.getParcelableExtra(Constants.DISCOVER_DETAILS)!!)
+    }
     private lateinit var binding: ActivityDetailsTvBinding
 
     private lateinit var bottomSheetBehaviorContent: BottomSheetBehavior<NestedScrollView>
     private lateinit var bottomSheetBehaviorSeasons: BottomSheetBehavior<FrameLayout>
+
+    private val creditsAdapter = CreditAdapter()
+    private val seasonsAdapter = SeasonAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,23 +50,28 @@ class DetailsTvActivity : AppCompatActivity(), OnSeasonClickListener {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_details_tv)
         binding.viewModel = viewModel
+        binding.lifecycleOwner = this
 
-        val selectedTv = intent!!.getParcelableExtra<Tv>(Constants.DISCOVER_DETAILS)!!
-        viewModel.getDetails(selectedTv)
-        binding.selectedTv = selectedTv
+        binding.selectedTv = viewModel.selectedTv.value
 
-        initializeToolbars()
+        viewModel.credits.observe(this, Observer {
+            (rv_credits.adapter as CreditAdapter).notifyDataSetChanged(it)
+        })
 
-        viewModel.tvDetailsLiveData.observe(this, Observer { tvDetailsResource ->
-            tvDetailsResource.data?.let {
-                binding.tvDetails = it
-                rv_seasons.adapter = SeasonAdapter(it.seasons.asReversed(), this)
+        viewModel.tvDetails.observe(this, Observer {
+            it.data?.let { tvDetails ->
+                binding.tvDetails = tvDetails
+                (rv_seasons.adapter as SeasonAdapter).notifyDataSetChanged(tvDetails.seasons)
             }
         })
 
-        viewModel.nextEpisodeData.observe(this, Observer { nextEpisodeData ->
-            binding.nextEpisodeData = nextEpisodeData
+        viewModel.nextEpisodeData.observe(this, Observer {
+            binding.nextEpisodeData = it
         })
+
+        initToolbar()
+        initAdapter()
+        initBottomSheets()
 
         viewModel.trailerKey.observe(this, Observer { key ->
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:$key")))
@@ -70,14 +80,6 @@ class DetailsTvActivity : AppCompatActivity(), OnSeasonClickListener {
         viewModel.homePageUrl.observe(this, Observer { url ->
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
         })
-
-        viewModel.creditsLiveData.observe(this, Observer { credits ->
-            credits?.let {
-                rv_credits.adapter = CreditAdapter(it)
-            }
-        })
-
-        initViews()
 
         /*
 
@@ -91,7 +93,7 @@ class DetailsTvActivity : AppCompatActivity(), OnSeasonClickListener {
 
     }
 
-    private fun initializeToolbars() {
+    private fun initToolbar() {
         setSupportActionBar(toolbar)
         supportActionBar?.let {
             it.setDisplayShowHomeEnabled(true)
@@ -103,7 +105,12 @@ class DetailsTvActivity : AppCompatActivity(), OnSeasonClickListener {
         toolbar_seasons.setNavigationOnClickListener { onBackPressed() }
     }
 
-    private fun initViews() {
+    private fun initAdapter() {
+        rv_credits.adapter = creditsAdapter
+        rv_seasons.adapter = seasonsAdapter
+    }
+
+    private fun initBottomSheets() {
 
         val height = Resources.getSystem().displayMetrics.heightPixels
         bottomSheetBehaviorContent = BottomSheetBehavior.from(bottom_sheet_details_content)
@@ -135,7 +142,7 @@ class DetailsTvActivity : AppCompatActivity(), OnSeasonClickListener {
         startActivity(Intent(this, SeasonDetailsActivity::class.java)
             .apply {
                 putExtra(Constants.SEASON_DETAILS, season)
-                putExtra(Constants.TV_ID, viewModel.tvId.value)
+                putExtra(Constants.SELECTED_TV, viewModel.selectedTv.value)
             })
     }
 
