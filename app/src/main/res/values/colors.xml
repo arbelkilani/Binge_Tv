@@ -33,4 +33,7 @@
     <color name="season_sheet_background_color_initial">#778bd9</color>
     <color name="season_sheet_background_color_end">#fefefe</color>
 
+    <color name="progress_background_color">#8Ccccccc</color>
+    <color name="progress_color">#778bd9</color>
+
 </resources>

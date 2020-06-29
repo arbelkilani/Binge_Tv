@@ -32,4 +32,7 @@
     <color name="season_sheet_background_color_initial">#1f3354</color>
     <color name="season_sheet_background_color_end">#1f3354</color>
 
+    <color name="progress_background_color">#8Ccccccc</color>
+    <color name="progress_color">@android:color/white</color>
+
 </resources>

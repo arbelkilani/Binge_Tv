@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="episode"
+            type="com.arbelkilani.bingetv.data.model.episode.Episode" />
+
+        <variable
+            name="episodeClickListener"
+            type="com.arbelkilani.bingetv.presentation.listeners.OnEpisodeClickListener" />
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/default_margin"
+        app:cardCornerRadius="@dimen/default_card_corner_radius"
+        app:contentPadding="@dimen/default_padding">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avenir_next_demi_bold"
+                android:text="@{episode.episodeNumber}"
+                android:textColor="@color/details_titles_text_color"
+                android:textSize="@dimen/toolbar_title_text_size"
+                tools:text="1." />
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/tv_number"
+                android:layout_marginStart="@dimen/default_margin_min"
+                android:layout_toEndOf="@+id/tv_number"
+                android:fontFamily="@font/avenir_next_regular"
+                android:text="@{episode.name}"
+                android:textColor="@color/details_titles_text_color"
+                android:textSize="@dimen/titles_text_size"
+                tools:text="this is a name for episode" />
+
+            <TextView
+                android:id="@+id/tv_aired"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_name"
+                android:layout_marginStart="@dimen/default_margin_min"
+                android:layout_marginTop="@dimen/default_margin_min"
+                android:layout_toEndOf="@+id/tv_number"
+                android:fontFamily="@font/avenir_next_regular"
+                android:text="@{episode.airDate}"
+                android:textColor="@color/details_titles_text_color"
+                android:textSize="@dimen/small_text_size"
+                tools:text="this is a name for episode" />
+
+        </RelativeLayout>
+
+
+    </androidx.cardview.widget.CardView>
+</layout>

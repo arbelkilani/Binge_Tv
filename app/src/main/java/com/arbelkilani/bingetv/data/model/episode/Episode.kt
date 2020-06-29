@@ -20,7 +20,7 @@ data class Episode(
 ) : Parcelable {
 
     val episodeNumber: String
-        get() = String.format("%d.", _episodeNumber, Locale.getDefault())
+        get() = String.format("%d", _episodeNumber, Locale.getDefault())
 
     val airDate: String
         get() = String.format("%s : %s", "Aired", _airDate, Locale.getDefault())

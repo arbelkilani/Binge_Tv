@@ -29,4 +29,7 @@ data class Season(
 
     val airDate: String
         get() = String.format("First aired %s ", _airDate, Locale.getDefault())
+
+    val watchedCount: String
+        get() = String.format("%d/%d", 0, _episodeCount, Locale.getDefault())
 }

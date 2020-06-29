@@ -71,21 +71,64 @@
                         android:layout_marginEnd="@dimen/circle_margin_end"
                         android:background="@drawable/circle"
                         android:fitsSystemWindows="true" />
+
                 </FrameLayout>
 
             </FrameLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_episodes"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:orientation="vertical"
-                android:overScrollMode="never"
-                android:paddingStart="@dimen/default_padding"
-                android:paddingTop="@dimen/default_padding"
-                android:paddingEnd="@dimen/default_padding"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="@dimen/default_padding"
+                    android:paddingEnd="@dimen/default_padding"
+                    android:weightSum="1">
+
+                    <ProgressBar
+                        android:id="@+id/progress_bar"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="0dp"
+                        android:layout_height="5dp"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="@dimen/default_margin_min"
+                        android:layout_weight="0.85"
+                        android:indeterminate="false"
+                        android:progress="34"
+                        android:progressDrawable="@drawable/rounded_corners_progress_bar" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.15"
+                        android:fontFamily="@font/avenir_next_medium"
+                        android:gravity="end"
+                        android:text="@{season.watchedCount}"
+                        android:textColor="@color/toolbar_title_color"
+                        android:textSize="@dimen/titles_text_size" />
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_episodes"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:orientation="vertical"
+                    android:overScrollMode="never"
+                    android:paddingStart="@dimen/default_padding"
+                    android:paddingTop="@dimen/default_padding"
+                    android:paddingEnd="@dimen/default_padding"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            </LinearLayout>
 
         </FrameLayout>
 
