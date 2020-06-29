@@ -111,13 +111,6 @@ class DiscoverFragment : Fragment(), OnTvShowClickListener {
         fun newInstance() = DiscoverFragment()
     }
 
-    override fun onTvItemClicked(tv: Tv) {
-        startActivity(Intent(activity, DetailsTvActivity::class.java)
-            .apply {
-                putExtra(Constants.DISCOVER_DETAILS, tv)
-            })
-    }
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.dashboard_toolbar_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
@@ -136,5 +129,12 @@ class DiscoverFragment : Fragment(), OnTvShowClickListener {
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onTvItemClicked(tv: Tv) {
+        startActivity(Intent(activity, DetailsTvActivity::class.java)
+            .apply {
+                putExtra(Constants.DISCOVER_DETAILS, tv)
+            })
     }
 }

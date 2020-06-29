@@ -1,54 +1,44 @@
 package com.arbelkilani.bingetv.presentation.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.model.tv.Tv
+import com.arbelkilani.bingetv.databinding.ItemTrendingViewBinding
 import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.item_trending_view.view.*
 
 
-class OnTheAirAdapter(
-    private val onTvShowClickListener: OnTvShowClickListener
-) : PagingDataAdapter<Tv, RecyclerView.ViewHolder>(TvShowComparator) {
+class OnTheAirAdapter(private val tvShowClickListener: OnTvShowClickListener) :
+    PagingDataAdapter<Tv, RecyclerView.ViewHolder>(TvShowComparator) {
 
-    class AiringTodayHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        fun bind(
-            tv: Tv?,
-            onTvShowClickListener: OnTvShowClickListener
-        ) {
-            tv?.apply {
-                Picasso.get()
-                    .load(posterPath)
-                    .fit()
-                    .centerCrop()
-                    .into(itemView.iv_item_trending)
-                itemView.card_view.setOnClickListener {
-                    onTvShowClickListener.onTvItemClicked(this)
-                }
-            }
-        }
-    }
+    class OnTheAirHolder(val itemTrendingViewBinding: ItemTrendingViewBinding) :
+        RecyclerView.ViewHolder(itemTrendingViewBinding.root)
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): AiringTodayHolder {
-        val inflatedView =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_trending_view, parent, false)
-        return AiringTodayHolder(inflatedView)
+    ): OnTheAirHolder {
+
+        val itemTrendingViewBinding = DataBindingUtil.inflate<ItemTrendingViewBinding>(
+            LayoutInflater.from(parent.context), R.layout.item_trending_view, parent, false
+        )
+        return OnTheAirHolder(itemTrendingViewBinding)
+
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
         val tvShow = getItem(position)
-        if (tvShow != null)
-            (holder as AiringTodayHolder).bind(tvShow, onTvShowClickListener)
+        if (tvShow != null) {
+            (holder as OnTheAirHolder).itemTrendingViewBinding.tv = tvShow
+            holder.itemTrendingViewBinding.itemClick = tvShowClickListener
+        }
+
+
     }
 
     companion object {
@@ -62,4 +52,6 @@ class OnTheAirAdapter(
             }
         }
     }
+
+
 }

@@ -31,5 +31,4 @@ class DiscoverViewModel(
     suspend fun getOnTheAir(): Flow<PagingData<Tv>> {
         return onTheAirUseCase.invoke().cachedIn(viewModelScope)
     }
-
 }
