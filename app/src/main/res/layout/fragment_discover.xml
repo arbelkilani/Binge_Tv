@@ -50,7 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/default_margin"
-                    android:layout_marginBottom="@dimen/default_margin_min"
+                    android:paddingBottom="@dimen/default_padding_min"
                     android:text="@string/title_on_the_air" />
 
                 <com.arbelkilani.bingetv.presentation.ui.view.AutofitRecyclerView
