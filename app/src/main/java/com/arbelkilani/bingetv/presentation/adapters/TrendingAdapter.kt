@@ -7,10 +7,14 @@ import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.model.tv.Tv
+import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_dicover_view.view.*
 
-class TrendingAdapter(private val tvList: List<Tv>) : PagerAdapter() {
+class TrendingAdapter(
+    private val tvList: List<Tv>,
+    private val onTvShowClickListener: OnTvShowClickListener
+) : PagerAdapter() {
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
         return view == `object`
     }
@@ -33,12 +37,16 @@ class TrendingAdapter(private val tvList: List<Tv>) : PagerAdapter() {
         val layout = LayoutInflater.from(container.context)
             .inflate(R.layout.item_dicover_view, container, false)
 
+        val tvShow = tvList[virtualPosition]
         Picasso.get()
-            .load(tvList[virtualPosition].backdropPath)
+            .load(tvShow.backdropPath)
             .fit().centerCrop(Gravity.CENTER)
             .error(R.mipmap.ic_launcher_round)
             .into(layout.iv_item_discover)
-        layout.tv_title.text = tvList[virtualPosition].name
+        layout.tv_title.text = tvShow.name
+        layout.main_container.setOnClickListener {
+            onTvShowClickListener.onTvItemClicked(tvShow)
+        }
 
         container.addView(layout)
         return layout
