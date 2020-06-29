@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.model.tv.Tv
 import com.arbelkilani.bingetv.databinding.ActivitySearchBinding
+import com.arbelkilani.bingetv.presentation.adapters.DataLoadStateAdapter
 import com.arbelkilani.bingetv.presentation.adapters.SearchAdapter
 import com.arbelkilani.bingetv.presentation.listeners.KeyboardListener
 import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
@@ -74,7 +75,9 @@ class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener, Revea
     }
 
     private fun initAdapter() {
-        binding.rvShows.adapter = searchAdapter
+        binding.rvShows.adapter = searchAdapter.withLoadStateFooter(
+            footer = DataLoadStateAdapter { searchAdapter.retry() }
+        )
         binding.rvShows.itemAnimator = DefaultItemAnimator()
         (binding.rvShows.itemAnimator as DefaultItemAnimator).changeDuration = 0
     }

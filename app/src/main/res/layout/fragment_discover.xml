@@ -53,18 +53,31 @@
                     android:paddingBottom="@dimen/default_padding_min"
                     android:text="@string/title_on_the_air" />
 
-                <com.arbelkilani.bingetv.presentation.ui.view.AutofitRecyclerView
-                    android:id="@+id/rv_popular"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:clipToPadding="false"
-                    android:columnWidth="130dp"
-                    android:layoutMode="clipBounds"
-                    android:overScrollMode="never"
-                    android:paddingStart="@dimen/default_padding_min"
-                    android:paddingEnd="@dimen/default_padding_min"
-                    android:scrollbars="none"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                    android:layout_height="match_parent">
+
+                    <ProgressBar
+                        android:id="@+id/progress_bar"
+                        style="?android:attr/progressBarStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center" />
+
+                    <com.arbelkilani.bingetv.presentation.ui.view.AutofitRecyclerView
+                        android:id="@+id/rv_popular"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:clipToPadding="false"
+                        android:columnWidth="130dp"
+                        android:layoutMode="clipBounds"
+                        android:overScrollMode="never"
+                        android:paddingStart="@dimen/default_padding_min"
+                        android:paddingEnd="@dimen/default_padding_min"
+                        android:scrollbars="none"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+                </FrameLayout>
 
             </LinearLayout>
 

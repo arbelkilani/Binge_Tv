@@ -4,12 +4,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.model.tv.Tv
 import com.arbelkilani.bingetv.databinding.FragmentDiscoverBinding
+import com.arbelkilani.bingetv.presentation.adapters.DataLoadStateAdapter
 import com.arbelkilani.bingetv.presentation.adapters.OnTheAirAdapter
 import com.arbelkilani.bingetv.presentation.adapters.TrendingAdapter
 import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
@@ -100,7 +104,30 @@ class DiscoverFragment : Fragment(), OnTvShowClickListener {
     }
 
     private fun initAdapter() {
-        binding.rvPopular.adapter = onTheAirAdapter
+        binding.rvPopular.adapter = onTheAirAdapter.withLoadStateFooter(
+            footer = DataLoadStateAdapter { onTheAirAdapter.retry() })
+
+        onTheAirAdapter.addLoadStateListener { loadState ->
+
+            // Only show the list if refresh succeeds.
+            binding.rvPopular.isVisible = loadState.refresh is LoadState.NotLoading
+
+            // Show loading spinner during initial load or refresh.
+            binding.progressBar.isVisible = loadState.refresh is LoadState.Loading
+
+            // Toast on any error, regardless of whether it came from RemoteMediator or PagingSource
+            val errorState = loadState.source.append as? LoadState.Error
+                ?: loadState.source.prepend as? LoadState.Error
+                ?: loadState.append as? LoadState.Error
+                ?: loadState.prepend as? LoadState.Error
+            errorState?.let {
+                Toast.makeText(
+                    activity,
+                    "\uD83D\uDE28 Wooops ${it.error}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
     }
 
     companion object {

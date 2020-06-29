@@ -16,19 +16,19 @@
     </data>
 
     <LinearLayout
+        android:id="@+id/root_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/screen_background_color"
+        android:orientation="vertical"
         tools:context=".presentation.ui.activities.SeasonDetailsActivity">
 
+        <!-- Toolbar -->
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/toolbar_background_color"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:background="@color/toolbar_background_color">
 
-            <!-- Toolbar -->
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
@@ -38,8 +38,57 @@
                 app:titleTextAppearance="@style/Toolbar.TextTitle"
                 app:titleTextColor="@color/toolbar_title_color" />
 
+
         </com.google.android.material.appbar.AppBarLayout>
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- circles design -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <!-- circles design -->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:layout_width="@dimen/circle_radius"
+                        android:layout_height="@dimen/circle_radius"
+                        android:layout_gravity="start"
+                        android:layout_marginStart="@dimen/circle_margin_start"
+                        android:layout_marginTop="@dimen/circle_margin_top"
+                        android:background="@drawable/circle"
+                        android:fitsSystemWindows="true" />
+
+                    <ImageView
+                        android:layout_width="@dimen/circle_radius"
+                        android:layout_height="@dimen/circle_radius"
+                        android:layout_gravity="end"
+                        android:layout_marginEnd="@dimen/circle_margin_end"
+                        android:background="@drawable/circle"
+                        android:fitsSystemWindows="true" />
+                </FrameLayout>
+
+            </FrameLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_episodes"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:orientation="vertical"
+                android:overScrollMode="never"
+                android:paddingStart="@dimen/default_padding"
+                android:paddingTop="@dimen/default_padding"
+                android:paddingEnd="@dimen/default_padding"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        </FrameLayout>
 
     </LinearLayout>
+
 </layout>
