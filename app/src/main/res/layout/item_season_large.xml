@@ -7,6 +7,11 @@
         <variable
             name="season"
             type="com.arbelkilani.bingetv.data.model.season.Season" />
+
+        <variable
+            name="seasonClickListener"
+            type="com.arbelkilani.bingetv.presentation.listeners.OnSeasonClickListener" />
+
     </data>
 
 
@@ -15,7 +20,8 @@
         android:layout_height="152dp"
         android:layout_marginBottom="@dimen/default_margin"
         android:background="@android:color/transparent"
-        android:minHeight="152dp">
+        android:minHeight="152dp"
+        android:onClick="@{() -> seasonClickListener.onSeasonItemClicked(season)}">
 
         <!-- content -->
         <androidx.cardview.widget.CardView

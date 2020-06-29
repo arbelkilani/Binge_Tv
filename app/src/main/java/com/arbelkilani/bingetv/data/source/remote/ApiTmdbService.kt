@@ -4,6 +4,7 @@ import com.arbelkilani.bingetv.data.model.base.ApiResponse
 import com.arbelkilani.bingetv.data.model.credit.CreditsResponse
 import com.arbelkilani.bingetv.data.model.external.ExternalIds
 import com.arbelkilani.bingetv.data.model.genre.GenreResponse
+import com.arbelkilani.bingetv.data.model.season.SeasonDetails
 import com.arbelkilani.bingetv.data.model.tv.Tv
 import com.arbelkilani.bingetv.data.model.tv.TvDetails
 import retrofit2.Response
@@ -47,6 +48,11 @@ interface ApiTmdbService {
         @Query("include_adult") adult: Boolean
     ): ApiResponse<Tv>
 
+    @GET("tv/{tv_id}/season/{season_number}")
+    suspend fun getSeasonDetails(
+        @Path("tv_id") tvId: Int,
+        @Path("season_number") seasonNumber: Int
+    ): SeasonDetails
 
     @GET("genre/tv/list")
     suspend fun getGenres(): Response<GenreResponse>

@@ -11,7 +11,7 @@ import com.arbelkilani.bingetv.presentation.listeners.OnSeasonClickListener
 
 class SeasonAdapter(
     private val seasons: List<Season>,
-    private val onSeasonClickListener: OnSeasonClickListener
+    private val seasonClickListener: OnSeasonClickListener
 ) :
     RecyclerView.Adapter<SeasonAdapter.SeasonHolder>() {
 
@@ -31,5 +31,6 @@ class SeasonAdapter(
 
     override fun onBindViewHolder(holder: SeasonHolder, position: Int) {
         holder.itemSeasonsBinding.season = seasons[position]
+        holder.itemSeasonsBinding.seasonClickListener = seasonClickListener
     }
 }

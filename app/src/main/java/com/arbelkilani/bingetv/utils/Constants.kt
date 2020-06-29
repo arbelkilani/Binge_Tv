@@ -7,5 +7,7 @@ object Constants {
     const val AIRING_TODAY_PARAM = "airing_today_param"
     const val TRENDING_PARAM = "trending_param"
     const val SPLASH_DELAY = 1000L
+    const val SEASON_DETAILS = "season_details"
+    const val TV_ID = "tv_id"
 
 }

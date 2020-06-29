@@ -38,7 +38,7 @@ class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener, Revea
     private val TAG = SearchActivity::class.java.simpleName
 
     private lateinit var revealAnimation: RevealAnimation
-    lateinit var closeMenuItem: MenuItem
+    var closeMenuItem: MenuItem? = null
 
 
     private val viewModel: SearchViewModel by viewModel()
@@ -53,6 +53,7 @@ class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener, Revea
             viewModel.search(query)
                 .catch { cause -> Log.i(TAG, "cause = ${cause.localizedMessage}") }
                 .collectLatest {
+                    binding.rvShows.scrollToPosition(0)
                     searchAdapter.submitData(it)
                 }
         }
@@ -105,8 +106,8 @@ class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener, Revea
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_search_activity, menu)
-        closeMenuItem = menu!!.getItem(0)
-        closeMenuItem.isVisible = false
+        closeMenuItem = menu?.getItem(0)
+        closeMenuItem?.isVisible = false
         return true
     }
 
@@ -125,7 +126,7 @@ class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener, Revea
     override fun afterTextChanged(s: Editable?) {
         Log.i(TAG, "afterTextChanged = $s")
         if (s!!.isEmpty())
-            closeMenuItem.isVisible = false
+            closeMenuItem?.isVisible = false
     }
 
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -133,7 +134,7 @@ class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener, Revea
     }
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        closeMenuItem.isVisible = true
+        closeMenuItem?.isVisible = true
         if (start >= 3) {
             search(s.toString())
         }

@@ -7,6 +7,7 @@ import androidx.paging.PagingData
 import com.arbelkilani.bingetv.data.model.base.ApiResponse
 import com.arbelkilani.bingetv.data.model.base.Resource
 import com.arbelkilani.bingetv.data.model.credit.CreditsResponse
+import com.arbelkilani.bingetv.data.model.season.SeasonDetails
 import com.arbelkilani.bingetv.data.model.tv.Tv
 import com.arbelkilani.bingetv.data.model.tv.TvDetails
 import com.arbelkilani.bingetv.data.model.tv.maze.TvDetailsMaze
@@ -82,22 +83,34 @@ class TvShowRepositoryImp(
         ).flow
     }
 
-    override suspend fun getTvDetails(id: Int): Resource<TvDetails> = try {
-        Log.i(TAG, "getTvDetails() for item $id")
-        val response = apiTmdbService.getTvDetails(id, "videos")
-        Resource.success(response)
-    } catch (e: Exception) {
-        Resource.exception(e, null)
-    }
+    override suspend fun getTvDetails(id: Int): Resource<TvDetails> =
+        try {
+            Log.i(TAG, "getTvDetails() for item $id")
+            val response = apiTmdbService.getTvDetails(id, "videos")
+            Resource.success(response)
+        } catch (e: Exception) {
+            Resource.exception(e, null)
+        }
 
-    override suspend fun getCredits(id: Int): Resource<CreditsResponse> = try {
-        Log.i(TAG, "getCredits() for item $id")
-        val response = apiTmdbService.getCredits(id)
-        Resource.success(response)
-    } catch (e: Exception) {
-        Log.e(TAG, "exception = $e")
-        Resource.exception(e, null)
-    }
+    override suspend fun getSeasonDetails(tvId: Int, seasonNumber: Int): Resource<SeasonDetails> =
+        try {
+            Log.i(TAG, "getSeasonDetails() for tv id $tvId and season number $seasonNumber")
+            val response = apiTmdbService.getSeasonDetails(tvId, seasonNumber)
+            Resource.success(response)
+        } catch (e: Exception) {
+            Resource.exception(e, null)
+        }
+
+
+    override suspend fun getCredits(id: Int): Resource<CreditsResponse> =
+        try {
+            Log.i(TAG, "getCredits() for item $id")
+            val response = apiTmdbService.getCredits(id)
+            Resource.success(response)
+        } catch (e: Exception) {
+            Log.e(TAG, "exception = $e")
+            Resource.exception(e, null)
+        }
 
     override suspend fun getNextEpisodeData(id: Int): Resource<NextEpisodeData> {
         Log.i(TAG, "getNextEpisodeData() for item $id")
@@ -122,24 +135,25 @@ class TvShowRepositoryImp(
         ""
     }
 
-    private suspend fun getNextEpisodeId(id: Int): HashMap<Int, String>? = try {
-        val response = apiTvMazeService.getShow(getImdbId(id), "nextepisode")
-        val links = response.links
-        val values = hashMapOf<Int, String>()
-        if (links?.nextEpisode != null) {
-            values[0] = links.nextEpisode.href.substringAfterLast("/")
-            if (getChannel(response)?.country != null) {
-                val timezone = getChannel(response)?.country!!.timezone
-                values[1] = timezone
+    private suspend fun getNextEpisodeId(id: Int): HashMap<Int, String>? =
+        try {
+            val response = apiTvMazeService.getShow(getImdbId(id), "nextepisode")
+            val links = response.links
+            val values = hashMapOf<Int, String>()
+            if (links?.nextEpisode != null) {
+                values[0] = links.nextEpisode.href.substringAfterLast("/")
+                if (getChannel(response)?.country != null) {
+                    val timezone = getChannel(response)?.country!!.timezone
+                    values[1] = timezone
+                }
+                values
+            } else {
+                Log.e(TAG, "exception either on links or next episode values")
+                hashMapOf()
             }
-            values
-        } else {
-            Log.e(TAG, "exception either on links or next episode values")
+        } catch (e: Exception) {
             hashMapOf()
         }
-    } catch (e: Exception) {
-        hashMapOf()
-    }
 
     private fun getChannel(response: TvDetailsMaze): WebChannel? {
         return response.network ?: response.webChannel

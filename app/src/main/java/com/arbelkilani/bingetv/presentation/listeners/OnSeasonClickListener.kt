@@ -1,7 +1,7 @@
 package com.arbelkilani.bingetv.presentation.listeners
 
-import com.arbelkilani.bingetv.data.model.tv.Tv
+import com.arbelkilani.bingetv.data.model.season.Season
 
 interface OnSeasonClickListener {
-    fun onSeasonItemClicked(tv : Tv)
+    fun onSeasonItemClicked(season: Season)
 }

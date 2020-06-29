@@ -21,6 +21,8 @@ val UseCasesModule = module {
 
     single { createTvDetailsUseCase(get()) }
 
+    single { createSeasonDetailsUseCase(get()) }
+
     single { createGetCreditsUseCase(get()) }
 
     single { createGetNextEpisodeDataUseCase(get()) }
@@ -54,6 +56,10 @@ fun createGetGenreUseCase(genresRepository: GenresRepository): GetGenreUseCase {
 
 fun createTvDetailsUseCase(tvShowRepository: TvShowRepository): GetTvDetailsUseCase {
     return GetTvDetailsUseCase(tvShowRepository)
+}
+
+fun createSeasonDetailsUseCase(tvShowRepository: TvShowRepository): SeasonDetailsUseCase {
+    return SeasonDetailsUseCase(tvShowRepository)
 }
 
 fun createGetCreditsUseCase(tvShowRepository: TvShowRepository): GetCreditsUseCase {

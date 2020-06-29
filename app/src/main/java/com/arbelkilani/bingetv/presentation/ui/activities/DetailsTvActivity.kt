@@ -14,6 +14,7 @@ import androidx.core.widget.NestedScrollView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.arbelkilani.bingetv.R
+import com.arbelkilani.bingetv.data.model.season.Season
 import com.arbelkilani.bingetv.data.model.tv.Tv
 import com.arbelkilani.bingetv.databinding.ActivityDetailsTvBinding
 import com.arbelkilani.bingetv.presentation.adapters.CreditAdapter
@@ -130,8 +131,12 @@ class DetailsTvActivity : AppCompatActivity(), OnSeasonClickListener {
     }
 
 
-    override fun onSeasonItemClicked(tv: Tv) {
-
+    override fun onSeasonItemClicked(season: Season) {
+        startActivity(Intent(this, SeasonDetailsActivity::class.java)
+            .apply {
+                putExtra(Constants.SEASON_DETAILS, season)
+                putExtra(Constants.TV_ID, viewModel.tvId.value)
+            })
     }
 
     override fun onBackPressed() {

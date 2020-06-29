@@ -1,6 +1,7 @@
 package com.arbelkilani.bingetv.presentation.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.arbelkilani.bingetv.data.model.base.Resource
 import com.arbelkilani.bingetv.data.model.base.Status
@@ -22,6 +23,10 @@ class DetailsTvActivityViewModel constructor(
     private val getNextEpisodeDataUseCase: GetNextEpisodeDataUseCase
 ) :
     BaseViewModel() {
+
+    private val _tvId = MutableLiveData<Int>()
+    val tvId: LiveData<Int>
+        get() = _tvId
 
     private val TAG = DetailsTvActivityViewModel::class.java.simpleName
 
@@ -60,6 +65,7 @@ class DetailsTvActivityViewModel constructor(
 
     private suspend fun getTvDetails(selectedTv: Tv) {
         Log.i(TAG, "getTvDetails()")
+        _tvId.postValue(selectedTv.id)
         val response = getTvDetailsUseCase.invoke(selectedTv.id)
         if (response.status == Status.SUCCESS) {
             tvDetailsLiveData.postValue(Resource.success(response.data))
