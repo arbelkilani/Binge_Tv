@@ -84,11 +84,12 @@
             </FrameLayout>
 
             <!-- searched items list -->
-            <androidx.recyclerview.widget.RecyclerView
+            <com.arbelkilani.bingetv.presentation.ui.view.AutofitRecyclerView
                 android:id="@+id/rv_shows"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"
+                android:columnWidth="130dp"
                 android:layoutMode="clipBounds"
                 android:nestedScrollingEnabled="true"
                 android:orientation="horizontal"
@@ -99,4 +100,5 @@
         </FrameLayout>
 
     </LinearLayout>
+
 </layout>

@@ -71,7 +71,7 @@ class GridAutoFitLayoutManager : GridLayoutManager {
             } else {
                 height - paddingTop - paddingBottom
             }
-            val spanCount = 2.coerceAtLeast(totalSpace / mColumnWidth)
+            val spanCount = 3.coerceAtLeast(totalSpace / mColumnWidth)
             setSpanCount(spanCount)
             mColumnWidthChanged = false
             mWidthChanged = false

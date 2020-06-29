@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -14,28 +15,36 @@
 
     </data>
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginStart="@dimen/default_margin"
-        android:layout_marginBottom="@dimen/default_margin"
-        android:gravity="center">
+        android:gravity="center"
+        android:padding="@dimen/default_padding_min">
 
         <com.arbelkilani.bingetv.presentation.ui.view.CustomCardView
             android:id="@+id/poster"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layoutMode="opticalBounds"
             android:onClick="@{() -> itemClick.onTvItemClicked(tv)}"
-            app:cardCornerRadius="@dimen/default_card_corner_radius">
+            app:cardCornerRadius="@dimen/default_card_corner_radius"
+            app:layout_constraintDimensionRatio="2:3"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/iv_item_trending"
-                android:layout_width="160dp"
-                android:layout_height="220dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:src="@{tv.posterPath}" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_backdrop_gradient" />
 
         </com.arbelkilani.bingetv.presentation.ui.view.CustomCardView>
 
@@ -46,14 +55,19 @@
             android:layout_below="@id/poster"
             android:layout_alignStart="@id/poster"
             android:layout_alignEnd="@id/poster"
-            android:layout_gravity="bottom"
-            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginTop="@dimen/default_margin_min"
             android:ellipsize="end"
             android:fontFamily="@font/avenir_next_medium"
             android:text="@{tv.name}"
             android:textColor="@color/item_trending_name_color"
-            android:textSize="@dimen/item_tv_show_search_title_size" />
+            android:textSize="@dimen/item_tv_show_search_title_size"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/poster"
+            tools:text="this is a name" />
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

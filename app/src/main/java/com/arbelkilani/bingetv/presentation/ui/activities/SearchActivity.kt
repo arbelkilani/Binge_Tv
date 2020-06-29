@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.model.tv.Tv
 import com.arbelkilani.bingetv.databinding.ActivitySearchBinding
@@ -20,7 +19,6 @@ import com.arbelkilani.bingetv.presentation.adapters.SearchAdapter
 import com.arbelkilani.bingetv.presentation.listeners.KeyboardListener
 import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
 import com.arbelkilani.bingetv.presentation.listeners.RevealAnimationListener
-import com.arbelkilani.bingetv.presentation.ui.view.GridAutoFitLayoutManager
 import com.arbelkilani.bingetv.presentation.ui.view.RevealAnimation
 import com.arbelkilani.bingetv.presentation.viewmodel.SearchViewModel
 import com.arbelkilani.bingetv.utils.Constants
@@ -142,17 +140,14 @@ class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener, Revea
     }
 
     override fun onKeyboardShown(currentKeyboardHeight: Int) {
-        val linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        binding.rvShows.layoutManager = linearLayoutManager
+
     }
 
-    override fun onKeyboardHidden() {
 
+    override fun onKeyboardHidden() {
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        val gridLayoutManager = GridAutoFitLayoutManager(this, 160)
-        binding.rvShows.layoutManager = gridLayoutManager
         hideKeyboard()
         return true
     }
