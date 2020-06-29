@@ -28,7 +28,6 @@ class DiscoverAdapter(
                     .fit()
                     .centerCrop()
                     .into(itemView.iv_item_trending)
-                itemView.tv_trending_name.text = name
                 itemView.setOnClickListener {
                     onTvShowClickListener.onTvItemClicked(this)
                 }

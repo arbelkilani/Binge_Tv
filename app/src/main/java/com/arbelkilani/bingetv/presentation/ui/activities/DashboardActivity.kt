@@ -27,7 +27,8 @@ class DashboardActivity : AppCompatActivity(),
         initViews()
 
         if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction().add(R.id.main_container, watchlistFragment)
+            supportFragmentManager.beginTransaction()
+                .add(R.id.main_container, watchlistFragment)
                 .hide(watchlistFragment).commit()
             supportFragmentManager.beginTransaction().add(R.id.main_container, discoverFragment)
                 .commit()

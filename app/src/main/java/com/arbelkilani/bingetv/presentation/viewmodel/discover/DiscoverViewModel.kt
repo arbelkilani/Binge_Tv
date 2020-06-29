@@ -6,16 +6,14 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.arbelkilani.bingetv.data.model.base.ApiResponse
 import com.arbelkilani.bingetv.data.model.tv.Tv
-import com.arbelkilani.bingetv.domain.usecase.AiringTodayUseCase
-import com.arbelkilani.bingetv.domain.usecase.PopularUseCase
+import com.arbelkilani.bingetv.domain.usecase.OnTheAirUseCase
 import com.arbelkilani.bingetv.domain.usecase.TrendingUseCase
 import com.arbelkilani.bingetv.presentation.viewmodel.BaseViewModel
 import kotlinx.coroutines.flow.Flow
 
 class DiscoverViewModel(
     private val trendingUseCase: TrendingUseCase,
-    private val popularUseCase: PopularUseCase,
-    private val airingTodayUseCase: AiringTodayUseCase
+    private val onTheAirUseCase: OnTheAirUseCase
 ) : BaseViewModel() {
 
     companion object {
@@ -30,12 +28,8 @@ class DiscoverViewModel(
         return trendingUseCase.invoke()
     }
 
-
-    suspend fun getAiringToday(): Flow<PagingData<Tv>> {
-        return airingTodayUseCase.invoke().cachedIn(viewModelScope)
+    suspend fun getOnTheAir(): Flow<PagingData<Tv>> {
+        return onTheAirUseCase.invoke().cachedIn(viewModelScope)
     }
 
-    suspend fun getPopular(): Flow<PagingData<Tv>> {
-        return popularUseCase.invoke().cachedIn(viewModelScope)
-    }
 }

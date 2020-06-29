@@ -14,6 +14,7 @@ import com.arbelkilani.bingetv.data.model.tv.maze.channel.WebChannel
 import com.arbelkilani.bingetv.data.model.tv.maze.details.NextEpisodeData
 import com.arbelkilani.bingetv.data.pagingsource.AiringTodayPagingSource
 import com.arbelkilani.bingetv.data.pagingsource.DiscoverPagingSource
+import com.arbelkilani.bingetv.data.pagingsource.OnTheAirPagingSource
 import com.arbelkilani.bingetv.data.pagingsource.PopularPagingSource
 import com.arbelkilani.bingetv.data.source.remote.ApiTmdbService
 import com.arbelkilani.bingetv.data.source.remote.ApiTvMazeService
@@ -65,6 +66,14 @@ class TvShowRepositoryImp(
         return Pager(
             config = PagingConfig(NETWORK_PAGE_SIZE),
             pagingSourceFactory = { PopularPagingSource(apiTmdbService) }
+        ).flow
+    }
+
+    override suspend fun onTheAir(): Flow<PagingData<Tv>> {
+        Log.i(TAG, "onTheAir()")
+        return Pager(
+            config = PagingConfig(NETWORK_PAGE_SIZE),
+            pagingSourceFactory = { OnTheAirPagingSource(apiTmdbService) }
         ).flow
     }
 

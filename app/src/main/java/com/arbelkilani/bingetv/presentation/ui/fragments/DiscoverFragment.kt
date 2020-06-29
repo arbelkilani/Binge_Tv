@@ -10,8 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.model.tv.Tv
 import com.arbelkilani.bingetv.databinding.FragmentDiscoverBinding
-import com.arbelkilani.bingetv.presentation.adapters.AiringTodayAdapter
-import com.arbelkilani.bingetv.presentation.adapters.DiscoverAdapter
+import com.arbelkilani.bingetv.presentation.adapters.OnTheAirAdapter
 import com.arbelkilani.bingetv.presentation.adapters.TrendingAdapter
 import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
 import com.arbelkilani.bingetv.presentation.ui.activities.DashboardActivity
@@ -34,35 +33,10 @@ class DiscoverFragment : Fragment(), OnTvShowClickListener {
 
     private lateinit var binding: FragmentDiscoverBinding
 
-    private val popularAdapter = DiscoverAdapter(this)
-    private val airingTodayAdapter = AiringTodayAdapter(this)
+    private val onTheAirAdapter = OnTheAirAdapter(this)
 
-
-    private var popularJob: Job? = null
     private var trendingJob: Job? = null
-    private var airingTodayJob: Job? = null
-
-    private fun getPopularList() {
-        popularJob?.cancel()
-        popularJob = lifecycleScope.launch {
-            viewModel.getPopular()
-                .catch { cause -> Log.i(TAG, "cause = ${cause.localizedMessage}") }
-                .collectLatest {
-                    popularAdapter.submitData(it)
-                }
-        }
-    }
-
-    private fun getAiringTodayList() {
-        airingTodayJob?.cancel()
-        airingTodayJob = lifecycleScope.launch {
-            viewModel.getAiringToday()
-                .catch { cause -> Log.i(TAG, "cause = ${cause.localizedMessage}") }
-                .collectLatest {
-                    airingTodayAdapter.submitData(it)
-                }
-        }
-    }
+    private var onTheAir: Job? = null
 
     private fun getTrendingList() {
         trendingJob?.cancel()
@@ -80,6 +54,18 @@ class DiscoverFragment : Fragment(), OnTvShowClickListener {
                 }
         }
     }
+
+    private fun getOnTheAirList() {
+        onTheAir?.cancel()
+        onTheAir = lifecycleScope.launch {
+            viewModel.getOnTheAir()
+                .catch { cause -> Log.i(TAG, "cause = ${cause.localizedMessage}") }
+                .collectLatest {
+                    onTheAirAdapter.submitData(it)
+                }
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -108,15 +94,13 @@ class DiscoverFragment : Fragment(), OnTvShowClickListener {
 
         initAdapter()
         getTrendingList()
-        getAiringTodayList()
-        getPopularList()
+        getOnTheAirList()
 
         return binding.root
     }
 
     private fun initAdapter() {
-        binding.rvPopular.adapter = popularAdapter
-        binding.rvAiringToday.adapter = airingTodayAdapter
+        binding.rvPopular.adapter = onTheAirAdapter
     }
 
     companion object {

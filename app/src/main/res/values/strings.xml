@@ -35,6 +35,7 @@
     <string name="search_title">Search</string>
     <string name="airing_today">Airing Today</string>
     <string name="popular">Popular</string>
+    <string name="title_on_the_air">On the air</string>
     <!-- todo check plurals for days with data binding -->
 
 </resources>

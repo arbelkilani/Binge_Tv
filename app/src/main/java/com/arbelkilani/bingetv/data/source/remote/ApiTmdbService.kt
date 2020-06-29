@@ -35,6 +35,11 @@ interface ApiTmdbService {
         @Query("page") page: Int
     ): ApiResponse<Tv>
 
+    @GET("tv/on_the_air")
+    suspend fun onTheAir(
+        @Query("page") page: Int
+    ): ApiResponse<Tv>
+
 
     @GET("genre/tv/list")
     suspend fun getGenres(): Response<GenreResponse>

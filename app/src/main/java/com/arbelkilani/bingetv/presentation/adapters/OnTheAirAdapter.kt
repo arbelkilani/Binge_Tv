@@ -13,7 +13,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_trending_view.view.*
 
 
-class AiringTodayAdapter(
+class OnTheAirAdapter(
     private val onTvShowClickListener: OnTvShowClickListener
 ) : PagingDataAdapter<Tv, RecyclerView.ViewHolder>(TvShowComparator) {
 
@@ -29,7 +29,6 @@ class AiringTodayAdapter(
                     .fit()
                     .centerCrop()
                     .into(itemView.iv_item_trending)
-                itemView.tv_trending_name.text = name
                 itemView.card_view.setOnClickListener {
                     onTvShowClickListener.onTvItemClicked(this)
                 }

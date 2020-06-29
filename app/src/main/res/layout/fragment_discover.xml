@@ -25,6 +25,7 @@
             android:paddingTop="@dimen/default_padding"
             android:weightSum="1">
 
+            <!-- trending -->
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/view_pager"
                 android:layout_width="match_parent"
@@ -36,12 +37,12 @@
                 android:paddingStart="@dimen/view_pager_padding"
                 android:paddingEnd="@dimen/view_pager_padding" />
 
-            <!-- airing today -->
+            <!-- on the air -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="@dimen/default_margin"
-                android:layout_weight="0.35"
+                android:layout_weight="0.7"
                 android:orientation="vertical">
 
                 <TextView
@@ -50,55 +51,23 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/default_margin"
                     android:layout_marginBottom="@dimen/default_margin_min"
-                    android:text="@string/airing_today" />
+                    android:text="@string/title_on_the_air" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_airing_today"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:clipToPadding="false"
-                    android:layoutMode="clipBounds"
-                    android:orientation="horizontal"
-                    android:overScrollMode="never"
-                    android:paddingStart="@dimen/default_padding"
-                    android:paddingEnd="@dimen/default_padding"
-                    android:scrollbars="none"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-            </LinearLayout>
-
-            <!-- popular -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="@dimen/default_margin_min"
-                android:layout_weight="0.35"
-                android:orientation="vertical">
-
-                <TextView
-                    style="@style/Toolbar.TextTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/default_margin"
-                    android:layout_marginBottom="@dimen/default_margin_min"
-                    android:text="@string/popular" />
-
-                <androidx.recyclerview.widget.RecyclerView
+                <com.arbelkilani.bingetv.presentation.ui.view.AutofitRecyclerView
                     android:id="@+id/rv_popular"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:clipToPadding="false"
+                    android:columnWidth="130dp"
                     android:layoutMode="clipBounds"
-                    android:orientation="horizontal"
                     android:overScrollMode="never"
                     android:paddingStart="@dimen/default_padding_min"
                     android:paddingEnd="@dimen/default_padding_min"
                     android:scrollbars="none"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
             </LinearLayout>
+
 
         </LinearLayout>
 

@@ -15,6 +15,8 @@ val UseCasesModule = module {
 
     single { createPopularUseCase(get()) }
 
+    single { createOnTheAirUseCase(get()) }
+
     single { createGetGenreUseCase(get()) }
 
     single { createTvDetailsUseCase(get()) }
@@ -40,6 +42,10 @@ fun createAiringTodayUseCase(tvShowRepository: TvShowRepository): AiringTodayUse
 
 fun createPopularUseCase(tvShowRepository: TvShowRepository): PopularUseCase {
     return PopularUseCase(tvShowRepository)
+}
+
+fun createOnTheAirUseCase(tvShowRepository: TvShowRepository): OnTheAirUseCase {
+    return OnTheAirUseCase(tvShowRepository)
 }
 
 fun createGetGenreUseCase(genresRepository: GenresRepository): GetGenreUseCase {

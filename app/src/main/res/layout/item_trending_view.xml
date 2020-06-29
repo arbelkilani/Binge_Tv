@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_container"
-    android:layout_width="130dp"
-    android:layout_height="match_parent"
-    android:background="@drawable/ic_arrow_left"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="@dimen/default_padding_min">
 
     <com.arbelkilani.bingetv.presentation.ui.view.CustomCardView
         android:id="@+id/card_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layoutMode="opticalBounds"
-        app:cardCornerRadius="@dimen/default_card_corner_radius">
+        app:cardCornerRadius="@dimen/default_card_corner_radius"
+        app:layout_constraintDimensionRatio="2:3"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/iv_item_trending"
@@ -26,21 +29,6 @@
             android:background="@drawable/background_backdrop_gradient" />
 
     </com.arbelkilani.bingetv.presentation.ui.view.CustomCardView>
-    >
 
-
-    <TextView
-        android:id="@+id/tv_trending_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginTop="@dimen/small_margin"
-        android:ellipsize="end"
-        android:fontFamily="@font/avenir_next_medium"
-        android:text="azeaze aeazeaze "
-        android:textColor="@color/item_trending_name_color"
-        android:textSize="@dimen/small_text_size"
-        android:visibility="gone" />
-
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
