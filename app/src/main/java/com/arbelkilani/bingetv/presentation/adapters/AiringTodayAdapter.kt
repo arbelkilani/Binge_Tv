@@ -30,7 +30,7 @@ class AiringTodayAdapter(
                     .centerCrop()
                     .into(itemView.iv_item_trending)
                 itemView.tv_trending_name.text = name
-                itemView.setOnClickListener {
+                itemView.card_view.setOnClickListener {
                     onTvShowClickListener.onTvItemClicked(this)
                 }
             }

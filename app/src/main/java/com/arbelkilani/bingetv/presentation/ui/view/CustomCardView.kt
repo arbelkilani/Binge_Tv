@@ -3,7 +3,6 @@ package com.arbelkilani.bingetv.presentation.ui.view
 import android.content.Context
 import android.graphics.RectF
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import androidx.cardview.widget.CardView
 
@@ -19,25 +18,18 @@ class CustomCardView @JvmOverloads constructor(
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
 
-        event?.let {
-
-            val rectF = RectF(0f, 0f, width.toFloat(), height.toFloat())
-            val x = it.x
-            val y = it.y
-
-            return if (rectF.contains(x, y) && (it.action == MotionEvent.ACTION_DOWN
-                        || it.action == MotionEvent.ACTION_MOVE)
-            ) {
-                scaleX = MIN_SCALE
-                scaleY = MIN_SCALE
-                true
-            } else {
-                scaleX = DEFAULT_SCALE
-                scaleY = DEFAULT_SCALE
-                true
-            }
+        val rectF = RectF(0f, 0f, width.toFloat(), height.toFloat())
+        val x = event!!.x
+        val y = event.y
+        if (rectF.contains(x, y) && (event.action == MotionEvent.ACTION_DOWN
+                    || event.action == MotionEvent.ACTION_MOVE)
+        ) {
+            scaleX = MIN_SCALE
+            scaleY = MIN_SCALE
+        } else {
+            scaleX = DEFAULT_SCALE
+            scaleY = DEFAULT_SCALE
         }
-        Log.i("TAG++", "event : ${event!!.action}")
 
         return super.onTouchEvent(event)
 
