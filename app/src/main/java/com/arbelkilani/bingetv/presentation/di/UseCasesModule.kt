@@ -64,6 +64,6 @@ fun createGetNextEpisodeDataUseCase(tvShowRepository: TvShowRepository): GetNext
     return GetNextEpisodeDataUseCase(tvShowRepository)
 }
 
-fun createGetSearchTvShowUseCase(tvShowRepository: TvShowRepository): GetSearchTvShowUseCase {
-    return GetSearchTvShowUseCase(tvShowRepository)
+fun createGetSearchTvShowUseCase(tvShowRepository: TvShowRepository): SearchUseCase {
+    return SearchUseCase(tvShowRepository)
 }

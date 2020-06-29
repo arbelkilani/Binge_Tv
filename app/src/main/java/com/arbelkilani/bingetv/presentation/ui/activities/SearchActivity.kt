@@ -1,5 +1,6 @@
 package com.arbelkilani.bingetv.presentation.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,64 +9,91 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.arbelkilani.bingetv.R
-import com.arbelkilani.bingetv.presentation.adapters.TvSearchAdapter
+import com.arbelkilani.bingetv.data.model.tv.Tv
+import com.arbelkilani.bingetv.databinding.ActivitySearchBinding
+import com.arbelkilani.bingetv.presentation.adapters.SearchAdapter
 import com.arbelkilani.bingetv.presentation.listeners.KeyboardListener
+import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
 import com.arbelkilani.bingetv.presentation.listeners.RevealAnimationListener
 import com.arbelkilani.bingetv.presentation.ui.view.GridAutoFitLayoutManager
 import com.arbelkilani.bingetv.presentation.ui.view.RevealAnimation
 import com.arbelkilani.bingetv.presentation.viewmodel.SearchViewModel
+import com.arbelkilani.bingetv.utils.Constants
 import com.arbelkilani.bingetv.utils.hideKeyboard
 import com.arbelkilani.bingetv.utils.interceptKeyboardVisibility
 import com.arbelkilani.bingetv.utils.showKeyboard
-import kotlinx.android.synthetic.main.activity_search.*
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener, RevealAnimationListener {
+class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener, RevealAnimationListener,
+    OnTvShowClickListener {
 
     private val TAG = SearchActivity::class.java.simpleName
-
-    private val searchViewModel: SearchViewModel by viewModel()
 
     private lateinit var revealAnimation: RevealAnimation
     lateinit var closeMenuItem: MenuItem
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
 
-        initViews()
+    private val viewModel: SearchViewModel by viewModel()
+    private lateinit var binding: ActivitySearchBinding
 
-        searchViewModel.tvListLiveData.observe(this, Observer {
-            (rv_shows.adapter as TvSearchAdapter).notify(it)
-        })
-    }
+    private val searchAdapter = SearchAdapter(this)
 
-    private fun initViews() {
-        revealAnimation = RevealAnimation(root_layout, intent, this, this)
-        initToolbar()
-        edit_text_search.addTextChangedListener(this)
-        interceptKeyboardVisibility(this)
-
-        rv_shows.apply {
-            adapter = TvSearchAdapter()
-            itemAnimator = DefaultItemAnimator()
-            (itemAnimator as DefaultItemAnimator).changeDuration = 0
-
+    private var searchJob: Job? = null
+    private fun search(query: String) {
+        searchJob?.cancel()
+        searchJob = lifecycleScope.launch {
+            viewModel.search(query)
+                .catch { cause -> Log.i(TAG, "cause = ${cause.localizedMessage}") }
+                .collectLatest {
+                    searchAdapter.submitData(it)
+                }
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_search)
+
+        binding.viewmodel = viewModel
+        binding.lifecycleOwner = this
+
+        initAdapter()
+
+        initViews()
+
+    }
+
+    private fun initAdapter() {
+        binding.rvShows.adapter = searchAdapter
+        binding.rvShows.itemAnimator = DefaultItemAnimator()
+        (binding.rvShows.itemAnimator as DefaultItemAnimator).changeDuration = 0
+    }
+
+    private fun initViews() {
+        revealAnimation = RevealAnimation(binding.rootLayout, intent, this, this)
+        initToolbar()
+        binding.editTextSearch.addTextChangedListener(this)
+        interceptKeyboardVisibility(this)
+    }
+
     private fun initToolbar() {
-        setSupportActionBar(toolbar_search)
+        setSupportActionBar(binding.toolbarSearch)
         supportActionBar?.let {
             it.title = getString(R.string.search_title)
         }
 
-        toolbar_search.setNavigationOnClickListener { onBackPressed() }
+        binding.toolbarSearch.setNavigationOnClickListener { onBackPressed() }
     }
 
     override fun onBackPressed() {
@@ -86,7 +114,7 @@ class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener, Revea
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_close -> edit_text_search.text.clear()
+            R.id.action_close -> binding.editTextSearch.text.clear()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -109,13 +137,13 @@ class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener, Revea
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
         closeMenuItem.isVisible = true
         if (start >= 3) {
-            searchViewModel.searchTvShow(s.toString())
+            search(s.toString())
         }
     }
 
     override fun onKeyboardShown(currentKeyboardHeight: Int) {
         val linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        rv_shows.layoutManager = linearLayoutManager
+        binding.rvShows.layoutManager = linearLayoutManager
     }
 
     override fun onKeyboardHidden() {
@@ -124,18 +152,26 @@ class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener, Revea
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         val gridLayoutManager = GridAutoFitLayoutManager(this, 160)
-        rv_shows.layoutManager = gridLayoutManager
+        binding.rvShows.layoutManager = gridLayoutManager
         hideKeyboard()
         return true
     }
 
     override fun onRevealEnded() {
-        showKeyboard(root_layout)
+        showKeyboard(binding.rootLayout)
     }
 
     override fun onUnRevealEnd() {
         overridePendingTransition(0, 0)
         hideKeyboard()
+    }
+
+    override fun onTvItemClicked(tv: Tv) {
+        startActivity(
+            Intent(this, DetailsTvActivity::class.java)
+                .apply {
+                    putExtra(Constants.DISCOVER_DETAILS, tv)
+                })
     }
 
 }

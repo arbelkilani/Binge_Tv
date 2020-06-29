@@ -40,6 +40,13 @@ interface ApiTmdbService {
         @Query("page") page: Int
     ): ApiResponse<Tv>
 
+    @GET("search/tv")
+    suspend fun search(
+        @Query("page") page: Int,
+        @Query("query") query: String,
+        @Query("include_adult") adult: Boolean
+    ): ApiResponse<Tv>
+
 
     @GET("genre/tv/list")
     suspend fun getGenres(): Response<GenreResponse>
@@ -56,10 +63,4 @@ interface ApiTmdbService {
 
     @GET("tv/{tv_id}/external_ids")
     suspend fun getExternalIds(@Path("tv_id") id: Int): ExternalIds
-
-    @GET("search/tv")
-    suspend fun searchTvShow(
-        @Query("query") query: String,
-        @Query("include_adult") adult: Boolean
-    ): ApiResponse<Tv>
 }

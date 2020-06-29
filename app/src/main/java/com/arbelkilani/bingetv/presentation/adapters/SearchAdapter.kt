@@ -8,34 +8,27 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.model.tv.Tv
-import com.arbelkilani.bingetv.databinding.ItemTrendingViewBinding
+import com.arbelkilani.bingetv.databinding.ItemTvShowSearchBinding
 import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
 
-
-class OnTheAirAdapter(private val tvShowClickListener: OnTvShowClickListener) :
+class SearchAdapter(private val tvShowClickListener: OnTvShowClickListener) :
     PagingDataAdapter<Tv, RecyclerView.ViewHolder>(TvShowComparator) {
 
-    class OnTheAirHolder(val itemTrendingViewBinding: ItemTrendingViewBinding) :
-        RecyclerView.ViewHolder(itemTrendingViewBinding.root)
+    class SearchHolder(val itemTvShowSearchBinding: ItemTvShowSearchBinding) :
+        RecyclerView.ViewHolder(itemTvShowSearchBinding.root)
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): OnTheAirHolder {
-
-        val itemTrendingViewBinding = DataBindingUtil.inflate<ItemTrendingViewBinding>(
-            LayoutInflater.from(parent.context), R.layout.item_trending_view, parent, false
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchHolder {
+        val itemTvShowSearchBinding = DataBindingUtil.inflate<ItemTvShowSearchBinding>(
+            LayoutInflater.from(parent.context), R.layout.item_tv_show_search, parent, false
         )
-        return OnTheAirHolder(itemTrendingViewBinding)
-
+        return SearchHolder(itemTvShowSearchBinding)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
         val tvShow = getItem(position)
         if (tvShow != null) {
-            (holder as OnTheAirHolder).itemTrendingViewBinding.tv = tvShow
-            holder.itemTrendingViewBinding.itemClick = tvShowClickListener
+            (holder as SearchHolder).itemTvShowSearchBinding.tv = tvShow
+            holder.itemTvShowSearchBinding.itemClick = tvShowClickListener
         }
     }
 
@@ -50,6 +43,4 @@ class OnTheAirAdapter(private val tvShowClickListener: OnTvShowClickListener) :
             }
         }
     }
-
-
 }

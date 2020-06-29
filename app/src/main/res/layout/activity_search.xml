@@ -1,49 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/root_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/screen_background_color"
-    android:orientation="vertical"
-    tools:context=".presentation.ui.activities.SearchActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Toolbar -->
-    <com.google.android.material.appbar.AppBarLayout
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="com.arbelkilani.bingetv.presentation.viewmodel.SearchViewModel" />
+
+    </data>
+
+    <LinearLayout
+        android:id="@+id/root_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/toolbar_background_color">
+        android:layout_height="match_parent"
+        android:background="@drawable/screen_background_color"
+        android:orientation="vertical"
+        tools:context=".presentation.ui.activities.SearchActivity">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar_search"
+        <!-- Toolbar -->
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:navigationIcon="@drawable/ic_arrow_left_colored"
-            app:titleTextAppearance="@style/Toolbar.TextTitle"
-            app:titleTextColor="@color/toolbar_title_color">
+            android:layout_height="wrap_content"
+            android:background="@color/toolbar_background_color">
 
-            <EditText
-                android:id="@+id/edit_text_search"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar_search"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:hint="@string/search_title"
-                android:imeOptions="actionSearch"
-                android:inputType="text"
-                android:maxLines="1"
-                android:textColor="@color/toolbar_title_color"
-                android:textColorHint="@color/toolbar_title_color" />
+                android:layout_height="?attr/actionBarSize"
+                app:navigationIcon="@drawable/ic_arrow_left_colored"
+                app:titleTextAppearance="@style/Toolbar.TextTitle"
+                app:titleTextColor="@color/toolbar_title_color">
 
-        </androidx.appcompat.widget.Toolbar>
+                <EditText
+                    android:id="@+id/edit_text_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:hint="@string/search_title"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textColor="@color/toolbar_title_color"
+                    android:textColorHint="@color/toolbar_title_color" />
 
-    </com.google.android.material.appbar.AppBarLayout>
+            </androidx.appcompat.widget.Toolbar>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        </com.google.android.material.appbar.AppBarLayout>
 
-        <!-- circles design -->
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -53,39 +58,45 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <ImageView
-                    android:layout_width="@dimen/circle_radius"
-                    android:layout_height="@dimen/circle_radius"
-                    android:layout_gravity="start"
-                    android:layout_marginStart="@dimen/circle_margin_start"
-                    android:layout_marginTop="@dimen/circle_margin_top"
-                    android:background="@drawable/circle"
-                    android:fitsSystemWindows="true" />
+                <!-- circles design -->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                <ImageView
-                    android:layout_width="@dimen/circle_radius"
-                    android:layout_height="@dimen/circle_radius"
-                    android:layout_gravity="end"
-                    android:layout_marginEnd="@dimen/circle_margin_end"
-                    android:background="@drawable/circle"
-                    android:fitsSystemWindows="true" />
+                    <ImageView
+                        android:layout_width="@dimen/circle_radius"
+                        android:layout_height="@dimen/circle_radius"
+                        android:layout_gravity="start"
+                        android:layout_marginStart="@dimen/circle_margin_start"
+                        android:layout_marginTop="@dimen/circle_margin_top"
+                        android:background="@drawable/circle"
+                        android:fitsSystemWindows="true" />
+
+                    <ImageView
+                        android:layout_width="@dimen/circle_radius"
+                        android:layout_height="@dimen/circle_radius"
+                        android:layout_gravity="end"
+                        android:layout_marginEnd="@dimen/circle_margin_end"
+                        android:background="@drawable/circle"
+                        android:fitsSystemWindows="true" />
+                </FrameLayout>
+
             </FrameLayout>
+
+            <!-- searched items list -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_shows"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:layoutMode="clipBounds"
+                android:nestedScrollingEnabled="true"
+                android:orientation="horizontal"
+                android:overScrollMode="never"
+                android:padding="@dimen/default_padding"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         </FrameLayout>
 
-        <!-- searched items list -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_shows"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:layoutMode="clipBounds"
-            android:nestedScrollingEnabled="true"
-            android:orientation="horizontal"
-            android:overScrollMode="never"
-            android:padding="@dimen/default_padding"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-    </FrameLayout>
-
-</LinearLayout>
+    </LinearLayout>
+</layout>

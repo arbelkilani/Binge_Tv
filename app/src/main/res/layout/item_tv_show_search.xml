@@ -8,21 +8,26 @@
             name="tv"
             type="com.arbelkilani.bingetv.data.model.tv.Tv" />
 
+        <variable
+            name="itemClick"
+            type="com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener" />
+
     </data>
 
     <RelativeLayout
-        android:layout_marginStart="@dimen/default_margin"
-        android:layout_marginBottom="@dimen/default_margin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginBottom="@dimen/default_margin"
         android:gravity="center">
 
-        <androidx.cardview.widget.CardView
+        <com.arbelkilani.bingetv.presentation.ui.view.CustomCardView
             android:id="@+id/poster"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layoutMode="opticalBounds"
+            android:onClick="@{() -> itemClick.onTvItemClicked(tv)}"
             app:cardCornerRadius="@dimen/default_card_corner_radius">
 
             <ImageView
@@ -32,7 +37,7 @@
                 android:scaleType="centerCrop"
                 android:src="@{tv.posterPath}" />
 
-        </androidx.cardview.widget.CardView>
+        </com.arbelkilani.bingetv.presentation.ui.view.CustomCardView>
 
         <TextView
             android:id="@+id/name"

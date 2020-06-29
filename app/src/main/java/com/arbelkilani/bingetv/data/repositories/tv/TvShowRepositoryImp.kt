@@ -12,10 +12,7 @@ import com.arbelkilani.bingetv.data.model.tv.TvDetails
 import com.arbelkilani.bingetv.data.model.tv.maze.TvDetailsMaze
 import com.arbelkilani.bingetv.data.model.tv.maze.channel.WebChannel
 import com.arbelkilani.bingetv.data.model.tv.maze.details.NextEpisodeData
-import com.arbelkilani.bingetv.data.pagingsource.AiringTodayPagingSource
-import com.arbelkilani.bingetv.data.pagingsource.DiscoverPagingSource
-import com.arbelkilani.bingetv.data.pagingsource.OnTheAirPagingSource
-import com.arbelkilani.bingetv.data.pagingsource.PopularPagingSource
+import com.arbelkilani.bingetv.data.pagingsource.*
 import com.arbelkilani.bingetv.data.source.remote.ApiTmdbService
 import com.arbelkilani.bingetv.data.source.remote.ApiTvMazeService
 import com.arbelkilani.bingetv.domain.repositories.TvShowRepository
@@ -77,6 +74,14 @@ class TvShowRepositoryImp(
         ).flow
     }
 
+    override suspend fun search(query: String): Flow<PagingData<Tv>> {
+        Log.i(TAG, "search($query)")
+        return Pager(
+            config = PagingConfig(NETWORK_PAGE_SIZE),
+            pagingSourceFactory = { SearchPagingSource(query, apiTmdbService) }
+        ).flow
+    }
+
     override suspend fun getTvDetails(id: Int): Resource<TvDetails> = try {
         Log.i(TAG, "getTvDetails() for item $id")
         val response = apiTmdbService.getTvDetails(id, "videos")
@@ -108,13 +113,6 @@ class TvShowRepositoryImp(
         } catch (e: Exception) {
             Resource.exception(e, null)
         }
-    }
-
-    override suspend fun searchTvShow(query: String): Resource<ApiResponse<Tv>> = try {
-        val response = apiTmdbService.searchTvShow(query, false)
-        Resource.success(response)
-    } catch (e: Exception) {
-        Resource.exception(e, null)
     }
 
     private suspend fun getImdbId(id: Int): String = try {
