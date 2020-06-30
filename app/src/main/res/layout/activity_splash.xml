@@ -32,6 +32,19 @@
         android:src="@drawable/iv_logo" />
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_logo"
+        android:layout_alignStart="@+id/iv_logo"
+        android:layout_alignEnd="@+id/iv_logo"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/avenir_next_regular"
+        android:gravity="center_horizontal"
+        android:text="@string/splash_title"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/splash_title_text_size" />
+
+    <TextView
         android:id="@+id/tv_credit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
