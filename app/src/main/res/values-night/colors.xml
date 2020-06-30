@@ -35,4 +35,7 @@
     <color name="progress_background_color">#8Ccccccc</color>
     <color name="progress_color">@android:color/white</color>
 
+    <color name="card_view_background_tint">#122038</color>
+    <color name="radio_button_color">#FFFFFF</color>
+
 </resources>

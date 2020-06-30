@@ -36,4 +36,7 @@
     <color name="progress_background_color">#8Ccccccc</color>
     <color name="progress_color">#778bd9</color>
 
+    <color name="card_view_background_tint">#FFFFFF</color>
+    <color name="radio_button_color">#778bd9</color>
+
 </resources>
