@@ -9,4 +9,9 @@
         android:title="@string/action_add_to_watchlist"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/action_watched"
+        android:title="@string/action_watched"
+        app:showAsAction="ifRoom" />
+
 </menu>

@@ -39,7 +39,9 @@ data class TvDetails(
     @SerializedName("vote_average") val voteAverage: Double,
     @SerializedName("vote_count") val voteCount: Double,
     val videos: VideoResponse, //TODO perform action for type and size ( think about using enumerations instead)
-    val images: ImageResponse
+    val images: ImageResponse,
+    var addWatchlist: Boolean,
+    var watched: Boolean
 ) : Parcelable {
 
     val posterPath: String?

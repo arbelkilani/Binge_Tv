@@ -66,7 +66,6 @@ class TvDetailsActivityViewModel constructor(
         Log.i(TAG, "getCredits()")
         val response = getCreditsUseCase.invoke(selectedTv.id)
         if (response.status == Status.SUCCESS) {
-            Log.i(TAG, "credits response = ${response.data}")
             _credits.postValue(response.data!!.cast)
         }
     }
@@ -98,6 +97,18 @@ class TvDetailsActivityViewModel constructor(
         if (homePageUrl.isNotEmpty())
             _homePageUrl.postValue(homePageUrl)
 
+    }
+
+    fun saveToWatchlist() {
+        scope.launch {
+            getTvDetailsUseCase.saveToWatchlist(_selectedTv.value!!)
+        }
+    }
+
+    fun setTvShowWatched() {
+        scope.launch {
+            getTvDetailsUseCase.setTvShowWatched(_selectedTv.value!!)
+        }
     }
 
 }

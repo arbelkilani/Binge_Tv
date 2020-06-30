@@ -24,6 +24,9 @@ android {
             buildConfigField "String", "TMDB_BASE_URL", "\"https://api.themoviedb.org/3/\""
             buildConfigField "String", "TVMAZE_BASE_URL", "\"http://api.tvmaze.com/\""
             buildConfigField "String", "API_KEY", '"0b33b787dc83b7214ec8703829413707"'
+
+            resValue("string", "DB_PASSWORD_PERSON", "password")
+            resValue("string", "PORT_NUMBER", "8080")
         }
 
         release {
@@ -66,7 +69,7 @@ dependencies {
     def picasso = "2.71828"
     implementation "com.squareup.picasso:picasso:$picasso"
 
-    def nav_version = "2.3.0-rc01"
+    def nav_version = "2.3.0"
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
@@ -100,6 +103,8 @@ dependencies {
 
     def paging_version = "3.0.0-alpha02"
     implementation "androidx.paging:paging-runtime:$paging_version"
+
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
 
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

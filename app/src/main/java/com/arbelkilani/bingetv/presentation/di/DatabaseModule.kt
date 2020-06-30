@@ -7,8 +7,14 @@ import org.koin.dsl.module
 
 val DatabaseModule = module {
 
-    single { Room.databaseBuilder(androidContext(),
-        BingeTvDatabase::class.java, "binge_tv_database").build()}
+    single {
+        Room.databaseBuilder(
+            androidContext(),
+            BingeTvDatabase::class.java, "binge_tv_database"
+        ).fallbackToDestructiveMigration().build()
+    }
 
     single { get<BingeTvDatabase>().getGenreDao() }
+
+    single { get<BingeTvDatabase>().getTvDao() }
 }

@@ -14,6 +14,7 @@ import com.arbelkilani.bingetv.data.model.tv.maze.TvDetailsMaze
 import com.arbelkilani.bingetv.data.model.tv.maze.channel.WebChannel
 import com.arbelkilani.bingetv.data.model.tv.maze.details.NextEpisodeData
 import com.arbelkilani.bingetv.data.pagingsource.*
+import com.arbelkilani.bingetv.data.source.local.tv.TvDao
 import com.arbelkilani.bingetv.data.source.remote.ApiTmdbService
 import com.arbelkilani.bingetv.data.source.remote.ApiTvMazeService
 import com.arbelkilani.bingetv.domain.repositories.TvShowRepository
@@ -28,7 +29,8 @@ import kotlinx.coroutines.flow.flow
 @ExperimentalCoroutinesApi
 class TvShowRepositoryImp(
     private val apiTmdbService: ApiTmdbService,
-    private val apiTvMazeService: ApiTvMazeService
+    private val apiTvMazeService: ApiTvMazeService,
+    private val tvDao: TvDao
 ) : TvShowRepository {
 
     private val TAG = TvShowRepositoryImp::class.java.simpleName
@@ -86,8 +88,13 @@ class TvShowRepositoryImp(
     override suspend fun getTvDetails(id: Int): Resource<TvDetails> =
         try {
             Log.i(TAG, "getTvDetails() for item $id")
-            val response = apiTmdbService.getTvDetails(id, "videos")
-            Resource.success(response)
+            val remoteItem = apiTmdbService.getTvDetails(id, "videos")
+            val localItem = tvDao.getTvShow(id)
+            if (localItem.id == remoteItem.id) {
+                remoteItem.addWatchlist = localItem.addWatchlist
+                remoteItem.watched = localItem.watched
+            }
+            Resource.success(remoteItem)
         } catch (e: Exception) {
             Resource.exception(e, null)
         }
@@ -100,6 +107,16 @@ class TvShowRepositoryImp(
         } catch (e: Exception) {
             Resource.exception(e, null)
         }
+
+    override suspend fun saveToWatchlist(tv: Tv) {
+        tv.addWatchlist = true
+        tvDao.saveTv(tv)
+    }
+
+    override suspend fun setTvShowWatched(tv: Tv) {
+        tv.watched = true
+        tvDao.saveTv(tv)
+    }
 
 
     override suspend fun getCredits(id: Int): Resource<CreditsResponse> =

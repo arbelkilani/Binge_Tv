@@ -40,6 +40,7 @@
     <string name="retry">Retry</string>
     <string name="splash_title">Binge<b>Tv</b></string>
     <string name="action_add_to_watchlist">add to watchlist</string>
+    <string name="action_watched">watched</string>
     <!-- todo check plurals for days with data binding -->
 
 </resources>

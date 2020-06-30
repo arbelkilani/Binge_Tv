@@ -171,7 +171,11 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener {
 
             when (it.itemId) {
                 R.id.action_add_to_watchlist -> {
-                    //TODO insert this tv show in database
+                    viewModel.saveToWatchlist()
+                    return@OnMenuItemClickListener true
+                }
+                R.id.action_watched -> {
+                    viewModel.setTvShowWatched()
                     return@OnMenuItemClickListener true
                 }
                 else -> return@OnMenuItemClickListener false

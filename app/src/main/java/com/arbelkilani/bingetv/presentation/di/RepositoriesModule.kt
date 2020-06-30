@@ -3,17 +3,22 @@ package com.arbelkilani.bingetv.presentation.di
 import com.arbelkilani.bingetv.data.repositories.genre.GenresRepositoryImp
 import com.arbelkilani.bingetv.data.repositories.tv.TvShowRepositoryImp
 import com.arbelkilani.bingetv.data.source.local.genre.GenreDao
+import com.arbelkilani.bingetv.data.source.local.tv.TvDao
 import com.arbelkilani.bingetv.data.source.remote.ApiTmdbService
 import com.arbelkilani.bingetv.data.source.remote.ApiTvMazeService
-import com.arbelkilani.bingetv.domain.repositories.TvShowRepository
 import com.arbelkilani.bingetv.domain.repositories.GenresRepository
+import com.arbelkilani.bingetv.domain.repositories.TvShowRepository
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import org.koin.dsl.module
 
+@ExperimentalCoroutinesApi
+@FlowPreview
 val RepositoriesModule = module {
 
     single { createGenreRepository(get(), get()) }
 
-    single { createTvShowRepository(get(), get()) }
+    single { createTvShowRepository(get(), get(), get()) }
 }
 
 fun createGenreRepository(
@@ -26,12 +31,16 @@ fun createGenreRepository(
     )
 }
 
+@ExperimentalCoroutinesApi
+@FlowPreview
 fun createTvShowRepository(
     apiTmdbService: ApiTmdbService,
-    apiTvMazeService: ApiTvMazeService
+    apiTvMazeService: ApiTvMazeService,
+    tvDao: TvDao
 ): TvShowRepository {
     return TvShowRepositoryImp(
         apiTmdbService,
-        apiTvMazeService
+        apiTvMazeService,
+        tvDao
     )
 }
