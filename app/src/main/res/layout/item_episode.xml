@@ -19,12 +19,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/default_margin"
+        android:onClick="@{() -> episodeClickListener.onEpisodeClicked(episode)}"
         app:cardCornerRadius="@dimen/default_card_corner_radius"
         app:contentPadding="@dimen/default_padding">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/tv_number"
@@ -42,6 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@+id/tv_number"
                 android:layout_marginStart="@dimen/default_margin_min"
+                android:layout_toStartOf="@+id/rb_watched"
                 android:layout_toEndOf="@+id/tv_number"
                 android:fontFamily="@font/avenir_next_regular"
                 android:text="@{episode.name}"
@@ -56,15 +58,23 @@
                 android:layout_below="@+id/tv_name"
                 android:layout_marginStart="@dimen/default_margin_min"
                 android:layout_marginTop="@dimen/default_margin_min"
+                android:layout_toStartOf="@+id/rb_watched"
                 android:layout_toEndOf="@+id/tv_number"
                 android:fontFamily="@font/avenir_next_regular"
                 android:text="@{episode.airDate}"
                 android:textColor="@color/details_titles_text_color"
                 android:textSize="@dimen/small_text_size"
-                tools:text="this is a name for episode" />
+                tools:text="Aired : 2020-09-12" />
+
+            <RadioButton
+                android:id="@+id/rb_watched"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true" />
 
         </RelativeLayout>
 
-
     </androidx.cardview.widget.CardView>
+
 </layout>

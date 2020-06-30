@@ -36,6 +36,7 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener {
     private val viewModel: TvDetailsActivityViewModel by viewModel {
         parametersOf(intent.getParcelableExtra(Constants.DISCOVER_DETAILS)!!)
     }
+
     private lateinit var binding: ActivityDetailsTvBinding
 
     private lateinit var bottomSheetBehaviorContent: BottomSheetBehavior<NestedScrollView>
@@ -127,7 +128,6 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 Log.i(TAG, "onStateChanged : $newState")
             }
-
         })
 
         bottomSheetBehaviorSeasons = BottomSheetBehavior.from(bottom_sheet_details_seasons)

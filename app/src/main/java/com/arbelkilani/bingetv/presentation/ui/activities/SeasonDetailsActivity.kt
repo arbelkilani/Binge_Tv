@@ -1,16 +1,20 @@
 package com.arbelkilani.bingetv.presentation.ui.activities
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.model.episode.Episode
 import com.arbelkilani.bingetv.databinding.ActivitySeasonDetailsBinding
+import com.arbelkilani.bingetv.databinding.EpisodeDetailsBottomSheetBinding
 import com.arbelkilani.bingetv.presentation.adapters.EpisodeAdapter
 import com.arbelkilani.bingetv.presentation.listeners.OnEpisodeClickListener
 import com.arbelkilani.bingetv.presentation.viewmodel.season.SeasonDetailsViewModel
 import com.arbelkilani.bingetv.utils.Constants
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlinx.android.synthetic.main.episode_details_content.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -24,7 +28,9 @@ class SeasonDetailsActivity : AppCompatActivity(), OnEpisodeClickListener {
             intent.getParcelableExtra(Constants.SEASON_DETAILS)
         )
     }
+
     private lateinit var binding: ActivitySeasonDetailsBinding
+    private lateinit var bottomSheetDialog: BottomSheetDialog
 
     private val episodeAdapter = EpisodeAdapter(this)
 
@@ -40,11 +46,12 @@ class SeasonDetailsActivity : AppCompatActivity(), OnEpisodeClickListener {
         binding.lifecycleOwner = this
 
         viewModel.episodes.observe(this, Observer {
-            (binding.recyclerEpisodes.adapter as EpisodeAdapter).notifyDataSetChanged(it)
+            (recycler_episodes.adapter as EpisodeAdapter).notifyDataSetChanged(it)
         })
 
         initAdapter()
         initToolbar()
+        initBottomSheet()
     }
 
     private fun initToolbar() {
@@ -58,10 +65,23 @@ class SeasonDetailsActivity : AppCompatActivity(), OnEpisodeClickListener {
     }
 
     private fun initAdapter() {
-        binding.recyclerEpisodes.adapter = episodeAdapter
+        recycler_episodes.adapter = episodeAdapter
+    }
+
+    private fun initBottomSheet() {
+        val detailsBinding =
+            DataBindingUtil.inflate<EpisodeDetailsBottomSheetBinding>(
+                LayoutInflater.from(this), R.layout.episode_details_bottom_sheet, null, false
+            )
+        detailsBinding.season = viewModel.season.value
+        detailsBinding.tvDetails = viewModel.selectedTv.value
+
+        bottomSheetDialog = BottomSheetDialog(this)
+        bottomSheetDialog.setContentView(detailsBinding.root)
+
     }
 
     override fun onEpisodeClicked(episode: Episode) {
-
+        bottomSheetDialog.show()
     }
 }

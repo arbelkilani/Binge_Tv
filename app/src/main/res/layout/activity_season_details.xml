@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -19,124 +20,37 @@
 
     </data>
 
-    <LinearLayout
-        android:id="@+id/root_layout"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/screen_background_color"
-        android:orientation="vertical"
         tools:context=".presentation.ui.activities.SeasonDetailsActivity">
 
-        <!-- Toolbar -->
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/toolbar_background_color">
+            android:background="@color/toolbar_background_color"
+            android:theme="@style/ThemeOverlay.AppCompat">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:navigationIcon="@drawable/ic_arrow_left_colored"
+                app:popupTheme="@style/ThemeOverlay.AppCompat"
                 app:subtitle="@{season.name}"
                 app:title="@{tvDetails.name}"
                 app:titleTextAppearance="@style/Toolbar.TextTitle"
                 app:titleTextColor="@color/toolbar_title_color" />
 
-
         </com.google.android.material.appbar.AppBarLayout>
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <include
+            layout="@layout/episode_details_content"
+            bind:season="@{season}"
+            bind:tvDetails="@{tvDetails}"
+            bind:viewModel="@{viewModel}" />
 
-            <!-- circles design -->
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
 
-                <!-- circles design -->
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <ImageView
-                        android:layout_width="@dimen/circle_radius"
-                        android:layout_height="@dimen/circle_radius"
-                        android:layout_gravity="start"
-                        android:layout_marginStart="@dimen/circle_margin_start"
-                        android:layout_marginTop="@dimen/circle_margin_top"
-                        android:background="@drawable/circle"
-                        android:fitsSystemWindows="true" />
-
-                    <ImageView
-                        android:layout_width="@dimen/circle_radius"
-                        android:layout_height="@dimen/circle_radius"
-                        android:layout_gravity="end"
-                        android:layout_marginEnd="@dimen/circle_margin_end"
-                        android:background="@drawable/circle"
-                        android:fitsSystemWindows="true" />
-
-                </FrameLayout>
-
-            </FrameLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/default_margin"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingStart="@dimen/default_padding"
-                    android:paddingEnd="@dimen/default_padding"
-                    android:weightSum="1">
-
-                    <ProgressBar
-                        android:id="@+id/progress_bar"
-                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                        android:layout_width="0dp"
-                        android:layout_height="5dp"
-                        android:layout_gravity="center"
-                        android:layout_marginEnd="@dimen/default_margin_min"
-                        android:layout_weight="0.85"
-                        android:indeterminate="false"
-                        android:progress="34"
-                        android:progressDrawable="@drawable/rounded_corners_progress_bar" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.15"
-                        android:fontFamily="@font/avenir_next_medium"
-                        android:gravity="end"
-                        android:text="@{season.watchedCount}"
-                        android:textColor="@color/toolbar_title_color"
-                        android:textSize="@dimen/titles_text_size" />
-
-                </LinearLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_episodes"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:clipToPadding="false"
-                    android:orientation="vertical"
-                    android:overScrollMode="never"
-                    android:paddingStart="@dimen/default_padding"
-                    android:paddingTop="@dimen/default_padding"
-                    android:paddingEnd="@dimen/default_padding"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-            </LinearLayout>
-
-        </FrameLayout>
-
-    </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>
