@@ -1,6 +1,7 @@
 package com.arbelkilani.bingetv.data.model.episode
 
 import android.os.Parcelable
+import com.arbelkilani.bingetv.utils.spannableVoteRate
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 import java.util.*
@@ -14,8 +15,8 @@ data class Episode(
     val id: Int,
     @SerializedName("production_code") val production_code: String?,
     @SerializedName("season_number") val seasonNumber: Int,
-    @SerializedName("still_path") val stillPath: String?,
-    @SerializedName("vote_average") val voteAverage: Double,
+    @SerializedName("still_path") val _stillPath: String?,
+    @SerializedName("vote_average") val _voteAverage: Double,
     @SerializedName("vote_count") val voteCount: Int
 ) : Parcelable {
 
@@ -24,4 +25,10 @@ data class Episode(
 
     val airDate: String
         get() = String.format("%s : %s", "Aired", _airDate, Locale.getDefault())
+
+    val stillPath: String?
+        get() = "https://image.tmdb.org/t/p/w300${this._stillPath}"
+
+    val voteAverage: String?
+        get() = spannableVoteRate(_voteAverage.toString())
 }

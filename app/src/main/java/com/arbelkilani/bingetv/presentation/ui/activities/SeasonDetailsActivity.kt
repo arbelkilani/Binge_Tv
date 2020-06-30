@@ -30,6 +30,7 @@ class SeasonDetailsActivity : AppCompatActivity(), OnEpisodeClickListener {
     }
 
     private lateinit var binding: ActivitySeasonDetailsBinding
+    private lateinit var detailsBinding: EpisodeDetailsBottomSheetBinding
     private lateinit var bottomSheetDialog: BottomSheetDialog
 
     private val episodeAdapter = EpisodeAdapter(this)
@@ -69,7 +70,8 @@ class SeasonDetailsActivity : AppCompatActivity(), OnEpisodeClickListener {
     }
 
     private fun initBottomSheet() {
-        val detailsBinding =
+
+        detailsBinding =
             DataBindingUtil.inflate<EpisodeDetailsBottomSheetBinding>(
                 LayoutInflater.from(this), R.layout.episode_details_bottom_sheet, null, false
             )
@@ -82,6 +84,7 @@ class SeasonDetailsActivity : AppCompatActivity(), OnEpisodeClickListener {
     }
 
     override fun onEpisodeClicked(episode: Episode) {
+        detailsBinding.episode = episode
         bottomSheetDialog.show()
     }
 }

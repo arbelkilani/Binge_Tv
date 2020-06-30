@@ -23,6 +23,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/screen_background_color"
         tools:context=".presentation.ui.activities.SeasonDetailsActivity">
 
         <com.google.android.material.appbar.AppBarLayout
