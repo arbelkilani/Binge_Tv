@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.episode_details_content.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
+
 class SeasonDetailsActivity : AppCompatActivity(), OnEpisodeClickListener {
 
     private val TAG = SeasonDetailsActivity::class.java.simpleName
