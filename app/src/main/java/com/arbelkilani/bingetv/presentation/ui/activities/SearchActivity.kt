@@ -41,7 +41,6 @@ class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener, Revea
     private lateinit var revealAnimation: RevealAnimation
     var closeMenuItem: MenuItem? = null
 
-
     private val viewModel: SearchViewModel by viewModel()
     private lateinit var binding: ActivitySearchBinding
 

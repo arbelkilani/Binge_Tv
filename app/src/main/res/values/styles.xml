@@ -11,11 +11,17 @@
     </style>
 
     <style name="AppBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+        <item name="bottomSheetStyle">@style/BottomSheetDialogStyle</item>
     </style>
 
-    <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
+    <style name="BottomSheetDialogStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/details_tv_background_rounded</item>
+    </style>
+
+    <style name="PopupMenuStyle" parent="Widget.AppCompat.Light.PopupMenu">
+        <item name="android:fontFamily">@font/avenir_next_regular</item>
+        <item name="android:textColor">@color/toolbar_title_color</item>
+        <item name="android:itemBackground">@color/season_sheet_background_color_end</item>
     </style>
 
     <style name="Toolbar.TextTitle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">

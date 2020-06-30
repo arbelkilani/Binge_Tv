@@ -6,8 +6,12 @@ import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.ContextThemeWrapper
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
+import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.doOnLayout
 import androidx.core.widget.NestedScrollView
@@ -23,7 +27,6 @@ import com.arbelkilani.bingetv.presentation.viewmodel.TvDetailsActivityViewModel
 import com.arbelkilani.bingetv.utils.Constants
 import com.arbelkilani.bingetv.utils.doOnBottomSheetDetailsSeason
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlinx.android.synthetic.main.activity_details_tv.*
 import kotlinx.android.synthetic.main.details_bottom_sheet_content.*
 import kotlinx.android.synthetic.main.details_bottom_sheet_seasons.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -95,12 +98,11 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener {
     }
 
     private fun initToolbar() {
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.let {
-            it.setDisplayShowHomeEnabled(true)
-            it.setDisplayShowTitleEnabled(false)
+            title = ""
         }
-        toolbar.setNavigationOnClickListener { onBackPressed() }
+        binding.toolbar.setNavigationOnClickListener { onBackPressed() }
 
         setSupportActionBar(toolbar_seasons)
         toolbar_seasons.setNavigationOnClickListener { onBackPressed() }
@@ -144,6 +146,40 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener {
                 putExtra(Constants.SEASON_DETAILS, season)
                 putExtra(Constants.SELECTED_TV, viewModel.selectedTv.value)
             })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        binding.toolbar.inflateMenu(R.menu.tv_details_menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_show_more -> {
+                showPopUpMenu()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun showPopUpMenu() {
+        val contextWrapper = ContextThemeWrapper(this, R.style.PopupMenuStyle)
+        val popUpMenu = PopupMenu(contextWrapper, findViewById(R.id.action_show_more))
+        popUpMenu.inflate(R.menu.tv_details_popup_menu)
+
+        popUpMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener {
+
+            when (it.itemId) {
+                R.id.action_add_to_watchlist -> {
+                    //TODO insert this tv show in database
+                    return@OnMenuItemClickListener true
+                }
+                else -> return@OnMenuItemClickListener false
+            }
+        })
+
+        popUpMenu.show()
+
     }
 
     override fun onBackPressed() {

@@ -39,6 +39,7 @@
     <string name="title_on_the_air">On the air</string>
     <string name="retry">Retry</string>
     <string name="splash_title">Binge<b>Tv</b></string>
+    <string name="action_add_to_watchlist">add to watchlist</string>
     <!-- todo check plurals for days with data binding -->
 
 </resources>
