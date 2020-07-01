@@ -1,15 +1,22 @@
 package com.arbelkilani.bingetv.data.model.tv
 
 import android.os.Parcelable
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
 import com.arbelkilani.bingetv.utils.returnDuration
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-@Entity(tableName = "episode_to_air_table")
+@Entity(
+    tableName = "episode_to_air_table",
+    foreignKeys = [ForeignKey(
+        entity = TvDetails::class,
+        parentColumns = ["id"],
+        childColumns = ["tv_details_id"],
+        onDelete = ForeignKey.CASCADE
+    )],
+    indices = [Index(value = ["tv_details_id"], name = "index_tv_details_id")]
+)
 data class EpisodeToAir(
     @ColumnInfo(name = "air_date") @SerializedName("air_date") val airDate: String,
     @ColumnInfo(name = "episode_number") @SerializedName("episode_number") val _episodeNumber: Int,
@@ -20,9 +27,10 @@ data class EpisodeToAir(
     @SerializedName("production_code") val productionCode: String,
     @ColumnInfo(name = "seasonNumber") @SerializedName("season_number") val _seasonNumber: Int,
     @SerializedName("show_id") val showId: Int,
-    @SerializedName("still_path") val stillPath: String,
+    @SerializedName("still_path") val stillPath: String?,
     @SerializedName("vote_average") val voteAverage: Double,
-    @SerializedName("vote_count") val voteCount: Double
+    @SerializedName("vote_count") val voteCount: Double,
+    @ColumnInfo(name = "tv_details_id") var tv_details_id: Int
 ) : Parcelable {
 
     val getAirDate: String

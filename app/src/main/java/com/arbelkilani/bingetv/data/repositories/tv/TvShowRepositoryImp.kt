@@ -89,13 +89,16 @@ class TvShowRepositoryImp(
         try {
             Log.i(TAG, "getTvDetails() for item $id")
             val remoteItem = apiTmdbService.getTvDetails(id, "videos")
-            val localItem = tvDao.getTvShow(id)
-            if (localItem?.id == remoteItem.id) {
-                remoteItem.addWatchlist = localItem.addWatchlist
-                remoteItem.watched = localItem.watched
+            val localItem = tvDao.getAllTvShows()
+            localItem?.let {
+                for (item in localItem) {
+                    Log.i(TAG, "localItem = $localItem")
+                }
             }
+
             Resource.success(remoteItem)
         } catch (e: Exception) {
+            Log.i(TAG, "exception get details = ${e.localizedMessage}")
             Resource.exception(e, null)
         }
 
@@ -110,7 +113,16 @@ class TvShowRepositoryImp(
 
     override suspend fun saveToWatchlist(tv: TvDetails) {
         tv.addWatchlist = true
-        tvDao.saveTv(tv)
+        try {
+            val nextEpisode = tv.nextEpisodeToAir
+            nextEpisode!!.tv_details_id = tv.id
+
+            tvDao.saveTv(tv)
+            tvDao.saveNextEpisode(nextEpisode)
+
+        } catch (e: Exception) {
+            Log.i(TAG, "e : ${e.localizedMessage}")
+        }
     }
 
     override suspend fun setTvShowWatched(tv: TvDetails) {
