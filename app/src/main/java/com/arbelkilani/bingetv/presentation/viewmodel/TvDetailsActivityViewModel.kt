@@ -101,13 +101,13 @@ class TvDetailsActivityViewModel constructor(
 
     fun saveToWatchlist() {
         scope.launch {
-            getTvDetailsUseCase.saveToWatchlist(_selectedTv.value!!)
+            getTvDetailsUseCase.saveToWatchlist(_tvDetails.value?.data!!)
         }
     }
 
     fun setTvShowWatched() {
         scope.launch {
-            getTvDetailsUseCase.setTvShowWatched(_selectedTv.value!!)
+            getTvDetailsUseCase.setTvShowWatched(_tvDetails.value?.data!!)
         }
     }
 

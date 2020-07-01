@@ -2,7 +2,6 @@ package com.arbelkilani.bingetv.data.model.tv
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo
-import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.arbelkilani.bingetv.utils.spannableVoteRate
@@ -10,7 +9,6 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-@Entity(tableName = "tv_table")
 data class Tv(
     @ColumnInfo(name = "backdrop") @SerializedName("backdrop_path") var backdrop_Path: String?,
     @ColumnInfo(name = "firstAirDate") var first_air_date: String,

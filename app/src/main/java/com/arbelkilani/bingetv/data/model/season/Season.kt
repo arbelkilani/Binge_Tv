@@ -1,34 +1,39 @@
 package com.arbelkilani.bingetv.data.model.season
 
 import android.os.Parcelable
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 import java.util.*
 
 @Parcelize
+@Entity(tableName = "season_table")
 data class Season(
-    @SerializedName("air_date") val _airDate: String,
-    @SerializedName("episode_count") val _episodeCount: Int,
-    val id: Int,
+    @ColumnInfo(name = "air_date") @SerializedName("air_date") val airDate: String,
+    @ColumnInfo(name = "episode_count") @SerializedName("episode_count") val _episodeCount: Int,
+    @PrimaryKey val id: Int,
     val name: String,
     val overview: String,
-    @SerializedName("poster_path") val _posterPath: String,
-    @SerializedName("season_number") val _seasonNumber: Int
+    @ColumnInfo(name = "poster_path") @SerializedName("poster_path") val posterPath: String,
+    @ColumnInfo(name = "season_number") @SerializedName("season_number") val seasonNumber: Int
 ) : Parcelable {
-    val posterPath: String?
-        get() = "https://image.tmdb.org/t/p/w500${this._posterPath}"
+
+    val getPosterPath: String?
+        get() = "https://image.tmdb.org/t/p/w500${this.posterPath}"
 
     val posterPath185: String?
-        get() = "https://image.tmdb.org/t/p/w185${this._posterPath}"
+        get() = "https://image.tmdb.org/t/p/w185${this.posterPath}"
 
-    val seasonNumber: String
-        get() = String.format("%s : %d", "Season", _seasonNumber, Locale.getDefault())
+    val getSeasonNumber: String
+        get() = String.format("%s : %d", "Season", seasonNumber, Locale.getDefault())
 
-    val episodeCount: String
+    val getEpisodeCount: String
         get() = String.format("%d %s ", _episodeCount, "Episodes", Locale.getDefault())
 
-    val airDate: String
-        get() = String.format("First aired %s ", _airDate, Locale.getDefault())
+    val getAirDate: String
+        get() = String.format("First aired %s ", airDate, Locale.getDefault())
 
     val watchedCount: String
         get() = String.format("%d/%d", 0, _episodeCount, Locale.getDefault())

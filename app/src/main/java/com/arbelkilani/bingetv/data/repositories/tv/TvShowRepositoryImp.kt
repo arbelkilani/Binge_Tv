@@ -90,7 +90,7 @@ class TvShowRepositoryImp(
             Log.i(TAG, "getTvDetails() for item $id")
             val remoteItem = apiTmdbService.getTvDetails(id, "videos")
             val localItem = tvDao.getTvShow(id)
-            if (localItem.id == remoteItem.id) {
+            if (localItem?.id == remoteItem.id) {
                 remoteItem.addWatchlist = localItem.addWatchlist
                 remoteItem.watched = localItem.watched
             }
@@ -108,12 +108,12 @@ class TvShowRepositoryImp(
             Resource.exception(e, null)
         }
 
-    override suspend fun saveToWatchlist(tv: Tv) {
+    override suspend fun saveToWatchlist(tv: TvDetails) {
         tv.addWatchlist = true
         tvDao.saveTv(tv)
     }
 
-    override suspend fun setTvShowWatched(tv: Tv) {
+    override suspend fun setTvShowWatched(tv: TvDetails) {
         tv.watched = true
         tvDao.saveTv(tv)
     }

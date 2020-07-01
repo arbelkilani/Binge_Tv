@@ -106,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/avenir_next_demi_bold"
-                android:text="@{tvDetails.numberOfSeasons}"
+                android:text="@{tvDetails.getSeasonsNumber}"
                 android:textColor="@color/details_season_sheet_title_color"
                 android:textSize="@dimen/toolbar_title_text_size" />
 

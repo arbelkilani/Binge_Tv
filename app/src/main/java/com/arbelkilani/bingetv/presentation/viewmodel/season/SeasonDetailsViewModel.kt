@@ -37,7 +37,7 @@ class SeasonDetailsViewModel(
         Log.i(TAG, "init")
         scope.launch {
             val response =
-                seasonDetailsUseCase.invoke(_selectedTv.value!!.id, _season.value!!._seasonNumber)
+                seasonDetailsUseCase.invoke(_selectedTv.value!!.id, _season.value!!.seasonNumber)
             when (response.status) {
                 Status.SUCCESS -> {
                     response.data?.let {

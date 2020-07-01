@@ -1,6 +1,10 @@
 package com.arbelkilani.bingetv.data.model.tv
 
 import android.os.Parcelable
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
 import com.arbelkilani.bingetv.data.model.genre.Genre
 import com.arbelkilani.bingetv.data.model.image.ImageResponse
 import com.arbelkilani.bingetv.data.model.season.Season
@@ -9,48 +13,86 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
+@Entity(tableName = "tv_table")
 data class TvDetails(
-    @SerializedName("backdrop_path") val _backdropPath: String?,
-    @SerializedName("created_by") val createdBy: List<CreatedBy>,
-    @SerializedName("episode_run_time") val episodeRunTime: List<Int>,
-    @SerializedName("first_air_date") val firstAirData: String,
-    val genres: List<Genre>,
-    val homepage: String,
-    val id: Int,
-    @SerializedName("in_production") val inProduction: Boolean,
-    val languages: List<String>,
-    @SerializedName("last_air_date") val lastAirDate: String,
-    @SerializedName("last_episode_to_air") val lastEpisodeToAir: EpisodeToAir,
-    val name: String,
-    @SerializedName("next_episode_to_air") val nextEpisodeToAir: EpisodeToAir?,
-    val networks: List<Network>,
-    @SerializedName("number_of_episodes") val numberOfEpisodes: Int,
-    @SerializedName("number_of_seasons") val _numberOfSeasons: Int,
-    @SerializedName("origin_country") val originCountry: List<String>,
-    @SerializedName("original_language") val originalLanguage: String,
-    @SerializedName("original_name") val originName: String,
-    val overview: String,
-    val popularity: Double,
-    @SerializedName("poster_path") val _posterPath: String?,
-    @SerializedName("production_companies") val productionCompanies: List<ProductionCompany>,
-    val seasons: List<Season>,
-    val status: String,
-    val type: String,
-    @SerializedName("vote_average") val voteAverage: Double,
-    @SerializedName("vote_count") val voteCount: Double,
-    val videos: VideoResponse, //TODO perform action for type and size ( think about using enumerations instead)
-    val images: ImageResponse,
+    @ColumnInfo(name = "backdrop_path") @SerializedName("backdrop_path") var backdropPath: String?,
+    @Ignore @SerializedName("created_by") var createdBy: List<CreatedBy>,
+    @ColumnInfo(name = "episode_run_time") @SerializedName("episode_run_time") var episodeRunTime: List<Int>,
+    @ColumnInfo(name = "first_air_date") @SerializedName("first_air_date") var firstAirData: String,
+    var genres: List<Genre>,
+    var homepage: String,
+    @PrimaryKey
+    var id: Int,
+    @ColumnInfo(name = "in_production") @SerializedName("in_production") var inProduction: Boolean,
+    @Ignore var languages: List<String>,
+    @ColumnInfo(name = "last_air_date") @SerializedName("last_air_date") var lastAirDate: String,
+    @ColumnInfo(name = "last_episode_to_air") @SerializedName("last_episode_to_air") var lastEpisodeToAir: EpisodeToAir?,
+    var name: String,
+    @ColumnInfo(name = "next_episode_to_air") @SerializedName("next_episode_to_air") var nextEpisodeToAir: EpisodeToAir?,
+    var networks: List<Network>,
+    @ColumnInfo(name = "number_of_episodes") @SerializedName("number_of_episodes") var numberOfEpisodes: Int,
+    @ColumnInfo(name = "number_of_seasons") @SerializedName("number_of_seasons") var numberOfSeasons: Int,
+    @Ignore @SerializedName("origin_country") var originCountry: List<String>,
+    @ColumnInfo(name = "original_language") @SerializedName("original_language") var originalLanguage: String,
+    @ColumnInfo(name = "original_name") @SerializedName("original_name") var originName: String,
+    var overview: String,
+    var popularity: Double,
+    @ColumnInfo(name = "poster_path") @SerializedName("poster_path") var posterPath: String?,
+    @Ignore @SerializedName("production_companies") var productionCompanies: List<ProductionCompany>,
+    var seasons: List<Season>,
+    var status: String,
+    var type: String,
+    @ColumnInfo(name = "vote_average") @SerializedName("vote_average") var voteAverage: Double,
+    @ColumnInfo(name = "vote_count") @SerializedName("vote_count") var voteCount: Double,
+    @Ignore var videos: VideoResponse?, //TODO perform action for type and size ( think about using enumerations instead)
+    @Ignore var images: ImageResponse?,
     var addWatchlist: Boolean,
     var watched: Boolean
 ) : Parcelable {
 
-    val posterPath: String?
-        get() = "https://image.tmdb.org/t/p/w500${this._posterPath}"
+    constructor() : this(
+        "",
+        listOf<CreatedBy>(),
+        listOf<Int>(),
+        "",
+        listOf<Genre>(),
+        "",
+        0,
+        false,
+        listOf<String>(),
+        "",
+        null,
+        "",
+        null,
+        listOf<Network>(),
+        0,
+        0,
+        listOf<String>(),
+        "",
+        "",
+        "",
+        0.0,
+        "",
+        listOf<ProductionCompany>(),
+        listOf<Season>(),
+        "",
+        "",
+        0.0,
+        0.0,
+        null,
+        null,
+        false,
+        false
+    )
 
-    val backdropPath: String?
-        get() = "https://image.tmdb.org/t/p/w500${this._backdropPath}"
 
-    val numberOfSeasons: String
-        get() = String.format("%d %s", _numberOfSeasons, "Seasons")
+    val getPoster: String?
+        get() = "https://image.tmdb.org/t/p/w500${this.posterPath}"
+
+    val getBackdrop: String?
+        get() = "https://image.tmdb.org/t/p/w500${this.backdropPath}"
+
+    val getSeasonsNumber: String
+        get() = String.format("%d %s", numberOfSeasons, "Seasons")
 
 }
