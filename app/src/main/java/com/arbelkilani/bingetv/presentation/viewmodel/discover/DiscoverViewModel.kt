@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.arbelkilani.bingetv.data.model.base.ApiResponse
-import com.arbelkilani.bingetv.data.model.tv.Tv
+import com.arbelkilani.bingetv.data.model.tv.TvShow
 import com.arbelkilani.bingetv.domain.usecase.OnTheAirUseCase
 import com.arbelkilani.bingetv.domain.usecase.TrendingUseCase
 import com.arbelkilani.bingetv.presentation.viewmodel.BaseViewModel
@@ -24,11 +24,11 @@ class DiscoverViewModel(
         Log.i(TAG, "init")
     }
 
-    suspend fun getTrending(): Flow<ApiResponse<Tv>> {
+    suspend fun getTrending(): Flow<ApiResponse<TvShow>> {
         return trendingUseCase.invoke()
     }
 
-    suspend fun getOnTheAir(): Flow<PagingData<Tv>> {
+    suspend fun getOnTheAir(): Flow<PagingData<TvShow>> {
         return onTheAirUseCase.invoke().cachedIn(viewModelScope)
     }
 }

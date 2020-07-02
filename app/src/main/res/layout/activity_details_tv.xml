@@ -7,11 +7,11 @@
 
         <variable
             name="tvDetails"
-            type="com.arbelkilani.bingetv.data.model.tv.TvDetails" />
+            type="com.arbelkilani.bingetv.data.model.tv.TvShow" />
 
         <variable
             name="selectedTv"
-            type="com.arbelkilani.bingetv.data.model.tv.Tv" />
+            type="com.arbelkilani.bingetv.data.model.tv.TvShow" />
 
         <variable
             name="nextEpisodeData"

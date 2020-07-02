@@ -7,11 +7,11 @@
 
         <variable
             name="tvDetails"
-            type="com.arbelkilani.bingetv.data.model.tv.TvDetails" />
+            type="com.arbelkilani.bingetv.data.model.tv.TvShow" />
 
         <variable
             name="selectedTv"
-            type="com.arbelkilani.bingetv.data.model.tv.Tv" />
+            type="com.arbelkilani.bingetv.data.model.tv.TvShow" />
 
         <variable
             name="viewModel"
@@ -49,7 +49,7 @@
                     android:layout_height="match_parent"
                     android:fitsSystemWindows="true"
                     android:scaleType="centerCrop"
-                    android:src="@{selectedTv.backdropPath}" />
+                    android:src="@{selectedTv.getBackdrop}" />
 
                 <View
                     android:layout_width="match_parent"

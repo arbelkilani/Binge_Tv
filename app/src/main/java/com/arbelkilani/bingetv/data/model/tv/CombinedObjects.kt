@@ -7,5 +7,8 @@ import kotlinx.android.parcel.Parcelize
 import kotlinx.android.parcel.RawValue
 
 @Parcelize
-data class CombinedObjects(val trending: ApiResponse<Tv>, val discover: @RawValue PagingData<Tv>) :
+data class CombinedObjects(
+    val trending: ApiResponse<TvShow>,
+    val discover: @RawValue PagingData<TvShow>
+) :
     Parcelable

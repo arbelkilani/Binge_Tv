@@ -10,11 +10,11 @@
 
         <variable
             name="tvDetails"
-            type="com.arbelkilani.bingetv.data.model.tv.TvDetails" />
+            type="com.arbelkilani.bingetv.data.model.tv.TvShow" />
 
         <variable
             name="selectedTv"
-            type="com.arbelkilani.bingetv.data.model.tv.Tv" />
+            type="com.arbelkilani.bingetv.data.model.tv.TvShow" />
 
         <variable
             name="nextEpisodeData"
@@ -126,7 +126,7 @@
                     android:fontFamily="@font/avenir_next_regular"
                     android:gravity="center_horizontal"
                     android:padding="@dimen/details_bottom_sheet_padding"
-                    android:text="@{selectedTv.voteAverage}"
+                    android:text="@{String.valueOf(selectedTv.voteAverage)}"
                     android:textSize="@dimen/details_bottom_sheet_rate_text_size" />
 
             </RelativeLayout>

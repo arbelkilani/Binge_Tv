@@ -14,7 +14,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 @Entity(tableName = "tv_table")
-data class TvDetails(
+data class TvShow(
     @ColumnInfo(name = "backdrop_path") @SerializedName("backdrop_path") var backdropPath: String?,
     @Ignore @SerializedName("created_by") var createdBy: List<CreatedBy>,
     @ColumnInfo(name = "episode_run_time") @SerializedName("episode_run_time") var episodeRunTime: List<Int>,

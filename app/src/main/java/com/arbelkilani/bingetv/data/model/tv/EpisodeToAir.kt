@@ -10,7 +10,7 @@ import kotlinx.android.parcel.Parcelize
 @Entity(
     tableName = "episode_to_air_table",
     foreignKeys = [ForeignKey(
-        entity = TvDetails::class,
+        entity = TvShow::class,
         parentColumns = ["id"],
         childColumns = ["tv_details_id"],
         onDelete = ForeignKey.CASCADE

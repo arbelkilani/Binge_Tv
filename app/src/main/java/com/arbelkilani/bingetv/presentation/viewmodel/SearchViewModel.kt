@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.arbelkilani.bingetv.data.model.tv.Tv
+import com.arbelkilani.bingetv.data.model.tv.TvShow
 import com.arbelkilani.bingetv.domain.usecase.SearchUseCase
 import kotlinx.coroutines.flow.Flow
 
@@ -16,9 +16,9 @@ class SearchViewModel(
 
     //TODO
     // Re understand live data and mutable live data for best performance
-    val tvListLiveData = MutableLiveData<List<Tv>>()
+    val tvListLiveData = MutableLiveData<List<TvShow>>()
 
-    suspend fun search(query: String): Flow<PagingData<Tv>> {
+    suspend fun search(query: String): Flow<PagingData<TvShow>> {
         return searchUseCase.invoke(query).cachedIn(viewModelScope)
     }
 

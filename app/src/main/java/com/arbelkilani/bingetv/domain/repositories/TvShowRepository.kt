@@ -5,26 +5,25 @@ import com.arbelkilani.bingetv.data.model.base.ApiResponse
 import com.arbelkilani.bingetv.data.model.base.Resource
 import com.arbelkilani.bingetv.data.model.credit.CreditsResponse
 import com.arbelkilani.bingetv.data.model.season.SeasonDetails
-import com.arbelkilani.bingetv.data.model.tv.Tv
-import com.arbelkilani.bingetv.data.model.tv.TvDetails
+import com.arbelkilani.bingetv.data.model.tv.TvShow
 import com.arbelkilani.bingetv.data.model.tv.maze.details.NextEpisodeData
 import kotlinx.coroutines.flow.Flow
 
 interface TvShowRepository {
-    suspend fun trending(): Flow<ApiResponse<Tv>>
-    suspend fun discover(): Flow<PagingData<Tv>>
-    suspend fun airingToday(): Flow<PagingData<Tv>>
-    suspend fun popular(): Flow<PagingData<Tv>>
-    suspend fun onTheAir(): Flow<PagingData<Tv>>
-    suspend fun search(query: String): Flow<PagingData<Tv>>
+    suspend fun trending(): Flow<ApiResponse<TvShow>>
+    suspend fun discover(): Flow<PagingData<TvShow>>
+    suspend fun airingToday(): Flow<PagingData<TvShow>>
+    suspend fun popular(): Flow<PagingData<TvShow>>
+    suspend fun onTheAir(): Flow<PagingData<TvShow>>
+    suspend fun search(query: String): Flow<PagingData<TvShow>>
 
 
-    suspend fun getTvDetails(id: Int): Resource<TvDetails>
+    suspend fun getTvDetails(id: Int): Resource<TvShow>
     suspend fun getCredits(id: Int): Resource<CreditsResponse>
     suspend fun getNextEpisodeData(id: Int): Resource<NextEpisodeData>
     suspend fun getSeasonDetails(tvId: Int, seasonNumber: Int): Resource<SeasonDetails>
 
-    suspend fun saveToWatchlist(tv: TvDetails)
-    suspend fun setTvShowWatched(tv: TvDetails)
+    suspend fun saveToWatchlist(tv: TvShow)
+    suspend fun setTvShowWatched(tv: TvShow)
 
 }

@@ -2,9 +2,7 @@ package com.arbelkilani.bingetv.data.model.base
 
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.enum.HttpStatusCode
-import com.arbelkilani.bingetv.data.model.tv.TvDetails
 import com.google.gson.Gson
-import kotlinx.coroutines.flow.Flow
 import okhttp3.ResponseBody
 import retrofit2.HttpException
 import java.net.UnknownHostException

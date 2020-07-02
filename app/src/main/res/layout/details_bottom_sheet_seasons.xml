@@ -8,7 +8,7 @@
 
         <variable
             name="tvDetails"
-            type="com.arbelkilani.bingetv.data.model.tv.TvDetails" />
+            type="com.arbelkilani.bingetv.data.model.tv.TvShow" />
 
         <variable
             name="viewModel"

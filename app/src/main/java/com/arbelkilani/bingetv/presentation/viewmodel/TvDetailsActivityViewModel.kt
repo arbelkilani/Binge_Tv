@@ -6,8 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.arbelkilani.bingetv.data.model.base.Resource
 import com.arbelkilani.bingetv.data.model.base.Status
 import com.arbelkilani.bingetv.data.model.credit.Credit
-import com.arbelkilani.bingetv.data.model.tv.Tv
-import com.arbelkilani.bingetv.data.model.tv.TvDetails
+import com.arbelkilani.bingetv.data.model.tv.TvShow
 import com.arbelkilani.bingetv.data.model.tv.maze.details.NextEpisodeData
 import com.arbelkilani.bingetv.data.model.video.VideoResponse
 import com.arbelkilani.bingetv.domain.usecase.GetCreditsUseCase
@@ -16,15 +15,15 @@ import com.arbelkilani.bingetv.domain.usecase.GetTvDetailsUseCase
 import kotlinx.coroutines.launch
 
 class TvDetailsActivityViewModel constructor(
-    private val selectedTvData: Tv,
+    private val selectedTvData: TvShow,
     private val getTvDetailsUseCase: GetTvDetailsUseCase,
     private val getCreditsUseCase: GetCreditsUseCase,
     private val getNextEpisodeDataUseCase: GetNextEpisodeDataUseCase
 ) :
     BaseViewModel() {
 
-    private val _selectedTv = MutableLiveData<Tv>(selectedTvData)
-    val selectedTv: LiveData<Tv>
+    private val _selectedTv = MutableLiveData<TvShow>(selectedTvData)
+    val selectedTv: LiveData<TvShow>
         get() = _selectedTv
 
     private val _tvId = MutableLiveData<Int>()
@@ -33,8 +32,8 @@ class TvDetailsActivityViewModel constructor(
 
     private val TAG = TvDetailsActivityViewModel::class.java.simpleName
 
-    private val _tvDetails = MutableLiveData<Resource<TvDetails>>()
-    val tvDetails: LiveData<Resource<TvDetails>>
+    private val _tvDetails = MutableLiveData<Resource<TvShow>>()
+    val tvShow: LiveData<Resource<TvShow>>
         get() = _tvDetails
 
     private val _credits = MutableLiveData<List<Credit>>()
@@ -62,7 +61,7 @@ class TvDetailsActivityViewModel constructor(
         }
     }
 
-    private suspend fun getCredits(selectedTv: Tv) {
+    private suspend fun getCredits(selectedTv: TvShow) {
         Log.i(TAG, "getCredits()")
         val response = getCreditsUseCase.invoke(selectedTv.id)
         if (response.status == Status.SUCCESS) {
@@ -70,7 +69,7 @@ class TvDetailsActivityViewModel constructor(
         }
     }
 
-    private suspend fun getTvDetails(selectedTv: Tv) {
+    private suspend fun getTvDetails(selectedTv: TvShow) {
         Log.i(TAG, "getTvDetails()")
         _tvId.postValue(selectedTv.id)
         val response = getTvDetailsUseCase.invoke(selectedTv.id)

@@ -43,7 +43,7 @@ class SeasonDetailsActivity : AppCompatActivity(), OnEpisodeClickListener {
 
         binding.viewModel = viewModel
         binding.season = viewModel.season.value
-        binding.tvDetails = viewModel.selectedTv.value
+        binding.tvShow = viewModel.selectedTv.value
 
         binding.lifecycleOwner = this
 
@@ -77,7 +77,7 @@ class SeasonDetailsActivity : AppCompatActivity(), OnEpisodeClickListener {
                 LayoutInflater.from(this), R.layout.episode_details_bottom_sheet, null, false
             )
         detailsBinding.season = viewModel.season.value
-        detailsBinding.tvDetails = viewModel.selectedTv.value
+        detailsBinding.tvShow = viewModel.selectedTv.value
 
         bottomSheetDialog = BottomSheetDialog(this)
         bottomSheetDialog.setContentView(detailsBinding.root)

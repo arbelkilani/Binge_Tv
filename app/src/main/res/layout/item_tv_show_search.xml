@@ -7,7 +7,7 @@
 
         <variable
             name="tv"
-            type="com.arbelkilani.bingetv.data.model.tv.Tv" />
+            type="com.arbelkilani.bingetv.data.model.tv.TvShow" />
 
         <variable
             name="itemClick"
@@ -27,7 +27,6 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layoutMode="opticalBounds"
-            android:onClick="@{() -> itemClick.onTvItemClicked(tv)}"
             app:cardCornerRadius="@dimen/default_card_corner_radius"
             app:layout_constraintDimensionRatio="2:3"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -39,7 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@{tv.posterPath}" />
+                android:src="@{tv.getPoster}" />
 
             <View
                 android:layout_width="match_parent"

@@ -13,7 +13,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.arbelkilani.bingetv.R
-import com.arbelkilani.bingetv.data.model.tv.Tv
+import com.arbelkilani.bingetv.data.model.tv.TvShow
 import com.arbelkilani.bingetv.databinding.ActivitySearchBinding
 import com.arbelkilani.bingetv.presentation.adapters.DataLoadStateAdapter
 import com.arbelkilani.bingetv.presentation.adapters.SearchAdapter
@@ -164,7 +164,7 @@ class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener, Revea
         hideKeyboard()
     }
 
-    override fun onTvItemClicked(tv: Tv) {
+    override fun onTvItemClicked(tv: TvShow) {
         startActivity(
             Intent(this, TvDetailsActivity::class.java)
                 .apply {

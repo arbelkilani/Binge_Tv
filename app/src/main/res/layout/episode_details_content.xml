@@ -9,8 +9,8 @@
             type="com.arbelkilani.bingetv.data.model.season.Season" />
 
         <variable
-            name="tvDetails"
-            type="com.arbelkilani.bingetv.data.model.tv.Tv" />
+            name="tvShow"
+            type="com.arbelkilani.bingetv.data.model.tv.TvShow" />
 
         <variable
             name="viewModel"

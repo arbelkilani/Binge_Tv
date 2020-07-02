@@ -1,20 +1,20 @@
 package com.arbelkilani.bingetv.data.pagingsource
 
 import androidx.paging.PagingSource
-import com.arbelkilani.bingetv.data.model.tv.Tv
+import com.arbelkilani.bingetv.data.model.tv.TvShow
 import com.arbelkilani.bingetv.data.source.remote.ApiTmdbService
 import retrofit2.HttpException
 import java.io.IOException
 
 class PopularPagingSource(
     private val service: ApiTmdbService
-) : PagingSource<Int, Tv>() {
+) : PagingSource<Int, TvShow>() {
 
     companion object {
         private const val STARTING_PAGE_INDEX = 1
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Tv> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, TvShow> {
         val position = params.key ?: STARTING_PAGE_INDEX
 
         return try {

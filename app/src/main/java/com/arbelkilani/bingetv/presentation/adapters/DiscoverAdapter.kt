@@ -7,19 +7,19 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.arbelkilani.bingetv.R
-import com.arbelkilani.bingetv.data.model.tv.Tv
+import com.arbelkilani.bingetv.data.model.tv.TvShow
 import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_trending_view.view.*
 
 class DiscoverAdapter(
     private val onTvShowClickListener: OnTvShowClickListener
-) : PagingDataAdapter<Tv, RecyclerView.ViewHolder>(TvShowComparator) {
+) : PagingDataAdapter<TvShow, RecyclerView.ViewHolder>(TvShowComparator) {
 
     class DiscoverHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(
-            tv: Tv?,
+            tv: TvShow?,
             onTvShowClickListener: OnTvShowClickListener
         ) {
             tv?.apply {
@@ -51,12 +51,12 @@ class DiscoverAdapter(
     }
 
     companion object {
-        private val TvShowComparator = object : DiffUtil.ItemCallback<Tv>() {
-            override fun areItemsTheSame(oldItem: Tv, newItem: Tv): Boolean {
+        private val TvShowComparator = object : DiffUtil.ItemCallback<TvShow>() {
+            override fun areItemsTheSame(oldItem: TvShow, newItem: TvShow): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: Tv, newItem: Tv): Boolean {
+            override fun areContentsTheSame(oldItem: TvShow, newItem: TvShow): Boolean {
                 return oldItem == newItem
             }
         }

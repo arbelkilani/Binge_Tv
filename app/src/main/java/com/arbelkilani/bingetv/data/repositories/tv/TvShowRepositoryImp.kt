@@ -8,8 +8,7 @@ import com.arbelkilani.bingetv.data.model.base.ApiResponse
 import com.arbelkilani.bingetv.data.model.base.Resource
 import com.arbelkilani.bingetv.data.model.credit.CreditsResponse
 import com.arbelkilani.bingetv.data.model.season.SeasonDetails
-import com.arbelkilani.bingetv.data.model.tv.Tv
-import com.arbelkilani.bingetv.data.model.tv.TvDetails
+import com.arbelkilani.bingetv.data.model.tv.TvShow
 import com.arbelkilani.bingetv.data.model.tv.maze.TvDetailsMaze
 import com.arbelkilani.bingetv.data.model.tv.maze.channel.WebChannel
 import com.arbelkilani.bingetv.data.model.tv.maze.details.NextEpisodeData
@@ -40,12 +39,12 @@ class TvShowRepositoryImp(
         private const val NETWORK_PAGE_SIZE = 20
     }
 
-    override suspend fun trending(): Flow<ApiResponse<Tv>> {
+    override suspend fun trending(): Flow<ApiResponse<TvShow>> {
         Log.i(TAG, "trending()")
         return flow { emit(apiTmdbService.trending("tv", "day")) }
     }
 
-    override suspend fun discover(): Flow<PagingData<Tv>> {
+    override suspend fun discover(): Flow<PagingData<TvShow>> {
         Log.i(TAG, "discover()")
         return Pager(
             config = PagingConfig(NETWORK_PAGE_SIZE),
@@ -53,7 +52,7 @@ class TvShowRepositoryImp(
         ).flow
     }
 
-    override suspend fun airingToday(): Flow<PagingData<Tv>> {
+    override suspend fun airingToday(): Flow<PagingData<TvShow>> {
         Log.i(TAG, "airingToday()")
         return Pager(
             config = PagingConfig(NETWORK_PAGE_SIZE),
@@ -61,7 +60,7 @@ class TvShowRepositoryImp(
         ).flow
     }
 
-    override suspend fun popular(): Flow<PagingData<Tv>> {
+    override suspend fun popular(): Flow<PagingData<TvShow>> {
         Log.i(TAG, "popular()")
         return Pager(
             config = PagingConfig(NETWORK_PAGE_SIZE),
@@ -69,7 +68,7 @@ class TvShowRepositoryImp(
         ).flow
     }
 
-    override suspend fun onTheAir(): Flow<PagingData<Tv>> {
+    override suspend fun onTheAir(): Flow<PagingData<TvShow>> {
         Log.i(TAG, "onTheAir()")
         return Pager(
             config = PagingConfig(NETWORK_PAGE_SIZE),
@@ -77,7 +76,7 @@ class TvShowRepositoryImp(
         ).flow
     }
 
-    override suspend fun search(query: String): Flow<PagingData<Tv>> {
+    override suspend fun search(query: String): Flow<PagingData<TvShow>> {
         Log.i(TAG, "search($query)")
         return Pager(
             config = PagingConfig(NETWORK_PAGE_SIZE),
@@ -85,7 +84,7 @@ class TvShowRepositoryImp(
         ).flow
     }
 
-    override suspend fun getTvDetails(id: Int): Resource<TvDetails> =
+    override suspend fun getTvDetails(id: Int): Resource<TvShow> =
         try {
             Log.i(TAG, "getTvDetails() for item $id")
             val remoteItem = apiTmdbService.getTvDetails(id, "videos")
@@ -111,7 +110,7 @@ class TvShowRepositoryImp(
             Resource.exception(e, null)
         }
 
-    override suspend fun saveToWatchlist(tv: TvDetails) {
+    override suspend fun saveToWatchlist(tv: TvShow) {
         tv.addWatchlist = true
         try {
             val nextEpisode = tv.nextEpisodeToAir
@@ -125,7 +124,7 @@ class TvShowRepositoryImp(
         }
     }
 
-    override suspend fun setTvShowWatched(tv: TvDetails) {
+    override suspend fun setTvShowWatched(tv: TvShow) {
         tv.watched = true
         tvDao.saveTv(tv)
     }

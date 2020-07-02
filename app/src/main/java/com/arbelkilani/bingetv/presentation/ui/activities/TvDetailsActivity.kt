@@ -62,10 +62,10 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener {
             (rv_credits.adapter as CreditAdapter).notifyDataSetChanged(it)
         })
 
-        viewModel.tvDetails.observe(this, Observer {
-            it.data?.let { tvDetails ->
-                binding.tvDetails = tvDetails
-                (rv_seasons.adapter as SeasonAdapter).notifyDataSetChanged(tvDetails.seasons.asReversed())
+        viewModel.tvShow.observe(this, Observer {
+            it.data?.let { tvShow ->
+                binding.tvDetails = tvShow
+                (rv_seasons.adapter as SeasonAdapter).notifyDataSetChanged(tvShow.seasons.asReversed())
             }
         })
 

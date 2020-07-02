@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.arbelkilani.bingetv.R
-import com.arbelkilani.bingetv.data.model.tv.Tv
+import com.arbelkilani.bingetv.data.model.tv.TvShow
 import com.arbelkilani.bingetv.databinding.FragmentDiscoverBinding
 import com.arbelkilani.bingetv.presentation.adapters.DataLoadStateAdapter
 import com.arbelkilani.bingetv.presentation.adapters.OnTheAirAdapter
@@ -158,7 +158,7 @@ class DiscoverFragment : Fragment(), OnTvShowClickListener {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onTvItemClicked(tv: Tv) {
+    override fun onTvItemClicked(tv: TvShow) {
         startActivity(Intent(activity, TvDetailsActivity::class.java)
             .apply {
                 putExtra(Constants.DISCOVER_DETAILS, tv)
