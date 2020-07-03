@@ -1,12 +1,12 @@
-package com.arbelkilani.bingetv.data.pagingsource
+package com.arbelkilani.bingetv.data.source.remote.pagingsource
 
 import androidx.paging.PagingSource
 import com.arbelkilani.bingetv.data.model.tv.TvShow
-import com.arbelkilani.bingetv.data.source.remote.ApiTmdbService
+import com.arbelkilani.bingetv.data.source.remote.apiservice.ApiTmdbService
 import retrofit2.HttpException
 import java.io.IOException
 
-class DiscoverPagingSource(
+class AiringTodayPagingSource(
     private val service: ApiTmdbService
 ) : PagingSource<Int, TvShow>() {
 
@@ -18,7 +18,7 @@ class DiscoverPagingSource(
         val position = params.key ?: STARTING_PAGE_INDEX
 
         return try {
-            val response = service.discover(position, "primary_release_date.desc")
+            val response = service.airingToday(position)
             val tvShows = response.results
             LoadResult.Page(
                 data = tvShows,
@@ -28,6 +28,8 @@ class DiscoverPagingSource(
         } catch (exception: IOException) {
             return LoadResult.Error(exception)
         } catch (exception: HttpException) {
+            return LoadResult.Error(exception)
+        } catch (exception: Exception) {
             return LoadResult.Error(exception)
         }
     }

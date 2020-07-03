@@ -1,8 +1,8 @@
-package com.arbelkilani.bingetv.data.pagingsource
+package com.arbelkilani.bingetv.data.source.remote.pagingsource
 
 import androidx.paging.PagingSource
 import com.arbelkilani.bingetv.data.model.tv.TvShow
-import com.arbelkilani.bingetv.data.source.remote.ApiTmdbService
+import com.arbelkilani.bingetv.data.source.remote.apiservice.ApiTmdbService
 import retrofit2.HttpException
 import java.io.IOException
 

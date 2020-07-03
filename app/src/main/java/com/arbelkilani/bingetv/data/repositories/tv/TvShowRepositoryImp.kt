@@ -12,10 +12,10 @@ import com.arbelkilani.bingetv.data.model.tv.TvShow
 import com.arbelkilani.bingetv.data.model.tv.maze.TvDetailsMaze
 import com.arbelkilani.bingetv.data.model.tv.maze.channel.WebChannel
 import com.arbelkilani.bingetv.data.model.tv.maze.details.NextEpisodeData
-import com.arbelkilani.bingetv.data.pagingsource.*
 import com.arbelkilani.bingetv.data.source.local.tv.TvDao
-import com.arbelkilani.bingetv.data.source.remote.ApiTmdbService
-import com.arbelkilani.bingetv.data.source.remote.ApiTvMazeService
+import com.arbelkilani.bingetv.data.source.remote.apiservice.ApiTmdbService
+import com.arbelkilani.bingetv.data.source.remote.apiservice.ApiTvMazeService
+import com.arbelkilani.bingetv.data.source.remote.pagingsource.*
 import com.arbelkilani.bingetv.domain.repositories.TvShowRepository
 import com.arbelkilani.bingetv.utils.formatAirDate
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -35,8 +35,7 @@ class TvShowRepositoryImp(
     private val TAG = TvShowRepositoryImp::class.java.simpleName
 
     companion object {
-        private const val STARTING_PAGE_INDEX = 1
-        private const val NETWORK_PAGE_SIZE = 20
+        private const val PAGE_SIZE = 20
     }
 
     override suspend fun trending(): Flow<ApiResponse<TvShow>> {
@@ -47,7 +46,7 @@ class TvShowRepositoryImp(
     override suspend fun discover(): Flow<PagingData<TvShow>> {
         Log.i(TAG, "discover()")
         return Pager(
-            config = PagingConfig(NETWORK_PAGE_SIZE),
+            config = PagingConfig(PAGE_SIZE),
             pagingSourceFactory = { DiscoverPagingSource(apiTmdbService) }
         ).flow
     }
@@ -55,7 +54,7 @@ class TvShowRepositoryImp(
     override suspend fun airingToday(): Flow<PagingData<TvShow>> {
         Log.i(TAG, "airingToday()")
         return Pager(
-            config = PagingConfig(NETWORK_PAGE_SIZE),
+            config = PagingConfig(PAGE_SIZE),
             pagingSourceFactory = { AiringTodayPagingSource(apiTmdbService) }
         ).flow
     }
@@ -63,7 +62,7 @@ class TvShowRepositoryImp(
     override suspend fun popular(): Flow<PagingData<TvShow>> {
         Log.i(TAG, "popular()")
         return Pager(
-            config = PagingConfig(NETWORK_PAGE_SIZE),
+            config = PagingConfig(PAGE_SIZE),
             pagingSourceFactory = { PopularPagingSource(apiTmdbService) }
         ).flow
     }
@@ -71,7 +70,7 @@ class TvShowRepositoryImp(
     override suspend fun onTheAir(): Flow<PagingData<TvShow>> {
         Log.i(TAG, "onTheAir()")
         return Pager(
-            config = PagingConfig(NETWORK_PAGE_SIZE),
+            config = PagingConfig(PAGE_SIZE),
             pagingSourceFactory = { OnTheAirPagingSource(apiTmdbService) }
         ).flow
     }
@@ -79,7 +78,7 @@ class TvShowRepositoryImp(
     override suspend fun search(query: String): Flow<PagingData<TvShow>> {
         Log.i(TAG, "search($query)")
         return Pager(
-            config = PagingConfig(NETWORK_PAGE_SIZE),
+            config = PagingConfig(PAGE_SIZE),
             pagingSourceFactory = { SearchPagingSource(query, apiTmdbService) }
         ).flow
     }

@@ -4,8 +4,8 @@ import com.arbelkilani.bingetv.data.repositories.genre.GenresRepositoryImp
 import com.arbelkilani.bingetv.data.repositories.tv.TvShowRepositoryImp
 import com.arbelkilani.bingetv.data.source.local.genre.GenreDao
 import com.arbelkilani.bingetv.data.source.local.tv.TvDao
-import com.arbelkilani.bingetv.data.source.remote.ApiTmdbService
-import com.arbelkilani.bingetv.data.source.remote.ApiTvMazeService
+import com.arbelkilani.bingetv.data.source.remote.apiservice.ApiTmdbService
+import com.arbelkilani.bingetv.data.source.remote.apiservice.ApiTvMazeService
 import com.arbelkilani.bingetv.domain.repositories.GenresRepository
 import com.arbelkilani.bingetv.domain.repositories.TvShowRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi

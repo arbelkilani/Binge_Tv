@@ -10,6 +10,7 @@ import com.arbelkilani.bingetv.data.model.tv.maze.details.NextEpisodeData
 import kotlinx.coroutines.flow.Flow
 
 interface TvShowRepository {
+
     suspend fun trending(): Flow<ApiResponse<TvShow>>
     suspend fun discover(): Flow<PagingData<TvShow>>
     suspend fun airingToday(): Flow<PagingData<TvShow>>

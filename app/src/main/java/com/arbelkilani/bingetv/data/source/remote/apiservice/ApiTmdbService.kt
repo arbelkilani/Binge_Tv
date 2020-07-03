@@ -1,4 +1,4 @@
-package com.arbelkilani.bingetv.data.source.remote
+package com.arbelkilani.bingetv.data.source.remote.apiservice
 
 import com.arbelkilani.bingetv.data.model.base.ApiResponse
 import com.arbelkilani.bingetv.data.model.credit.CreditsResponse

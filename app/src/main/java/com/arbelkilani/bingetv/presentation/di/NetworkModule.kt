@@ -1,9 +1,9 @@
 package com.arbelkilani.bingetv.presentation.di
 
 import com.arbelkilani.bingetv.BuildConfig
-import com.arbelkilani.bingetv.data.source.remote.ApiTmdbService
-import com.arbelkilani.bingetv.data.source.remote.ApiTvMazeService
 import com.arbelkilani.bingetv.data.source.remote.EndpointInterceptor
+import com.arbelkilani.bingetv.data.source.remote.apiservice.ApiTmdbService
+import com.arbelkilani.bingetv.data.source.remote.apiservice.ApiTvMazeService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
