@@ -24,7 +24,7 @@ interface TvShowRepository {
     suspend fun getNextEpisodeData(id: Int): Resource<NextEpisodeData>
     suspend fun getSeasonDetails(tvId: Int, seasonNumber: Int): Resource<SeasonDetails>
 
-    suspend fun saveToWatchlist(tv: TvShow)
-    suspend fun setTvShowWatched(tv: TvShow)
+    suspend fun saveWatchlist(tvShow: TvShow)
+    suspend fun saveWatched(tvShow: TvShow)
 
 }

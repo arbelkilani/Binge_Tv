@@ -45,7 +45,7 @@ data class TvShow(
     @ColumnInfo(name = "vote_count") @SerializedName("vote_count") var voteCount: Double,
     @Ignore var videos: VideoResponse?, //TODO perform action for type and size ( think about using enumerations instead)
     @Ignore var images: ImageResponse?,
-    var addWatchlist: Boolean,
+    var watchlist: Boolean,
     var watched: Boolean
 ) : Parcelable {
 

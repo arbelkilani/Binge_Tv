@@ -39,8 +39,16 @@
     <string name="title_on_the_air">On the air</string>
     <string name="retry">Retry</string>
     <string name="splash_title">Binge<b>Tv</b></string>
-    <string name="action_add_to_watchlist">add to watchlist</string>
+    <string name="action_watchlist">watchlist</string>
     <string name="action_watched">watched</string>
     <!-- todo check plurals for days with data binding -->
+
+
+    <!-- tv details activity -->
+    <string name="state_watched_false">Mark as watched</string>
+    <string name="state_watched_true">Watched</string>
+
+    <string name="state_watchlist_false">Add to watchlist</string>
+    <string name="state_watchlist_true">Listed on watchlist</string>
 
 </resources>

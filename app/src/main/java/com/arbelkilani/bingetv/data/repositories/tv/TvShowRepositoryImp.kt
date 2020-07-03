@@ -87,11 +87,16 @@ class TvShowRepositoryImp(
         try {
             Log.i(TAG, "getTvDetails() for item $id")
             val remoteItem = apiTmdbService.getTvDetails(id, "videos")
-            val localItem = tvDao.getAllTvShows()
-            localItem?.let {
-                for (item in localItem) {
-                    Log.i(TAG, "localItem = $localItem")
+            try {
+                val localItem = tvDao.getTvShow(id)
+
+                if (localItem?.id == remoteItem.id) {
+                    remoteItem.watchlist = localItem.watchlist
+                    remoteItem.watched = localItem.watched
                 }
+
+            } catch (e: Exception) {
+                Log.i(TAG, "e : exception = ${e.localizedMessage}")
             }
 
             Resource.success(remoteItem)
@@ -109,25 +114,30 @@ class TvShowRepositoryImp(
             Resource.exception(e, null)
         }
 
-    override suspend fun saveToWatchlist(tv: TvShow) {
-        tv.addWatchlist = true
+    override suspend fun saveWatchlist(tvShow: TvShow) {
         try {
-            val nextEpisode = tv.nextEpisodeToAir
-            nextEpisode!!.tv_details_id = tv.id
+            val nextEpisode = tvShow.nextEpisodeToAir
+            nextEpisode!!.tv_details_id = tvShow.id
 
-            tvDao.saveTv(tv)
+            tvDao.saveTv(tvShow)
             tvDao.saveNextEpisode(nextEpisode)
 
         } catch (e: Exception) {
-            Log.i(TAG, "e : ${e.localizedMessage}")
+            Log.i(TAG, "saveWatchlist e : ${e.localizedMessage}")
         }
     }
 
-    override suspend fun setTvShowWatched(tv: TvShow) {
-        tv.watched = true
-        tvDao.saveTv(tv)
-    }
+    override suspend fun saveWatched(tvShow: TvShow) {
+        try {
+            val nextEpisode = tvShow.nextEpisodeToAir
+            nextEpisode!!.tv_details_id = tvShow.id
 
+            tvDao.saveTv(tvShow)
+            tvDao.saveNextEpisode(nextEpisode)
+        } catch (e: Exception) {
+            Log.i(TAG, "saveWatched e : ${e.localizedMessage}")
+        }
+    }
 
     override suspend fun getCredits(id: Int): Resource<CreditsResponse> =
         try {

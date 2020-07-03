@@ -98,15 +98,19 @@ class TvDetailsActivityViewModel constructor(
 
     }
 
-    fun saveToWatchlist() {
+    fun saveWatchlist(state: Boolean) {
         scope.launch {
-            getTvDetailsUseCase.saveToWatchlist(_tvDetails.value?.data!!)
+            _tvDetails.value?.data!!.watchlist = state
+            _tvDetails.postValue(Resource.success(_tvDetails.value?.data))
+            getTvDetailsUseCase.saveWatchlist(_tvDetails.value?.data!!)
         }
     }
 
-    fun setTvShowWatched() {
+    fun saveWatched(state: Boolean) {
         scope.launch {
-            getTvDetailsUseCase.setTvShowWatched(_tvDetails.value?.data!!)
+            _tvDetails.value?.data!!.watched = state
+            _tvDetails.postValue(Resource.success(_tvDetails.value?.data))
+            getTvDetailsUseCase.saveWatched(_tvDetails.value?.data!!)
         }
     }
 

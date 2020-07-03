@@ -2,6 +2,8 @@ package com.arbelkilani.bingetv.presentation.ui.activities
 
 import android.content.Intent
 import android.content.res.Resources
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
@@ -166,44 +168,44 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener {
     }
 
     private fun showPopUpMenu(view: View) {
+
+        val currentTvShow = viewModel.tvShow.value?.data!!
+
         val popupWindow = PopupWindow(this)
-        val layout = layoutInflater.inflate(R.layout.action_watchlist, null)
+        val layout = layoutInflater.inflate(R.layout.layout_tv_details_popup_menu, null)
         popupWindow.contentView = layout
         popupWindow.isOutsideTouchable = true
         popupWindow.isFocusable = true
 
+        popupWindow.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val contextWidth = resources.displayMetrics.widthPixels
+
+        layout.measure(View.MeasureSpec.EXACTLY, View.MeasureSpec.EXACTLY)
+        val layoutWidth = layout.measuredWidth
         val axis = IntArray(2)
         view.getLocationInWindow(axis)
+
         popupWindow.showAtLocation(
             view,
             Gravity.NO_GRAVITY,
-            view.width,
-            view.height
+            contextWidth,
+            0
         )
 
-        layout.findViewById<TextView>(R.id.tv_action_watchlist).setOnClickListener {
-            viewModel.saveToWatchlist()
+        val watchlistView = layout.findViewById<TextView>(R.id.tv_action_watchlist)
+        watchlistView.updateWatchlistState(currentTvShow.watchlist)
+        watchlistView.setOnClickListener {
+            watchlistView.updateWatchlistState(!currentTvShow.watchlist)
+            viewModel.saveWatchlist(!currentTvShow.watchlist)
         }
 
-
-        /*popUpMenu.menuInflater.inflate(R.menu.tv_details_popup_menu, popUpMenu.menu)
-
-        popUpMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener {
-
-            when (it.itemId) {
-                R.id.action_add_to_watchlist -> {
-                    viewModel.saveToWatchlist()
-                    return@OnMenuItemClickListener true
-                }
-                R.id.action_watched -> {
-                    viewModel.setTvShowWatched()
-                    return@OnMenuItemClickListener true
-                }
-                else -> return@OnMenuItemClickListener false
-            }
-        })
-
-        popUpMenu.show()*/
+        val watchedView = layout.findViewById<TextView>(R.id.tv_action_watched)
+        watchedView.updateWatchedState(currentTvShow.watched)
+        watchedView.setOnClickListener {
+            watchedView.updateWatchedState(!currentTvShow.watched)
+            viewModel.saveWatched(!currentTvShow.watched)
+        }
 
     }
 
@@ -219,4 +221,24 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener {
         }
     }
 }
+
+private fun TextView.updateWatchlistState(watchlist: Boolean) {
+    text = if (watchlist) {
+        context.getString(R.string.state_watchlist_true)
+    } else {
+        context.getString(R.string.state_watchlist_false)
+    }
+    isSelected = watchlist
+}
+
+private fun TextView.updateWatchedState(watched: Boolean) {
+    text = if (watched) {
+        context.getString(R.string.state_watched_true)
+    } else {
+        context.getString(R.string.state_watched_false)
+    }
+    isSelected = watched
+}
+
+
 
