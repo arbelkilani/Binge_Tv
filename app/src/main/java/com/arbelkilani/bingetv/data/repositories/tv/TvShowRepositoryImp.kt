@@ -116,12 +116,12 @@ class TvShowRepositoryImp(
 
     override suspend fun saveWatchlist(tvShow: TvShow) {
         try {
-            val nextEpisode = tvShow.nextEpisodeToAir
-            nextEpisode!!.tv_details_id = tvShow.id
-
             tvDao.saveTv(tvShow)
-            tvDao.saveNextEpisode(nextEpisode)
-
+            val nextEpisode = tvShow.nextEpisodeToAir
+            nextEpisode?.let {
+                it.tv_details_id = tvShow.id
+                tvDao.saveNextEpisode(it)
+            }
         } catch (e: Exception) {
             Log.i(TAG, "saveWatchlist e : ${e.localizedMessage}")
         }
@@ -129,11 +129,12 @@ class TvShowRepositoryImp(
 
     override suspend fun saveWatched(tvShow: TvShow) {
         try {
-            val nextEpisode = tvShow.nextEpisodeToAir
-            nextEpisode!!.tv_details_id = tvShow.id
-
             tvDao.saveTv(tvShow)
-            tvDao.saveNextEpisode(nextEpisode)
+            val nextEpisode = tvShow.nextEpisodeToAir
+            nextEpisode?.let {
+                it.tv_details_id = tvShow.id
+                tvDao.saveNextEpisode(it)
+            }
         } catch (e: Exception) {
             Log.i(TAG, "saveWatched e : ${e.localizedMessage}")
         }

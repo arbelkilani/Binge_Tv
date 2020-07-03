@@ -14,7 +14,7 @@ import com.arbelkilani.bingetv.data.source.local.tv.TvDao
 
 @Database(
     entities = [TvShow::class, Genre::class, EpisodeToAir::class, Season::class, Network::class],
-    version = 5,
+    version = 6,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

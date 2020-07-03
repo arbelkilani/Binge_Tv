@@ -27,7 +27,7 @@ data class TvShow(
     @ColumnInfo(name = "last_air_date") @SerializedName("last_air_date") var lastAirDate: String,
     @Ignore @ColumnInfo(name = "last_episode_to_air") @SerializedName("last_episode_to_air") var lastEpisodeToAir: EpisodeToAir?,
     var name: String,
-    @ColumnInfo(name = "next_episode_to_air") @SerializedName("next_episode_to_air") var nextEpisodeToAir: EpisodeToAir?,
+    @Ignore @ColumnInfo(name = "next_episode_to_air") @SerializedName("next_episode_to_air") var nextEpisodeToAir: EpisodeToAir?,
     var networks: List<Network>,
     @ColumnInfo(name = "number_of_episodes") @SerializedName("number_of_episodes") var numberOfEpisodes: Int,
     @ColumnInfo(name = "number_of_seasons") @SerializedName("number_of_seasons") var numberOfSeasons: Int,

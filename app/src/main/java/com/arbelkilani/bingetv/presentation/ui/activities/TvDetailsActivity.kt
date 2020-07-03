@@ -176,22 +176,8 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener {
         popupWindow.contentView = layout
         popupWindow.isOutsideTouchable = true
         popupWindow.isFocusable = true
-
         popupWindow.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-        val contextWidth = resources.displayMetrics.widthPixels
-
-        layout.measure(View.MeasureSpec.EXACTLY, View.MeasureSpec.EXACTLY)
-        val layoutWidth = layout.measuredWidth
-        val axis = IntArray(2)
-        view.getLocationInWindow(axis)
-
-        popupWindow.showAtLocation(
-            view,
-            Gravity.NO_GRAVITY,
-            contextWidth,
-            0
-        )
+        popupWindow.showAsDropDown(view, -400, 0, Gravity.NO_GRAVITY)
 
         val watchlistView = layout.findViewById<TextView>(R.id.tv_action_watchlist)
         watchlistView.updateWatchlistState(currentTvShow.watchlist)
