@@ -27,7 +27,8 @@ data class Season(
     val overview: String,
     @ColumnInfo(name = "poster_path") @SerializedName("poster_path") val posterPath: String,
     @ColumnInfo(name = "season_number") @SerializedName("season_number") val seasonNumber: Int,
-    @ColumnInfo(name = "tv_season") var tv_season: Int
+    @ColumnInfo(name = "tv_season") var tv_season: Int,
+    @ColumnInfo(name = "watched") var watched: Boolean
 ) : Parcelable {
 
     val getPosterPath: String?

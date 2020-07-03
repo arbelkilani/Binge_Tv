@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -36,8 +37,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center_vertical"
                 android:paddingStart="145dp"
+                android:paddingTop="10dp"
                 android:paddingEnd="@dimen/default_padding">
 
                 <TextView
@@ -47,7 +48,8 @@
                     android:fontFamily="@font/avenir_next_demi_bold"
                     android:text="@{season.getSeasonNumber}"
                     android:textColor="@color/details_titles_text_color"
-                    android:textSize="@dimen/titles_text_size" />
+                    android:textSize="@dimen/titles_text_size"
+                    tools:text="Season : 7" />
 
                 <TextView
                     android:id="@+id/tv_episode_count"
@@ -56,10 +58,13 @@
                     android:layout_below="@+id/tv_season_number"
                     android:layout_centerVertical="true"
                     android:layout_marginTop="@dimen/default_margin_min"
+                    android:ellipsize="end"
                     android:fontFamily="@font/avenir_next_regular"
-                    android:text="@{season.getEpisodeCount}"
+                    android:maxLines="2"
+                    android:text="@{season.overview}"
                     android:textColor="@color/details_titles_text_color"
-                    android:textSize="@dimen/small_text_size" />
+                    android:textSize="@dimen/small_text_size"
+                    tools:text="@tools:sample/lorem/random" />
 
                 <TextView
                     android:id="@+id/tv_air_date"
@@ -71,24 +76,47 @@
                     android:fontFamily="@font/avenir_next_regular"
                     android:text="@{season.getAirDate}"
                     android:textColor="@color/details_titles_text_color"
-                    android:textSize="@dimen/small_text_size" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_episode_count"
-                    android:layout_centerVertical="true"
-                    android:layout_marginTop="@dimen/default_margin_min"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/avenir_next_regular"
-                    android:maxLines="3"
-                    android:text="@{season.overview}"
-                    android:textColor="@color/details_titles_text_color"
                     android:textSize="@dimen/small_text_size"
-                    android:visibility="gone" />
-
+                    tools:text="First aired : 2019-04-30" />
 
             </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginEnd="10dp"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="0dp"
+                    android:layout_height="5dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="0.8"
+                    android:indeterminate="false"
+                    android:progress="70"
+                    android:progressDrawable="@drawable/rounded_corners_progress_bar" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="@dimen/default_margin_min"
+                    android:layout_weight="0.2"
+                    android:fontFamily="@font/avenir_next_regular"
+                    android:gravity="end"
+                    android:paddingBottom="2dp"
+                    android:text="12/12"
+                    android:textColor="@color/details_titles_text_color"
+                    android:textSize="@dimen/small_text_size"
+                    tools:text="12/12" />
+
+            </LinearLayout>
+
 
         </androidx.cardview.widget.CardView>
 
@@ -104,7 +132,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/poster_height"
                 android:scaleType="centerCrop"
-                android:src="@{season.posterPath185}" />
+                android:src="@{season.posterPath185}"
+                tools:src="@mipmap/ic_launcher_foreground" />
 
         </androidx.cardview.widget.CardView>
 
