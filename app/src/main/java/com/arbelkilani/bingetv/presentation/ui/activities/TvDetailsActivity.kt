@@ -6,12 +6,13 @@ import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.ContextThemeWrapper
+import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
-import android.widget.PopupMenu
+import android.widget.PopupWindow
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.doOnLayout
 import androidx.core.widget.NestedScrollView
@@ -154,18 +155,38 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        val view = findViewById<View>(R.id.action_show_more)
         when (item.itemId) {
             R.id.action_show_more -> {
-                showPopUpMenu()
+                showPopUpMenu(view)
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun showPopUpMenu() {
-        val contextWrapper = ContextThemeWrapper(this, R.style.PopupMenuStyle)
-        val popUpMenu = PopupMenu(contextWrapper, findViewById(R.id.action_show_more))
-        popUpMenu.inflate(R.menu.tv_details_popup_menu)
+    private fun showPopUpMenu(view: View) {
+        val popupWindow = PopupWindow(this)
+        val layout = layoutInflater.inflate(R.layout.action_watchlist, null)
+        popupWindow.contentView = layout
+        popupWindow.isOutsideTouchable = true
+        popupWindow.isFocusable = true
+
+        val axis = IntArray(2)
+        view.getLocationInWindow(axis)
+        popupWindow.showAtLocation(
+            view,
+            Gravity.NO_GRAVITY,
+            view.width,
+            view.height
+        )
+
+        layout.findViewById<TextView>(R.id.tv_action_watchlist).setOnClickListener {
+            viewModel.saveToWatchlist()
+        }
+
+
+        /*popUpMenu.menuInflater.inflate(R.menu.tv_details_popup_menu, popUpMenu.menu)
 
         popUpMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener {
 
@@ -182,7 +203,7 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener {
             }
         })
 
-        popUpMenu.show()
+        popUpMenu.show()*/
 
     }
 
