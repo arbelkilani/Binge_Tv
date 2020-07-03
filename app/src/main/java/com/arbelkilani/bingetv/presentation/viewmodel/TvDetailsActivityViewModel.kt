@@ -76,17 +76,26 @@ class TvDetailsActivityViewModel constructor(
         if (response.status == Status.SUCCESS) {
             _tvDetails.postValue(Resource.success(response.data))
             if (response.data?.nextEpisodeToAir != null)
-                getNextEpisodeDetails(response.data.id)
+                getNextEpisodeDetails(response.data)
         } else {
             _tvDetails.postValue(Resource.exception(Exception(), null))
         }
     }
 
-    private suspend fun getNextEpisodeDetails(id: Int) {
+    private suspend fun getNextEpisodeDetails(tvShow: TvShow) {
         Log.i(TAG, "getNextEpisodeDetails()")
-        val response = getNextEpisodeDataUseCase.invoke(id)
-        if (response.status == Status.SUCCESS)
+
+        val response = getNextEpisodeDataUseCase.invoke(tvShow.id)
+        if (response.status == Status.SUCCESS && response.data != null) {
+            tvShow.nextEpisodeToAir?.let {
+                it.overview = response.data.summary
+                it.airDate = response.data.airDate
+                it.airStamp = response.data.airStamp
+                it.airTime = response.data.airTime
+            }
             _nextEpisodeData.postValue(response.data)
+        }
+
     }
 
     fun playTrailer(videoResponse: VideoResponse) =

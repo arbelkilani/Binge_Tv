@@ -24,7 +24,6 @@ val ViewModelModule = module {
         )
     }
     viewModel { SearchViewModel(get()) }
-    //viewModel { (combined: CombinedObjects) -> DiscoverViewModel(combined, get()) }
     viewModel { DiscoverViewModel(get(), get()) }
     viewModel { (selectedTv: TvShow, season: Season) ->
         SeasonDetailsViewModel(

@@ -3,6 +3,7 @@ package com.arbelkilani.bingetv.presentation.di
 import com.arbelkilani.bingetv.data.repositories.genre.GenresRepositoryImp
 import com.arbelkilani.bingetv.data.repositories.tv.TvShowRepositoryImp
 import com.arbelkilani.bingetv.data.source.local.genre.GenreDao
+import com.arbelkilani.bingetv.data.source.local.season.SeasonDao
 import com.arbelkilani.bingetv.data.source.local.tv.TvDao
 import com.arbelkilani.bingetv.data.source.remote.apiservice.ApiTmdbService
 import com.arbelkilani.bingetv.data.source.remote.apiservice.ApiTvMazeService
@@ -18,7 +19,7 @@ val RepositoriesModule = module {
 
     single { createGenreRepository(get(), get()) }
 
-    single { createTvShowRepository(get(), get(), get()) }
+    single { createTvShowRepository(get(), get(), get(), get()) }
 }
 
 fun createGenreRepository(
@@ -36,11 +37,13 @@ fun createGenreRepository(
 fun createTvShowRepository(
     apiTmdbService: ApiTmdbService,
     apiTvMazeService: ApiTvMazeService,
-    tvDao: TvDao
+    tvDao: TvDao,
+    seasonDao: SeasonDao
 ): TvShowRepository {
     return TvShowRepositoryImp(
         apiTmdbService,
         apiTvMazeService,
-        tvDao
+        tvDao,
+        seasonDao
     )
 }

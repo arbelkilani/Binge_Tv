@@ -12,25 +12,26 @@ import kotlinx.android.parcel.Parcelize
     foreignKeys = [ForeignKey(
         entity = TvShow::class,
         parentColumns = ["id"],
-        childColumns = ["tv_details_id"],
+        childColumns = ["tv_next_episode"],
         onDelete = ForeignKey.CASCADE
     )],
-    indices = [Index(value = ["tv_details_id"], name = "index_tv_details_id")]
+    indices = [Index(value = ["tv_next_episode"], name = "index_tv_next_episode")]
 )
 data class EpisodeToAir(
-    @ColumnInfo(name = "air_date") @SerializedName("air_date") val airDate: String,
+    @ColumnInfo(name = "air_date") @SerializedName("air_date") var airDate: String,
     @ColumnInfo(name = "episode_number") @SerializedName("episode_number") val _episodeNumber: Int,
-    @PrimaryKey
-    val id: Int,
-    val name: String,
-    val overview: String,
+    @PrimaryKey @ColumnInfo(name = "id") val id: Int,
+    @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "overview") var overview: String,
     @SerializedName("production_code") val productionCode: String,
     @ColumnInfo(name = "seasonNumber") @SerializedName("season_number") val _seasonNumber: Int,
     @SerializedName("show_id") val showId: Int,
     @SerializedName("still_path") val stillPath: String?,
     @SerializedName("vote_average") val voteAverage: Double,
     @SerializedName("vote_count") val voteCount: Double,
-    @ColumnInfo(name = "tv_details_id") var tv_details_id: Int
+    @ColumnInfo(name = "airstamp") var airStamp: String,
+    @ColumnInfo(name = "airtime") var airTime: String,
+    @ColumnInfo(name = "tv_next_episode") var tv_next_episode: Int
 ) : Parcelable {
 
     val getAirDate: String

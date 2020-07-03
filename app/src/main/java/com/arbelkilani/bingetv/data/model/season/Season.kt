@@ -1,15 +1,24 @@
 package com.arbelkilani.bingetv.data.model.season
 
 import android.os.Parcelable
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
+import com.arbelkilani.bingetv.data.model.tv.TvShow
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 import java.util.*
 
 @Parcelize
-@Entity(tableName = "season_table")
+@Entity(
+    tableName = "season_table",
+    foreignKeys = [ForeignKey(
+        entity = TvShow::class,
+        parentColumns = ["id"],
+        childColumns = ["tv_season"],
+        onDelete = ForeignKey.CASCADE
+    )],
+    indices = [Index(value = ["tv_season"], name = "index_tv_season")]
+)
+
 data class Season(
     @ColumnInfo(name = "air_date") @SerializedName("air_date") val airDate: String,
     @ColumnInfo(name = "episode_count") @SerializedName("episode_count") val _episodeCount: Int,
@@ -17,7 +26,8 @@ data class Season(
     val name: String,
     val overview: String,
     @ColumnInfo(name = "poster_path") @SerializedName("poster_path") val posterPath: String,
-    @ColumnInfo(name = "season_number") @SerializedName("season_number") val seasonNumber: Int
+    @ColumnInfo(name = "season_number") @SerializedName("season_number") val seasonNumber: Int,
+    @ColumnInfo(name = "tv_season") var tv_season: Int
 ) : Parcelable {
 
     val getPosterPath: String?

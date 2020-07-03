@@ -12,6 +12,7 @@ import com.arbelkilani.bingetv.data.model.tv.TvShow
 import com.arbelkilani.bingetv.data.model.tv.maze.TvDetailsMaze
 import com.arbelkilani.bingetv.data.model.tv.maze.channel.WebChannel
 import com.arbelkilani.bingetv.data.model.tv.maze.details.NextEpisodeData
+import com.arbelkilani.bingetv.data.source.local.season.SeasonDao
 import com.arbelkilani.bingetv.data.source.local.tv.TvDao
 import com.arbelkilani.bingetv.data.source.remote.apiservice.ApiTmdbService
 import com.arbelkilani.bingetv.data.source.remote.apiservice.ApiTvMazeService
@@ -29,7 +30,8 @@ import kotlinx.coroutines.flow.flow
 class TvShowRepositoryImp(
     private val apiTmdbService: ApiTmdbService,
     private val apiTvMazeService: ApiTvMazeService,
-    private val tvDao: TvDao
+    private val tvDao: TvDao,
+    private val seasonDao: SeasonDao
 ) : TvShowRepository {
 
     private val TAG = TvShowRepositoryImp::class.java.simpleName
@@ -89,7 +91,6 @@ class TvShowRepositoryImp(
             val remoteItem = apiTmdbService.getTvDetails(id, "videos")
             try {
                 val localItem = tvDao.getTvShow(id)
-
                 if (localItem?.id == remoteItem.id) {
                     remoteItem.watchlist = localItem.watchlist
                     remoteItem.watched = localItem.watched
@@ -117,11 +118,10 @@ class TvShowRepositoryImp(
     override suspend fun saveWatchlist(tvShow: TvShow) {
         try {
             tvDao.saveTv(tvShow)
-            val nextEpisode = tvShow.nextEpisodeToAir
-            nextEpisode?.let {
-                it.tv_details_id = tvShow.id
-                tvDao.saveNextEpisode(it)
-            }
+            saveNextEpisode(tvShow)
+            saveSeasons(tvShow)
+            saveNetworks(tvShow)
+            saveGenres(tvShow)
         } catch (e: Exception) {
             Log.i(TAG, "saveWatchlist e : ${e.localizedMessage}")
         }
@@ -130,13 +130,44 @@ class TvShowRepositoryImp(
     override suspend fun saveWatched(tvShow: TvShow) {
         try {
             tvDao.saveTv(tvShow)
-            val nextEpisode = tvShow.nextEpisodeToAir
-            nextEpisode?.let {
-                it.tv_details_id = tvShow.id
-                tvDao.saveNextEpisode(it)
-            }
+            saveNextEpisode(tvShow)
+            saveSeasons(tvShow)
+            saveNetworks(tvShow)
+            saveGenres(tvShow)
         } catch (e: Exception) {
             Log.i(TAG, "saveWatched e : ${e.localizedMessage}")
+        }
+    }
+
+    private suspend fun saveGenres(tvShow: TvShow) {
+        val genres = tvShow.genres
+        for (item in genres) {
+            item.tv_genre = tvShow.id
+            tvDao.saveGenre(item)
+        }
+    }
+
+    private suspend fun saveNetworks(tvShow: TvShow) {
+        val networks = tvShow.networks
+        for (item in networks) {
+            item.tv_network = tvShow.id
+            tvDao.saveNetworks(item)
+        }
+    }
+
+    private suspend fun saveSeasons(tvShow: TvShow) {
+        val seasons = tvShow.seasons
+        for (item in seasons) {
+            item.tv_season = tvShow.id
+            seasonDao.saveSeason(item)
+        }
+    }
+
+    private suspend fun saveNextEpisode(tvShow: TvShow) {
+        val nextEpisode = tvShow.nextEpisodeToAir
+        nextEpisode?.let {
+            it.tv_next_episode = tvShow.id
+            tvDao.saveNextEpisode(it)
         }
     }
 

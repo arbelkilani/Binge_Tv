@@ -10,6 +10,7 @@ import com.arbelkilani.bingetv.data.model.tv.Network
 import com.arbelkilani.bingetv.data.model.tv.TvShow
 import com.arbelkilani.bingetv.data.source.local.Converters
 import com.arbelkilani.bingetv.data.source.local.genre.GenreDao
+import com.arbelkilani.bingetv.data.source.local.season.SeasonDao
 import com.arbelkilani.bingetv.data.source.local.tv.TvDao
 
 @Database(
@@ -21,4 +22,5 @@ import com.arbelkilani.bingetv.data.source.local.tv.TvDao
 abstract class BingeTvDatabase : RoomDatabase() {
     abstract fun getGenreDao(): GenreDao
     abstract fun getTvDao(): TvDao
+    abstract fun getSeasonDao(): SeasonDao
 }
