@@ -1,34 +1,47 @@
 package com.arbelkilani.bingetv.data.model.episode
 
 import android.os.Parcelable
+import androidx.room.*
+import com.arbelkilani.bingetv.data.model.tv.TvShow
 import com.arbelkilani.bingetv.utils.spannableVoteRate
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 import java.util.*
 
 @Parcelize
+@Entity(
+    tableName = "episode_table",
+    foreignKeys = [ForeignKey(
+        entity = TvShow::class,
+        parentColumns = ["id"],
+        childColumns = ["season_episode"],
+        onDelete = ForeignKey.CASCADE
+    )],
+    indices = [Index(value = ["season_episode"], name = "index_season_episode")]
+)
 data class Episode(
-    @SerializedName("air_date") val _airDate: String,
-    @SerializedName("episode_number") val _episodeNumber: Int,
+    @SerializedName("air_date") val airDate: String,
+    @SerializedName("episode_number") val episodeNumber: Int,
     val name: String,
     val overview: String,
-    val id: Int,
+    @PrimaryKey val id: Int,
     @SerializedName("production_code") val production_code: String?,
     @SerializedName("season_number") val seasonNumber: Int,
-    @SerializedName("still_path") val _stillPath: String?,
-    @SerializedName("vote_average") val _voteAverage: Double,
-    @SerializedName("vote_count") val voteCount: Int
+    @SerializedName("still_path") val stillPath: String?,
+    @SerializedName("vote_average") val voteAverage: Double,
+    @SerializedName("vote_count") val voteCount: Int,
+    @ColumnInfo(name = "season_episode") var season_episode: Int
 ) : Parcelable {
 
-    val episodeNumber: String
-        get() = String.format("%d", _episodeNumber, Locale.getDefault())
+    val getEpisodeNumber: String
+        get() = String.format("%d", episodeNumber, Locale.getDefault())
 
-    val airDate: String
-        get() = String.format("%s : %s", "Aired", _airDate, Locale.getDefault())
+    val getAirDate: String
+        get() = String.format("%s : %s", "Aired", airDate, Locale.getDefault())
 
-    val stillPath: String?
-        get() = "https://image.tmdb.org/t/p/w300${this._stillPath}"
+    val getStillPath: String?
+        get() = "https://image.tmdb.org/t/p/w300${this.stillPath}"
 
-    val voteAverage: String?
-        get() = spannableVoteRate(_voteAverage.toString())
+    val getVoteAverage: String?
+        get() = spannableVoteRate(voteAverage.toString())
 }

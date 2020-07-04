@@ -43,7 +43,7 @@
                     android:layout_alignParentStart="true"
                     android:layout_toEndOf="@+id/tv_vote_average"
                     android:fontFamily="@font/avenir_next_demi_bold"
-                    android:text="@{String.format(@string/episode_name_details, season.getSeasonNumber, episode.episodeNumber, episode.name)}"
+                    android:text="@{String.format(@string/episode_name_details, season.getSeasonNumber, episode.getEpisodeNumber, episode.name)}"
                     android:textColor="@color/details_titles_text_color"
                     android:textSize="@dimen/titles_text_size"
                     tools:text="S1xE22 - Beginning of the End" />
@@ -55,7 +55,7 @@
                     android:layout_marginTop="@dimen/default_margin_medium"
                     android:layout_marginEnd="@dimen/default_margin"
                     android:fontFamily="@font/avenir_next_regular"
-                    android:text="@{episode.airDate}"
+                    android:text="@{episode.getAirDate}"
                     android:textColor="@color/details_titles_text_color"
                     android:textSize="@dimen/small_text_size"
                     tools:text="Aired : 2014-05-13" />
@@ -70,7 +70,7 @@
                     android:fontFamily="@font/avenir_next_regular"
                     android:gravity="center_horizontal"
                     android:padding="@dimen/details_bottom_sheet_padding"
-                    android:text="@{episode.voteAverage}"
+                    android:text="@{episode.getVoteAverage}"
                     android:textSize="@dimen/details_bottom_sheet_rate_text_size" />
 
             </RelativeLayout>

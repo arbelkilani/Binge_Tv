@@ -2,6 +2,7 @@ package com.arbelkilani.bingetv.data.model.season
 
 import android.os.Parcelable
 import androidx.room.*
+import com.arbelkilani.bingetv.data.model.episode.Episode
 import com.arbelkilani.bingetv.data.model.tv.TvShow
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
@@ -18,7 +19,6 @@ import java.util.*
     )],
     indices = [Index(value = ["tv_season"], name = "index_tv_season")]
 )
-
 data class Season(
     @ColumnInfo(name = "air_date") @SerializedName("air_date") val airDate: String,
     @ColumnInfo(name = "episode_count") @SerializedName("episode_count") val _episodeCount: Int,
@@ -28,7 +28,8 @@ data class Season(
     @ColumnInfo(name = "poster_path") @SerializedName("poster_path") val posterPath: String,
     @ColumnInfo(name = "season_number") @SerializedName("season_number") val seasonNumber: Int,
     @ColumnInfo(name = "tv_season") var tv_season: Int,
-    @ColumnInfo(name = "watched") var watched: Boolean
+    @ColumnInfo(name = "watched") var watched: Boolean,
+    var episodes: List<Episode>?
 ) : Parcelable {
 
     val getPosterPath: String?
@@ -41,11 +42,20 @@ data class Season(
         get() = String.format("%s : %d", "Season", seasonNumber, Locale.getDefault())
 
     val getEpisodeCount: String
-        get() = String.format("%d %s ", _episodeCount, "Episodes", Locale.getDefault())
+        get() {
+            return if (watched)
+                String.format("%d/%d", _episodeCount, _episodeCount) else String.format(
+                "%d/%d",
+                0,
+                _episodeCount
+            )
+        }
 
     val getAirDate: String
         get() = String.format("First aired %s ", airDate, Locale.getDefault())
 
     val watchedCount: String
         get() = String.format("%d/%d", 0, _episodeCount, Locale.getDefault())
+
+
 }

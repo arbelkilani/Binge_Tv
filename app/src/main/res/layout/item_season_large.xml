@@ -52,7 +52,7 @@
                     tools:text="Season : 7" />
 
                 <TextView
-                    android:id="@+id/tv_episode_count"
+                    android:id="@+id/tv_overview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_season_number"
@@ -70,7 +70,7 @@
                     android:id="@+id/tv_air_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_episode_count"
+                    android:layout_below="@+id/tv_overview"
                     android:layout_centerVertical="true"
                     android:layout_marginTop="@dimen/default_margin_min"
                     android:fontFamily="@font/avenir_next_regular"
@@ -102,6 +102,7 @@
                     android:progressDrawable="@drawable/rounded_corners_progress_bar" />
 
                 <TextView
+                    android:id="@+id/tv_episode_count"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
@@ -109,8 +110,8 @@
                     android:layout_weight="0.2"
                     android:fontFamily="@font/avenir_next_regular"
                     android:gravity="end"
-                    android:paddingBottom="2dp"
-                    android:text="12/12"
+                    android:paddingBottom="1dp"
+                    android:text="@{season.getEpisodeCount}"
                     android:textColor="@color/details_titles_text_color"
                     android:textSize="@dimen/small_text_size"
                     tools:text="12/12" />

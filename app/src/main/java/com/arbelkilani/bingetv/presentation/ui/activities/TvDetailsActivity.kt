@@ -184,6 +184,7 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener {
         watchlistView.setOnClickListener {
             watchlistView.updateWatchlistState(!currentTvShow.watchlist)
             viewModel.saveWatchlist(!currentTvShow.watchlist)
+            (rv_seasons.adapter as SeasonAdapter).notifyDataSetChanged(currentTvShow.seasons.asReversed()) // TODO problem with updating data on UI
         }
 
         val watchedView = layout.findViewById<TextView>(R.id.tv_action_watched)
@@ -191,6 +192,7 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener {
         watchedView.setOnClickListener {
             watchedView.updateWatchedState(!currentTvShow.watched)
             viewModel.saveWatched(!currentTvShow.watched)
+            (rv_seasons.adapter as SeasonAdapter).notifyDataSetChanged(currentTvShow.seasons.asReversed()) //TODO problem with updating data on UI
         }
 
     }

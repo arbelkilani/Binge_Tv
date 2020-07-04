@@ -1,5 +1,6 @@
 package com.arbelkilani.bingetv.presentation.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -32,6 +33,7 @@ class SeasonAdapter(
 
     override fun onBindViewHolder(holder: SeasonHolder, position: Int) {
         holder.itemSeasonsBinding.season = seasons[position]
+        Log.i("TAG//", "season = ${holder.itemSeasonsBinding.season}")
         holder.itemSeasonsBinding.seasonClickListener = seasonClickListener
     }
 

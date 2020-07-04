@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avenir_next_demi_bold"
-                android:text="@{episode.episodeNumber}"
+                android:text="@{episode.getEpisodeNumber}"
                 android:textColor="@color/details_titles_text_color"
                 android:textSize="@dimen/toolbar_title_text_size"
                 tools:text="1." />
@@ -61,7 +61,7 @@
                 android:layout_toStartOf="@+id/rb_watched"
                 android:layout_toEndOf="@+id/tv_number"
                 android:fontFamily="@font/avenir_next_regular"
-                android:text="@{episode.airDate}"
+                android:text="@{episode.getAirDate}"
                 android:textColor="@color/details_titles_text_color"
                 android:textSize="@dimen/small_text_size"
                 tools:text="Aired : 2020-09-12" />

@@ -119,7 +119,12 @@ class TvShowRepositoryImp(
         try {
             tvDao.saveTv(tvShow)
             saveNextEpisode(tvShow)
-            saveSeasons(tvShow)
+            val seasons = tvShow.seasons
+            for (item in seasons) {
+                item.tv_season = tvShow.id
+                item.episodes = listOf()
+                seasonDao.saveSeason(item)
+            }
             saveNetworks(tvShow)
             saveGenres(tvShow)
         } catch (e: Exception) {
@@ -131,14 +136,13 @@ class TvShowRepositoryImp(
         try {
             tvDao.saveTv(tvShow)
             saveNextEpisode(tvShow)
-
             val seasons = tvShow.seasons
             for (item in seasons) {
                 item.tv_season = tvShow.id
                 item.watched = tvShow.watched
+                item.episodes = listOf()
                 seasonDao.saveSeason(item)
             }
-
             saveNetworks(tvShow)
             saveGenres(tvShow)
         } catch (e: Exception) {
@@ -159,14 +163,6 @@ class TvShowRepositoryImp(
         for (item in networks) {
             item.tv_network = tvShow.id
             tvDao.saveNetworks(item)
-        }
-    }
-
-    private suspend fun saveSeasons(tvShow: TvShow) {
-        val seasons = tvShow.seasons
-        for (item in seasons) {
-            item.tv_season = tvShow.id
-            seasonDao.saveSeason(item)
         }
     }
 
