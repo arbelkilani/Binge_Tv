@@ -90,9 +90,8 @@ class TvShowRepositoryImp(
         ).flow
     }
 
-    override suspend fun getTvDetails(id: Int): Resource<TvShowEntity> =
+    override suspend fun tvShowEntityResponse(id: Int): Resource<TvShowEntity> =
         try {
-            Log.i(TAG, "getTvDetails() for item $id")
             val tvShowData = apiTmdbService.getTvDetails(id, "videos,images")
 
             tvDao.getTvShow(id)?.let { localTvShow ->
@@ -168,22 +167,6 @@ class TvShowRepositoryImp(
         } catch (e: Exception) {
             Resource.exception(e, null)
         }
-
-    private suspend fun saveGenres(tvShow: TvShowData) {
-        val genres = tvShow.genres
-        for (item in genres) {
-            item.tv_genre = tvShow.id
-            tvDao.saveGenre(item)
-        }
-    }
-
-    private suspend fun saveNetworks(tvShow: TvShowData) {
-        val networks = tvShow.networks
-        for (item in networks) {
-            item.tv_network = tvShow.id
-            tvDao.saveNetworks(item)
-        }
-    }
 
     private suspend fun saveNextEpisode(tvShow: TvShowData) {
         val nextEpisode = tvShow.nextEpisodeToAir

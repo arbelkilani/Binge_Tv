@@ -80,8 +80,6 @@ class DiscoverFragment : Fragment(), OnTvShowClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.i(TAG, "onCreateView()")
-
         binding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_discover,

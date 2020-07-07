@@ -14,8 +14,6 @@ val DatabaseModule = module {
         ).fallbackToDestructiveMigration().build()
     }
 
-    single { get<BingeTvDatabase>().getGenreDao() }
-
     single { get<BingeTvDatabase>().getTvDao() }
 
     single { get<BingeTvDatabase>().getSeasonDao() }

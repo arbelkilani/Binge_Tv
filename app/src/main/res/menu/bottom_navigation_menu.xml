@@ -14,4 +14,12 @@
         android:icon="@drawable/ic_menu_watchlist"
         android:title="@string/title_watch_list"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_profile"
+        android:enabled="true"
+        android:icon="@drawable/ic_profile"
+        android:title="@string/title_profile"
+        app:showAsAction="ifRoom" />
+
 </menu>
