@@ -16,7 +16,12 @@ class TvShowMapper : Mapper<TvShowEntity, TvShowData> {
     }
 
     override fun mapFromEntity(type: TvShowEntity): TvShowData {
-        return TvShowData()
+        return TvShowData(
+            id = type.id,
+            overview = type.overview,
+            name = type.name,
+            watched = type.watched
+        )
     }
 
     override fun mapToEntity(type: TvShowData): TvShowEntity {
@@ -43,7 +48,8 @@ class TvShowMapper : Mapper<TvShowEntity, TvShowData> {
                 seasonMapper.mapToEntity(seasonData)
             },
             backdrop = baseBackdrop + type.backdropPath,
-            poster = basePoster + type.posterPath
+            poster = basePoster + type.posterPath,
+            watched = type.watched
         )
     }
 }

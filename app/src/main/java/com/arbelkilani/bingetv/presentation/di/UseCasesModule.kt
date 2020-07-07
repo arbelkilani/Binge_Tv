@@ -3,6 +3,7 @@ package com.arbelkilani.bingetv.presentation.di
 import com.arbelkilani.bingetv.domain.repositories.GenresRepository
 import com.arbelkilani.bingetv.domain.repositories.TvShowRepository
 import com.arbelkilani.bingetv.domain.usecase.*
+import com.arbelkilani.bingetv.domain.usecase.tv.UpdateTvShowUseCase
 import org.koin.dsl.module
 
 val UseCasesModule = module {
@@ -28,6 +29,8 @@ val UseCasesModule = module {
     single { createGetNextEpisodeDataUseCase(get()) }
 
     single { createGetSearchTvShowUseCase(get()) }
+
+    single { updateTvShowuseCase(get()) }
 }
 
 fun createDiscoverUseCase(tvShowRepository: TvShowRepository): DiscoverUseCase {
@@ -72,4 +75,8 @@ fun createGetNextEpisodeDataUseCase(tvShowRepository: TvShowRepository): GetNext
 
 fun createGetSearchTvShowUseCase(tvShowRepository: TvShowRepository): SearchUseCase {
     return SearchUseCase(tvShowRepository)
+}
+
+fun updateTvShowuseCase(tvShowRepository: TvShowRepository): UpdateTvShowUseCase {
+    return UpdateTvShowUseCase(tvShowRepository)
 }

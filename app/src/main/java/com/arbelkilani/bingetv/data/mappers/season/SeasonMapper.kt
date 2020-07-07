@@ -12,7 +12,7 @@ class SeasonMapper : Mapper<SeasonEntity, SeasonData> {
     }
 
     override fun mapFromEntity(type: SeasonEntity): SeasonData {
-        return SeasonData()
+        return SeasonData(id = type.id, watched = type.watched, tv_season = type.id)
     }
 
     override fun mapToEntity(type: SeasonData): SeasonEntity {
@@ -21,7 +21,9 @@ class SeasonMapper : Mapper<SeasonEntity, SeasonData> {
             episodeCount = type.episodeCount,
             name = type.name,
             overview = type.overview,
-            poster = String.format("%s%s", basePoster, type.posterPath)
+            poster = String.format("%s%s", basePoster, type.posterPath),
+            watched = type.watched,
+            watchedEpisodeCount = if (type.watched) type.episodeCount else 0
         )
     }
 }

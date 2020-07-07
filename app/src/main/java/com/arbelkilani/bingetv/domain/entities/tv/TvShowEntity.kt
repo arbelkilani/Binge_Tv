@@ -24,5 +24,6 @@ data class TvShowEntity(
     var seasonsCount: String = "",
     var seasons: List<SeasonEntity> = listOf(),
     var poster: String? = null,
-    var backdrop: String? = null
+    var backdrop: String? = null,
+    var watched: Boolean = false
 ) : Parcelable

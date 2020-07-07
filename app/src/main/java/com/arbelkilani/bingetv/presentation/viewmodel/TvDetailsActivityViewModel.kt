@@ -7,15 +7,16 @@ import com.arbelkilani.bingetv.data.entities.base.Status
 import com.arbelkilani.bingetv.data.entities.credit.Credit
 import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
 import com.arbelkilani.bingetv.domain.usecase.GetCreditsUseCase
-import com.arbelkilani.bingetv.domain.usecase.GetNextEpisodeDataUseCase
 import com.arbelkilani.bingetv.domain.usecase.GetTvDetailsUseCase
+import com.arbelkilani.bingetv.domain.usecase.tv.UpdateTvShowUseCase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class TvDetailsActivityViewModel constructor(
     private val extraTvShowEntity: TvShowEntity,
     private val getTvDetailsUseCase: GetTvDetailsUseCase,
     private val getCreditsUseCase: GetCreditsUseCase,
-    private val getNextEpisodeDataUseCase: GetNextEpisodeDataUseCase
+    private val updateTvShowUseCase: UpdateTvShowUseCase
 ) :
     BaseViewModel() {
 
@@ -43,7 +44,7 @@ class TvDetailsActivityViewModel constructor(
     }
 
     init {
-        scope.launch {
+        scope.launch(Dispatchers.IO) {
             _tvShowEntity.value?.let {
                 getTvDetails(it)
                 getCredits(it)
@@ -66,6 +67,16 @@ class TvDetailsActivityViewModel constructor(
         if (response.status == Status.SUCCESS) {
             _credits.postValue(response.data!!.cast)
         }
+    }
+
+    fun isTvShowWatched(watched: Boolean) {
+        val tvShow = _tvShowEntity.value!!
+        tvShow.watched = watched
+        scope.launch(Dispatchers.IO) {
+            updateTvShowUseCase.saveWatched(tvShow)
+            _tvShowEntity.postValue(tvShow)
+        }
+
     }
 
     /*

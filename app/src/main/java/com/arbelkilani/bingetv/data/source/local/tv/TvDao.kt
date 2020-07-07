@@ -29,4 +29,7 @@ interface TvDao {
 
     @Query("SELECT * FROM tv_table")
     suspend fun getAllTvShows(): List<TvShowData>?
+
+    @Query("UPDATE tv_table SET watched =:watched WHERE id =:id")
+    suspend fun updateWatchedState(id: Int, watched: Boolean)
 }

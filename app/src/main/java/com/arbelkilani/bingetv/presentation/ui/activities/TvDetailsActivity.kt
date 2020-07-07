@@ -2,14 +2,18 @@ package com.arbelkilani.bingetv.presentation.ui.activities
 
 import android.content.Intent
 import android.content.res.Resources
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
+import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.doOnLayout
@@ -132,7 +136,7 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
 
     private fun showPopUpMenu(view: View) {
 
-        /*val currentTvShow = viewModel.tvShowDetails.value?.data!!
+        val currentTvShow = viewModel.tvShowEntity.value!!
 
         val popupWindow = PopupWindow(this)
         val layout = layoutInflater.inflate(R.layout.layout_tv_details_popup_menu, null)
@@ -140,23 +144,22 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
         popupWindow.isOutsideTouchable = true
         popupWindow.isFocusable = true
         popupWindow.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        popupWindow.showAsDropDown(view, -400, 0, Gravity.NO_GRAVITY)
+        popupWindow.showAtLocation(view, 0, 0, Gravity.NO_GRAVITY)
 
-        val watchlistView = layout.findViewById<TextView>(R.id.tv_action_watchlist)
+        /*val watchlistView = layout.findViewById<TextView>(R.id.tv_action_watchlist)
         watchlistView.updateWatchlistState(currentTvShow.watchlist)
         watchlistView.setOnClickListener {
             watchlistView.updateWatchlistState(!currentTvShow.watchlist)
             //viewModel.saveWatchlist(!currentTvShow.watchlist)
             (rv_seasons.adapter as SeasonAdapter).notifyDataSetChanged(currentTvShow.seasons.asReversed()) // TODO problem with updating data on UI
-        }
+        }*/
 
         val watchedView = layout.findViewById<TextView>(R.id.tv_action_watched)
-        watchedView.updateWatchedState(currentTvShow.watched)
+        watchedView.isSelected = currentTvShow.watched
         watchedView.setOnClickListener {
-            watchedView.updateWatchedState(!currentTvShow.watched)
-            //viewModel.saveWatched(!currentTvShow.watched)
-            (rv_seasons.adapter as SeasonAdapter).notifyDataSetChanged(currentTvShow.seasons.asReversed()) //TODO problem with updating data on UI
-        }*/
+            viewModel.isTvShowWatched(!watchedView.isSelected)
+            watchedView.isSelected = !watchedView.isSelected
+        }
 
     }
 

@@ -12,6 +12,7 @@ import com.arbelkilani.bingetv.data.entities.tv.TvShowData
 import com.arbelkilani.bingetv.data.entities.tv.maze.TvDetailsMaze
 import com.arbelkilani.bingetv.data.entities.tv.maze.channel.WebChannel
 import com.arbelkilani.bingetv.data.entities.tv.maze.details.NextEpisodeData
+import com.arbelkilani.bingetv.data.mappers.season.SeasonMapper
 import com.arbelkilani.bingetv.data.mappers.tv.TvShowMapper
 import com.arbelkilani.bingetv.data.source.local.season.SeasonDao
 import com.arbelkilani.bingetv.data.source.local.tv.TvDao
@@ -37,6 +38,7 @@ class TvShowRepositoryImp(
 ) : TvShowRepository {
 
     private val tvShowMapper = TvShowMapper()
+    private val seasonMapper = SeasonMapper()
 
     companion object {
         private const val PAGE_SIZE = 20
@@ -92,18 +94,65 @@ class TvShowRepositoryImp(
         try {
             Log.i(TAG, "getTvDetails() for item $id")
             val tvShowData = apiTmdbService.getTvDetails(id, "videos,images")
+            val local = tvDao.getTvShow(id)
+
+            if (local != null) {
+                tvShowData.watched = local.watched
+                val seasons = seasonDao.getSeasons(id)
+                tvShowData.seasons.map {
+                    for (item in seasons) {
+                        it.watched = item.watched
+                    }
+                }
+            }
+
             try {
                 val nextEpisodeData = getNextEpisodeData(id)
                 tvShowData.nextEpisode = nextEpisodeData.data
                 Resource.success(tvShowMapper.mapToEntity(tvShowData))
             } catch (e: Exception) {
+                e.printStackTrace()
                 Resource.exception(e, null)
             }
 
         } catch (e: Exception) {
-            Log.i(TAG, "exception get details = ${e.localizedMessage}")
+            e.printStackTrace()
             Resource.exception(e, null)
         }
+
+    override suspend fun saveWatched(tvShowEntity: TvShowEntity) {
+        try {
+            tvDao.saveTv(tvShowMapper.mapFromEntity(tvShowEntity))
+            for (item in tvShowEntity.seasons) {
+                item.watched = tvShowEntity.watched
+                item.watchedEpisodeCount = item.episodeCount
+                item.progress = (item.watchedEpisodeCount / item.episodeCount) * 100
+                val seasonData = seasonMapper.mapFromEntity(item)
+                seasonData.tv_season = tvShowEntity.id
+                seasonDao.saveSeason(seasonData)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    /*override suspend fun saveWatched(tvShow: Int) {
+        try {
+            tvDao.saveTv(tvShow)
+            saveNextEpisode(tvShow)
+            val seasons = tvShow.seasons
+            for (item in seasons) {
+                item.tv_season = tvShow.id
+                item.watched = tvShow.watched
+                item.episodes = listOf()
+                seasonDao.saveSeason(item)
+            }
+            saveNetworks(tvShow)
+            saveGenres(tvShow)
+        } catch (e: Exception) {
+            Log.i(TAG, "saveWatched e : ${e.localizedMessage}")
+        }
+    }*/
 
     override suspend fun getSeasonDetails(tvId: Int, seasonNumber: Int): Resource<SeasonData> =
         try {
@@ -131,23 +180,6 @@ class TvShowRepositoryImp(
         }
     }
 
-    override suspend fun saveWatched(tvShow: TvShowData) {
-        try {
-            tvDao.saveTv(tvShow)
-            saveNextEpisode(tvShow)
-            val seasons = tvShow.seasons
-            for (item in seasons) {
-                item.tv_season = tvShow.id
-                item.watched = tvShow.watched
-                item.episodes = listOf()
-                seasonDao.saveSeason(item)
-            }
-            saveNetworks(tvShow)
-            saveGenres(tvShow)
-        } catch (e: Exception) {
-            Log.i(TAG, "saveWatched e : ${e.localizedMessage}")
-        }
-    }
 
     private suspend fun saveGenres(tvShow: TvShowData) {
         val genres = tvShow.genres
