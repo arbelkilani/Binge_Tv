@@ -6,16 +6,12 @@
         <import type="android.view.View" />
 
         <variable
-            name="tvDetails"
-            type="com.arbelkilani.bingetv.data.model.tv.TvShow" />
+            name="tvShowEntity"
+            type="com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity" />
 
         <variable
-            name="selectedTv"
-            type="com.arbelkilani.bingetv.data.model.tv.TvShow" />
-
-        <variable
-            name="viewModel"
-            type="com.arbelkilani.bingetv.presentation.viewmodel.TvDetailsActivityViewModel" />
+            name="tvShowListener"
+            type="com.arbelkilani.bingetv.presentation.listeners.TvShowDetailsClickListener" />
 
     </data>
 
@@ -30,26 +26,16 @@
             android:layout_height="0dp"
             android:layout_weight="0.37">
 
-            <!-- <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/view_pager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fitsSystemWindows="true"
-                android:orientation="horizontal"
-                android:overScrollMode="never"
-                android:visibility="@{tvDetails.images.backdrops.empty ? View.GONE : View.VISIBLE}" /> -->
-
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="@{tvDetails.images.backdrops.empty ? View.VISIBLE : View.VISIBLE}">
+                android:layout_height="match_parent">
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fitsSystemWindows="true"
                     android:scaleType="centerCrop"
-                    android:src="@{selectedTv.getBackdrop}" />
+                    android:src="@{tvShowEntity.backdrop}" />
 
                 <View
                     android:layout_width="match_parent"
@@ -66,10 +52,10 @@
                 android:layout_marginEnd="@dimen/default_margin"
                 android:layout_marginBottom="40dp"
                 android:background="?attr/actionBarItemBackground"
-                android:onClick="@{() -> viewModel.playTrailer(tvDetails.videos)}"
+                android:onClick="@{() -> tvShowListener.playTrailer(tvShowEntity.videos[0])}"
                 android:padding="@dimen/default_padding_min"
                 android:src="@drawable/ic_play"
-                android:visibility="@{tvDetails.videos == null || tvDetails.videos.results.empty ? View.GONE : View.VISIBLE}" />
+                android:visibility="@{tvShowEntity.videos.empty ? View.GONE : View.VISIBLE}" />
 
         </FrameLayout>
 

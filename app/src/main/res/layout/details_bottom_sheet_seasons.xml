@@ -7,12 +7,18 @@
         <import type="android.view.View" />
 
         <variable
+            name="tvShowEntity"
+            type="com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity" />
+
+        <!--
+        <variable
             name="tvDetails"
-            type="com.arbelkilani.bingetv.data.model.tv.TvShow" />
+            type="com.arbelkilani.bingetv.data.entities.tv.TvShowData" />
 
         <variable
             name="viewModel"
             type="com.arbelkilani.bingetv.presentation.viewmodel.TvDetailsActivityViewModel" />
+            -->
     </data>
 
     <FrameLayout
@@ -70,7 +76,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:navigationIcon="@drawable/ic_arrow_left_colored"
-                    app:title="@{tvDetails.name}"
+                    app:title="@{tvShowEntity.name}"
                     app:titleTextAppearance="@style/Toolbar.TextTitle"
                     app:titleTextColor="@color/toolbar_title_color" />
 
@@ -106,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/avenir_next_demi_bold"
-                android:text="@{tvDetails.getSeasonsNumber}"
+                android:text="@{String.valueOf(tvShowEntity.seasons.size())}"
                 android:textColor="@color/details_season_sheet_title_color"
                 android:textSize="@dimen/toolbar_title_text_size" />
 

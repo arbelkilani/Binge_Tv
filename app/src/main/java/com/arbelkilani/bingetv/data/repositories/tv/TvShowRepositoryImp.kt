@@ -4,19 +4,21 @@ import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.arbelkilani.bingetv.data.model.base.ApiResponse
-import com.arbelkilani.bingetv.data.model.base.Resource
-import com.arbelkilani.bingetv.data.model.credit.CreditsResponse
-import com.arbelkilani.bingetv.data.model.season.SeasonDetails
-import com.arbelkilani.bingetv.data.model.tv.TvShow
-import com.arbelkilani.bingetv.data.model.tv.maze.TvDetailsMaze
-import com.arbelkilani.bingetv.data.model.tv.maze.channel.WebChannel
-import com.arbelkilani.bingetv.data.model.tv.maze.details.NextEpisodeData
+import com.arbelkilani.bingetv.data.entities.base.ApiResponse
+import com.arbelkilani.bingetv.data.entities.base.Resource
+import com.arbelkilani.bingetv.data.entities.credit.CreditsResponse
+import com.arbelkilani.bingetv.data.entities.season.SeasonDetails
+import com.arbelkilani.bingetv.data.entities.tv.TvShowData
+import com.arbelkilani.bingetv.data.entities.tv.maze.TvDetailsMaze
+import com.arbelkilani.bingetv.data.entities.tv.maze.channel.WebChannel
+import com.arbelkilani.bingetv.data.entities.tv.maze.details.NextEpisodeData
+import com.arbelkilani.bingetv.data.mappers.tv.TvShowMapper
 import com.arbelkilani.bingetv.data.source.local.season.SeasonDao
 import com.arbelkilani.bingetv.data.source.local.tv.TvDao
 import com.arbelkilani.bingetv.data.source.remote.apiservice.ApiTmdbService
 import com.arbelkilani.bingetv.data.source.remote.apiservice.ApiTvMazeService
 import com.arbelkilani.bingetv.data.source.remote.pagingsource.*
+import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
 import com.arbelkilani.bingetv.domain.repositories.TvShowRepository
 import com.arbelkilani.bingetv.utils.formatAirDate
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -34,18 +36,19 @@ class TvShowRepositoryImp(
     private val seasonDao: SeasonDao
 ) : TvShowRepository {
 
-    private val TAG = TvShowRepositoryImp::class.java.simpleName
+    private val tvShowMapper = TvShowMapper()
 
     companion object {
         private const val PAGE_SIZE = 20
+        private const val TAG = "TvShowRepository"
     }
 
-    override suspend fun trending(): Flow<ApiResponse<TvShow>> {
+    override suspend fun trending(): Flow<ApiResponse<TvShowData>> {
         Log.i(TAG, "trending()")
         return flow { emit(apiTmdbService.trending("tv", "day")) }
     }
 
-    override suspend fun discover(): Flow<PagingData<TvShow>> {
+    override suspend fun discover(): Flow<PagingData<TvShowEntity>> {
         Log.i(TAG, "discover()")
         return Pager(
             config = PagingConfig(PAGE_SIZE),
@@ -53,7 +56,7 @@ class TvShowRepositoryImp(
         ).flow
     }
 
-    override suspend fun airingToday(): Flow<PagingData<TvShow>> {
+    override suspend fun airingToday(): Flow<PagingData<TvShowData>> {
         Log.i(TAG, "airingToday()")
         return Pager(
             config = PagingConfig(PAGE_SIZE),
@@ -61,7 +64,7 @@ class TvShowRepositoryImp(
         ).flow
     }
 
-    override suspend fun popular(): Flow<PagingData<TvShow>> {
+    override suspend fun popular(): Flow<PagingData<TvShowData>> {
         Log.i(TAG, "popular()")
         return Pager(
             config = PagingConfig(PAGE_SIZE),
@@ -69,7 +72,7 @@ class TvShowRepositoryImp(
         ).flow
     }
 
-    override suspend fun onTheAir(): Flow<PagingData<TvShow>> {
+    override suspend fun onTheAir(): Flow<PagingData<TvShowEntity>> {
         Log.i(TAG, "onTheAir()")
         return Pager(
             config = PagingConfig(PAGE_SIZE),
@@ -77,7 +80,7 @@ class TvShowRepositoryImp(
         ).flow
     }
 
-    override suspend fun search(query: String): Flow<PagingData<TvShow>> {
+    override suspend fun search(query: String): Flow<PagingData<TvShowData>> {
         Log.i(TAG, "search($query)")
         return Pager(
             config = PagingConfig(PAGE_SIZE),
@@ -85,22 +88,18 @@ class TvShowRepositoryImp(
         ).flow
     }
 
-    override suspend fun getTvDetails(id: Int): Resource<TvShow> =
+    override suspend fun getTvDetails(id: Int): Resource<TvShowEntity> =
         try {
             Log.i(TAG, "getTvDetails() for item $id")
-            val remoteItem = apiTmdbService.getTvDetails(id, "videos")
+            val tvShowData = apiTmdbService.getTvDetails(id, "videos,images")
             try {
-                val localItem = tvDao.getTvShow(id)
-                if (localItem?.id == remoteItem.id) {
-                    remoteItem.watchlist = localItem.watchlist
-                    remoteItem.watched = localItem.watched
-                }
-
+                val nextEpisodeData = getNextEpisodeData(id)
+                tvShowData.nextEpisode = nextEpisodeData.data
+                Resource.success(tvShowMapper.mapToEntity(tvShowData))
             } catch (e: Exception) {
-                Log.i(TAG, "e : exception = ${e.localizedMessage}")
+                Resource.exception(e, null)
             }
 
-            Resource.success(remoteItem)
         } catch (e: Exception) {
             Log.i(TAG, "exception get details = ${e.localizedMessage}")
             Resource.exception(e, null)
@@ -115,7 +114,7 @@ class TvShowRepositoryImp(
             Resource.exception(e, null)
         }
 
-    override suspend fun saveWatchlist(tvShow: TvShow) {
+    override suspend fun saveWatchlist(tvShow: TvShowData) {
         try {
             tvDao.saveTv(tvShow)
             saveNextEpisode(tvShow)
@@ -132,7 +131,7 @@ class TvShowRepositoryImp(
         }
     }
 
-    override suspend fun saveWatched(tvShow: TvShow) {
+    override suspend fun saveWatched(tvShow: TvShowData) {
         try {
             tvDao.saveTv(tvShow)
             saveNextEpisode(tvShow)
@@ -150,7 +149,7 @@ class TvShowRepositoryImp(
         }
     }
 
-    private suspend fun saveGenres(tvShow: TvShow) {
+    private suspend fun saveGenres(tvShow: TvShowData) {
         val genres = tvShow.genres
         for (item in genres) {
             item.tv_genre = tvShow.id
@@ -158,7 +157,7 @@ class TvShowRepositoryImp(
         }
     }
 
-    private suspend fun saveNetworks(tvShow: TvShow) {
+    private suspend fun saveNetworks(tvShow: TvShowData) {
         val networks = tvShow.networks
         for (item in networks) {
             item.tv_network = tvShow.id
@@ -166,7 +165,7 @@ class TvShowRepositoryImp(
         }
     }
 
-    private suspend fun saveNextEpisode(tvShow: TvShow) {
+    private suspend fun saveNextEpisode(tvShow: TvShowData) {
         val nextEpisode = tvShow.nextEpisodeToAir
         nextEpisode?.let {
             it.tv_next_episode = tvShow.id

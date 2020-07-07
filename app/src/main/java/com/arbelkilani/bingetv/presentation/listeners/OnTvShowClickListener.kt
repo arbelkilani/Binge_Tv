@@ -1,7 +1,7 @@
 package com.arbelkilani.bingetv.presentation.listeners
 
-import com.arbelkilani.bingetv.data.model.tv.TvShow
+import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
 
 interface OnTvShowClickListener {
-    fun onTvItemClicked(tv: TvShow)
+    fun onTvItemClicked(tvShowEntity: TvShowEntity)
 }

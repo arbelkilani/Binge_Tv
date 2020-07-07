@@ -6,16 +6,12 @@
     <data>
 
         <variable
-            name="tvDetails"
-            type="com.arbelkilani.bingetv.data.model.tv.TvShow" />
+            name="tvShowEntity"
+            type="com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity" />
 
         <variable
-            name="selectedTv"
-            type="com.arbelkilani.bingetv.data.model.tv.TvShow" />
-
-        <variable
-            name="nextEpisodeData"
-            type="com.arbelkilani.bingetv.data.model.tv.maze.details.NextEpisodeData" />
+            name="tvShowListener"
+            type="com.arbelkilani.bingetv.presentation.listeners.TvShowDetailsClickListener" />
 
         <variable
             name="viewModel"
@@ -33,9 +29,8 @@
 
             <include
                 layout="@layout/details_content"
-                bind:selectedTv="@{selectedTv}"
-                bind:tvDetails="@{tvDetails}"
-                bind:viewModel="@{viewModel}" />
+                bind:tvShowEntity="@{tvShowEntity}"
+                bind:tvShowListener="@{tvShowListener}" />
 
             <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/appBarLayout"
@@ -61,15 +56,13 @@
 
         <include
             layout="@layout/details_bottom_sheet_content"
-            bind:nextEpisodeData="@{nextEpisodeData}"
-            bind:selectedTv="@{selectedTv}"
-            bind:tvDetails="@{tvDetails}"
+            bind:tvShowEntity="@{tvShowEntity}"
+            bind:tvShowListener="@{tvShowListener}"
             bind:viewModel="@{viewModel}" />
 
         <include
             layout="@layout/details_bottom_sheet_seasons"
-            bind:tvDetails="@{tvDetails}"
-            bind:viewModel="@{viewModel}" />
+            bind:tvShowEntity="@{tvShowEntity}" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

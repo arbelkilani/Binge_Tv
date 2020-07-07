@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.arbelkilani.bingetv.R
-import com.arbelkilani.bingetv.data.model.episode.Episode
+import com.arbelkilani.bingetv.data.entities.episode.Episode
 import com.arbelkilani.bingetv.databinding.ItemEpisodeBinding
 import com.arbelkilani.bingetv.presentation.listeners.OnEpisodeClickListener
 

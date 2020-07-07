@@ -1,6 +1,5 @@
 package com.arbelkilani.bingetv.presentation.ui.activities
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,8 +12,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.arbelkilani.bingetv.R
-import com.arbelkilani.bingetv.data.model.tv.TvShow
 import com.arbelkilani.bingetv.databinding.ActivitySearchBinding
+import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
 import com.arbelkilani.bingetv.presentation.adapters.DataLoadStateAdapter
 import com.arbelkilani.bingetv.presentation.adapters.SearchAdapter
 import com.arbelkilani.bingetv.presentation.listeners.KeyboardListener
@@ -22,7 +21,6 @@ import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
 import com.arbelkilani.bingetv.presentation.listeners.RevealAnimationListener
 import com.arbelkilani.bingetv.presentation.ui.view.RevealAnimation
 import com.arbelkilani.bingetv.presentation.viewmodel.SearchViewModel
-import com.arbelkilani.bingetv.utils.Constants
 import com.arbelkilani.bingetv.utils.hideKeyboard
 import com.arbelkilani.bingetv.utils.interceptKeyboardVisibility
 import com.arbelkilani.bingetv.utils.showKeyboard
@@ -164,12 +162,12 @@ class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener, Revea
         hideKeyboard()
     }
 
-    override fun onTvItemClicked(tv: TvShow) {
-        startActivity(
+    override fun onTvItemClicked(tv: TvShowEntity) {
+        /*startActivity(
             Intent(this, TvDetailsActivity::class.java)
                 .apply {
                     putExtra(Constants.DISCOVER_DETAILS, tv)
-                })
+                })*/
     }
 
 }

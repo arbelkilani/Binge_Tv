@@ -5,8 +5,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.arbelkilani.bingetv.R
-import com.arbelkilani.bingetv.data.model.base.Resource
-import com.arbelkilani.bingetv.data.model.tv.CombinedObjects
+import com.arbelkilani.bingetv.data.entities.base.Resource
+import com.arbelkilani.bingetv.data.entities.tv.CombinedObjects
 import com.arbelkilani.bingetv.presentation.ui.activities.DashboardActivity
 import com.arbelkilani.bingetv.presentation.viewmodel.splash.SplashViewModel
 import com.arbelkilani.bingetv.utils.Constants
@@ -45,12 +45,12 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun navigateToDashboard(it: Resource<CombinedObjects>) {
-        startActivity(
+        /*startActivity(
             Intent(this, DashboardActivity::class.java)
                 .apply {
                     putExtra(Constants.SPLASH_DASHBOARD_DATA, it.data)
                 })
-        finish()
+        finish()*/
     }
 
 }

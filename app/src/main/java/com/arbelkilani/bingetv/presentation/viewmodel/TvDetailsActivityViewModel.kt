@@ -1,112 +1,72 @@
 package com.arbelkilani.bingetv.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.arbelkilani.bingetv.data.model.base.Resource
-import com.arbelkilani.bingetv.data.model.base.Status
-import com.arbelkilani.bingetv.data.model.credit.Credit
-import com.arbelkilani.bingetv.data.model.tv.TvShow
-import com.arbelkilani.bingetv.data.model.tv.maze.details.NextEpisodeData
-import com.arbelkilani.bingetv.data.model.video.VideoResponse
+import com.arbelkilani.bingetv.data.entities.base.Status
+import com.arbelkilani.bingetv.data.entities.credit.Credit
+import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
 import com.arbelkilani.bingetv.domain.usecase.GetCreditsUseCase
 import com.arbelkilani.bingetv.domain.usecase.GetNextEpisodeDataUseCase
 import com.arbelkilani.bingetv.domain.usecase.GetTvDetailsUseCase
 import kotlinx.coroutines.launch
 
 class TvDetailsActivityViewModel constructor(
-    private val selectedTvData: TvShow,
+    private val extraTvShowEntity: TvShowEntity,
     private val getTvDetailsUseCase: GetTvDetailsUseCase,
     private val getCreditsUseCase: GetCreditsUseCase,
     private val getNextEpisodeDataUseCase: GetNextEpisodeDataUseCase
 ) :
     BaseViewModel() {
 
-    private val _selectedTv = MutableLiveData<TvShow>(selectedTvData)
-    val selectedTv: LiveData<TvShow>
-        get() = _selectedTv
-
-    private val _tvId = MutableLiveData<Int>()
-    val tvId: LiveData<Int>
-        get() = _tvId
-
-    private val TAG = TvDetailsActivityViewModel::class.java.simpleName
-
-    private val _tvDetails = MutableLiveData<Resource<TvShow>>()
-    val tvShow: LiveData<Resource<TvShow>>
-        get() = _tvDetails
+    private val _tvShowEntity = MutableLiveData<TvShowEntity>(extraTvShowEntity)
+    val tvShowEntity: LiveData<TvShowEntity>
+        get() = _tvShowEntity
 
     private val _credits = MutableLiveData<List<Credit>>()
     val credits: LiveData<List<Credit>>
         get() = _credits
 
-    private val _nextEpisodeData = MutableLiveData<NextEpisodeData>()
-    val nextEpisodeData: LiveData<NextEpisodeData>
-        get() = _nextEpisodeData
+    /*private val _tvId = MutableLiveData<Int>()
+    val tvId: LiveData<Int>
+        get() = _tvId
 
-    private val _trailerKey = MutableLiveData<String>()
-    val trailerKey: LiveData<String>
-        get() = _trailerKey
 
-    private val _homePageUrl = MutableLiveData<String>()
-    val homePageUrl: LiveData<String>
-        get() = _homePageUrl
+
+
+
+
+     */
+
+    companion object {
+        const val TAG = "TvShowDetails"
+    }
 
     init {
         scope.launch {
-            _selectedTv.value?.let {
+            _tvShowEntity.value?.let {
                 getTvDetails(it)
                 getCredits(it)
             }
         }
     }
 
-    private suspend fun getCredits(selectedTv: TvShow) {
-        Log.i(TAG, "getCredits()")
-        val response = getCreditsUseCase.invoke(selectedTv.id)
+
+    private suspend fun getTvDetails(extraTvShowEntity: TvShowEntity) {
+        // _tvId.postValue(extraTvShowEntity.id)
+        val response = getTvDetailsUseCase.invoke(extraTvShowEntity.id)
+        if (response.status == Status.SUCCESS) {
+            _tvShowEntity.postValue(response.data)
+        }
+    }
+
+    private suspend fun getCredits(extraTvShowEntity: TvShowEntity) {
+        val response = getCreditsUseCase.invoke(extraTvShowEntity.id)
         if (response.status == Status.SUCCESS) {
             _credits.postValue(response.data!!.cast)
         }
     }
 
-    private suspend fun getTvDetails(selectedTv: TvShow) {
-        Log.i(TAG, "getTvDetails()")
-        _tvId.postValue(selectedTv.id)
-        val response = getTvDetailsUseCase.invoke(selectedTv.id)
-        if (response.status == Status.SUCCESS) {
-            _tvDetails.postValue(Resource.success(response.data))
-            if (response.data?.nextEpisodeToAir != null)
-                getNextEpisodeDetails(response.data)
-        } else {
-            _tvDetails.postValue(Resource.exception(Exception(), null))
-        }
-    }
-
-    private suspend fun getNextEpisodeDetails(tvShow: TvShow) {
-        Log.i(TAG, "getNextEpisodeDetails()")
-
-        val response = getNextEpisodeDataUseCase.invoke(tvShow.id)
-        if (response.status == Status.SUCCESS && response.data != null) {
-            tvShow.nextEpisodeToAir?.let {
-                it.overview = response.data.summary
-                it.airDate = response.data.airDate
-                it.airStamp = response.data.airStamp
-                it.airTime = response.data.airTime
-            }
-            _nextEpisodeData.postValue(response.data)
-        }
-
-    }
-
-    fun playTrailer(videoResponse: VideoResponse) =
-        _trailerKey.postValue(videoResponse.results[0].key)
-
-    fun openHomePage(homePageUrl: String) {
-        if (homePageUrl.isNotEmpty())
-            _homePageUrl.postValue(homePageUrl)
-
-    }
-
+    /*
     fun saveWatchlist(state: Boolean) {
         scope.launch {
             _tvDetails.value?.data!!.watchlist = state
@@ -121,6 +81,6 @@ class TvDetailsActivityViewModel constructor(
             _tvDetails.postValue(Resource.success(_tvDetails.value?.data))
             getTvDetailsUseCase.saveWatched(_tvDetails.value?.data!!)
         }
-    }
+    }*/
 
 }

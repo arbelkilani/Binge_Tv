@@ -7,19 +7,19 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.arbelkilani.bingetv.R
-import com.arbelkilani.bingetv.data.model.tv.TvShow
+import com.arbelkilani.bingetv.data.entities.tv.TvShowData
 import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_trending_view.view.*
 
 class DiscoverAdapter(
     private val onTvShowClickListener: OnTvShowClickListener
-) : PagingDataAdapter<TvShow, RecyclerView.ViewHolder>(TvShowComparator) {
+) : PagingDataAdapter<TvShowData, RecyclerView.ViewHolder>(TvShowComparator) {
 
     class DiscoverHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(
-            tv: TvShow?,
+            tv: TvShowData?,
             onTvShowClickListener: OnTvShowClickListener
         ) {
             tv?.apply {
@@ -29,7 +29,7 @@ class DiscoverAdapter(
                     .centerCrop()
                     .into(itemView.iv_item_trending)
                 itemView.setOnClickListener {
-                    onTvShowClickListener.onTvItemClicked(this)
+                    //onTvShowClickListener.onTvItemClicked(this)
                 }
             }
         }
@@ -51,12 +51,12 @@ class DiscoverAdapter(
     }
 
     companion object {
-        private val TvShowComparator = object : DiffUtil.ItemCallback<TvShow>() {
-            override fun areItemsTheSame(oldItem: TvShow, newItem: TvShow): Boolean {
+        private val TvShowComparator = object : DiffUtil.ItemCallback<TvShowData>() {
+            override fun areItemsTheSame(oldItem: TvShowData, newItem: TvShowData): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: TvShow, newItem: TvShow): Boolean {
+            override fun areContentsTheSame(oldItem: TvShowData, newItem: TvShowData): Boolean {
                 return oldItem == newItem
             }
         }

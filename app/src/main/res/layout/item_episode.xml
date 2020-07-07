@@ -7,7 +7,7 @@
 
         <variable
             name="episode"
-            type="com.arbelkilani.bingetv.data.model.episode.Episode" />
+            type="com.arbelkilani.bingetv.data.entities.episode.Episode" />
 
         <variable
             name="episodeClickListener"

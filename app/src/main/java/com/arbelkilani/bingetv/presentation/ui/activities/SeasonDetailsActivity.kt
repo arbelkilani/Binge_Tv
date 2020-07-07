@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.arbelkilani.bingetv.R
-import com.arbelkilani.bingetv.data.model.episode.Episode
+import com.arbelkilani.bingetv.data.entities.episode.Episode
 import com.arbelkilani.bingetv.databinding.ActivitySeasonDetailsBinding
 import com.arbelkilani.bingetv.databinding.EpisodeDetailsBottomSheetBinding
 import com.arbelkilani.bingetv.presentation.adapters.EpisodeAdapter

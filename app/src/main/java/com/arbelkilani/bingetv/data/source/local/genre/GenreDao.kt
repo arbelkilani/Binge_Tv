@@ -1,7 +1,10 @@
 package com.arbelkilani.bingetv.data.source.local.genre
 
-import androidx.room.*
-import com.arbelkilani.bingetv.data.model.genre.Genre
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import com.arbelkilani.bingetv.data.entities.genre.Genre
 
 @Dao
 interface GenreDao {

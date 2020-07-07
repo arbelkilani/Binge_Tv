@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="tv"
-            type="com.arbelkilani.bingetv.data.model.tv.TvShow" />
+            name="tvEntity"
+            type="com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity" />
 
         <variable
             name="itemClick"
@@ -25,7 +25,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layoutMode="opticalBounds"
-            android:onClick="@{() -> itemClick.onTvItemClicked(tv)}"
+            android:onClick="@{() -> itemClick.onTvItemClicked(tvEntity)}"
             app:cardCornerRadius="@dimen/default_card_corner_radius"
             app:layout_constraintDimensionRatio="2:3"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -37,12 +37,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@{tv.getPoster}" />
+                android:src="@{tvEntity.poster}" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/background_backdrop_gradient" />
+                android:background="@drawable/background_backdrop_gradient"
+                android:visibility="gone" />
 
         </com.arbelkilani.bingetv.presentation.ui.view.CustomCardView>
 

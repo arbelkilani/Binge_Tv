@@ -24,9 +24,9 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.arbelkilani.bingetv.R
-import com.arbelkilani.bingetv.data.model.genre.Genre
-import com.arbelkilani.bingetv.data.model.tv.Network
-import com.arbelkilani.bingetv.data.model.tv.maze.details.NextEpisodeData
+import com.arbelkilani.bingetv.data.entities.genre.Genre
+import com.arbelkilani.bingetv.data.entities.tv.Network
+import com.arbelkilani.bingetv.data.entities.tv.maze.details.NextEpisodeData
 import com.arbelkilani.bingetv.presentation.listeners.KeyboardListener
 import com.google.android.flexbox.FlexboxLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -40,7 +40,8 @@ import java.util.concurrent.TimeUnit
 @BindingAdapter("android:src")
 fun bindImageUrl(view: ImageView, url: String?) {
     url?.let {
-        Picasso.get().load(url).into(view)
+        Picasso.get().load(url)
+            .into(view)
     }
 }
 
@@ -199,6 +200,9 @@ fun formatAirDate(data: NextEpisodeData?): String {
     if (data == null) return ""
 
     data.apply {
+
+        if (data.airTime.isEmpty())
+            data.airTime = "00:00"
 
         val hourOfDay = airTime.substringBefore(":").toInt()
         val minute = airTime.substringAfter(":").toInt()

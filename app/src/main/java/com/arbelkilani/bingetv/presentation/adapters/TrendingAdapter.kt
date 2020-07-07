@@ -6,13 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
 import com.arbelkilani.bingetv.R
-import com.arbelkilani.bingetv.data.model.tv.TvShow
+import com.arbelkilani.bingetv.data.entities.tv.TvShowData
 import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_dicover_view.view.*
 
 class TrendingAdapter(
-    private val tvList: List<TvShow>,
+    private val tvList: List<TvShowData>,
     private val onTvShowClickListener: OnTvShowClickListener
 ) : PagerAdapter() {
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
@@ -39,13 +39,13 @@ class TrendingAdapter(
 
         val tvShow = tvList[virtualPosition]
         Picasso.get()
-            .load(tvShow.getBackdrop)
+            .load(tvShow.backdropPath)
             .fit().centerCrop(Gravity.CENTER)
             .error(R.mipmap.ic_launcher_round)
             .into(layout.iv_item_discover)
         layout.tv_title.text = tvShow.name
         layout.main_container.setOnClickListener {
-            onTvShowClickListener.onTvItemClicked(tvShow)
+            //onTvShowClickListener.onTvItemClicked(tvShow)
         }
 
         container.addView(layout)

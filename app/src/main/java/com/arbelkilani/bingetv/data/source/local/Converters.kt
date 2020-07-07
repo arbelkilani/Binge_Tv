@@ -1,11 +1,11 @@
 package com.arbelkilani.bingetv.data.source.local
 
 import androidx.room.TypeConverter
-import com.arbelkilani.bingetv.data.model.episode.Episode
-import com.arbelkilani.bingetv.data.model.genre.Genre
-import com.arbelkilani.bingetv.data.model.season.Season
-import com.arbelkilani.bingetv.data.model.tv.EpisodeToAir
-import com.arbelkilani.bingetv.data.model.tv.Network
+import com.arbelkilani.bingetv.data.entities.episode.Episode
+import com.arbelkilani.bingetv.data.entities.genre.Genre
+import com.arbelkilani.bingetv.data.entities.season.Season
+import com.arbelkilani.bingetv.data.entities.tv.EpisodeToAir
+import com.arbelkilani.bingetv.data.entities.tv.Network
 import com.google.gson.Gson
 
 import com.google.gson.reflect.TypeToken

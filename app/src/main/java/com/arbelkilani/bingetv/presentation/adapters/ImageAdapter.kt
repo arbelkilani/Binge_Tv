@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.arbelkilani.bingetv.R
-import com.arbelkilani.bingetv.data.model.image.Image
+import com.arbelkilani.bingetv.data.entities.image.Image
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_image.view.*
 

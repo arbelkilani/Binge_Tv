@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.arbelkilani.bingetv.R
-import com.arbelkilani.bingetv.data.model.credit.Credit
+import com.arbelkilani.bingetv.data.entities.credit.Credit
 import com.arbelkilani.bingetv.databinding.ItemCreditBindingImpl
 
 class CreditAdapter :

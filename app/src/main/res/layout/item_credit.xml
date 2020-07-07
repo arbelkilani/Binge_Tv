@@ -6,7 +6,7 @@
 
         <variable
             name="credit"
-            type="com.arbelkilani.bingetv.data.model.credit.Credit" />
+            type="com.arbelkilani.bingetv.data.entities.credit.Credit" />
 
     </data>
 

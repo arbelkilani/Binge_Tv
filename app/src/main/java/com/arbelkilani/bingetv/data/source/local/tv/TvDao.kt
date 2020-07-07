@@ -4,16 +4,16 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.arbelkilani.bingetv.data.model.genre.Genre
-import com.arbelkilani.bingetv.data.model.tv.EpisodeToAir
-import com.arbelkilani.bingetv.data.model.tv.Network
-import com.arbelkilani.bingetv.data.model.tv.TvShow
+import com.arbelkilani.bingetv.data.entities.genre.Genre
+import com.arbelkilani.bingetv.data.entities.tv.EpisodeToAir
+import com.arbelkilani.bingetv.data.entities.tv.Network
+import com.arbelkilani.bingetv.data.entities.tv.TvShowData
 
 @Dao
 interface TvDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveTv(tv: TvShow)
+    suspend fun saveTv(tv: TvShowData)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveNextEpisode(episodeToAir: EpisodeToAir)
@@ -25,8 +25,8 @@ interface TvDao {
     suspend fun saveGenre(genre: Genre)
 
     @Query("SELECT * FROM tv_table WHERE id=:id")
-    suspend fun getTvShow(id: Int): TvShow?
+    suspend fun getTvShow(id: Int): TvShowData?
 
     @Query("SELECT * FROM tv_table")
-    suspend fun getAllTvShows(): List<TvShow>?
+    suspend fun getAllTvShows(): List<TvShowData>?
 }

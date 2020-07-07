@@ -2,18 +2,14 @@ package com.arbelkilani.bingetv.presentation.ui.activities
 
 import android.content.Intent
 import android.content.res.Resources
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
-import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.doOnLayout
@@ -21,11 +17,12 @@ import androidx.core.widget.NestedScrollView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.arbelkilani.bingetv.R
-import com.arbelkilani.bingetv.data.model.season.Season
+import com.arbelkilani.bingetv.data.entities.season.Season
 import com.arbelkilani.bingetv.databinding.ActivityDetailsTvBinding
 import com.arbelkilani.bingetv.presentation.adapters.CreditAdapter
 import com.arbelkilani.bingetv.presentation.adapters.SeasonAdapter
 import com.arbelkilani.bingetv.presentation.listeners.OnSeasonClickListener
+import com.arbelkilani.bingetv.presentation.listeners.TvShowDetailsClickListener
 import com.arbelkilani.bingetv.presentation.viewmodel.TvDetailsActivityViewModel
 import com.arbelkilani.bingetv.utils.Constants
 import com.arbelkilani.bingetv.utils.doOnBottomSheetDetailsSeason
@@ -35,12 +32,12 @@ import kotlinx.android.synthetic.main.details_bottom_sheet_seasons.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener {
+class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDetailsClickListener {
 
     private val TAG = TvDetailsActivity::class.java.simpleName
 
     private val viewModel: TvDetailsActivityViewModel by viewModel {
-        parametersOf(intent.getParcelableExtra(Constants.DISCOVER_DETAILS)!!)
+        parametersOf(intent.getParcelableExtra(Constants.TV_SHOW_ENTITY)!!)
     }
 
     private lateinit var binding: ActivityDetailsTvBinding
@@ -57,46 +54,21 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_details_tv)
         binding.viewModel = viewModel
+        binding.tvShowListener = this
         binding.lifecycleOwner = this
 
-        binding.selectedTv = viewModel.selectedTv.value
+        viewModel.tvShowEntity.observe(this, Observer {
+            binding.tvShowEntity = it
+            (rv_seasons.adapter as SeasonAdapter).notifyDataSetChanged(it.seasons.asReversed())
+        })
 
         viewModel.credits.observe(this, Observer {
             (rv_credits.adapter as CreditAdapter).notifyDataSetChanged(it)
         })
 
-        viewModel.tvShow.observe(this, Observer {
-            it.data?.let { tvShow ->
-                binding.tvDetails = tvShow
-                (rv_seasons.adapter as SeasonAdapter).notifyDataSetChanged(tvShow.seasons.asReversed())
-            }
-        })
-
-        viewModel.nextEpisodeData.observe(this, Observer {
-            binding.nextEpisodeData = it
-        })
-
         initToolbar()
         initAdapter()
         initBottomSheets()
-
-        viewModel.trailerKey.observe(this, Observer { key ->
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:$key")))
-        })
-
-        viewModel.homePageUrl.observe(this, Observer { url ->
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
-        })
-
-        /*
-
-        //TODO check if view pager create lag when open interface
-        // could be deteted by the animaion of the seasons bottom sheet title
-        /*view_pager.apply {
-            adapter = ImageAdapter(tvDetails.images.backdrops)
-            //offscreenPageLimit = 3
-        }*/
-         */
 
     }
 
@@ -144,11 +116,11 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener {
 
 
     override fun onSeasonItemClicked(season: Season) {
-        startActivity(Intent(this, SeasonDetailsActivity::class.java)
+        /*startActivity(Intent(this, SeasonDetailsActivity::class.java)
             .apply {
                 putExtra(Constants.SEASON_DETAILS, season)
                 putExtra(Constants.SELECTED_TV, viewModel.selectedTv.value)
-            })
+            })*/
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -169,7 +141,7 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener {
 
     private fun showPopUpMenu(view: View) {
 
-        val currentTvShow = viewModel.tvShow.value?.data!!
+        /*val currentTvShow = viewModel.tvShowDetails.value?.data!!
 
         val popupWindow = PopupWindow(this)
         val layout = layoutInflater.inflate(R.layout.layout_tv_details_popup_menu, null)
@@ -183,7 +155,7 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener {
         watchlistView.updateWatchlistState(currentTvShow.watchlist)
         watchlistView.setOnClickListener {
             watchlistView.updateWatchlistState(!currentTvShow.watchlist)
-            viewModel.saveWatchlist(!currentTvShow.watchlist)
+            //viewModel.saveWatchlist(!currentTvShow.watchlist)
             (rv_seasons.adapter as SeasonAdapter).notifyDataSetChanged(currentTvShow.seasons.asReversed()) // TODO problem with updating data on UI
         }
 
@@ -191,9 +163,9 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener {
         watchedView.updateWatchedState(currentTvShow.watched)
         watchedView.setOnClickListener {
             watchedView.updateWatchedState(!currentTvShow.watched)
-            viewModel.saveWatched(!currentTvShow.watched)
+            //viewModel.saveWatched(!currentTvShow.watched)
             (rv_seasons.adapter as SeasonAdapter).notifyDataSetChanged(currentTvShow.seasons.asReversed()) //TODO problem with updating data on UI
-        }
+        }*/
 
     }
 
@@ -207,6 +179,16 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener {
             }
             else -> super.onBackPressed()
         }
+    }
+
+    override fun openHomePage(url: String) {
+        if (url.isEmpty())
+            return
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+    }
+
+    override fun playTrailer(key: String) {
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:$key")))
     }
 }
 

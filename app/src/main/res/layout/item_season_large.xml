@@ -7,7 +7,7 @@
 
         <variable
             name="season"
-            type="com.arbelkilani.bingetv.data.model.season.Season" />
+            type="com.arbelkilani.bingetv.data.entities.season.Season" />
 
         <variable
             name="seasonClickListener"

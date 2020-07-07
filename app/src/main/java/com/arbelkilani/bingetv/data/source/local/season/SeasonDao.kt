@@ -3,7 +3,7 @@ package com.arbelkilani.bingetv.data.source.local.season
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
-import com.arbelkilani.bingetv.data.model.season.Season
+import com.arbelkilani.bingetv.data.entities.season.Season
 
 @Dao
 interface SeasonDao {
