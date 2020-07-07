@@ -155,13 +155,13 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
         popupWindow.showAtLocation(view, Gravity.NO_GRAVITY, widthPixels - view.width, 0)
 
 
-        /*val watchlistView = layout.findViewById<TextView>(R.id.tv_action_watchlist)
-        watchlistView.updateWatchlistState(currentTvShow.watchlist)
+        val watchlistView = layout.findViewById<TextView>(R.id.tv_action_watchlist)
+        watchlistView.isSelected = currentTvShow.watchlist
         watchlistView.setOnClickListener {
-            watchlistView.updateWatchlistState(!currentTvShow.watchlist)
-            //viewModel.saveWatchlist(!currentTvShow.watchlist)
-            (rv_seasons.adapter as SeasonAdapter).notifyDataSetChanged(currentTvShow.seasons.asReversed()) // TODO problem with updating data on UI
-        }*/
+            viewModel.isTvShowWatchListed(!watchlistView.isSelected)
+            watchlistView.isSelected = !watchlistView.isSelected
+            popupWindow.dismiss()
+        }
 
         val watchedView = layout.findViewById<TextView>(R.id.tv_action_watched)
         watchedView.isSelected = currentTvShow.watched

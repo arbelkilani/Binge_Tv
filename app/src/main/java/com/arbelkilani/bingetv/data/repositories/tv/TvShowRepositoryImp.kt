@@ -97,18 +97,9 @@ class TvShowRepositoryImp(
 
             tvDao.getTvShow(id)?.let { localTvShow ->
                 tvShowData.watched = localTvShow.watched
+                tvShowData.watchlist = localTvShow.watchlist
                 tvShowData.seasons.map { it.watched = localTvShow.watched }
             }
-
-            /*if (local != null) {
-                tvShowData.watched = local.watched
-                val seasons = seasonDao.getSeasons(id)
-                tvShowData.seasons.map {
-                    for (item in seasons) {
-                        it.watched = item.watched
-                    }
-                }
-            }*/
 
             try {
                 val nextEpisodeData = getNextEpisodeData(id)
@@ -155,6 +146,20 @@ class TvShowRepositoryImp(
         }
     }
 
+    override suspend fun saveWatchlist(
+        watchlist: Boolean,
+        tvShowEntity: TvShowEntity
+    ): TvShowEntity? =
+        try {
+            tvShowEntity.watchlist = watchlist
+            tvDao.saveTv(tvShowMapper.mapFromEntity(tvShowEntity))
+            tvShowEntity
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+
+
     override suspend fun getSeasonDetails(tvId: Int, seasonNumber: Int): Resource<SeasonData> =
         try {
             Log.i(TAG, "getSeasonDetails() for tv id $tvId and season number $seasonNumber")
@@ -163,25 +168,6 @@ class TvShowRepositoryImp(
         } catch (e: Exception) {
             Resource.exception(e, null)
         }
-
-    override suspend fun saveWatchlist(tvShow: TvShowData) {
-        try {
-            tvDao.saveTv(tvShow)
-            saveNextEpisode(tvShow)
-            val seasons = tvShow.seasons
-            for (item in seasons) {
-                item.tv_season = tvShow.id
-                item.episodes = listOf()
-                seasonDao.saveSeason(item)
-            }
-            saveNetworks(tvShow)
-            saveGenres(tvShow)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Log.i(TAG, "saveWatchlist e : ${e.localizedMessage}")
-        }
-    }
-
 
     private suspend fun saveGenres(tvShow: TvShowData) {
         val genres = tvShow.genres
