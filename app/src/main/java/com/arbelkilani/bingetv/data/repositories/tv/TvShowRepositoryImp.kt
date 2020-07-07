@@ -124,34 +124,35 @@ class TvShowRepositoryImp(
             Resource.exception(e, null)
         }
 
-    override suspend fun saveWatched(tvShowEntity: TvShowEntity) {
+    override suspend fun saveWatched(watched: Boolean, tvShowEntity: TvShowEntity): TvShowEntity? {
 
         try {
+            tvShowEntity.watched = watched
+            tvShowEntity.seasons.map {
+                it.watched = tvShowEntity.watched
+                if (tvShowEntity.watched) {
+                    it.watchedEpisodeCount = it.episodeCount
+                    it.progress = (it.watchedEpisodeCount / it.episodeCount) * 100
+                } else {
+                    it.watchedEpisodeCount = 0
+                    it.progress = 0
+                }
+            }
+
             tvDao.saveTv(tvShowMapper.mapFromEntity(tvShowEntity))
+
             for (seasonEntity in tvShowEntity.seasons) {
                 val seasonData = seasonMapper.mapFromEntity(seasonEntity)
                 seasonData.tv_season = tvShowEntity.id
                 seasonData.watched = tvShowEntity.watched
                 seasonDao.saveSeason(seasonData)
             }
-        } catch (e: Exception) {
-            Log.e(TAG, "e = ${e.localizedMessage}")
-            e.printStackTrace()
-        }
 
-        /*try {
-            tvDao.saveTv(tvShowMapper.mapFromEntity(tvShowEntity))
-            for (item in tvShowEntity.seasons) {
-                item.watched = tvShowEntity.watched
-                item.watchedEpisodeCount = item.episodeCount
-                item.progress = (item.watchedEpisodeCount / item.episodeCount) * 100
-                val seasonData = seasonMapper.mapFromEntity(item)
-                seasonData.tv_season = tvShowEntity.id
-                seasonDao.saveSeason(seasonData)
-            }
-        } catch (e: Exception)
+            return tvShowEntity
+        } catch (e: Exception) {
             e.printStackTrace()
-        }*/
+            return null
+        }
     }
 
     override suspend fun getSeasonDetails(tvId: Int, seasonNumber: Int): Resource<SeasonData> =

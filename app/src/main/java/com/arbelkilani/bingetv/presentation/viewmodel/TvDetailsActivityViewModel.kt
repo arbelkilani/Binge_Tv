@@ -68,16 +68,10 @@ class TvDetailsActivityViewModel constructor(
     }
 
     fun isTvShowWatched(watched: Boolean) {
-        val tvShow = _tvShowEntity.value!!
-        tvShow.watched = watched
-        tvShow.seasons.map {
-            it.watched = watched
-        }
         scope.launch(Dispatchers.IO) {
-            updateTvShowUseCase.saveWatched(tvShow)
-            _tvShowEntity.postValue(tvShow)
+            val resulted = updateTvShowUseCase.saveWatched(watched, _tvShowEntity.value!!)
+            _tvShowEntity.postValue(resulted)
         }
-
     }
 
     /*
