@@ -94,9 +94,13 @@ class TvShowRepositoryImp(
         try {
             Log.i(TAG, "getTvDetails() for item $id")
             val tvShowData = apiTmdbService.getTvDetails(id, "videos,images")
-            val local = tvDao.getTvShow(id)
 
-            if (local != null) {
+            tvDao.getTvShow(id)?.let { localTvShow ->
+                tvShowData.watched = localTvShow.watched
+                tvShowData.seasons.map { it.watched = localTvShow.watched }
+            }
+
+            /*if (local != null) {
                 tvShowData.watched = local.watched
                 val seasons = seasonDao.getSeasons(id)
                 tvShowData.seasons.map {
@@ -104,7 +108,7 @@ class TvShowRepositoryImp(
                         it.watched = item.watched
                     }
                 }
-            }
+            }*/
 
             try {
                 val nextEpisodeData = getNextEpisodeData(id)
@@ -121,7 +125,21 @@ class TvShowRepositoryImp(
         }
 
     override suspend fun saveWatched(tvShowEntity: TvShowEntity) {
+
         try {
+            tvDao.saveTv(tvShowMapper.mapFromEntity(tvShowEntity))
+            for (seasonEntity in tvShowEntity.seasons) {
+                val seasonData = seasonMapper.mapFromEntity(seasonEntity)
+                seasonData.tv_season = tvShowEntity.id
+                seasonData.watched = tvShowEntity.watched
+                seasonDao.saveSeason(seasonData)
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "e = ${e.localizedMessage}")
+            e.printStackTrace()
+        }
+
+        /*try {
             tvDao.saveTv(tvShowMapper.mapFromEntity(tvShowEntity))
             for (item in tvShowEntity.seasons) {
                 item.watched = tvShowEntity.watched
@@ -131,28 +149,10 @@ class TvShowRepositoryImp(
                 seasonData.tv_season = tvShowEntity.id
                 seasonDao.saveSeason(seasonData)
             }
-        } catch (e: Exception) {
+        } catch (e: Exception)
             e.printStackTrace()
-        }
+        }*/
     }
-
-    /*override suspend fun saveWatched(tvShow: Int) {
-        try {
-            tvDao.saveTv(tvShow)
-            saveNextEpisode(tvShow)
-            val seasons = tvShow.seasons
-            for (item in seasons) {
-                item.tv_season = tvShow.id
-                item.watched = tvShow.watched
-                item.episodes = listOf()
-                seasonDao.saveSeason(item)
-            }
-            saveNetworks(tvShow)
-            saveGenres(tvShow)
-        } catch (e: Exception) {
-            Log.i(TAG, "saveWatched e : ${e.localizedMessage}")
-        }
-    }*/
 
     override suspend fun getSeasonDetails(tvId: Int, seasonNumber: Int): Resource<SeasonData> =
         try {
@@ -176,6 +176,7 @@ class TvShowRepositoryImp(
             saveNetworks(tvShow)
             saveGenres(tvShow)
         } catch (e: Exception) {
+            e.printStackTrace()
             Log.i(TAG, "saveWatchlist e : ${e.localizedMessage}")
         }
     }

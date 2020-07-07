@@ -39,4 +39,8 @@ class SeasonAdapter(
         this.seasons = seasons
         notifyDataSetChanged()
     }
+
+    companion object {
+        private const val TAG = "SeasonAdapter"
+    }
 }

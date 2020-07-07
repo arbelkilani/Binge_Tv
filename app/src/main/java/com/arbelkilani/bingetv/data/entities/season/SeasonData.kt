@@ -20,24 +20,32 @@ import kotlinx.android.parcel.Parcelize
 )
 data class SeasonData(
 
+    @PrimaryKey
+    @ColumnInfo(name = "id")
+    @SerializedName("id")
+    var id: Int = -1,
+
+    @Ignore
+    @ColumnInfo(name = "name")
+    @SerializedName("name")
+    var name: String = "",
+
+    @Ignore
+    @ColumnInfo(name = "overview")
+    @SerializedName("overview")
+    var overview: String = "",
+
+    @Ignore
     @ColumnInfo(name = "air_date")
     @SerializedName("air_date")
     var airDate: String = "",
 
+    @Ignore
     @ColumnInfo(name = "episode_count")
     @SerializedName("episode_count")
     var episodeCount: Int = 0,
 
-    @PrimaryKey
-    @SerializedName("id")
-    var id: Int = -1,
-
-    @SerializedName("name")
-    var name: String = "",
-
-    @SerializedName("overview")
-    var overview: String = "",
-
+    @Ignore
     @ColumnInfo(name = "poster_path")
     @SerializedName("poster_path")
     var posterPath: String = "",
@@ -46,6 +54,7 @@ data class SeasonData(
     @SerializedName("season_number")
     var seasonNumber: Int = 0,
 
+    @Ignore
     @SerializedName("episodes")
     var episodes: List<Episode> = listOf(),
 

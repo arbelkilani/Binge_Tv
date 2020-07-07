@@ -16,10 +16,19 @@ class TvShowMapper : Mapper<TvShowEntity, TvShowData> {
     }
 
     override fun mapFromEntity(type: TvShowEntity): TvShowData {
+
         return TvShowData(
             id = type.id,
-            overview = type.overview,
             name = type.name,
+            overview = type.overview,
+            firstAirData = type.firstAirDate,
+            episodeRunTime = listOf(type.episodeRunTime),
+            status = type.status,
+            type = type.type,
+            voteAverage = type.voteAverage,
+            homepage = type.homepage,
+            posterPath = type.poster,
+            backdropPath = type.backdrop,
             watched = type.watched
         )
     }
@@ -30,6 +39,8 @@ class TvShowMapper : Mapper<TvShowEntity, TvShowData> {
             id = type.id,
             name = type.name,
             overview = type.overview,
+            firstAirDate = type.firstAirData,
+            episodeRunTime = if (type.episodeRunTime.isEmpty()) 0 else type.episodeRunTime[0],
             status = type.status,
             type = type.type,
             voteAverage = type.voteAverage,

@@ -1,6 +1,5 @@
 package com.arbelkilani.bingetv.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.arbelkilani.bingetv.data.entities.base.Status
@@ -40,7 +39,7 @@ class TvDetailsActivityViewModel constructor(
      */
 
     companion object {
-        const val TAG = "TvShowDetails"
+        const val TAG = "TvShowViewModel"
     }
 
     init {
@@ -57,7 +56,6 @@ class TvDetailsActivityViewModel constructor(
         // _tvId.postValue(extraTvShowEntity.id)
         val response = getTvDetailsUseCase.invoke(extraTvShowEntity.id)
         if (response.status == Status.SUCCESS) {
-            Log.i("TAG**", "response data = ${response.data}")
             _tvShowEntity.postValue(response.data)
         }
     }
@@ -72,6 +70,9 @@ class TvDetailsActivityViewModel constructor(
     fun isTvShowWatched(watched: Boolean) {
         val tvShow = _tvShowEntity.value!!
         tvShow.watched = watched
+        tvShow.seasons.map {
+            it.watched = watched
+        }
         scope.launch(Dispatchers.IO) {
             updateTvShowUseCase.saveWatched(tvShow)
             _tvShowEntity.postValue(tvShow)

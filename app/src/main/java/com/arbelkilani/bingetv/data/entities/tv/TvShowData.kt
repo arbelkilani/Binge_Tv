@@ -14,6 +14,46 @@ import com.google.gson.annotations.SerializedName
 @Entity(tableName = "tv_table")
 data class TvShowData(
 
+    @ColumnInfo(name = "id")
+    @PrimaryKey
+    var id: Int = -1,
+
+    @Ignore
+    @ColumnInfo(name = "name")
+    @SerializedName("name")
+    var name: String = "",
+
+    @Ignore
+    @ColumnInfo(name = "overview")
+    @SerializedName("overview")
+    var overview: String = "",
+
+    @Ignore
+    @ColumnInfo(name = "status")
+    @SerializedName("status")
+    var status: String = "",
+
+    @Ignore
+    @ColumnInfo(name = "type")
+    @SerializedName("type")
+    var type: String = "",
+
+    @Ignore
+    @ColumnInfo(name = "vote_average")
+    @SerializedName("vote_average")
+    var voteAverage: Double = 0.0,
+
+    @Ignore
+    @ColumnInfo(name = "homepage")
+    @SerializedName("homepage")
+    var homepage: String = "",
+
+    @Ignore
+    @ColumnInfo(name = "number_of_seasons")
+    @SerializedName("number_of_seasons")
+    var numberOfSeasons: Int = 0,
+
+    @Ignore
     @ColumnInfo(name = "backdrop_path")
     @SerializedName("backdrop_path")
     var backdropPath: String? = null,
@@ -22,10 +62,12 @@ data class TvShowData(
     @SerializedName("created_by")
     var createdBy: List<CreatedBy> = listOf(),
 
+    @Ignore
     @ColumnInfo(name = "episode_run_time")
     @SerializedName("episode_run_time")
     var episodeRunTime: List<Int> = listOf(),
 
+    @Ignore
     @ColumnInfo(name = "first_air_date")
     @SerializedName("first_air_date")
     var firstAirData: String = "",
@@ -34,14 +76,12 @@ data class TvShowData(
     @SerializedName("genres")
     var genres: List<Genre> = listOf(),
 
-    @ColumnInfo(name = "homepage")
-    @SerializedName("homepage")
-    var homepage: String = "",
+    @Ignore
+    @ColumnInfo(name = "poster_path")
+    @SerializedName("poster_path")
+    var posterPath: String? = null,
 
-    @ColumnInfo(name = "id")
-    @PrimaryKey
-    var id: Int = -1,
-
+    @Ignore
     @ColumnInfo(name = "in_production")
     @SerializedName("in_production")
     var inProduction: Boolean = false,
@@ -49,6 +89,7 @@ data class TvShowData(
     @Ignore
     var languages: List<String> = listOf(),
 
+    @Ignore
     @ColumnInfo(name = "last_air_date")
     @SerializedName("last_air_date")
     var lastAirDate: String = "",
@@ -57,9 +98,6 @@ data class TvShowData(
     @ColumnInfo(name = "last_episode_to_air")
     @SerializedName("last_episode_to_air")
     var lastEpisodeToAir: EpisodeToAir? = null,
-
-    @ColumnInfo(name = "name")
-    var name: String = "",
 
     @Ignore
     @ColumnInfo(name = "next_episode_to_air")
@@ -70,37 +108,29 @@ data class TvShowData(
     @SerializedName("networks")
     var networks: List<Network> = listOf(),
 
+    @Ignore
     @ColumnInfo(name = "number_of_episodes")
     @SerializedName("number_of_episodes")
     var numberOfEpisodes: Int = 0,
-
-    @ColumnInfo(name = "number_of_seasons")
-    @SerializedName("number_of_seasons")
-    var numberOfSeasons: Int = 0,
 
     @Ignore
     @SerializedName("origin_country")
     var originCountry: List<String> = listOf(),
 
+    @Ignore
     @ColumnInfo(name = "original_language")
     @SerializedName("original_language")
     var originalLanguage: String = "",
 
+    @Ignore
     @ColumnInfo(name = "original_name")
     @SerializedName("original_name")
     var originName: String = "",
 
-    @ColumnInfo(name = "overview")
-    @SerializedName("overview")
-    var overview: String = "",
-
+    @Ignore
     @ColumnInfo(name = "popularity")
     @SerializedName("popularity")
     var popularity: Double = 0.0,
-
-    @ColumnInfo(name = "poster_path")
-    @SerializedName("poster_path")
-    var posterPath: String? = null,
 
     @Ignore
     @SerializedName("production_companies")
@@ -110,16 +140,7 @@ data class TvShowData(
     @SerializedName("seasons")
     var seasons: List<SeasonData> = listOf(),
 
-    @SerializedName("status")
-    var status: String = "",
-
-    @SerializedName("type")
-    var type: String = "",
-
-    @ColumnInfo(name = "vote_average")
-    @SerializedName("vote_average")
-    var voteAverage: Double = 0.0,
-
+    @Ignore
     @ColumnInfo(name = "vote_count")
     @SerializedName("vote_count")
     var voteCount: Double = 0.0,

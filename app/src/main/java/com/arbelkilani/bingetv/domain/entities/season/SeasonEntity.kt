@@ -6,6 +6,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class SeasonEntity(
     var id: Int = 0,
+    var seasonNumber: Int = 0,
     var episodeCount: Int = 0,
     var name: String = "",
     var overview: String = "",

@@ -38,7 +38,9 @@ import org.koin.core.parameter.parametersOf
 
 class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDetailsClickListener {
 
-    private val TAG = TvDetailsActivity::class.java.simpleName
+    companion object {
+        const val TAG = "TvShowActivity"
+    }
 
     private val viewModel: TvDetailsActivityViewModel by viewModel {
         parametersOf(intent.getParcelableExtra(Constants.TV_SHOW_ENTITY)!!)
@@ -63,6 +65,9 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
 
         viewModel.tvShowEntity.observe(this, Observer {
             binding.tvShowEntity = it
+            for (item in it.seasons) {
+                Log.i(TAG, "item = ${item.name} || ${item.watched}")
+            }
             (rv_seasons.adapter as SeasonAdapter).notifyDataSetChanged(it.seasons.asReversed())
         })
 
@@ -166,6 +171,7 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
         watchedView.setOnClickListener {
             viewModel.isTvShowWatched(!watchedView.isSelected)
             watchedView.isSelected = !watchedView.isSelected
+            popupWindow.dismiss()
         }
 
     }

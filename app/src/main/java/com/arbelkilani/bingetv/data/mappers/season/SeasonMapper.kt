@@ -12,12 +12,17 @@ class SeasonMapper : Mapper<SeasonEntity, SeasonData> {
     }
 
     override fun mapFromEntity(type: SeasonEntity): SeasonData {
-        return SeasonData(id = type.id, watched = type.watched, tv_season = type.id)
+        return SeasonData(
+            id = type.id,
+            seasonNumber = type.seasonNumber,
+            watched = type.watched
+        )
     }
 
     override fun mapToEntity(type: SeasonData): SeasonEntity {
         return SeasonEntity(
             id = type.id,
+            seasonNumber = type.seasonNumber,
             episodeCount = type.episodeCount,
             name = type.name,
             overview = type.overview,
