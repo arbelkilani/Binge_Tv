@@ -1,5 +1,6 @@
 package com.arbelkilani.bingetv.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.arbelkilani.bingetv.data.entities.base.Status
@@ -55,6 +56,7 @@ class TvDetailsActivityViewModel constructor(
         // _tvId.postValue(extraTvShowEntity.id)
         val response = getTvDetailsUseCase.invoke(extraTvShowEntity.id)
         if (response.status == Status.SUCCESS) {
+            Log.i("TAG**", "response data = ${response.data}")
             _tvShowEntity.postValue(response.data)
         }
     }

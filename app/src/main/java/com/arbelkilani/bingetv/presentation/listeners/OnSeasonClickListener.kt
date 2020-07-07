@@ -1,7 +1,7 @@
 package com.arbelkilani.bingetv.presentation.listeners
 
-import com.arbelkilani.bingetv.data.entities.season.Season
+import com.arbelkilani.bingetv.domain.entities.season.SeasonEntity
 
 interface OnSeasonClickListener {
-    fun onSeasonItemClicked(season: Season)
+    fun onSeasonItemClicked(seasonEntity: SeasonEntity)
 }

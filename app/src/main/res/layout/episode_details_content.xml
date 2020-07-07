@@ -6,7 +6,7 @@
 
         <variable
             name="season"
-            type="com.arbelkilani.bingetv.data.entities.season.Season" />
+            type="com.arbelkilani.bingetv.data.entities.season.SeasonData" />
 
         <variable
             name="tvShow"
@@ -90,7 +90,7 @@
                     android:layout_weight="0.15"
                     android:fontFamily="@font/avenir_next_medium"
                     android:gravity="end"
-                    android:text="@{season.watchedCount}"
+                    android:text="zz"
                     android:textColor="@color/toolbar_title_color"
                     android:textSize="@dimen/titles_text_size" />
 

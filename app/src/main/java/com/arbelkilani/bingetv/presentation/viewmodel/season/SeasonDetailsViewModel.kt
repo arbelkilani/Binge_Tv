@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.arbelkilani.bingetv.data.entities.base.Status
 import com.arbelkilani.bingetv.data.entities.episode.Episode
-import com.arbelkilani.bingetv.data.entities.season.Season
+import com.arbelkilani.bingetv.data.entities.season.SeasonData
 import com.arbelkilani.bingetv.data.entities.tv.TvShowData
 import com.arbelkilani.bingetv.domain.usecase.SeasonDetailsUseCase
 import com.arbelkilani.bingetv.presentation.viewmodel.BaseViewModel
@@ -13,12 +13,12 @@ import kotlinx.coroutines.launch
 
 class SeasonDetailsViewModel(
     selectedTvData: TvShowData,
-    seasonData: Season,
+    seasonDataData: SeasonData,
     seasonDetailsUseCase: SeasonDetailsUseCase
 ) : BaseViewModel() {
 
-    private val _season = MutableLiveData<Season>(seasonData)
-    val season: LiveData<Season>
+    private val _season = MutableLiveData<SeasonData>(seasonDataData)
+    val season: LiveData<SeasonData>
         get() = _season
 
     private val _episodes = MutableLiveData<List<Episode>>()

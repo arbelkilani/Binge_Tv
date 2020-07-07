@@ -2,10 +2,13 @@ package com.arbelkilani.bingetv.data.mappers.tv
 
 import com.arbelkilani.bingetv.data.entities.tv.TvShowData
 import com.arbelkilani.bingetv.data.mappers.base.Mapper
+import com.arbelkilani.bingetv.data.mappers.season.SeasonMapper
 import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
 
 
 class TvShowMapper : Mapper<TvShowEntity, TvShowData> {
+
+    private val seasonMapper = SeasonMapper()
 
     companion object {
         private const val baseBackdrop = "https://image.tmdb.org/t/p/w780"
@@ -29,13 +32,16 @@ class TvShowMapper : Mapper<TvShowEntity, TvShowData> {
             nextEpisodeData = type.nextEpisode,
             genres = type.genres,
             networks = type.networks,
-            images = type.images?.backdrops?.map {
-                String.format("%s%s", baseBackdrop, it.filePath)
+            images = type.images?.backdrops?.map { image ->
+                String.format("%s%s", baseBackdrop, image.filePath)
             },
-            videos = type.videos?.results?.map {
-                if (it.site == "YouTube") it.key else ""
+            videos = type.videos?.results?.map { video ->
+                if (video.site == "YouTube") video.key else ""
             },
-            seasons = type.seasons,
+            seasonsCount = String.format("%d seasons", type.numberOfSeasons),
+            seasons = type.seasons.map { seasonData ->
+                seasonMapper.mapToEntity(seasonData)
+            },
             backdrop = baseBackdrop + type.backdropPath,
             poster = basePoster + type.posterPath
         )

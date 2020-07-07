@@ -7,7 +7,7 @@ import androidx.paging.PagingData
 import com.arbelkilani.bingetv.data.entities.base.ApiResponse
 import com.arbelkilani.bingetv.data.entities.base.Resource
 import com.arbelkilani.bingetv.data.entities.credit.CreditsResponse
-import com.arbelkilani.bingetv.data.entities.season.SeasonDetails
+import com.arbelkilani.bingetv.data.entities.season.SeasonData
 import com.arbelkilani.bingetv.data.entities.tv.TvShowData
 import com.arbelkilani.bingetv.data.entities.tv.maze.TvDetailsMaze
 import com.arbelkilani.bingetv.data.entities.tv.maze.channel.WebChannel
@@ -105,7 +105,7 @@ class TvShowRepositoryImp(
             Resource.exception(e, null)
         }
 
-    override suspend fun getSeasonDetails(tvId: Int, seasonNumber: Int): Resource<SeasonDetails> =
+    override suspend fun getSeasonDetails(tvId: Int, seasonNumber: Int): Resource<SeasonData> =
         try {
             Log.i(TAG, "getSeasonDetails() for tv id $tvId and season number $seasonNumber")
             val response = apiTmdbService.getSeasonDetails(tvId, seasonNumber)

@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.arbelkilani.bingetv.R
-import com.arbelkilani.bingetv.data.entities.season.Season
 import com.arbelkilani.bingetv.databinding.ItemSeasonLargeBindingImpl
+import com.arbelkilani.bingetv.domain.entities.season.SeasonEntity
 import com.arbelkilani.bingetv.presentation.listeners.OnSeasonClickListener
 
 class SeasonAdapter(
@@ -14,7 +14,7 @@ class SeasonAdapter(
 ) :
     RecyclerView.Adapter<SeasonAdapter.SeasonHolder>() {
 
-    private var seasons = listOf<Season>()
+    private var seasons = listOf<SeasonEntity>()
 
     class SeasonHolder(val itemSeasonsBinding: ItemSeasonLargeBindingImpl) :
         RecyclerView.ViewHolder(itemSeasonsBinding.root)
@@ -31,11 +31,11 @@ class SeasonAdapter(
     }
 
     override fun onBindViewHolder(holder: SeasonHolder, position: Int) {
-        holder.itemSeasonsBinding.season = seasons[position]
+        holder.itemSeasonsBinding.seasonEntity = seasons[position]
         holder.itemSeasonsBinding.seasonClickListener = seasonClickListener
     }
 
-    fun notifyDataSetChanged(seasons: List<Season>) {
+    fun notifyDataSetChanged(seasons: List<SeasonEntity>) {
         this.seasons = seasons
         notifyDataSetChanged()
     }

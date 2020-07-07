@@ -8,7 +8,7 @@
 
         <variable
             name="season"
-            type="com.arbelkilani.bingetv.data.entities.season.Season" />
+            type="com.arbelkilani.bingetv.data.entities.season.SeasonData" />
 
         <variable
             name="tvShow"

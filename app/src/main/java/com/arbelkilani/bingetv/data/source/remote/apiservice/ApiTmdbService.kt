@@ -4,7 +4,7 @@ import com.arbelkilani.bingetv.data.entities.base.ApiResponse
 import com.arbelkilani.bingetv.data.entities.credit.CreditsResponse
 import com.arbelkilani.bingetv.data.entities.external.ExternalIds
 import com.arbelkilani.bingetv.data.entities.genre.GenreResponse
-import com.arbelkilani.bingetv.data.entities.season.SeasonDetails
+import com.arbelkilani.bingetv.data.entities.season.SeasonData
 import com.arbelkilani.bingetv.data.entities.tv.TvShowData
 import retrofit2.Response
 import retrofit2.http.GET
@@ -51,7 +51,7 @@ interface ApiTmdbService {
     suspend fun getSeasonDetails(
         @Path("tv_id") tvId: Int,
         @Path("season_number") seasonNumber: Int
-    ): SeasonDetails
+    ): SeasonData
 
     @GET("genre/tv/list")
     suspend fun getGenres(): Response<GenreResponse>

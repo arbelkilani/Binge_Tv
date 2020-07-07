@@ -17,8 +17,8 @@ import androidx.core.widget.NestedScrollView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.arbelkilani.bingetv.R
-import com.arbelkilani.bingetv.data.entities.season.Season
 import com.arbelkilani.bingetv.databinding.ActivityDetailsTvBinding
+import com.arbelkilani.bingetv.domain.entities.season.SeasonEntity
 import com.arbelkilani.bingetv.presentation.adapters.CreditAdapter
 import com.arbelkilani.bingetv.presentation.adapters.SeasonAdapter
 import com.arbelkilani.bingetv.presentation.listeners.OnSeasonClickListener
@@ -114,15 +114,6 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
         }
     }
 
-
-    override fun onSeasonItemClicked(season: Season) {
-        /*startActivity(Intent(this, SeasonDetailsActivity::class.java)
-            .apply {
-                putExtra(Constants.SEASON_DETAILS, season)
-                putExtra(Constants.SELECTED_TV, viewModel.selectedTv.value)
-            })*/
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         binding.toolbar.inflateMenu(R.menu.tv_details_menu)
         return true
@@ -189,6 +180,14 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
 
     override fun playTrailer(key: String) {
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:$key")))
+    }
+
+    override fun onSeasonItemClicked(seasonEntity: SeasonEntity) {
+        /*startActivity(Intent(this, SeasonDetailsActivity::class.java)
+            .apply {
+                putExtra(Constants.SEASON_DETAILS, season)
+                putExtra(Constants.SELECTED_TV, viewModel.selectedTv.value)
+            })*/
     }
 }
 

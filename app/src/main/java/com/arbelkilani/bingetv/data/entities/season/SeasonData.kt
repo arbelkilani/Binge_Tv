@@ -6,7 +6,6 @@ import com.arbelkilani.bingetv.data.entities.episode.Episode
 import com.arbelkilani.bingetv.data.entities.tv.TvShowData
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
-import java.util.*
 
 @Parcelize
 @Entity(
@@ -19,20 +18,46 @@ import java.util.*
     )],
     indices = [Index(value = ["tv_season"], name = "index_tv_season")]
 )
-data class Season(
-    @ColumnInfo(name = "air_date") @SerializedName("air_date") val airDate: String,
-    @ColumnInfo(name = "episode_count") @SerializedName("episode_count") val _episodeCount: Int,
-    @PrimaryKey val id: Int,
-    val name: String,
-    val overview: String,
-    @ColumnInfo(name = "poster_path") @SerializedName("poster_path") val posterPath: String,
-    @ColumnInfo(name = "season_number") @SerializedName("season_number") val seasonNumber: Int,
-    @ColumnInfo(name = "tv_season") var tv_season: Int,
-    @ColumnInfo(name = "watched") var watched: Boolean,
-    var episodes: List<Episode>?
+data class SeasonData(
+
+    @ColumnInfo(name = "air_date")
+    @SerializedName("air_date")
+    var airDate: String = "",
+
+    @ColumnInfo(name = "episode_count")
+    @SerializedName("episode_count")
+    var episodeCount: Int = 0,
+
+    @PrimaryKey
+    @SerializedName("id")
+    var id: Int = -1,
+
+    @SerializedName("name")
+    var name: String = "",
+
+    @SerializedName("overview")
+    var overview: String = "",
+
+    @ColumnInfo(name = "poster_path")
+    @SerializedName("poster_path")
+    var posterPath: String = "",
+
+    @ColumnInfo(name = "season_number")
+    @SerializedName("season_number")
+    var seasonNumber: Int = 0,
+
+    @SerializedName("episodes")
+    var episodes: List<Episode> = listOf(),
+
+    @ColumnInfo(name = "tv_season")
+    var tv_season: Int = -1,
+
+    @ColumnInfo(name = "watched")
+    var watched: Boolean = false
+
 ) : Parcelable {
 
-    val getPosterPath: String?
+    /*val getPosterPath: String?
         get() = "https://image.tmdb.org/t/p/w500${this.posterPath}"
 
     val posterPath185: String?
@@ -55,7 +80,7 @@ data class Season(
         get() = String.format("First aired %s ", airDate, Locale.getDefault())
 
     val watchedCount: String
-        get() = String.format("%d/%d", 0, _episodeCount, Locale.getDefault())
+        get() = String.format("%d/%d", 0, _episodeCount, Locale.getDefault())*/
 
 
 }

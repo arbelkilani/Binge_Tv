@@ -3,7 +3,7 @@ package com.arbelkilani.bingetv.data.source.local
 import androidx.room.TypeConverter
 import com.arbelkilani.bingetv.data.entities.episode.Episode
 import com.arbelkilani.bingetv.data.entities.genre.Genre
-import com.arbelkilani.bingetv.data.entities.season.Season
+import com.arbelkilani.bingetv.data.entities.season.SeasonData
 import com.arbelkilani.bingetv.data.entities.tv.EpisodeToAir
 import com.arbelkilani.bingetv.data.entities.tv.Network
 import com.google.gson.Gson
@@ -57,14 +57,14 @@ class Converters {
 
         @TypeConverter
         @JvmStatic
-        fun fromListSeasons(list: List<Season>): String {
+        fun fromListSeasons(list: List<SeasonData>): String {
             return Gson().toJson(list)
         }
 
         @TypeConverter
         @JvmStatic
-        fun toListSeasons(value: String?): List<Season> {
-            val listType: Type = object : TypeToken<List<Season>>() {}.type
+        fun toListSeasons(value: String?): List<SeasonData> {
+            val listType: Type = object : TypeToken<List<SeasonData>>() {}.type
             return Gson().fromJson(value, listType)
         }
 

@@ -4,7 +4,7 @@ import androidx.paging.PagingData
 import com.arbelkilani.bingetv.data.entities.base.ApiResponse
 import com.arbelkilani.bingetv.data.entities.base.Resource
 import com.arbelkilani.bingetv.data.entities.credit.CreditsResponse
-import com.arbelkilani.bingetv.data.entities.season.SeasonDetails
+import com.arbelkilani.bingetv.data.entities.season.SeasonData
 import com.arbelkilani.bingetv.data.entities.tv.TvShowData
 import com.arbelkilani.bingetv.data.entities.tv.maze.details.NextEpisodeData
 import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
@@ -22,7 +22,7 @@ interface TvShowRepository {
     suspend fun getTvDetails(id: Int): Resource<TvShowEntity>
     suspend fun getCredits(id: Int): Resource<CreditsResponse>
     suspend fun getNextEpisodeData(id: Int): Resource<NextEpisodeData>
-    suspend fun getSeasonDetails(tvId: Int, seasonNumber: Int): Resource<SeasonDetails>
+    suspend fun getSeasonDetails(tvId: Int, seasonNumber: Int): Resource<SeasonData>
 
     suspend fun saveWatchlist(tvShow: TvShowData)
     suspend fun saveWatched(tvShow: TvShowData)

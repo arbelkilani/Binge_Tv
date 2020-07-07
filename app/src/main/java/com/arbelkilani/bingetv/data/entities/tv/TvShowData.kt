@@ -6,7 +6,7 @@ import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.arbelkilani.bingetv.data.entities.genre.Genre
 import com.arbelkilani.bingetv.data.entities.image.ImageResponse
-import com.arbelkilani.bingetv.data.entities.season.Season
+import com.arbelkilani.bingetv.data.entities.season.SeasonData
 import com.arbelkilani.bingetv.data.entities.tv.maze.details.NextEpisodeData
 import com.arbelkilani.bingetv.data.entities.video.VideoResponse
 import com.google.gson.annotations.SerializedName
@@ -108,7 +108,7 @@ data class TvShowData(
 
     @Ignore
     @SerializedName("seasons")
-    var seasons: List<Season> = listOf(),
+    var seasons: List<SeasonData> = listOf(),
 
     @SerializedName("status")
     var status: String = "",

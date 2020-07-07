@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="season"
-            type="com.arbelkilani.bingetv.data.entities.season.Season" />
+            name="seasonEntity"
+            type="com.arbelkilani.bingetv.domain.entities.season.SeasonEntity" />
 
         <variable
             name="seasonClickListener"
@@ -22,7 +22,7 @@
         android:layout_marginBottom="@dimen/default_margin"
         android:background="@android:color/transparent"
         android:minHeight="152dp"
-        android:onClick="@{() -> seasonClickListener.onSeasonItemClicked(season)}">
+        android:onClick="@{() -> seasonClickListener.onSeasonItemClicked(seasonEntity)}">
 
         <!-- content -->
         <androidx.cardview.widget.CardView
@@ -46,7 +46,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/avenir_next_demi_bold"
-                    android:text="@{season.getSeasonNumber}"
+                    android:text="@{String.format(seasonEntity.name)}"
                     android:textColor="@color/details_titles_text_color"
                     android:textSize="@dimen/titles_text_size"
                     tools:text="Season : 7" />
@@ -61,7 +61,7 @@
                     android:ellipsize="end"
                     android:fontFamily="@font/avenir_next_regular"
                     android:maxLines="2"
-                    android:text="@{season.overview}"
+                    android:text="@{seasonEntity.overview}"
                     android:textColor="@color/details_titles_text_color"
                     android:textSize="@dimen/small_text_size"
                     tools:text="@tools:sample/lorem/random" />
@@ -74,7 +74,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginTop="@dimen/default_margin_min"
                     android:fontFamily="@font/avenir_next_regular"
-                    android:text="@{season.getAirDate}"
+                    android:text="@{seasonEntity.name}"
                     android:textColor="@color/details_titles_text_color"
                     android:textSize="@dimen/small_text_size"
                     tools:text="First aired : 2019-04-30" />
@@ -111,7 +111,7 @@
                     android:fontFamily="@font/avenir_next_regular"
                     android:gravity="end"
                     android:paddingBottom="1dp"
-                    android:text="@{season.getEpisodeCount}"
+                    android:text="@{String.valueOf(seasonEntity.episodeCount)}"
                     android:textColor="@color/details_titles_text_color"
                     android:textSize="@dimen/small_text_size"
                     tools:text="12/12" />
@@ -133,7 +133,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/poster_height"
                 android:scaleType="centerCrop"
-                android:src="@{season.posterPath185}"
+                android:src="@{seasonEntity.poster}"
                 tools:src="@mipmap/ic_launcher_foreground" />
 
         </androidx.cardview.widget.CardView>
