@@ -138,13 +138,20 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
 
         val currentTvShow = viewModel.tvShowEntity.value!!
 
+        val axis = IntArray(2)
+        view.getLocationInWindow(axis)
+
         val popupWindow = PopupWindow(this)
         val layout = layoutInflater.inflate(R.layout.layout_tv_details_popup_menu, null)
+
+        layout.measure(View.MeasureSpec.EXACTLY, View.MeasureSpec.EXACTLY)
+        val widthPixels = resources.displayMetrics.widthPixels
         popupWindow.contentView = layout
         popupWindow.isOutsideTouchable = true
         popupWindow.isFocusable = true
         popupWindow.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        popupWindow.showAtLocation(view, 0, 0, Gravity.NO_GRAVITY)
+        popupWindow.showAtLocation(view, Gravity.NO_GRAVITY, widthPixels - view.width, 0)
+
 
         /*val watchlistView = layout.findViewById<TextView>(R.id.tv_action_watchlist)
         watchlistView.updateWatchlistState(currentTvShow.watchlist)
