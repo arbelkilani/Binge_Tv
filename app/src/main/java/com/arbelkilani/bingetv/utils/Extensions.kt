@@ -45,6 +45,11 @@ fun bindImageUrl(view: ImageView, url: String?) {
     }
 }
 
+@BindingAdapter("is_selected")
+fun setSelected(view: ImageView, selected: Boolean) {
+    view.isSelected = true
+}
+
 fun spannableVoteRate(v: String): String {
     val on = "/10"
     val value = String.format("%s%s", v, on, Locale.getDefault())

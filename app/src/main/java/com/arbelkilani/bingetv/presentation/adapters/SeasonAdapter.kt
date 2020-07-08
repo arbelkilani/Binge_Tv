@@ -1,5 +1,6 @@
 package com.arbelkilani.bingetv.presentation.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -31,6 +32,10 @@ class SeasonAdapter(
     }
 
     override fun onBindViewHolder(holder: SeasonHolder, position: Int) {
+
+        val season = seasons[position]
+        Log.i(TAG, "season = $season")
+
         holder.itemSeasonsBinding.seasonEntity = seasons[position]
         holder.itemSeasonsBinding.seasonClickListener = seasonClickListener
     }
@@ -38,6 +43,11 @@ class SeasonAdapter(
     fun notifyDataSetChanged(seasons: List<SeasonEntity>) {
         this.seasons = seasons
         notifyDataSetChanged()
+    }
+
+    fun notifyItemChanged(seasonEntity: SeasonEntity) {
+        val position = seasons.indexOf(seasonEntity)
+        notifyItemChanged(position)
     }
 
     companion object {

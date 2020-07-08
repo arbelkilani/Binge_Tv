@@ -13,6 +13,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -122,6 +123,7 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         binding.toolbar.inflateMenu(R.menu.tv_details_menu)
+        toolbar_seasons.inflateMenu(R.menu.tv_details_seasons_menu)
         return true
     }
 
@@ -130,13 +132,39 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
         val view = findViewById<View>(R.id.action_show_more)
         when (item.itemId) {
             R.id.action_show_more -> {
-                showPopUpMenu(view)
+                showTvShowPopUpWindow(view)
+            }
+
+            R.id.action_select_all -> {
+                showSeasonsPopUpWindow(view)
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun showPopUpMenu(view: View) {
+    private fun showSeasonsPopUpWindow(view: View) {
+        val axis = IntArray(2)
+        view.getLocationInWindow(axis)
+
+        val popupWindow = PopupWindow(this)
+        val layout = layoutInflater.inflate(R.layout.layout_seasons_popup_menu, null)
+
+        layout.measure(View.MeasureSpec.EXACTLY, View.MeasureSpec.EXACTLY)
+        val widthPixels = resources.displayMetrics.widthPixels
+        popupWindow.contentView = layout
+        popupWindow.isOutsideTouchable = true
+        popupWindow.isFocusable = true
+        popupWindow.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        popupWindow.showAtLocation(view, Gravity.NO_GRAVITY, widthPixels - view.width, 0)
+
+        val selectAllView = layout.findViewById<TextView>(R.id.tv_action_select_all)
+        selectAllView.setOnClickListener {
+            selectAllView.isSelected = !selectAllView.isSelected
+            popupWindow.dismiss()
+        }
+    }
+
+    private fun showTvShowPopUpWindow(view: View) {
 
         val currentTvShow = viewModel.tvShowEntity.value!!
 
@@ -202,25 +230,17 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
                 putExtra(Constants.SELECTED_TV, viewModel.selectedTv.value)
             })*/
     }
-}
 
-private fun TextView.updateWatchlistState(watchlist: Boolean) {
-    text = if (watchlist) {
-        context.getString(R.string.state_watchlist_true)
-    } else {
-        context.getString(R.string.state_watchlist_false)
+    override fun onWatchedSeasonClicked(view: View, seasonEntity: SeasonEntity) {
+        val v = view as ImageView
+        Log.i(TAG, "")
+
+        v.isSelected = !v.isSelected
+
+        viewModel.seasonWatchState(v.isSelected, seasonEntity)
+        Log.i(TAG, "seasonEntity = $seasonEntity")
+        (rv_seasons.adapter as SeasonAdapter).notifyItemChanged(seasonEntity)
     }
-    isSelected = watchlist
 }
-
-private fun TextView.updateWatchedState(watched: Boolean) {
-    text = if (watched) {
-        context.getString(R.string.state_watched_true)
-    } else {
-        context.getString(R.string.state_watched_false)
-    }
-    isSelected = watched
-}
-
 
 

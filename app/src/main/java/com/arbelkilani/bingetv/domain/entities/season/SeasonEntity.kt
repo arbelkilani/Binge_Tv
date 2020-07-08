@@ -12,6 +12,6 @@ data class SeasonEntity(
     var overview: String = "",
     var poster: String = "",
     var watched: Boolean = false,
-    var watchedEpisodeCount: Int = 0,
-    var progress: Int = (watchedEpisodeCount / episodeCount) * 100
+    var watchedEpisodeCount: Int = 0
+    //var progress: Int = (watchedEpisodeCount / episodeCount) * 100
 ) : Parcelable

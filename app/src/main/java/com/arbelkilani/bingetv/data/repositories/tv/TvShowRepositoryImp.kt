@@ -122,10 +122,10 @@ class TvShowRepositoryImp(
                 it.watched = tvShowEntity.watched
                 if (tvShowEntity.watched) {
                     it.watchedEpisodeCount = it.episodeCount
-                    it.progress = (it.watchedEpisodeCount / it.episodeCount) * 100
+                    //it.progress = (it.watchedEpisodeCount / it.episodeCount) * 100
                 } else {
                     it.watchedEpisodeCount = 0
-                    it.progress = 0
+                    //it.progress = 0
                 }
             }
 

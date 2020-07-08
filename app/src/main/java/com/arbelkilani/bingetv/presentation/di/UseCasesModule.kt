@@ -1,8 +1,10 @@
 package com.arbelkilani.bingetv.presentation.di
 
 import com.arbelkilani.bingetv.domain.repositories.GenresRepository
+import com.arbelkilani.bingetv.domain.repositories.SeasonRepository
 import com.arbelkilani.bingetv.domain.repositories.TvShowRepository
 import com.arbelkilani.bingetv.domain.usecase.*
+import com.arbelkilani.bingetv.domain.usecase.season.UpdateSeasonUseCase
 import com.arbelkilani.bingetv.domain.usecase.tv.UpdateTvShowUseCase
 import org.koin.dsl.module
 
@@ -30,7 +32,9 @@ val UseCasesModule = module {
 
     single { createGetSearchTvShowUseCase(get()) }
 
-    single { updateTvShowuseCase(get()) }
+    single { updateTvShowUseCase(get()) }
+
+    single { updateSeasonUseCase(get()) }
 }
 
 fun createDiscoverUseCase(tvShowRepository: TvShowRepository): DiscoverUseCase {
@@ -77,6 +81,10 @@ fun createGetSearchTvShowUseCase(tvShowRepository: TvShowRepository): SearchUseC
     return SearchUseCase(tvShowRepository)
 }
 
-fun updateTvShowuseCase(tvShowRepository: TvShowRepository): UpdateTvShowUseCase {
+fun updateTvShowUseCase(tvShowRepository: TvShowRepository): UpdateTvShowUseCase {
     return UpdateTvShowUseCase(tvShowRepository)
+}
+
+fun updateSeasonUseCase(seasonRepository: SeasonRepository): UpdateSeasonUseCase {
+    return UpdateSeasonUseCase(seasonRepository)
 }

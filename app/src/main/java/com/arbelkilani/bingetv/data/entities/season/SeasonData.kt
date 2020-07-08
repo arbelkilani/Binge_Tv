@@ -1,14 +1,16 @@
 package com.arbelkilani.bingetv.data.entities.season
 
 import android.os.Parcelable
-import androidx.room.*
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
 import com.arbelkilani.bingetv.data.entities.episode.Episode
-import com.arbelkilani.bingetv.data.entities.tv.TvShowData
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-@Entity(
+/*@Entity(
     tableName = "season_table",
     foreignKeys = [ForeignKey(
         entity = TvShowData::class,
@@ -17,7 +19,8 @@ import kotlinx.android.parcel.Parcelize
         onDelete = ForeignKey.CASCADE
     )],
     indices = [Index(value = ["tv_season"], name = "index_tv_season")]
-)
+)*/
+@Entity(tableName = "season_table")
 data class SeasonData(
 
     @PrimaryKey

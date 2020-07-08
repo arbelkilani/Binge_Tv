@@ -22,6 +22,7 @@ val ViewModelModule = module {
             tvShowEntity,
             get(),
             get(),
+            get(),
             get()
         )
     }
