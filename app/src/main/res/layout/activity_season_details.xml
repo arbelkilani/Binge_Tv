@@ -7,12 +7,12 @@
     <data>
 
         <variable
-            name="season"
-            type="com.arbelkilani.bingetv.data.entities.season.SeasonData" />
+            name="seasonEntity"
+            type="com.arbelkilani.bingetv.domain.entities.season.SeasonEntity" />
 
         <variable
-            name="tvShow"
-            type="com.arbelkilani.bingetv.data.entities.tv.TvShowData" />
+            name="tvShowEntity"
+            type="com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity" />
 
         <variable
             name="viewModel"
@@ -38,8 +38,8 @@
                 android:layout_height="?attr/actionBarSize"
                 app:navigationIcon="@drawable/ic_arrow_left_colored"
                 app:popupTheme="@style/ThemeOverlay.AppCompat"
-                app:subtitle="@{season.name}"
-                app:title="@{tvShow.name}"
+                app:subtitle="@{seasonEntity.name}"
+                app:title="@{tvShowEntity.name}"
                 app:titleTextAppearance="@style/Toolbar.TextTitle"
                 app:titleTextColor="@color/toolbar_title_color" />
 
@@ -47,8 +47,8 @@
 
         <include
             layout="@layout/episode_details_content"
-            bind:season="@{season}"
-            bind:tvShow="@{tvShow}"
+            bind:seasonEntity="@{seasonEntity}"
+            bind:tvShowEntity="@{tvShowEntity}"
             bind:viewModel="@{viewModel}" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

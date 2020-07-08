@@ -5,12 +5,12 @@
     <data>
 
         <variable
-            name="season"
-            type="com.arbelkilani.bingetv.data.entities.season.SeasonData" />
+            name="seasonEntity"
+            type="com.arbelkilani.bingetv.domain.entities.season.SeasonEntity" />
 
         <variable
-            name="tvShow"
-            type="com.arbelkilani.bingetv.data.entities.tv.TvShowData" />
+            name="tvShowEntity"
+            type="com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity" />
 
         <variable
             name="viewModel"
@@ -80,7 +80,6 @@
                     android:layout_marginEnd="@dimen/default_margin_min"
                     android:layout_weight="0.85"
                     android:indeterminate="false"
-                    android:progress="34"
                     android:progressDrawable="@drawable/rounded_corners_progress_bar" />
 
                 <TextView

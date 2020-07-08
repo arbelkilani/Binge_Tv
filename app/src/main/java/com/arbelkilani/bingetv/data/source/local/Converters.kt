@@ -1,7 +1,7 @@
 package com.arbelkilani.bingetv.data.source.local
 
 import androidx.room.TypeConverter
-import com.arbelkilani.bingetv.data.entities.episode.Episode
+import com.arbelkilani.bingetv.data.entities.episode.EpisodeData
 import com.arbelkilani.bingetv.data.entities.genre.Genre
 import com.arbelkilani.bingetv.data.entities.season.SeasonData
 import com.arbelkilani.bingetv.data.entities.tv.EpisodeToAir
@@ -83,14 +83,14 @@ class Converters {
 
         @TypeConverter
         @JvmStatic
-        fun fromListEpisodes(list: List<Episode>): String {
+        fun fromListEpisodes(list: List<EpisodeData>): String {
             return Gson().toJson(list)
         }
 
         @TypeConverter
         @JvmStatic
-        fun toListEpisode(value: String?): List<Episode> {
-            val listType: Type = object : TypeToken<List<Episode>>() {}.type
+        fun toListEpisode(value: String?): List<EpisodeData> {
+            val listType: Type = object : TypeToken<List<EpisodeData>>() {}.type
             return Gson().fromJson(value, listType)
         }
 

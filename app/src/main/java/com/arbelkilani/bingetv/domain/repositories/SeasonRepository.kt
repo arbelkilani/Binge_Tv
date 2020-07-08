@@ -1,6 +1,8 @@
 package com.arbelkilani.bingetv.domain.repositories
 
+import com.arbelkilani.bingetv.data.entities.base.Resource
 import com.arbelkilani.bingetv.domain.entities.season.SeasonEntity
+import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
 
 interface SeasonRepository {
     suspend fun saveWatched(
@@ -8,4 +10,9 @@ interface SeasonRepository {
         seasonEntity: SeasonEntity,
         tvShowId: Int
     ): SeasonEntity?
+
+    suspend fun getSeasonDetails(
+        tvShowEntity: TvShowEntity,
+        seasonEntity: SeasonEntity
+    ): Resource<SeasonEntity>
 }

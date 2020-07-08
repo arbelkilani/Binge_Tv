@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.arbelkilani.bingetv.R
-import com.arbelkilani.bingetv.data.entities.episode.Episode
 import com.arbelkilani.bingetv.databinding.ItemEpisodeBinding
+import com.arbelkilani.bingetv.domain.entities.episode.EpisodeEntity
 import com.arbelkilani.bingetv.presentation.listeners.OnEpisodeClickListener
 
 class EpisodeAdapter(
@@ -14,7 +14,7 @@ class EpisodeAdapter(
 ) :
     RecyclerView.Adapter<EpisodeAdapter.EpisodeHolder>() {
 
-    private var episodes = listOf<Episode>()
+    private var episodes = listOf<EpisodeEntity>()
 
     class EpisodeHolder(val itemEpisodeBinding: ItemEpisodeBinding) :
         RecyclerView.ViewHolder(itemEpisodeBinding.root)
@@ -31,11 +31,11 @@ class EpisodeAdapter(
     }
 
     override fun onBindViewHolder(holder: EpisodeHolder, position: Int) {
-        holder.itemEpisodeBinding.episode = episodes[position]
+        holder.itemEpisodeBinding.episodeEntity = episodes[position]
         holder.itemEpisodeBinding.episodeClickListener = episodeClickListener
     }
 
-    fun notifyDataSetChanged(episodes: List<Episode>) {
+    fun notifyDataSetChanged(episodes: List<EpisodeEntity>) {
         this.episodes = episodes
         notifyDataSetChanged()
     }

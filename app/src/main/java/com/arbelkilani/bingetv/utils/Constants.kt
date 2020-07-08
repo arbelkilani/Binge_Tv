@@ -3,6 +3,7 @@ package com.arbelkilani.bingetv.utils
 object Constants {
 
     const val TV_SHOW_ENTITY: String = "tv_show_entity"
+    const val SEASON_ENTITY: String = "season_entity"
 
     const val DISCOVER_DETAILS = "discover_fragment_to_details"
     const val SPLASH_DASHBOARD_DATA = "splash_to_dashboard_data"

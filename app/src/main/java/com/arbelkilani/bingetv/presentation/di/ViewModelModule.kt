@@ -1,7 +1,6 @@
 package com.arbelkilani.bingetv.presentation.di
 
-import com.arbelkilani.bingetv.data.entities.season.SeasonData
-import com.arbelkilani.bingetv.data.entities.tv.TvShowData
+import com.arbelkilani.bingetv.domain.entities.season.SeasonEntity
 import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
 import com.arbelkilani.bingetv.presentation.viewmodel.SearchViewModel
 import com.arbelkilani.bingetv.presentation.viewmodel.TvDetailsActivityViewModel
@@ -28,10 +27,10 @@ val ViewModelModule = module {
     }
     viewModel { SearchViewModel(get()) }
     viewModel { DiscoverViewModel(get(), get()) }
-    viewModel { (selectedTv: TvShowData, seasonData: SeasonData) ->
+    viewModel { (seasonEntity: SeasonEntity, tvShowEntity: TvShowEntity) ->
         SeasonDetailsViewModel(
-            selectedTv,
-            seasonData,
+            seasonEntity,
+            tvShowEntity,
             get()
         )
     }

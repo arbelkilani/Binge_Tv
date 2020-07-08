@@ -230,17 +230,18 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
     }
 
     override fun onSeasonItemClicked(seasonEntity: SeasonEntity) {
-        /*startActivity(Intent(this, SeasonDetailsActivity::class.java)
+        startActivity(Intent(this, SeasonDetailsActivity::class.java)
             .apply {
-                putExtra(Constants.SEASON_DETAILS, season)
-                putExtra(Constants.SELECTED_TV, viewModel.selectedTv.value)
-            })*/
+                putExtra(Constants.SEASON_ENTITY, seasonEntity)
+                putExtra(Constants.TV_SHOW_ENTITY, viewModel.tvShowEntity.value)
+            })
     }
 
     override fun onWatchedSeasonClicked(view: View, seasonEntity: SeasonEntity) {
         val result = viewModel.seasonWatchState(!(view as ImageView).isSelected, seasonEntity)
         (rv_seasons.adapter as SeasonAdapter).notifyItemChanged(result)
     }
+
 }
 
 

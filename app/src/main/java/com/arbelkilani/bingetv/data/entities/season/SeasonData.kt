@@ -5,7 +5,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import com.arbelkilani.bingetv.data.entities.episode.Episode
+import com.arbelkilani.bingetv.data.entities.episode.EpisodeData
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
@@ -59,7 +59,7 @@ data class SeasonData(
 
     @Ignore
     @SerializedName("episodes")
-    var episodes: List<Episode> = listOf(),
+    var episodes: List<EpisodeData> = listOf(),
 
     @ColumnInfo(name = "tv_season")
     var tv_season: Int = -1,

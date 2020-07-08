@@ -1,6 +1,7 @@
 package com.arbelkilani.bingetv.domain.entities.season
 
 import android.os.Parcelable
+import com.arbelkilani.bingetv.domain.entities.episode.EpisodeEntity
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -14,5 +15,6 @@ data class SeasonEntity(
     var poster: String = "",
     var watched: Boolean = false,
     var watchedEpisodeCount: Int = 0,
-    var progress: Int = 0
+    var progress: Int = 0,
+    var episodes: List<EpisodeEntity> = listOf()
 ) : Parcelable

@@ -14,4 +14,7 @@ interface SeasonDao {
 
     @Query("SELECT * FROM season_table WHERE tv_season=:id")
     fun getSeasons(id: Int): List<SeasonData>?
+
+    @Query("SELECT * FROM season_table WHERE id=:seasonId")
+    fun getSeason(seasonId: Int): SeasonData?
 }

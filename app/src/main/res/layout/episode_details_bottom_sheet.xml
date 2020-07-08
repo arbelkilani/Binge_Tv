@@ -5,17 +5,6 @@
 
     <data>
 
-        <variable
-            name="episode"
-            type="com.arbelkilani.bingetv.data.entities.episode.Episode" />
-
-        <variable
-            name="season"
-            type="com.arbelkilani.bingetv.data.entities.season.SeasonData" />
-
-        <variable
-            name="tvShow"
-            type="com.arbelkilani.bingetv.data.entities.tv.TvShowData" />
 
     </data>
 
@@ -43,10 +32,11 @@
                     android:layout_alignParentStart="true"
                     android:layout_toEndOf="@+id/tv_vote_average"
                     android:fontFamily="@font/avenir_next_demi_bold"
-                    android:text="@{String.format(@string/episode_name_details, season.getSeasonNumber, episode.getEpisodeNumber, episode.name)}"
                     android:textColor="@color/details_titles_text_color"
                     android:textSize="@dimen/titles_text_size"
                     tools:text="S1xE22 - Beginning of the End" />
+                <!--                     android:text="@{String.format(@string/episode_name_details, season.getSeasonNumber, episode.getEpisodeNumber, episode.name)}"
+-->
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -55,10 +45,11 @@
                     android:layout_marginTop="@dimen/default_margin_medium"
                     android:layout_marginEnd="@dimen/default_margin"
                     android:fontFamily="@font/avenir_next_regular"
-                    android:text="@{episode.getAirDate}"
                     android:textColor="@color/details_titles_text_color"
                     android:textSize="@dimen/small_text_size"
                     tools:text="Aired : 2014-05-13" />
+                <!--                     android:text="@{episode.getAirDate}"
+ -->
 
                 <TextView
                     android:id="@+id/tv_vote_average"
@@ -70,8 +61,9 @@
                     android:fontFamily="@font/avenir_next_regular"
                     android:gravity="center_horizontal"
                     android:padding="@dimen/details_bottom_sheet_padding"
-                    android:text="@{episode.getVoteAverage}"
                     android:textSize="@dimen/details_bottom_sheet_rate_text_size" />
+                <!--                     android:text="@{episode.getVoteAverage}"
+ -->
 
             </RelativeLayout>
 
@@ -92,11 +84,12 @@
                 android:layout_marginTop="@dimen/default_margin_medium"
                 android:layout_marginEnd="@dimen/default_margin"
                 android:fontFamily="@font/avenir_next_regular"
-                android:text="@{episode.overview}"
                 android:textColor="@color/details_titles_text_color"
                 android:textSize="@dimen/small_text_size"
                 tools:text="lorem ipsum dolort lorem ipsum dolort lorem ipsum dolort lorem ipsum dolort lorem ipsum dolort lorem ipsum dolort lorem ipsum dolort lorem ipsum dolort lorem ipsum dolort lorem ipsum dolort lorem ipsum dolort lorem ipsum dolort lorem ipsum dolort lorem ipsum dolort lorem ipsum dolort lorem ipsum dolort lorem ipsum dolort lorem ipsum dolort " />
 
+            <!--                 android:text="@{episode.overview}"
+-->
         </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

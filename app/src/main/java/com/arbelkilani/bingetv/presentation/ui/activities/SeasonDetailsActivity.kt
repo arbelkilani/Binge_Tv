@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.arbelkilani.bingetv.R
-import com.arbelkilani.bingetv.data.entities.episode.Episode
+import com.arbelkilani.bingetv.data.entities.episode.EpisodeData
 import com.arbelkilani.bingetv.databinding.ActivitySeasonDetailsBinding
 import com.arbelkilani.bingetv.databinding.EpisodeDetailsBottomSheetBinding
 import com.arbelkilani.bingetv.presentation.adapters.EpisodeAdapter
@@ -21,12 +21,14 @@ import org.koin.core.parameter.parametersOf
 
 class SeasonDetailsActivity : AppCompatActivity(), OnEpisodeClickListener {
 
-    private val TAG = SeasonDetailsActivity::class.java.simpleName
+    companion object {
+        private const val TAG = "SeasonDetailsActivity"
+    }
 
     private val viewModel: SeasonDetailsViewModel by viewModel {
         parametersOf(
-            intent.getParcelableExtra(Constants.SELECTED_TV),
-            intent.getParcelableExtra(Constants.SEASON_DETAILS)
+            intent.getParcelableExtra(Constants.SEASON_ENTITY),
+            intent.getParcelableExtra(Constants.TV_SHOW_ENTITY)
         )
     }
 
@@ -42,13 +44,18 @@ class SeasonDetailsActivity : AppCompatActivity(), OnEpisodeClickListener {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_season_details)
 
         binding.viewModel = viewModel
-        binding.season = viewModel.season.value
-        binding.tvShow = viewModel.selectedTv.value
-
         binding.lifecycleOwner = this
 
+        viewModel.season.observe(this, Observer {
+            binding.seasonEntity = it
+        })
+
+        viewModel.tvShow.observe(this, Observer {
+            binding.tvShowEntity = it
+        })
+
         viewModel.episodes.observe(this, Observer {
-            (recycler_episodes.adapter as EpisodeAdapter).notifyDataSetChanged(it)
+            (recycler_episodes.adapter as EpisodeAdapter).notifyDataSetChanged(it.asReversed())
         })
 
         initAdapter()
@@ -76,16 +83,16 @@ class SeasonDetailsActivity : AppCompatActivity(), OnEpisodeClickListener {
             DataBindingUtil.inflate<EpisodeDetailsBottomSheetBinding>(
                 LayoutInflater.from(this), R.layout.episode_details_bottom_sheet, null, false
             )
-        detailsBinding.season = viewModel.season.value
-        detailsBinding.tvShow = viewModel.selectedTv.value
+        //detailsBinding.season = viewModel.season.value
+        //detailsBinding.tvShow = viewModel.selectedTv.value
 
         bottomSheetDialog = BottomSheetDialog(this)
         bottomSheetDialog.setContentView(detailsBinding.root)
 
     }
 
-    override fun onEpisodeClicked(episode: Episode) {
-        detailsBinding.episode = episode
-        bottomSheetDialog.show()
+    override fun onEpisodeClicked(episodeData: EpisodeData) {
+        //detailsBinding.episode = episodeData
+        //bottomSheetDialog.show()
     }
 }
