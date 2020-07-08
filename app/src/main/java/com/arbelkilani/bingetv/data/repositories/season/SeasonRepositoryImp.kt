@@ -28,6 +28,10 @@ class SeasonRepositoryImp(private val seasonDao: SeasonDao) : SeasonRepository {
             e.printStackTrace()
             Log.e(TAG, "saveWatched : ${e.localizedMessage}")
         }
-        return seasonMapper.mapToEntity(seasonData)
+
+        seasonEntity.watched = watched
+        seasonEntity.watchedEpisodeCount = if (watched) seasonEntity.episodeCount else 0
+        seasonEntity.progress = if (watched) 100 else 0
+        return seasonEntity
     }
 }

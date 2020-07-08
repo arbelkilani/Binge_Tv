@@ -13,5 +13,5 @@ interface SeasonDao {
     suspend fun saveSeason(seasonData: SeasonData)
 
     @Query("SELECT * FROM season_table WHERE tv_season=:id")
-    fun getSeasons(id: Int): List<SeasonData>
+    fun getSeasons(id: Int): List<SeasonData>?
 }

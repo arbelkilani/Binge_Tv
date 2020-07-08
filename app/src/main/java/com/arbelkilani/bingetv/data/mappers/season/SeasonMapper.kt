@@ -15,6 +15,11 @@ class SeasonMapper : Mapper<SeasonEntity, SeasonData> {
         return SeasonData(
             id = type.id,
             seasonNumber = type.seasonNumber,
+            episodeCount = type.episodeCount,
+            name = type.name,
+            overview = type.overview,
+            airDate = type.airDate,
+            posterPath = type.poster.removeRange(0, basePoster.length),
             watched = type.watched
         )
     }
@@ -26,9 +31,15 @@ class SeasonMapper : Mapper<SeasonEntity, SeasonData> {
             episodeCount = type.episodeCount,
             name = type.name,
             overview = type.overview,
-            poster = String.format("%s%s", basePoster, type.posterPath),
+            airDate = type.airDate,
+            poster = if (type.posterPath.contains("http")) type.posterPath else String.format(
+                "%s%s",
+                basePoster,
+                type.posterPath
+            ),
             watched = type.watched,
-            watchedEpisodeCount = if (type.watched) type.episodeCount else 0
+            watchedEpisodeCount = if (type.watched) type.episodeCount else 0,
+            progress = if (type.watched) 100 else 0
         )
     }
 }

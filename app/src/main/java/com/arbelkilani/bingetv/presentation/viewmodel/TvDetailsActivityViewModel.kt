@@ -1,6 +1,5 @@
 package com.arbelkilani.bingetv.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.arbelkilani.bingetv.data.entities.base.Status
@@ -14,6 +13,7 @@ import com.arbelkilani.bingetv.domain.usecase.tv.UpdateTvShowUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 class TvDetailsActivityViewModel constructor(
     private val extraTvShowEntity: TvShowEntity,
@@ -31,6 +31,10 @@ class TvDetailsActivityViewModel constructor(
     private val _credits = MutableLiveData<List<Credit>>()
     val credits: LiveData<List<Credit>>
         get() = _credits
+
+    private val _seasons = MutableLiveData<List<SeasonEntity>>()
+    val seasons: LiveData<List<SeasonEntity>>
+        get() = _seasons
 
     /*private val _tvId = MutableLiveData<Int>()
     val tvId: LiveData<Int>
@@ -68,7 +72,10 @@ class TvDetailsActivityViewModel constructor(
         // _tvId.postValue(extraTvShowEntity.id)
         val response = getTvDetailsUseCase.invoke(extraTvShowEntity.id)
         if (response.status == Status.SUCCESS) {
-            _tvShowEntity.postValue(response.data)
+            response.data?.let {
+                _tvShowEntity.postValue(it)
+                _seasons.postValue(it.seasons)
+            }
         }
     }
 
@@ -93,29 +100,18 @@ class TvDetailsActivityViewModel constructor(
         }
     }
 
-    fun seasonWatchState(state: Boolean, seasonEntity: SeasonEntity) {
-        scope.launch(Dispatchers.IO) {
-            val resulted =
-                updateSeasonUseCase.saveWatched(state, seasonEntity, extraTvShowEntity.id)
-            Log.i(TAG, "resulted = $resulted")
+    fun seasonWatchState(state: Boolean, seasonEntity: SeasonEntity): SeasonEntity {
+
+        val job = runBlocking(Dispatchers.IO) {
+            return@runBlocking withContext(Dispatchers.Default) {
+                updateSeasonUseCase.saveWatched(
+                    state,
+                    seasonEntity,
+                    extraTvShowEntity.id
+                )
+            }
         }
+
+        return job!!
     }
-
-    /*
-    fun saveWatchlist(state: Boolean) {
-        scope.launch {
-            _tvDetails.value?.data!!.watchlist = state
-            _tvDetails.postValue(Resource.success(_tvDetails.value?.data))
-            getTvDetailsUseCase.saveWatchlist(_tvDetails.value?.data!!)
-        }
-    }
-
-    fun saveWatched(state: Boolean) {
-        scope.launch {
-            _tvDetails.value?.data!!.watched = state
-            _tvDetails.postValue(Resource.success(_tvDetails.value?.data))
-            getTvDetailsUseCase.saveWatched(_tvDetails.value?.data!!)
-        }
-    }*/
-
 }

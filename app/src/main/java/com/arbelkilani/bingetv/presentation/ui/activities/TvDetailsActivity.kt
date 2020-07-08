@@ -21,6 +21,7 @@ import androidx.core.view.doOnLayout
 import androidx.core.widget.NestedScrollView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.databinding.ActivityDetailsTvBinding
 import com.arbelkilani.bingetv.domain.entities.season.SeasonEntity
@@ -66,11 +67,15 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
 
         viewModel.tvShowEntity.observe(this, Observer {
             binding.tvShowEntity = it
-            (rv_seasons.adapter as SeasonAdapter).notifyDataSetChanged(it.seasons.asReversed())
         })
 
         viewModel.credits.observe(this, Observer {
             (rv_credits.adapter as CreditAdapter).notifyDataSetChanged(it)
+        })
+
+        viewModel.seasons.observe(this, Observer {
+            it.map { item -> Log.i(TAG, "it(${item.seasonNumber}).watched = ${item.watched}") }
+            (rv_seasons.adapter as SeasonAdapter).notifyDataSetChanged(it.asReversed())
         })
 
         initToolbar()
@@ -93,6 +98,7 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
     private fun initAdapter() {
         rv_credits.adapter = creditsAdapter
         rv_seasons.adapter = seasonsAdapter
+        (rv_seasons.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
     }
 
     private fun initBottomSheets() {
@@ -232,14 +238,8 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
     }
 
     override fun onWatchedSeasonClicked(view: View, seasonEntity: SeasonEntity) {
-        val v = view as ImageView
-        Log.i(TAG, "")
-
-        v.isSelected = !v.isSelected
-
-        viewModel.seasonWatchState(v.isSelected, seasonEntity)
-        Log.i(TAG, "seasonEntity = $seasonEntity")
-        (rv_seasons.adapter as SeasonAdapter).notifyItemChanged(seasonEntity)
+        val result = viewModel.seasonWatchState(!(view as ImageView).isSelected, seasonEntity)
+        (rv_seasons.adapter as SeasonAdapter).notifyItemChanged(result)
     }
 }
 

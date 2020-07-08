@@ -92,12 +92,20 @@ class TvShowRepositoryImp(
 
     override suspend fun tvShowEntityResponse(id: Int): Resource<TvShowEntity> =
         try {
+
             val tvShowData = apiTmdbService.getTvDetails(id, "videos,images")
+            val localSeasons = seasonDao.getSeasons(id)
+
+            tvShowData.seasons.map { remote ->
+                localSeasons?.map { local ->
+                    if (remote.id == local.id)
+                        remote.watched = local.watched
+                }
+            }
 
             tvDao.getTvShow(id)?.let { localTvShow ->
                 tvShowData.watched = localTvShow.watched
                 tvShowData.watchlist = localTvShow.watchlist
-                tvShowData.seasons.map { it.watched = localTvShow.watched }
             }
 
             try {

@@ -18,6 +18,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AlphaAnimation
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
@@ -45,9 +46,17 @@ fun bindImageUrl(view: ImageView, url: String?) {
     }
 }
 
-@BindingAdapter("is_selected")
+@BindingAdapter("android:isSelected")
 fun setSelected(view: ImageView, selected: Boolean) {
-    view.isSelected = true
+    view.isSelected = selected
+}
+
+@BindingAdapter("android:progressAnimated")
+fun animateProgress(view: ProgressBar, value: Int) {
+    val animation = ObjectAnimator.ofInt(view, "progress", 0, value)
+    animation.duration = 300
+    animation.interpolator = AccelerateDecelerateInterpolator()
+    animation.start()
 }
 
 fun spannableVoteRate(v: String): String {
