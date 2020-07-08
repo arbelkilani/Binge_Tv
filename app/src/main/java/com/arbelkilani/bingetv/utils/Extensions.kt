@@ -54,7 +54,7 @@ fun setSelected(view: ImageView, selected: Boolean) {
 @BindingAdapter("android:progressAnimated")
 fun animateProgress(view: ProgressBar, value: Int) {
     val animation = ObjectAnimator.ofInt(view, "progress", 0, value)
-    animation.duration = 300
+    animation.duration = 200
     animation.interpolator = AccelerateDecelerateInterpolator()
     animation.start()
 }

@@ -1,0 +1,4 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/ic_tick_empty" android:state_selected="false" />
+    <item android:drawable="@drawable/ic_tick_full" android:state_selected="true" />
+</selector>

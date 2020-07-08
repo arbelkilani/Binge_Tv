@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:elevation="@dimen/default_elevation"
+    android:orientation="vertical"
+    app:cardCornerRadius="8dp">
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_action_select_all"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:drawableStart="@drawable/selector_watched_menu"
+            android:drawablePadding="5dp"
+            android:fontFamily="@font/avenir_next_regular"
+            android:gravity="center_vertical"
+            android:paddingStart="5dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="15dp"
+            android:paddingBottom="10dp"
+            android:text="@string/action_watched"
+            android:textColor="@color/toolbar_title_color" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
