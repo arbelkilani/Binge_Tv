@@ -1,11 +1,14 @@
 package com.arbelkilani.bingetv.presentation.di
 
+import com.arbelkilani.bingetv.data.repositories.episode.EpisodeRepositoryImp
 import com.arbelkilani.bingetv.data.repositories.season.SeasonRepositoryImp
 import com.arbelkilani.bingetv.data.repositories.tv.TvShowRepositoryImp
+import com.arbelkilani.bingetv.data.source.local.episode.EpisodeDao
 import com.arbelkilani.bingetv.data.source.local.season.SeasonDao
 import com.arbelkilani.bingetv.data.source.local.tv.TvDao
 import com.arbelkilani.bingetv.data.source.remote.apiservice.ApiTmdbService
 import com.arbelkilani.bingetv.data.source.remote.apiservice.ApiTvMazeService
+import com.arbelkilani.bingetv.domain.repositories.EpisodeRepository
 import com.arbelkilani.bingetv.domain.repositories.SeasonRepository
 import com.arbelkilani.bingetv.domain.repositories.TvShowRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -19,6 +22,15 @@ val RepositoriesModule = module {
     single { tvShowRepository(get(), get(), get(), get()) }
 
     single { seasonRepository(get(), get()) }
+
+    single { episodeRepository(get(), get()) }
+}
+
+fun episodeRepository(
+    episodeDao: EpisodeDao,
+    seasonDao: SeasonDao
+): EpisodeRepository {
+    return EpisodeRepositoryImp(episodeDao, seasonDao)
 }
 
 fun seasonRepository(

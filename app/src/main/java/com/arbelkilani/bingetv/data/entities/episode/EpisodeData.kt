@@ -23,6 +23,7 @@ import kotlinx.android.parcel.Parcelize
 data class EpisodeData(
 
     @PrimaryKey
+    @ColumnInfo(name = "id")
     @SerializedName("id")
     var id: Int = -1,
 
@@ -73,7 +74,10 @@ data class EpisodeData(
     var season_episode: Int = -1,
 
     @ColumnInfo(name = "tv_episode")
-    var tv_episode: Int = -1
+    var tv_episode: Int = -1,
+
+    @ColumnInfo(name = "watched")
+    var watched: Boolean = false
 
 ) : Parcelable {
 

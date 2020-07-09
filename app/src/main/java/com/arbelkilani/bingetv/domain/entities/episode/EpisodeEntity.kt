@@ -11,5 +11,6 @@ data class EpisodeEntity(
     var airDate: String = "",
     var episodeNumber: Int = 0,
     var stillPath: String = "",
-    var voteAverage: Double = 0.0
+    var voteAverage: Double = 0.0,
+    var watched: Boolean = false
 ) : Parcelable

@@ -72,6 +72,8 @@
                 android:layout_alignParentEnd="true"
                 android:background="?attr/actionBarItemBackground"
                 android:gravity="end"
+                android:isSelected="@{episodeEntity.watched}"
+                android:onClick="@{(view) -> episodeClickListener.onWatchedEpisodeClicked(view, episodeEntity)}"
                 android:padding="5dp"
                 android:src="@drawable/selector_radio_button" />
 

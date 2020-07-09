@@ -14,7 +14,8 @@ class EpisodeMapper : Mapper<EpisodeEntity, EpisodeData> {
             airDate = type.airDate,
             episodeNumber = type.episodeNumber,
             stillPath = type.stillPath,
-            voteAverage = type.voteAverage
+            voteAverage = type.voteAverage,
+            watched = type.watched
         )
     }
 
@@ -26,7 +27,8 @@ class EpisodeMapper : Mapper<EpisodeEntity, EpisodeData> {
             airDate = type.airDate,
             episodeNumber = type.episodeNumber,
             stillPath = "",
-            voteAverage = type.voteAverage
+            voteAverage = type.voteAverage,
+            watched = type.watched
         )
     }
 }

@@ -8,16 +8,18 @@ import com.arbelkilani.bingetv.data.entities.season.SeasonData
 import com.arbelkilani.bingetv.data.entities.tv.EpisodeToAir
 import com.arbelkilani.bingetv.data.entities.tv.TvShowData
 import com.arbelkilani.bingetv.data.source.local.Converters
+import com.arbelkilani.bingetv.data.source.local.episode.EpisodeDao
 import com.arbelkilani.bingetv.data.source.local.season.SeasonDao
 import com.arbelkilani.bingetv.data.source.local.tv.TvDao
 
 @Database(
     entities = [TvShowData::class, EpisodeToAir::class, SeasonData::class, EpisodeData::class],
-    version = 30,
+    version = 31,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class BingeTvDatabase : RoomDatabase() {
     abstract fun getTvDao(): TvDao
     abstract fun getSeasonDao(): SeasonDao
+    abstract fun getEpisodeDao(): EpisodeDao
 }

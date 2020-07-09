@@ -31,6 +31,7 @@ val ViewModelModule = module {
         SeasonDetailsViewModel(
             seasonEntity,
             tvShowEntity,
+            get(),
             get()
         )
     }

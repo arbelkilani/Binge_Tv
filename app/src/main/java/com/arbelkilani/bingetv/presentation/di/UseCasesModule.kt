@@ -1,9 +1,11 @@
 package com.arbelkilani.bingetv.presentation.di
 
+import com.arbelkilani.bingetv.domain.repositories.EpisodeRepository
 import com.arbelkilani.bingetv.domain.repositories.GenresRepository
 import com.arbelkilani.bingetv.domain.repositories.SeasonRepository
 import com.arbelkilani.bingetv.domain.repositories.TvShowRepository
 import com.arbelkilani.bingetv.domain.usecase.*
+import com.arbelkilani.bingetv.domain.usecase.episode.UpdateEpisodeUseCase
 import com.arbelkilani.bingetv.domain.usecase.season.GetSeasonDetailsUseCase
 import com.arbelkilani.bingetv.domain.usecase.season.UpdateSeasonUseCase
 import com.arbelkilani.bingetv.domain.usecase.tv.UpdateTvShowUseCase
@@ -38,6 +40,9 @@ val UseCasesModule = module {
     // season
     single { getSeasonDetailsUseCase(get()) }
     single { updateSeasonUseCase(get()) }
+
+    // episode
+    single { updateEpisodeUseCase(get()) }
 }
 
 fun createDiscoverUseCase(tvShowRepository: TvShowRepository): DiscoverUseCase {
@@ -91,4 +96,8 @@ fun getSeasonDetailsUseCase(seasonRepository: SeasonRepository): GetSeasonDetail
 
 fun updateSeasonUseCase(seasonRepository: SeasonRepository): UpdateSeasonUseCase {
     return UpdateSeasonUseCase(seasonRepository)
+}
+
+fun updateEpisodeUseCase(episodeRepository: EpisodeRepository): UpdateEpisodeUseCase {
+    return UpdateEpisodeUseCase(episodeRepository)
 }

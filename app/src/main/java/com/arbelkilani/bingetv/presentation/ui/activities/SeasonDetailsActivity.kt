@@ -2,6 +2,8 @@ package com.arbelkilani.bingetv.presentation.ui.activities
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -9,6 +11,7 @@ import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.entities.episode.EpisodeData
 import com.arbelkilani.bingetv.databinding.ActivitySeasonDetailsBinding
 import com.arbelkilani.bingetv.databinding.EpisodeDetailsBottomSheetBinding
+import com.arbelkilani.bingetv.domain.entities.episode.EpisodeEntity
 import com.arbelkilani.bingetv.presentation.adapters.EpisodeAdapter
 import com.arbelkilani.bingetv.presentation.listeners.OnEpisodeClickListener
 import com.arbelkilani.bingetv.presentation.viewmodel.season.SeasonDetailsViewModel
@@ -55,7 +58,7 @@ class SeasonDetailsActivity : AppCompatActivity(), OnEpisodeClickListener {
         })
 
         viewModel.episodes.observe(this, Observer {
-            (recycler_episodes.adapter as EpisodeAdapter).notifyDataSetChanged(it.asReversed())
+            (rv_episodes.adapter as EpisodeAdapter).notifyDataSetChanged(it.asReversed())
         })
 
         initAdapter()
@@ -74,7 +77,7 @@ class SeasonDetailsActivity : AppCompatActivity(), OnEpisodeClickListener {
     }
 
     private fun initAdapter() {
-        recycler_episodes.adapter = episodeAdapter
+        rv_episodes.adapter = episodeAdapter
     }
 
     private fun initBottomSheet() {
@@ -94,5 +97,10 @@ class SeasonDetailsActivity : AppCompatActivity(), OnEpisodeClickListener {
     override fun onEpisodeClicked(episodeData: EpisodeData) {
         //detailsBinding.episode = episodeData
         //bottomSheetDialog.show()
+    }
+
+    override fun onWatchedEpisodeClicked(view: View, episodeEntity: EpisodeEntity) {
+        viewModel.episodeWatchState(!(view as ImageView).isSelected, episodeEntity)
+        //(rv_episodes.adapter as EpisodeAdapter).notifyItemChanged(result)
     }
 }
