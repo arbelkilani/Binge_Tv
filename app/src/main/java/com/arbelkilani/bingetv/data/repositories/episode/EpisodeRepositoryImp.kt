@@ -2,9 +2,13 @@ package com.arbelkilani.bingetv.data.repositories.episode
 
 import android.util.Log
 import com.arbelkilani.bingetv.data.mappers.episode.EpisodeMapper
+import com.arbelkilani.bingetv.data.mappers.season.SeasonMapper
+import com.arbelkilani.bingetv.data.mappers.tv.TvShowMapper
 import com.arbelkilani.bingetv.data.source.local.episode.EpisodeDao
 import com.arbelkilani.bingetv.data.source.local.season.SeasonDao
 import com.arbelkilani.bingetv.domain.entities.episode.EpisodeEntity
+import com.arbelkilani.bingetv.domain.entities.season.SeasonEntity
+import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
 import com.arbelkilani.bingetv.domain.repositories.EpisodeRepository
 
 class EpisodeRepositoryImp(
@@ -13,6 +17,8 @@ class EpisodeRepositoryImp(
 ) : EpisodeRepository {
 
     private val episodeMapper = EpisodeMapper()
+    private val seasonMapper = SeasonMapper()
+    private val tvShowMapper = TvShowMapper()
 
     companion object {
         private const val TAG = "EpisodeRepository"
@@ -21,18 +27,20 @@ class EpisodeRepositoryImp(
     override suspend fun saveWatched(
         watched: Boolean,
         episodeEntity: EpisodeEntity,
-        tvShowId: Int,
-        seasonId: Int
+        tvShowEntity: TvShowEntity,
+        seasonEntity: SeasonEntity
     ): EpisodeEntity? {
+
+        //FIXME watched always return true
 
         val episodeData = episodeMapper.mapFromEntity(episodeEntity)
         episodeData.watched = watched
-        episodeData.tv_episode = tvShowId
-        episodeData.season_episode = seasonId
+        episodeData.tv_episode = tvShowEntity.id
+        episodeData.season_episode = seasonEntity.id
 
         try {
             episodeDao.saveEpisode(episodeData)
-            updateRelatedSeason(seasonId, watched)
+            updateTables(tvShowEntity, seasonEntity, watched)
         } catch (e: Exception) {
             e.printStackTrace()
             Log.e(TAG, "save episode = ${e.localizedMessage}")
@@ -44,9 +52,49 @@ class EpisodeRepositoryImp(
         return episodeEntity
     }
 
-    private fun updateRelatedSeason(seasonId: Int, watched: Boolean) {
+    private suspend fun updateTables(
+        tvShowEntity: TvShowEntity,
+        seasonEntity: SeasonEntity,
+        watched: Boolean
+    ) {
         // if episode is watched increment watched count else decrement
 
+        updateRelatedSeason(seasonEntity, watched, tvShowEntity)
+
+        val tvShowData = tvShowMapper.mapFromEntity(tvShowEntity)
+
+        //FIXME once user clicked on last episode in this season tv should be notified that a hole season has been watched
+        // to do this we compare watched count to episode count
+
+
+    }
+
+    private suspend fun updateRelatedSeason(
+        seasonEntity: SeasonEntity,
+        watched: Boolean,
+        tvShowEntity: TvShowEntity
+    ) {
+        val seasonData = seasonMapper.mapFromEntity(seasonEntity)
+        val localSeasonData = seasonDao.getSeason(seasonEntity.id)
+
+        localSeasonData?.let {
+            seasonData.watchedCount = it.watchedCount
+        }
+
+        if (watched) {
+            seasonData.watchedCount++
+        } else {
+            seasonData.watchedCount--
+        }
+        seasonData.watched = watched
+        seasonData.tv_season = tvShowEntity.id
+
+        try {
+            seasonDao.saveSeason(seasonData)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.e(TAG, "update tables = ${e.localizedMessage}")
+        }
     }
 
 

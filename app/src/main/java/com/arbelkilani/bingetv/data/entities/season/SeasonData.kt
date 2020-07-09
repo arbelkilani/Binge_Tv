@@ -65,7 +65,11 @@ data class SeasonData(
     var tv_season: Int = -1,
 
     @ColumnInfo(name = "watched")
-    var watched: Boolean = false
+    var watched: Boolean = false,
+
+    @ColumnInfo(name = "watched_count")
+    var watchedCount: Int = 0
+
 
 ) : Parcelable {
 

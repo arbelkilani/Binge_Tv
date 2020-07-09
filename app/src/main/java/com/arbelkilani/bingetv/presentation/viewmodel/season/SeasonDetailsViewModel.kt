@@ -55,8 +55,8 @@ class SeasonDetailsViewModel(
                 updateEpisodeUseCase.saveWatched(
                     state,
                     episodeEntity,
-                    _tvShow.value?.id!!,
-                    _season.value?.id!!
+                    _tvShow.value!!,
+                    _season.value!!
                 )
 
             }
