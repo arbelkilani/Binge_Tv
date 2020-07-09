@@ -3,6 +3,7 @@ package com.arbelkilani.bingetv.data.repositories.season
 import android.util.Log
 import com.arbelkilani.bingetv.data.entities.base.Resource
 import com.arbelkilani.bingetv.data.mappers.season.SeasonMapper
+import com.arbelkilani.bingetv.data.source.local.episode.EpisodeDao
 import com.arbelkilani.bingetv.data.source.local.season.SeasonDao
 import com.arbelkilani.bingetv.data.source.remote.apiservice.ApiTmdbService
 import com.arbelkilani.bingetv.domain.entities.season.SeasonEntity
@@ -11,7 +12,8 @@ import com.arbelkilani.bingetv.domain.repositories.SeasonRepository
 
 class SeasonRepositoryImp(
     private val apiTmdbService: ApiTmdbService,
-    private val seasonDao: SeasonDao
+    private val seasonDao: SeasonDao,
+    private val episodeDao: EpisodeDao
 ) : SeasonRepository {
 
     private val seasonMapper = SeasonMapper()
@@ -53,6 +55,15 @@ class SeasonRepositoryImp(
         seasonLocal?.let {
             response.watched = it.watched
         }
+
+        val episodesLocal = episodeDao.getEpisodes(response.id)
+        episodesLocal?.map { local ->
+            response.episodes.map { remote ->
+                if (remote.id == local.id)
+                    remote.watched = local.watched
+            }
+        }
+
         Resource.success(seasonMapper.mapToEntity(response))
     } catch (e: Exception) {
         Log.e(TAG, "getSeasonDetails = ${e.localizedMessage}")
