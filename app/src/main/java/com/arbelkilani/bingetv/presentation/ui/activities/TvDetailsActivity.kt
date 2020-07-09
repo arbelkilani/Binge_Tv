@@ -74,7 +74,6 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
         })
 
         viewModel.seasons.observe(this, Observer {
-            it.map { item -> Log.i(TAG, "it(${item.seasonNumber}).watched = ${item.watched}") }
             (rv_seasons.adapter as SeasonAdapter).notifyDataSetChanged(it.asReversed())
         })
 

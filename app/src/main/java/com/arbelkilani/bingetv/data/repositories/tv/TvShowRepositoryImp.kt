@@ -97,8 +97,11 @@ class TvShowRepositoryImp(
 
             tvShowData.seasons.map { remote ->
                 localSeasons?.map { local ->
-                    if (remote.id == local.id)
+                    if (remote.id == local.id) {
                         remote.watched = local.watched
+                        remote.watchedCount = local.watchedCount
+                    }
+
                 }
             }
 
@@ -128,10 +131,10 @@ class TvShowRepositoryImp(
             tvShowEntity.seasons.map {
                 it.watched = tvShowEntity.watched
                 if (tvShowEntity.watched) {
-                    it.watchedEpisodeCount = it.episodeCount
+                    //it.watchedEpisodeCount = it.episodeCount //TODO check after changing
                     //it.progress = (it.watchedEpisodeCount / it.episodeCount) * 100
                 } else {
-                    it.watchedEpisodeCount = 0
+                    //it.watchedEpisodeCount = 0
                     //it.progress = 0
                 }
             }

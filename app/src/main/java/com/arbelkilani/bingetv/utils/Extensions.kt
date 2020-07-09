@@ -59,6 +59,13 @@ fun animateProgress(view: ProgressBar, value: Int) {
     animation.start()
 }
 
+@BindingAdapter(value = ["android:watched", "android:count"], requireAll = true)
+fun calculatedProgress(view: ProgressBar, watched: Int, count: Int) {
+    if (count == 0)
+        return
+    view.progress = watched * 100 / count
+}
+
 fun spannableVoteRate(v: String): String {
     val on = "/10"
     val value = String.format("%s%s", v, on, Locale.getDefault())

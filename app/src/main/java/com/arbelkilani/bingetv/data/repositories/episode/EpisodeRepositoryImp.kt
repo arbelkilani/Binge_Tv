@@ -46,9 +46,8 @@ class EpisodeRepositoryImp(
             Log.e(TAG, "save episode = ${e.localizedMessage}")
         }
 
+        episodeEntity.watched = watched
 
-        //episodeDao.saveEpisode(episodeMapper.mapFromEntity(episodeEntity))
-        //episodeEntity.name = "zabour"
         return episodeEntity
     }
 
@@ -57,8 +56,6 @@ class EpisodeRepositoryImp(
         seasonEntity: SeasonEntity,
         watched: Boolean
     ) {
-        // if episode is watched increment watched count else decrement
-
         updateRelatedSeason(seasonEntity, watched, tvShowEntity)
 
         val tvShowData = tvShowMapper.mapFromEntity(tvShowEntity)
@@ -86,6 +83,10 @@ class EpisodeRepositoryImp(
         } else {
             seasonData.watchedCount--
         }
+
+        //FIXME
+        // while decreasing episode watched watched value is set to false despite that seen episodes still exists in database
+
         seasonData.watched = watched
         seasonData.tv_season = tvShowEntity.id
 

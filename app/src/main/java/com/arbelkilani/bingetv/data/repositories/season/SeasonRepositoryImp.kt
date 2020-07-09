@@ -38,8 +38,6 @@ class SeasonRepositoryImp(
         }
 
         seasonEntity.watched = watched
-        seasonEntity.watchedEpisodeCount = if (watched) seasonEntity.episodeCount else 0
-        seasonEntity.progress = if (watched) 100 else 0
         return seasonEntity
     }
 
@@ -54,6 +52,7 @@ class SeasonRepositoryImp(
         val seasonLocal = seasonDao.getSeason(seasonEntity.id)
         seasonLocal?.let {
             response.watched = it.watched
+            response.watchedCount = it.watchedCount
         }
 
         val episodesLocal = episodeDao.getEpisodes(response.id)
@@ -63,7 +62,6 @@ class SeasonRepositoryImp(
                     remote.watched = local.watched
             }
         }
-
         Resource.success(seasonMapper.mapToEntity(response))
     } catch (e: Exception) {
         Log.e(TAG, "getSeasonDetails = ${e.localizedMessage}")

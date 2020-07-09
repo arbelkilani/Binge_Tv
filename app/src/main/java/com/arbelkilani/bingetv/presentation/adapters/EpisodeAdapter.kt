@@ -1,5 +1,6 @@
 package com.arbelkilani.bingetv.presentation.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -31,6 +32,7 @@ class EpisodeAdapter(
     }
 
     override fun onBindViewHolder(holder: EpisodeHolder, position: Int) {
+        Log.i(TAG, "onBindViewHolder")
         holder.itemEpisodeBinding.episodeEntity = episodes[position]
         holder.itemEpisodeBinding.episodeClickListener = episodeClickListener
     }
@@ -38,5 +40,14 @@ class EpisodeAdapter(
     fun notifyDataSetChanged(episodes: List<EpisodeEntity>) {
         this.episodes = episodes
         notifyDataSetChanged()
+    }
+
+    fun notifyItemChanged(episodeEntity: EpisodeEntity) {
+        val position = episodes.indexOf(episodeEntity)
+        notifyItemChanged(position)
+    }
+
+    companion object {
+        private const val TAG = "EpisodeAdapter"
     }
 }

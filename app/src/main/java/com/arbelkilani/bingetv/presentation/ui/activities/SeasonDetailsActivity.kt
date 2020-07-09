@@ -7,6 +7,7 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.entities.episode.EpisodeData
 import com.arbelkilani.bingetv.databinding.ActivitySeasonDetailsBinding
@@ -49,6 +50,7 @@ class SeasonDetailsActivity : AppCompatActivity(), OnEpisodeClickListener {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
+
         viewModel.season.observe(this, Observer {
             binding.seasonEntity = it
         })
@@ -78,6 +80,8 @@ class SeasonDetailsActivity : AppCompatActivity(), OnEpisodeClickListener {
 
     private fun initAdapter() {
         rv_episodes.adapter = episodeAdapter
+        (rv_episodes.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+
     }
 
     private fun initBottomSheet() {
@@ -100,7 +104,7 @@ class SeasonDetailsActivity : AppCompatActivity(), OnEpisodeClickListener {
     }
 
     override fun onWatchedEpisodeClicked(view: View, episodeEntity: EpisodeEntity) {
-        viewModel.episodeWatchState(!(view as ImageView).isSelected, episodeEntity)
-        //(rv_episodes.adapter as EpisodeAdapter).notifyItemChanged(result)
+        val result = viewModel.episodeWatchState(!(view as ImageView).isSelected, episodeEntity)
+        (rv_episodes.adapter as EpisodeAdapter).notifyItemChanged(result)
     }
 }

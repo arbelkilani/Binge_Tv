@@ -42,6 +42,8 @@ class SeasonDetailsViewModel(
         scope.launch(Dispatchers.IO) {
             val response = getSeasonDetailsUseCase.invoke(extraTvShowEntity, extraSeasonEntity)
             response.data?.let {
+                it.episodeCount = extraSeasonEntity.episodeCount
+                //it.progress = it.watchedCount * 100 / it.episodeCount
                 _season.postValue(it)
                 _episodes.postValue(it.episodes)
             }
@@ -50,16 +52,27 @@ class SeasonDetailsViewModel(
 
     fun episodeWatchState(state: Boolean, episodeEntity: EpisodeEntity): EpisodeEntity {
 
+        val seasonValue = _season.value!!
         val job = runBlocking(Dispatchers.IO) {
             return@runBlocking withContext(Dispatchers.Default) {
                 updateEpisodeUseCase.saveWatched(
                     state,
                     episodeEntity,
                     _tvShow.value!!,
-                    _season.value!!
+                    seasonValue
                 )
-
             }
+        }
+
+        job?.let {
+            if (state) {
+                seasonValue.watchedCount++
+
+            } else {
+                seasonValue.watchedCount--
+            }
+            //seasonValue.progress = seasonValue.watchedCount * 100 / seasonValue.episodeCount
+            _season.postValue(seasonValue)
         }
 
         return job!!

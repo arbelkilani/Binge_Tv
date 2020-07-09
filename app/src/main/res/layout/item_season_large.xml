@@ -124,7 +124,7 @@
                     android:layout_weight="0.2"
                     android:fontFamily="@font/avenir_next_regular"
                     android:gravity="end"
-                    android:text="@{String.format(@string/item_season_large_episode_count, seasonEntity.watchedEpisodeCount, seasonEntity.episodeCount)}"
+                    android:text="@{String.format(@string/episode_count, seasonEntity.watchedCount, seasonEntity.episodeCount)}"
                     android:textColor="@color/details_titles_text_color"
                     android:textSize="@dimen/small_text_size"
                     tools:text="12/12" />
