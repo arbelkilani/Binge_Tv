@@ -83,6 +83,7 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
         })
 
         viewModel.credits.observe(this, Observer {
+            credit_label.visibility = View.VISIBLE
             (rv_credits.adapter as CreditAdapter).notifyDataSetChanged(it)
         })
 

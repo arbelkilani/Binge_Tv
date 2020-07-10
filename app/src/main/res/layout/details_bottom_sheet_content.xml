@@ -47,7 +47,8 @@
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginTop="@dimen/default_margin"
                 android:layout_marginEnd="@dimen/default_margin"
-                android:layout_marginBottom="@dimen/default_margin_min">
+                android:layout_marginBottom="@dimen/default_margin_min"
+                android:animateLayoutChanges="true">
 
                 <!-- genres -->
                 <com.google.android.flexbox.FlexboxLayout
@@ -132,11 +133,13 @@
 
             <!-- next episode -->
             <androidx.cardview.widget.CardView
+                android:id="@+id/next_episode_cardview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginTop="@dimen/default_margin"
                 android:layout_marginEnd="@dimen/default_margin"
+                android:animateLayoutChanges="true"
                 android:visibility="@{tvShowEntity.nextEpisodeData == null ? View.GONE : View.VISIBLE}"
                 app:cardCornerRadius="@dimen/default_card_corner_radius"
                 app:contentPadding="@dimen/default_padding">
@@ -199,7 +202,8 @@
                 android:fontFamily="@font/avenir_next_demi_bold"
                 android:text="@string/details_bottom_sheet_content_type_label"
                 android:textColor="@color/details_titles_text_color"
-                android:textSize="@dimen/titles_text_size" />
+                android:textSize="@dimen/titles_text_size"
+                android:visibility="@{tvShowEntity.status.empty ? View.GONE : View.VISIBLE}" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -210,7 +214,8 @@
                 android:fontFamily="@font/avenir_next_regular"
                 android:text="@{tvShowEntity.status}"
                 android:textColor="@color/details_titles_text_color"
-                android:textSize="@dimen/small_text_size" />
+                android:textSize="@dimen/small_text_size"
+                android:visibility="@{tvShowEntity.status.empty ? View.GONE : View.VISIBLE}" />
 
             <!-- overview  -->
             <TextView
@@ -221,7 +226,8 @@
                 android:fontFamily="@font/avenir_next_demi_bold"
                 android:text="@string/details_story_label"
                 android:textColor="@color/details_titles_text_color"
-                android:textSize="@dimen/titles_text_size" />
+                android:textSize="@dimen/titles_text_size"
+                android:visibility="@{tvShowEntity.overview.empty ? View.GONE : View.VISIBLE}" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -232,10 +238,12 @@
                 android:fontFamily="@font/avenir_next_regular"
                 android:text="@{tvShowEntity.overview}"
                 android:textColor="@color/details_titles_text_color"
-                android:textSize="@dimen/small_text_size" />
+                android:textSize="@dimen/small_text_size"
+                android:visibility="@{tvShowEntity.overview.empty ? View.GONE : View.VISIBLE}" />
 
             <!-- cast -->
             <TextView
+                android:id="@+id/credit_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/default_margin"
@@ -243,7 +251,8 @@
                 android:fontFamily="@font/avenir_next_demi_bold"
                 android:text="@string/details_bottom_sheet_content_cast_label"
                 android:textColor="@color/details_titles_text_color"
-                android:textSize="@dimen/titles_text_size" />
+                android:textSize="@dimen/titles_text_size"
+                android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_credits"

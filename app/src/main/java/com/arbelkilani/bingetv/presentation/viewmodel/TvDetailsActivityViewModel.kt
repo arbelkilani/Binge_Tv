@@ -41,7 +41,7 @@ class TvDetailsActivityViewModel constructor(
     }
 
     init {
-        runBlocking(Dispatchers.IO) {
+        scope.launch(Dispatchers.IO) {
             _tvShowEntity.value?.let {
                 getTvDetails(it)
                 getCredits(it)
