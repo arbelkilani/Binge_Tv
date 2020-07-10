@@ -108,6 +108,8 @@ dependencies {
     def paging_version = "3.0.0-alpha02"
     implementation "androidx.paging:paging-runtime:$paging_version"
 
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
 
     testImplementation 'junit:junit:4.13'

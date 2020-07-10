@@ -41,6 +41,8 @@
             app:layout_behavior="@string/bottom_sheet_behavior">
 
             <!-- genres and networks -->
+            <include layout="@layout/flex_boxes_shimmer" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -80,6 +82,7 @@
 
             </RelativeLayout>
 
+
             <!-- name and vote -->
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -100,9 +103,6 @@
                     android:text="@{tvShowEntity.name}"
                     android:textColor="@color/details_titles_text_color"
                     android:textSize="@dimen/big_text_size" />
-
-                <!-- android:onClick="@{() -> viewModel.openHomePage(tvDetails.homepage)}"
-                     -->
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -139,8 +139,7 @@
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginTop="@dimen/default_margin"
                 android:layout_marginEnd="@dimen/default_margin"
-                android:animateLayoutChanges="true"
-                android:visibility="@{tvShowEntity.nextEpisodeData == null ? View.GONE : View.VISIBLE}"
+                android:visibility="gone"
                 app:cardCornerRadius="@dimen/default_card_corner_radius"
                 app:contentPadding="@dimen/default_padding">
 
@@ -194,7 +193,10 @@
             </androidx.cardview.widget.CardView>
 
             <!-- status  -->
+            <include layout="@layout/shimmer_tv_details_status" />
+
             <TextView
+                android:id="@+id/status_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/default_margin"
@@ -202,8 +204,7 @@
                 android:fontFamily="@font/avenir_next_demi_bold"
                 android:text="@string/details_bottom_sheet_content_type_label"
                 android:textColor="@color/details_titles_text_color"
-                android:textSize="@dimen/titles_text_size"
-                android:visibility="@{tvShowEntity.status.empty ? View.GONE : View.VISIBLE}" />
+                android:textSize="@dimen/titles_text_size" />
 
             <TextView
                 android:layout_width="wrap_content"

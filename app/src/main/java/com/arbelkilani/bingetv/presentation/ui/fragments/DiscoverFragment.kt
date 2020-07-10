@@ -111,7 +111,7 @@ class DiscoverFragment : Fragment(), OnTvShowClickListener {
             binding.rvPopular.isVisible = loadState.refresh is LoadState.NotLoading
 
             // Show loading spinner during initial load or refresh.
-            binding.progressBar.isVisible = loadState.refresh is LoadState.Loading
+            binding.rvShimmer.isVisible = loadState.refresh is LoadState.Loading
 
             // Toast on any error, regardless of whether it came from RemoteMediator or PagingSource
             val errorState = loadState.source.append as? LoadState.Error

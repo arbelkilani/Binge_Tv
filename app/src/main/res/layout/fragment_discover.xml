@@ -57,12 +57,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <ProgressBar
-                        android:id="@+id/progress_bar"
-                        style="?android:attr/progressBarStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center" />
+                    <include
+                        android:id="@+id/rv_shimmer"
+                        layout="@layout/shimmer_discover_recycler" />
 
                     <com.arbelkilani.bingetv.presentation.ui.view.AutofitRecyclerView
                         android:id="@+id/rv_popular"
