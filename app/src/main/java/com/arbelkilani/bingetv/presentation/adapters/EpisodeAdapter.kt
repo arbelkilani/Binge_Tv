@@ -1,6 +1,5 @@
 package com.arbelkilani.bingetv.presentation.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -32,7 +31,6 @@ class EpisodeAdapter(
     }
 
     override fun onBindViewHolder(holder: EpisodeHolder, position: Int) {
-        Log.i(TAG, "onBindViewHolder")
         holder.itemEpisodeBinding.episodeEntity = episodes[position]
         holder.itemEpisodeBinding.episodeClickListener = episodeClickListener
     }

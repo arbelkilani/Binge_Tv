@@ -1,5 +1,7 @@
 package com.arbelkilani.bingetv.presentation.ui.activities
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -107,4 +109,13 @@ class SeasonDetailsActivity : AppCompatActivity(), OnEpisodeClickListener {
         val result = viewModel.episodeWatchState(!(view as ImageView).isSelected, episodeEntity)
         (rv_episodes.adapter as EpisodeAdapter).notifyItemChanged(result)
     }
+
+    override fun onBackPressed() {
+        setResult(
+            Activity.RESULT_OK,
+            Intent().putExtra(Constants.SEASON_ENTITY_REQUEST, viewModel.updateSeasonData())
+        )
+        super.onBackPressed()
+    }
+
 }

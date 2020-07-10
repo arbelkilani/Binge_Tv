@@ -1,5 +1,6 @@
 package com.arbelkilani.bingetv.presentation.ui.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
@@ -16,6 +17,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.doOnLayout
 import androidx.core.widget.NestedScrollView
@@ -43,6 +45,17 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
     companion object {
         const val TAG = "TvShowActivity"
     }
+
+    private val getSeasonEntity =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val receivedSeasonEntity =
+                    result.data?.getParcelableExtra<SeasonEntity>(Constants.SEASON_ENTITY_REQUEST)
+                receivedSeasonEntity?.let {
+                    (rv_seasons.adapter as SeasonAdapter).notifyItemChanged(it)
+                }
+            }
+        }
 
     private val viewModel: TvDetailsActivityViewModel by viewModel {
         parametersOf(intent.getParcelableExtra(Constants.TV_SHOW_ENTITY)!!)
@@ -187,7 +200,6 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
         popupWindow.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         popupWindow.showAtLocation(view, Gravity.NO_GRAVITY, widthPixels - view.width, 0)
 
-
         val watchlistView = layout.findViewById<TextView>(R.id.tv_action_watchlist)
         watchlistView.isSelected = currentTvShow.watchlist
         watchlistView.setOnClickListener {
@@ -229,11 +241,12 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
     }
 
     override fun onSeasonItemClicked(seasonEntity: SeasonEntity) {
-        startActivity(Intent(this, SeasonDetailsActivity::class.java)
-            .apply {
-                putExtra(Constants.SEASON_ENTITY, seasonEntity)
-                putExtra(Constants.TV_SHOW_ENTITY, viewModel.tvShowEntity.value)
-            })
+        getSeasonEntity.launch(Intent(
+            this, SeasonDetailsActivity::class.java
+        ).apply {
+            putExtra(Constants.SEASON_ENTITY, seasonEntity)
+            putExtra(Constants.TV_SHOW_ENTITY, viewModel.tvShowEntity.value)
+        })
     }
 
     override fun onWatchedSeasonClicked(view: View, seasonEntity: SeasonEntity) {

@@ -14,7 +14,7 @@ class SeasonAdapter(
 ) :
     RecyclerView.Adapter<SeasonAdapter.SeasonHolder>() {
 
-    private var seasons = listOf<SeasonEntity>()
+    private var seasons = mutableListOf<SeasonEntity>()
 
     class SeasonHolder(val itemSeasonsBinding: ItemSeasonLargeBindingImpl) :
         RecyclerView.ViewHolder(itemSeasonsBinding.root)
@@ -36,13 +36,23 @@ class SeasonAdapter(
     }
 
     fun notifyDataSetChanged(seasons: List<SeasonEntity>) {
-        this.seasons = seasons
+        this.seasons = seasons.toMutableList()
         notifyDataSetChanged()
     }
 
     fun notifyItemChanged(seasonEntity: SeasonEntity) {
-        val position = seasons.indexOf(seasonEntity)
+        val position = getPositionById(seasonEntity)
+        seasons.removeAt(position)
+        seasons.add(position, seasonEntity)
         notifyItemChanged(position)
+    }
+
+    private fun getPositionById(seasonEntity: SeasonEntity): Int {
+        for ((index, item) in seasons.withIndex()) {
+            if (item.id == seasonEntity.id)
+                return index
+        }
+        return -1
     }
 
     companion object {

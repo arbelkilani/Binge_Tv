@@ -59,13 +59,14 @@
                     android:layout_below="@+id/tv_season_number"
                     android:layout_centerVertical="true"
                     android:layout_marginTop="@dimen/default_margin_min"
+                    android:layout_toStartOf="@+id/rb_watched"
                     android:ellipsize="end"
                     android:fontFamily="@font/avenir_next_regular"
                     android:maxLines="2"
                     android:text="@{seasonEntity.overview}"
                     android:textColor="@color/details_titles_text_color"
                     android:textSize="@dimen/small_text_size"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     tools:text="@tools:sample/lorem/random" />
 
                 <TextView
@@ -73,12 +74,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_overview"
+                    android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
                     android:layout_marginTop="@dimen/default_margin_min"
+                    android:layout_toStartOf="@+id/rb_watched"
                     android:fontFamily="@font/avenir_next_regular"
+                    android:text="@{seasonEntity.airDate}"
                     android:textColor="@color/details_titles_text_color"
                     android:textSize="@dimen/small_text_size"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     tools:text="First aired : 2019-04-30" />
 
                 <ImageView
@@ -112,9 +116,10 @@
                     android:layout_height="6dp"
                     android:layout_marginEnd="5dp"
                     android:layout_weight="0.8"
+                    android:count="@{seasonEntity.episodeCount}"
                     android:indeterminate="false"
-                    android:progressAnimated="@{seasonEntity.progress}"
-                    android:progressDrawable="@drawable/rounded_corners_progress_bar" />
+                    android:progressDrawable="@drawable/rounded_corners_progress_bar"
+                    android:watched="@{seasonEntity.watchedCount}" />
 
                 <TextView
                     android:id="@+id/tv_episode_count"
@@ -124,6 +129,7 @@
                     android:layout_weight="0.2"
                     android:fontFamily="@font/avenir_next_regular"
                     android:gravity="end"
+                    android:layout_marginBottom="2dp"
                     android:text="@{String.format(@string/episode_count, seasonEntity.watchedCount, seasonEntity.episodeCount)}"
                     android:textColor="@color/details_titles_text_color"
                     android:textSize="@dimen/small_text_size"

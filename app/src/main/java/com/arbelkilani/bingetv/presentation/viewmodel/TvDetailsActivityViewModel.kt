@@ -36,17 +36,6 @@ class TvDetailsActivityViewModel constructor(
     val seasons: LiveData<List<SeasonEntity>>
         get() = _seasons
 
-    /*private val _tvId = MutableLiveData<Int>()
-    val tvId: LiveData<Int>
-        get() = _tvId
-
-
-
-
-
-
-     */
-
     companion object {
         const val TAG = "TvShowViewModel"
     }
@@ -58,13 +47,6 @@ class TvDetailsActivityViewModel constructor(
                 getCredits(it)
             }
         }
-
-        /*scope.launch(Dispatchers.IO) {
-            _tvShowEntity.value?.let {
-                getTvDetails(it)
-                getCredits(it)
-            }
-        }*/
     }
 
 

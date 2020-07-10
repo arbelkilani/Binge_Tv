@@ -14,8 +14,8 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 class SeasonDetailsViewModel(
-    extraSeasonEntity: SeasonEntity,
-    extraTvShowEntity: TvShowEntity,
+    private val extraSeasonEntity: SeasonEntity,
+    private val extraTvShowEntity: TvShowEntity,
     getSeasonDetailsUseCase: GetSeasonDetailsUseCase,
     private val updateEpisodeUseCase: UpdateEpisodeUseCase
 ) : BaseViewModel() {
@@ -71,10 +71,14 @@ class SeasonDetailsViewModel(
             } else {
                 seasonValue.watchedCount--
             }
-            //seasonValue.progress = seasonValue.watchedCount * 100 / seasonValue.episodeCount
             _season.postValue(seasonValue)
         }
 
         return job!!
+    }
+
+    fun updateSeasonData(): SeasonEntity {
+        extraSeasonEntity.watchedCount = _season.value?.watchedCount!!
+        return extraSeasonEntity
     }
 }
