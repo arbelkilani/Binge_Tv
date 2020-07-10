@@ -5,11 +5,14 @@ import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Rect
+import android.graphics.Typeface.ITALIC
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.GradientDrawable
 import android.text.Spannable
 import android.text.SpannableString
+import android.text.SpannableStringBuilder
 import android.text.style.RelativeSizeSpan
+import android.text.style.StyleSpan
 import android.util.DisplayMetrics
 import android.view.MenuItem
 import android.view.View
@@ -51,19 +54,53 @@ fun setSelected(view: ImageView, selected: Boolean) {
     view.isSelected = selected
 }
 
-@BindingAdapter("android:progressAnimated")
-fun animateProgress(view: ProgressBar, value: Int) {
-    val animation = ObjectAnimator.ofInt(view, "progress", 0, value)
-    animation.duration = 200
-    animation.interpolator = AccelerateDecelerateInterpolator()
-    animation.start()
-}
-
 @BindingAdapter(value = ["android:watched", "android:count"], requireAll = true)
 fun calculatedProgress(view: ProgressBar, watched: Int, count: Int) {
     if (count == 0)
         return
     view.progress = watched * 100 / count
+}
+
+@BindingAdapter("android:radio_visibility")
+fun setRadioVisibility(view: ImageView, airDate: String) {
+    val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(airDate)
+    val today = Calendar.getInstance().time
+    date?.let {
+        if (it >= today) {
+            view.visibility = View.INVISIBLE
+        } else {
+            view.visibility = View.VISIBLE
+        }
+    }
+}
+
+@BindingAdapter("android:air_date")
+fun setAirDate(view: TextView, airDate: String) {
+    val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(airDate)
+    date?.let {
+        SimpleDateFormat("EEEE, d MMMM yyyy", Locale.getDefault()).format(it.time).toString()
+            .let { text ->
+                val spannableString = SpannableStringBuilder(
+                    String.format(
+                        "%s %s",
+                        view.context.getString(R.string.air_date_label),
+                        text
+                    )
+                )
+                spannableString.setSpan(
+                    StyleSpan(ITALIC),
+                    view.context.getString(R.string.air_date_label).length + 1,
+                    text.length,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                view.text = spannableString
+            }
+    }
+}
+
+@BindingAdapter("android:item_number")
+fun setItemNumber(view: TextView, number: Int) {
+    view.text = String.format("%d.", number)
 }
 
 fun spannableVoteRate(v: String): String {

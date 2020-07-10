@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avenir_next_demi_bold"
-                android:text="@{String.valueOf(episodeEntity.episodeNumber)}"
+                android:item_number="@{episodeEntity.episodeNumber}"
                 android:textColor="@color/details_titles_text_color"
                 android:textSize="@dimen/toolbar_title_text_size"
                 tools:text="1." />
@@ -59,8 +59,8 @@
                 android:layout_marginTop="@dimen/default_margin_min"
                 android:layout_toStartOf="@+id/rb_watched"
                 android:layout_toEndOf="@+id/tv_number"
+                android:air_date="@{episodeEntity.airDate}"
                 android:fontFamily="@font/avenir_next_regular"
-                android:text="@{episodeEntity.airDate}"
                 android:textColor="@color/details_titles_text_color"
                 android:textSize="@dimen/small_text_size"
                 tools:text="Aired : 2020-09-12" />
@@ -75,7 +75,9 @@
                 android:isSelected="@{episodeEntity.watched}"
                 android:onClick="@{(view) -> episodeClickListener.onWatchedEpisodeClicked(view, episodeEntity)}"
                 android:padding="5dp"
-                android:src="@drawable/selector_radio_button" />
+                android:radio_visibility="@{episodeEntity.airDate}"
+                android:src="@drawable/selector_radio_button"
+                android:visibility="invisible" />
 
         </RelativeLayout>
 
