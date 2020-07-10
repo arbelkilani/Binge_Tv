@@ -99,7 +99,7 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
         })
 
         viewModel.credits.observe(this, Observer {
-            credit_label.visibility = View.VISIBLE
+            shimmer_credits.visibility = View.GONE
             (rv_credits.adapter as CreditAdapter).notifyDataSetChanged(it)
         })
 

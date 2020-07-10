@@ -252,8 +252,11 @@
                 android:fontFamily="@font/avenir_next_demi_bold"
                 android:text="@string/details_bottom_sheet_content_cast_label"
                 android:textColor="@color/details_titles_text_color"
-                android:textSize="@dimen/titles_text_size"
-                android:visibility="gone" />
+                android:textSize="@dimen/titles_text_size" />
+
+            <include
+                android:id="@+id/shimmer_credits"
+                layout="@layout/shimmer_tv_details_credits" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_credits"
