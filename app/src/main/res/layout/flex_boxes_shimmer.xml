@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.facebook.shimmer.ShimmerFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/flex_box_shimmer"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:shimmer_auto_start="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginBottom="@dimen/default_margin_min"
+        android:animateLayoutChanges="true">
+
+        <!-- genres -->
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/f1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@id/f2"
+            app:alignContent="flex_start"
+            app:alignItems="flex_start"
+            app:dividerDrawable="@drawable/divider"
+            app:flexWrap="wrap"
+            app:showDivider="middle">
+
+
+            <TextView
+                style="@style/TextView.Genre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sci-Fi  Fantasy"
+                android:textColor="@android:color/transparent" />
+
+            <TextView
+                style="@style/TextView.Genre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dramaa"
+                android:textColor="@android:color/transparent" />
+
+            <TextView
+                style="@style/TextView.Genre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="action and adventure"
+                android:textColor="@android:color/transparent" />
+
+        </com.google.android.flexbox.FlexboxLayout>
+
+        <!-- networks -->
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/f2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="end"
+            app:alignContent="flex_end"
+            app:alignItems="flex_end"
+            app:dividerDrawable="@drawable/divider"
+            app:flexWrap="wrap"
+            app:showDivider="middle">
+
+            <TextView
+                style="@style/TextView_Network"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="texttext "
+                android:textColor="@android:color/transparent" />
+
+            <TextView
+                style="@style/TextView_Network"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="texttext "
+                android:textColor="@android:color/transparent" />
+        </com.google.android.flexbox.FlexboxLayout>
+
+    </RelativeLayout>
+
+</com.facebook.shimmer.ShimmerFrameLayout>
