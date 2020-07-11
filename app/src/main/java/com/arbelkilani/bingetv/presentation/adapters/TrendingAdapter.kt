@@ -6,13 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
 import com.arbelkilani.bingetv.R
-import com.arbelkilani.bingetv.data.entities.tv.TvShowData
+import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
 import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_dicover_view.view.*
 
 class TrendingAdapter(
-    private val tvList: List<TvShowData>,
+    private val tvList: List<TvShowEntity>,
     private val onTvShowClickListener: OnTvShowClickListener
 ) : PagerAdapter() {
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
@@ -38,58 +38,21 @@ class TrendingAdapter(
             .inflate(R.layout.item_dicover_view, container, false)
 
         val tvShow = tvList[virtualPosition]
+
         Picasso.get()
-            .load(tvShow.backdropPath)
+            .load(tvShow.backdrop)
+            .placeholder(R.drawable.placeholder_large)
+            .error(R.drawable.placeholder_large)
             .fit().centerCrop(Gravity.CENTER)
-            .error(R.mipmap.ic_launcher_round)
             .into(layout.iv_item_discover)
+
         layout.tv_title.text = tvShow.name
+
         layout.main_container.setOnClickListener {
-            //onTvShowClickListener.onTvItemClicked(tvShow)
+            onTvShowClickListener.onTvItemClicked(tvShow)
         }
 
         container.addView(layout)
         return layout
     }
-
-
 }
-/*class DiscoverAdapter(private val tvList: List<Tv>) :
-    RecyclerView.Adapter<DiscoverAdapter.DiscoverHolder>() {
-
-    private val TAG = DiscoverAdapter::class.java.simpleName
-
-    class DiscoverHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
-
-        private val TAG = DiscoverAdapter::class.java.simpleName
-
-        fun bind(tv: Tv) {
-            Picasso.get()
-                .load(tv.getBackdropPath())
-                .fit()
-                .centerCrop()
-                .into(itemView.iv_item_discover)
-        }
-
-        override fun onClick(v: View?) {
-            Log.i(TAG, "item clicked")
-        }
-    }
-
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): DiscoverHolder {
-        val inflatedView =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_dicover_view, parent, false)
-        return DiscoverHolder(inflatedView)
-    }
-
-    override fun getItemCount(): Int {
-        return Int.MAX_VALUE
-    }
-
-    override fun onBindViewHolder(holder: DiscoverHolder, position: Int) {
-        holder.bind(tvList[position % tvList.size])
-    }
-}*/

@@ -4,8 +4,6 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.arbelkilani.bingetv.data.entities.base.ApiResponse
-import com.arbelkilani.bingetv.data.entities.tv.TvShowData
 import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
 import com.arbelkilani.bingetv.domain.usecase.OnTheAirUseCase
 import com.arbelkilani.bingetv.domain.usecase.TrendingUseCase
@@ -25,7 +23,7 @@ class DiscoverViewModel(
         Log.i(TAG, "init")
     }
 
-    suspend fun getTrending(): Flow<ApiResponse<TvShowData>> {
+    suspend fun getTrending(): Flow<List<TvShowEntity>> {
         return trendingUseCase.invoke()
     }
 

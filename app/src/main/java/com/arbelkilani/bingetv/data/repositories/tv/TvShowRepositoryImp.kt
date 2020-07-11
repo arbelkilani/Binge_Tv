@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.arbelkilani.bingetv.data.entities.base.ApiResponse
 import com.arbelkilani.bingetv.data.entities.base.Resource
 import com.arbelkilani.bingetv.data.entities.credit.CreditsResponse
 import com.arbelkilani.bingetv.data.entities.tv.TvShowData
@@ -44,9 +43,11 @@ class TvShowRepositoryImp(
         private const val TAG = "TvShowRepository"
     }
 
-    override suspend fun trending(): Flow<ApiResponse<TvShowData>> {
+    override suspend fun trending(): Flow<List<TvShowEntity>> {
         Log.i(TAG, "trending()")
-        return flow { emit(apiTmdbService.trending("tv", "day")) }
+        val data = apiTmdbService.trending("tv", "day")
+        val entities = data.results.map { tvShowMapper.mapToEntity(it) }
+        return flow { emit(entities) }
     }
 
     override suspend fun discover(): Flow<PagingData<TvShowEntity>> {

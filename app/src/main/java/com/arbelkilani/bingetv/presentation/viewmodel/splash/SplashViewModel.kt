@@ -37,15 +37,5 @@ class SplashViewModel constructor(
             delay(Constants.SPLASH_DELAY)
             _resource.postValue(true)
         }
-
-        /*scope.launch {
-            delay(Constants.SPLASH_DELAY)
-            trendingUseCase.invoke()
-                .zip(discoverUseCase.invoke()) { trending, discover ->
-                    return@zip CombinedObjects(trending, discover)
-                }.catch { cause: Throwable -> _resource.postValue(Resource.exception(cause, null)) }
-                .collectLatest { value -> _resource.postValue(Resource.success(value)) }
-
-        }*/
     }
 }

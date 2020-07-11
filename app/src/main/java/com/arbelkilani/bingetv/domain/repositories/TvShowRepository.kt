@@ -1,7 +1,6 @@
 package com.arbelkilani.bingetv.domain.repositories
 
 import androidx.paging.PagingData
-import com.arbelkilani.bingetv.data.entities.base.ApiResponse
 import com.arbelkilani.bingetv.data.entities.base.Resource
 import com.arbelkilani.bingetv.data.entities.credit.CreditsResponse
 import com.arbelkilani.bingetv.data.entities.tv.TvShowData
@@ -11,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface TvShowRepository {
 
-    suspend fun trending(): Flow<ApiResponse<TvShowData>>
+    suspend fun trending(): Flow<List<TvShowEntity>>
     suspend fun discover(): Flow<PagingData<TvShowEntity>>
     suspend fun airingToday(): Flow<PagingData<TvShowData>>
     suspend fun popular(): Flow<PagingData<TvShowData>>

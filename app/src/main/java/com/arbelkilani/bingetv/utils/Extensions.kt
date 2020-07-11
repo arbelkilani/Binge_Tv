@@ -41,10 +41,22 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 
-@BindingAdapter("android:src")
-fun bindImageUrl(view: ImageView, url: String?) {
+@BindingAdapter("android:src_poster")
+fun bindPoster(view: ImageView, url: String?) {
     url?.let {
         Picasso.get().load(url)
+            .placeholder(R.drawable.placeholder)
+            .error(R.drawable.placeholder)
+            .into(view)
+    }
+}
+
+@BindingAdapter("android:src_backdrop")
+fun bindBackdrop(view: ImageView, url: String?) {
+    url?.let {
+        Picasso.get().load(url)
+            .placeholder(R.drawable.placeholder_large)
+            .error(R.drawable.placeholder_large)
             .into(view)
     }
 }

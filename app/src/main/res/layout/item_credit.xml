@@ -20,7 +20,7 @@
             android:layout_width="@dimen/item_credit_image_size"
             android:layout_height="@dimen/item_credit_image_size"
             android:scaleType="centerCrop"
-            android:src="@{credit.profilePath}"
+            android:src_poster="@{credit.profilePath}"
             app:civ_border_overlay="true" />
 
         <TextView

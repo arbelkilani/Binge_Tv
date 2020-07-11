@@ -35,7 +35,7 @@
                     android:layout_height="match_parent"
                     android:fitsSystemWindows="true"
                     android:scaleType="centerCrop"
-                    android:src="@{tvShowEntity.backdrop}" />
+                    android:src_backdrop="@{tvShowEntity.backdrop}" />
 
                 <View
                     android:layout_width="match_parent"

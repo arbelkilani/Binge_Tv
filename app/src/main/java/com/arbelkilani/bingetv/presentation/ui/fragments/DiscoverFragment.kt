@@ -49,8 +49,8 @@ class DiscoverFragment : Fragment(), OnTvShowClickListener {
                 .catch { cause -> Log.i(TAG, "cause = ${cause.localizedMessage}") }
                 .collect {
                     binding.viewPager.apply {
-                        adapter = TrendingAdapter(it.results, this@DiscoverFragment)
-                        currentItem = it.results.size / 2
+                        adapter = TrendingAdapter(it, this@DiscoverFragment)
+                        currentItem = it.size / 2
                         offscreenPageLimit = 3
                         pageMargin = resources.getDimensionPixelOffset(R.dimen.view_pager_margin)
                         setPageTransformer(false, CustomTransformer())
