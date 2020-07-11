@@ -34,6 +34,7 @@ class DashboardActivity : AppCompatActivity(),
                 .hide(watchlistFragment).commit()
             supportFragmentManager.beginTransaction().add(R.id.main_container, discoverFragment)
                 .commit()
+            supportActionBar?.title = getString(R.string.title_discovery)
         }
     }
 
@@ -51,6 +52,7 @@ class DashboardActivity : AppCompatActivity(),
                 supportFragmentManager.beginTransaction().hide(active).show(discoverFragment)
                     .commit()
                 active = discoverFragment
+                supportActionBar?.title = getString(R.string.title_discovery)
                 return true
             }
 
@@ -58,6 +60,7 @@ class DashboardActivity : AppCompatActivity(),
                 supportFragmentManager.beginTransaction().hide(active).show(watchlistFragment)
                     .commit()
                 active = watchlistFragment
+                supportActionBar?.title = getString(R.string.title_watch_list)
                 return true
             }
 
@@ -65,6 +68,7 @@ class DashboardActivity : AppCompatActivity(),
                 supportFragmentManager.beginTransaction().hide(active).show(profileFragment)
                     .commit()
                 active = profileFragment
+                supportActionBar?.title = getString(R.string.title_profile)
                 return true
             }
         }

@@ -17,7 +17,6 @@ import com.arbelkilani.bingetv.presentation.adapters.DataLoadStateAdapter
 import com.arbelkilani.bingetv.presentation.adapters.OnTheAirAdapter
 import com.arbelkilani.bingetv.presentation.adapters.TrendingAdapter
 import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
-import com.arbelkilani.bingetv.presentation.ui.activities.DashboardActivity
 import com.arbelkilani.bingetv.presentation.ui.activities.SearchActivity
 import com.arbelkilani.bingetv.presentation.ui.activities.TvDetailsActivity
 import com.arbelkilani.bingetv.presentation.ui.view.CustomTransformer
@@ -89,10 +88,6 @@ class DiscoverFragment : Fragment(), OnTvShowClickListener {
 
         binding.viewmodel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-
-        (activity as DashboardActivity).supportActionBar?.let {
-            it.title = getString(R.string.title_discovery)
-        }
 
         initAdapter()
         getTrendingList()

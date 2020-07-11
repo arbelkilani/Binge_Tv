@@ -8,7 +8,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.databinding.FragmentWatchlistBinding
-import com.arbelkilani.bingetv.presentation.ui.activities.DashboardActivity
 import com.arbelkilani.bingetv.presentation.viewmodel.watchlist.WatchlistViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -37,10 +36,6 @@ class WatchlistFragment : Fragment() {
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-
-        (activity as DashboardActivity).supportActionBar?.let {
-            it.title = getString(R.string.title_watch_list)
-        }
 
         return binding.root
     }
