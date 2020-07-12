@@ -19,11 +19,6 @@ class WatchlistAdapter(
     }
 
     override fun getCount(): Int {
-        //return Int.MAX_VALUE
-        return tvList.size
-    }
-
-    private fun getRealCount(): Int {
         return tvList.size
     }
 
@@ -33,22 +28,19 @@ class WatchlistAdapter(
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
 
-        val virtualPosition = position % getRealCount()
         val layout = LayoutInflater.from(container.context)
             .inflate(R.layout.item_watchlist, container, false)
 
-        val tvShow = tvList[position] //TODO
+        val tvShow = tvList[position]
 
         Picasso.get()
             .load(tvShow.poster)
             .fit().centerCrop()
             .into(layout.iv_poster)
 
-        layout.tv_position.text = position.toString()
-
-        /*layout.main_container.setOnClickListener {
+        layout.main_container.setOnClickListener {
             onTvShowClickListener.onTvItemClicked(tvShow)
-        }*/
+        }
 
         container.addView(layout)
         return layout

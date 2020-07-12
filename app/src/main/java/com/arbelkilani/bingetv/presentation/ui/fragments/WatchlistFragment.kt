@@ -1,5 +1,6 @@
 package com.arbelkilani.bingetv.presentation.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,8 +14,10 @@ import com.arbelkilani.bingetv.databinding.FragmentWatchlistBinding
 import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
 import com.arbelkilani.bingetv.presentation.adapters.viewpager.WatchlistAdapter
 import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
+import com.arbelkilani.bingetv.presentation.ui.activities.TvDetailsActivity
 import com.arbelkilani.bingetv.presentation.ui.view.SliderTransformer
 import com.arbelkilani.bingetv.presentation.viewmodel.watchlist.WatchlistViewModel
+import com.arbelkilani.bingetv.utils.Constants
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class WatchlistFragment : Fragment(), OnTvShowClickListener {
@@ -78,6 +81,10 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
     }
 
     override fun onTvItemClicked(tvShowEntity: TvShowEntity) {
-
+        startActivity(
+            Intent(activity, TvDetailsActivity::class.java)
+                .apply {
+                    putExtra(Constants.TV_SHOW_ENTITY, tvShowEntity)
+                })
     }
 }

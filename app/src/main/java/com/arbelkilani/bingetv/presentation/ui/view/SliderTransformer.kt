@@ -33,6 +33,8 @@ class SliderTransformer : ViewPager.PageTransformer {
             val scaleFactor = -SCALE_FACTOR * position + DEFAULT_SCALE
             val alphaFactor = -ALPHA_FACTOR * position + DEFAULT_ALPHA
 
+            page.isClickable = !(position <= 0 || position >= 1)
+
             when {
                 position <= 0f -> {
                     translationX = DEFAULT_TRANSLATION_X
