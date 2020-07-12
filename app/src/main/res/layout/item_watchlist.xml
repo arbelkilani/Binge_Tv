@@ -1,16 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/main_container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:elevation="0dp"
-    android:layoutMode="clipBounds"
-    app:cardCornerRadius="@dimen/default_card_corner_radius">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
-        android:id="@+id/iv_poster"
+    <data>
+
+        <variable
+            name="tvShowEntity"
+            type="com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity" />
+
+        <variable
+            name="tvShowListener"
+            type="com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/main_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:elevation="0dp"
+        android:layoutMode="clipBounds"
+        android:onClick="@{() -> tvShowListener.onTvItemClicked(tvShowEntity)}"
+        app:cardCornerRadius="@dimen/default_card_corner_radius">
 
-</androidx.cardview.widget.CardView>
+        <ImageView
+            android:id="@+id/iv_poster"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src_poster="@{tvShowEntity.poster}" />
+
+    </androidx.cardview.widget.CardView>
+</layout>

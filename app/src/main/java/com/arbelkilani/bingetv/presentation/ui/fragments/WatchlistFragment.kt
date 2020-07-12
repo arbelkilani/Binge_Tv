@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.RecyclerView
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.databinding.FragmentWatchlistBinding
 import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
@@ -24,6 +25,8 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
     private val viewModel: WatchlistViewModel by viewModel()
 
     private lateinit var binding: FragmentWatchlistBinding
+
+    private val watchlistAdapter = WatchlistAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,11 +48,16 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+        binding.viewPager.adapter = watchlistAdapter
+        binding.viewPager.offscreenPageLimit = 3
+        (binding.viewPager.getChildAt(0) as RecyclerView).overScrollMode =
+            View.OVER_SCROLL_NEVER
+
         viewModel.watchlist.observe(viewLifecycleOwner, Observer {
             it?.apply {
-                binding.viewPager.adapter = WatchlistAdapter(it, this@WatchlistFragment)
-                binding.viewPager.offscreenPageLimit = 3
-                binding.viewPager.setPageTransformer(false, SliderTransformer())
+                (binding.viewPager.adapter as WatchlistAdapter).notifyDataSetChanged(it)
+                binding.viewPager.setPageTransformer(SliderTransformer(3))
+
             }
         })
 

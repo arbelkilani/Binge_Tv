@@ -1,54 +1,48 @@
 package com.arbelkilani.bingetv.presentation.adapters.viewpager
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.viewpager.widget.PagerAdapter
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.RecyclerView
 import com.arbelkilani.bingetv.R
+import com.arbelkilani.bingetv.databinding.ItemWatchlistBindingImpl
 import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
 import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.item_watchlist.view.*
 
 
 class WatchlistAdapter(
-    private val tvShowList: List<TvShowEntity>,
     private val onTvShowClickListener: OnTvShowClickListener
-) : PagerAdapter() {
+) : RecyclerView.Adapter<WatchlistAdapter.WatchlistHolder>() {
+
+    private var tvShowList = listOf<TvShowEntity>()
 
     companion object {
         private const val TAG = "WatchlistAdapter"
     }
 
-    override fun isViewFromObject(view: View, `object`: Any): Boolean {
-        return view == `object`
+    class WatchlistHolder(val itemWatchlistBindingImpl: ItemWatchlistBindingImpl) :
+        RecyclerView.ViewHolder(itemWatchlistBindingImpl.root)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WatchlistHolder {
+        val itemWatchlistBindingImpl = DataBindingUtil.inflate<ItemWatchlistBindingImpl>(
+            LayoutInflater.from(parent.context), R.layout.item_watchlist, parent, false
+        )
+        return WatchlistHolder(itemWatchlistBindingImpl)
     }
 
-    override fun getCount(): Int {
+    override fun getItemCount(): Int {
         return tvShowList.size
     }
 
-    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
-        container.removeView(`object` as View)
+    override fun onBindViewHolder(holder: WatchlistHolder, position: Int) {
+        holder.itemWatchlistBindingImpl.tvShowEntity = tvShowList[position]
+        holder.itemWatchlistBindingImpl.tvShowListener = onTvShowClickListener
     }
 
-    override fun instantiateItem(container: ViewGroup, position: Int): Any {
-
-        val layout = LayoutInflater.from(container.context)
-            .inflate(R.layout.item_watchlist, container, false)
-
-        val tvShow = tvShowList[position]
-
-        Picasso.get()
-            .load(tvShow.poster)
-            .fit().centerCrop()
-            .into(layout.iv_poster)
-
-        layout.main_container.setOnClickListener {
-            onTvShowClickListener.onTvItemClicked(tvShow)
-        }
-
-        container.addView(layout)
-        return layout
+    fun notifyDataSetChanged(it: List<TvShowEntity>) {
+        tvShowList = it
+        notifyDataSetChanged()
     }
+
+
 }
