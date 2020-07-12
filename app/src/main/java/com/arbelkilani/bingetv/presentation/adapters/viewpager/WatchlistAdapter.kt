@@ -10,16 +10,23 @@ import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_watchlist.view.*
 
+
 class WatchlistAdapter(
-    private val tvList: List<TvShowEntity>,
     private val onTvShowClickListener: OnTvShowClickListener
 ) : PagerAdapter() {
+
+    private var tvShowList = mutableListOf<TvShowEntity>()
+
+    companion object {
+        private const val TAG = "WatchlistAdapter"
+    }
+
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
         return view == `object`
     }
 
     override fun getCount(): Int {
-        return tvList.size
+        return tvShowList.size
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
@@ -31,7 +38,7 @@ class WatchlistAdapter(
         val layout = LayoutInflater.from(container.context)
             .inflate(R.layout.item_watchlist, container, false)
 
-        val tvShow = tvList[position]
+        val tvShow = tvShowList[position]
 
         Picasso.get()
             .load(tvShow.poster)
@@ -44,5 +51,11 @@ class WatchlistAdapter(
 
         container.addView(layout)
         return layout
+    }
+
+    fun notifyDataSetChanged(it: List<TvShowEntity>?) {
+        tvShowList.clear()
+        tvShowList.addAll(it!!)
+        notifyDataSetChanged()
     }
 }

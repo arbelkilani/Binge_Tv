@@ -1,5 +1,6 @@
 package com.arbelkilani.bingetv.presentation.viewmodel.watchlist
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
@@ -21,6 +22,15 @@ class WatchlistViewModel(
         get() = _watchlist
 
     init {
+        watchlist()
+    }
+
+    fun refreshWatchlist() {
+        Log.i(TAG, "refreshWatchlist()")
+        watchlist()
+    }
+
+    private fun watchlist() {
         scope.launch(Dispatchers.IO) {
             _watchlist.postValue(getWatchListUseCase.invoke())
         }

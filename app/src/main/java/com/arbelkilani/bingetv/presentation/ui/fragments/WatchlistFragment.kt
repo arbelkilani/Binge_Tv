@@ -2,7 +2,6 @@ package com.arbelkilani.bingetv.presentation.ui.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +25,8 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
 
     private lateinit var binding: FragmentWatchlistBinding
 
+    private val watchlistAdapter = WatchlistAdapter(this)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -35,8 +36,6 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        Log.i(TAG, "onCreateView")
 
         binding = DataBindingUtil.inflate(
             inflater,
@@ -48,29 +47,28 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+        initViewPager()
+
         viewModel.watchlist.observe(viewLifecycleOwner, Observer {
-            binding.viewPager.apply {
-                adapter =
-                    WatchlistAdapter(
-                        it,
-                        this@WatchlistFragment
-                    )
-                offscreenPageLimit = 3
-                setPageTransformer(false, SliderTransformer())
-            }
+            watchlistAdapter.notifyDataSetChanged(it)
         })
 
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        Log.i(TAG, "onViewCreated")
+    private fun initViewPager() {
+        binding.viewPager.apply {
+            adapter = watchlistAdapter
+            offscreenPageLimit = 3
+            setPageTransformer(false, SliderTransformer())
+        }
     }
 
-    override fun onResume() {
-        super.onResume()
-        Log.i(TAG, "onResume")
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden)
+            viewModel.refreshWatchlist()
     }
 
     companion object {
@@ -86,5 +84,10 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
                 .apply {
                     putExtra(Constants.TV_SHOW_ENTITY, tvShowEntity)
                 })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.refreshWatchlist()
     }
 }
