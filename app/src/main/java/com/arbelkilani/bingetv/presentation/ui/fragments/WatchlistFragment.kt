@@ -83,7 +83,5 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
     override fun onResume() {
         super.onResume()
         viewModel.refreshWatchlist()
-        binding.viewPager.setCurrentItem(0, true)
-        binding.viewPager.setPageTransformer(SliderTransformer(3))
     }
 }
