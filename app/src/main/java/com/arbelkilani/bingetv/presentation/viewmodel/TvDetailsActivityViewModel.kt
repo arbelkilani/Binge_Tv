@@ -68,14 +68,14 @@ class TvDetailsActivityViewModel constructor(
         }
     }
 
-    fun isTvShowWatched(watched: Boolean) {
+    fun saveWatched(watched: Boolean) {
         scope.launch(Dispatchers.IO) {
             val resulted = updateTvShowUseCase.saveWatched(watched, _tvShowEntity.value!!)
             _tvShowEntity.postValue(resulted)
         }
     }
 
-    fun isTvShowWatchListed(watchlist: Boolean) {
+    fun saveWatchlist(watchlist: Boolean) {
         scope.launch(Dispatchers.IO) {
             val resulted = updateTvShowUseCase.saveWatchlist(watchlist, _tvShowEntity.value!!)
             _tvShowEntity.postValue(resulted)

@@ -1,6 +1,7 @@
 package com.arbelkilani.bingetv.presentation.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +33,8 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
         savedInstanceState: Bundle?
     ): View? {
 
+        Log.i(TAG, "onCreateView")
+
         binding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_watchlist,
@@ -50,13 +53,21 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
                         this@WatchlistFragment
                     )
                 offscreenPageLimit = 3
-                //pageMargin = resources.getDimensionPixelOffset(R.dimen.view_pager_margin)
-                //currentItem = it.size / 2
                 setPageTransformer(false, SliderTransformer())
             }
         })
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Log.i(TAG, "onViewCreated")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.i(TAG, "onResume")
     }
 
     companion object {

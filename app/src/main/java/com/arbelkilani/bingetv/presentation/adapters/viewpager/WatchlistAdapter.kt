@@ -40,7 +40,7 @@ class WatchlistAdapter(
         val tvShow = tvList[position] //TODO
 
         Picasso.get()
-            .load("https://image.tmdb.org/t/p/w185/wcaDIAG1QdXQLRaj4vC1EFdBT2.jpg")
+            .load(tvShow.poster)
             .fit().centerCrop()
             .into(layout.iv_poster)
 

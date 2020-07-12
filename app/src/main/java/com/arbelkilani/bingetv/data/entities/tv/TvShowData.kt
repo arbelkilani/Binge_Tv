@@ -76,7 +76,6 @@ data class TvShowData(
     @SerializedName("genres")
     var genres: List<Genre> = listOf(),
 
-    @Ignore
     @ColumnInfo(name = "poster_path")
     @SerializedName("poster_path")
     var posterPath: String? = null,
