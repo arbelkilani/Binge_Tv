@@ -18,6 +18,10 @@ import com.arbelkilani.bingetv.presentation.ui.activities.TvDetailsActivity
 import com.arbelkilani.bingetv.presentation.ui.view.SliderTransformer
 import com.arbelkilani.bingetv.presentation.viewmodel.watchlist.WatchlistViewModel
 import com.arbelkilani.bingetv.utils.Constants
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class WatchlistFragment : Fragment(), OnTvShowClickListener {
@@ -27,6 +31,8 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
     private lateinit var binding: FragmentWatchlistBinding
 
     private val watchlistAdapter = WatchlistAdapter(this)
+
+    private var currentItem = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,6 +79,7 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
     }
 
     override fun onTvItemClicked(tvShowEntity: TvShowEntity) {
+        currentItem = binding.viewPager.currentItem
         startActivity(
             Intent(activity, TvDetailsActivity::class.java)
                 .apply {
@@ -83,5 +90,13 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
     override fun onResume() {
         super.onResume()
         viewModel.refreshWatchlist()
+
+        //TODO try to perform this in order to prevent transform bug
+        binding.viewPager.setCurrentItem(0, true)
+        CoroutineScope(Dispatchers.IO).launch {
+            delay(50)
+            binding.viewPager.setCurrentItem(currentItem, true)
+        }
+
     }
 }
