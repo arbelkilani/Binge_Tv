@@ -25,8 +25,6 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
 
     private lateinit var binding: FragmentWatchlistBinding
 
-    private val watchlistAdapter = WatchlistAdapter(this)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -47,23 +45,16 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        initViewPager()
-
         viewModel.watchlist.observe(viewLifecycleOwner, Observer {
-            watchlistAdapter.notifyDataSetChanged(it)
+            it?.apply {
+                binding.viewPager.adapter = WatchlistAdapter(it, this@WatchlistFragment)
+                binding.viewPager.offscreenPageLimit = 3
+                binding.viewPager.setPageTransformer(false, SliderTransformer())
+            }
         })
 
         return binding.root
     }
-
-    private fun initViewPager() {
-        binding.viewPager.apply {
-            adapter = watchlistAdapter
-            offscreenPageLimit = 3
-            setPageTransformer(false, SliderTransformer())
-        }
-    }
-
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)

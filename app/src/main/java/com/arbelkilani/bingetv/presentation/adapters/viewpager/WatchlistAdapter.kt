@@ -12,10 +12,9 @@ import kotlinx.android.synthetic.main.item_watchlist.view.*
 
 
 class WatchlistAdapter(
+    private val tvShowList: List<TvShowEntity>,
     private val onTvShowClickListener: OnTvShowClickListener
 ) : PagerAdapter() {
-
-    private var tvShowList = mutableListOf<TvShowEntity>()
 
     companion object {
         private const val TAG = "WatchlistAdapter"
@@ -51,11 +50,5 @@ class WatchlistAdapter(
 
         container.addView(layout)
         return layout
-    }
-
-    fun notifyDataSetChanged(it: List<TvShowEntity>?) {
-        tvShowList.clear()
-        tvShowList.addAll(it!!)
-        notifyDataSetChanged()
     }
 }
