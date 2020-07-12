@@ -92,10 +92,10 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
         viewModel.refreshWatchlist()
 
         //TODO try to perform this in order to prevent transform bug
-        binding.viewPager.setCurrentItem(0, true)
+        binding.viewPager.setCurrentItem(0, false)
         CoroutineScope(Dispatchers.Main).launch {
             delay(50)
-            binding.viewPager.setCurrentItem(currentItem, true)
+            binding.viewPager.setCurrentItem(currentItem, false)
         }
 
     }
