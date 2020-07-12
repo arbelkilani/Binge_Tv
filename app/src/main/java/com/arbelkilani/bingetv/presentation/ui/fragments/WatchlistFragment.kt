@@ -64,12 +64,6 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
         return binding.root
     }
 
-    override fun onHiddenChanged(hidden: Boolean) {
-        super.onHiddenChanged(hidden)
-        if (!hidden)
-            viewModel.refreshWatchlist()
-    }
-
     companion object {
         private const val TAG = "WatchlistFragment"
 
@@ -88,5 +82,6 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
     override fun onResume() {
         super.onResume()
         viewModel.refreshWatchlist()
+        binding.viewPager.setCurrentItem(0, true)
     }
 }
