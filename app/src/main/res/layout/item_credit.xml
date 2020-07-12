@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/tools">
 
     <data>
 
@@ -20,7 +21,9 @@
             android:layout_width="@dimen/item_credit_image_size"
             android:layout_height="@dimen/item_credit_image_size"
             android:scaleType="centerCrop"
-            app:civ_border_overlay="true" />
+            app:civ_border_overlay="true"
+            custom:size_poster="@{@string/w185}"
+            custom:src_poster="@{credit.profilePath}" />
 
         <TextView
             android:id="@+id/tv_cast"
