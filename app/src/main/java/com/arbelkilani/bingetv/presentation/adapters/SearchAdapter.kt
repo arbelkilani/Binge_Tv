@@ -7,12 +7,12 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.arbelkilani.bingetv.R
-import com.arbelkilani.bingetv.data.entities.tv.TvShowData
 import com.arbelkilani.bingetv.databinding.ItemTvShowSearchBinding
+import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
 import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
 
 class SearchAdapter(private val tvShowClickListener: OnTvShowClickListener) :
-    PagingDataAdapter<TvShowData, RecyclerView.ViewHolder>(TvShowComparator) {
+    PagingDataAdapter<TvShowEntity, RecyclerView.ViewHolder>(TvShowComparator) {
 
     class SearchHolder(val itemTvShowSearchBinding: ItemTvShowSearchBinding) :
         RecyclerView.ViewHolder(itemTvShowSearchBinding.root)
@@ -27,18 +27,18 @@ class SearchAdapter(private val tvShowClickListener: OnTvShowClickListener) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val tvShow = getItem(position)
         if (tvShow != null) {
-            (holder as SearchHolder).itemTvShowSearchBinding.tv = tvShow
-            holder.itemTvShowSearchBinding.itemClick = tvShowClickListener
+            (holder as SearchHolder).itemTvShowSearchBinding.tvShowEntity = tvShow
+            holder.itemTvShowSearchBinding.onTvShowClickListener = tvShowClickListener
         }
     }
 
     companion object {
-        private val TvShowComparator = object : DiffUtil.ItemCallback<TvShowData>() {
-            override fun areItemsTheSame(oldItem: TvShowData, newItem: TvShowData): Boolean {
+        private val TvShowComparator = object : DiffUtil.ItemCallback<TvShowEntity>() {
+            override fun areItemsTheSame(oldItem: TvShowEntity, newItem: TvShowEntity): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: TvShowData, newItem: TvShowData): Boolean {
+            override fun areContentsTheSame(oldItem: TvShowEntity, newItem: TvShowEntity): Boolean {
                 return oldItem == newItem
             }
         }

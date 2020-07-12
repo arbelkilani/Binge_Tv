@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/tools"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
-            name="tv"
-            type="com.arbelkilani.bingetv.data.entities.tv.TvShowData" />
+            name="tvShowEntity"
+            type="com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity" />
 
         <variable
-            name="itemClick"
+            name="onTvShowClickListener"
             type="com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener" />
 
     </data>
@@ -27,6 +28,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layoutMode="opticalBounds"
+            android:onClick="@{() -> onTvShowClickListener.onTvItemClicked(tvShowEntity)}"
             app:cardCornerRadius="@dimen/default_card_corner_radius"
             app:layout_constraintDimensionRatio="2:3"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -37,7 +39,9 @@
                 android:id="@+id/iv_item_trending"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"
+                custom:size_poster="@{@string/w185}"
+                custom:src_poster="@{tvShowEntity.poster}" />
 
             <View
                 android:layout_width="match_parent"
@@ -56,7 +60,7 @@
             android:layout_marginTop="@dimen/default_margin_min"
             android:ellipsize="end"
             android:fontFamily="@font/avenir_next_medium"
-            android:text="@{tv.name}"
+            android:text="@{tvShowEntity.name}"
             android:textColor="@color/item_trending_name_color"
             android:textSize="@dimen/item_tv_show_search_title_size"
             android:visibility="gone"

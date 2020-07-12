@@ -82,7 +82,7 @@ class TvShowRepositoryImp(
         ).flow
     }
 
-    override suspend fun search(query: String): Flow<PagingData<TvShowData>> {
+    override suspend fun search(query: String): Flow<PagingData<TvShowEntity>> {
         Log.i(TAG, "search($query)")
         return Pager(
             config = PagingConfig(PAGE_SIZE),
@@ -158,7 +158,6 @@ class TvShowRepositoryImp(
 
     override suspend fun watchlist(): List<TvShowEntity> {
         val tvShows = tvDao.watchlist(true)
-        tvShows?.map { Log.i(TAG, "item $it") }
         return tvShows?.map { tvShowData -> tvShowMapper.mapToEntity(tvShowData) }!!
     }
 

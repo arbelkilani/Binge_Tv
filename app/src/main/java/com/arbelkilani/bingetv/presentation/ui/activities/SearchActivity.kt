@@ -1,5 +1,6 @@
 package com.arbelkilani.bingetv.presentation.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -21,6 +22,7 @@ import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
 import com.arbelkilani.bingetv.presentation.listeners.RevealAnimationListener
 import com.arbelkilani.bingetv.presentation.ui.view.RevealAnimation
 import com.arbelkilani.bingetv.presentation.viewmodel.SearchViewModel
+import com.arbelkilani.bingetv.utils.Constants
 import com.arbelkilani.bingetv.utils.hideKeyboard
 import com.arbelkilani.bingetv.utils.interceptKeyboardVisibility
 import com.arbelkilani.bingetv.utils.showKeyboard
@@ -162,12 +164,12 @@ class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener, Revea
         hideKeyboard()
     }
 
-    override fun onTvItemClicked(tv: TvShowEntity) {
-        /*startActivity(
+    override fun onTvItemClicked(tvShowEntity: TvShowEntity) {
+        startActivity(
             Intent(this, TvDetailsActivity::class.java)
                 .apply {
-                    putExtra(Constants.DISCOVER_DETAILS, tv)
-                })*/
+                    putExtra(Constants.TV_SHOW_ENTITY, tvShowEntity)
+                })
     }
 
 }
