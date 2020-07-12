@@ -25,7 +25,7 @@
             android:id="@+id/card_view"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layoutMode="opticalBounds"
+            android:layoutMode="clipBounds"
             android:onClick="@{() -> itemClick.onTvItemClicked(tvEntity)}"
             app:cardCornerRadius="@dimen/default_card_corner_radius"
             app:layout_constraintDimensionRatio="2:3"
