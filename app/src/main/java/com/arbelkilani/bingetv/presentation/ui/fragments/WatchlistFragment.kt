@@ -93,7 +93,7 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
 
         //TODO try to perform this in order to prevent transform bug
         binding.viewPager.setCurrentItem(0, true)
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.Main).launch {
             delay(50)
             binding.viewPager.setCurrentItem(currentItem, true)
         }
