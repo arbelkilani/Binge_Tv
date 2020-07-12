@@ -53,4 +53,8 @@
     <string name="title_profile">Profile</string>
     <string name="air_date_label">Aired on</string>
 
+    <!-- poster size -->
+    <string name="w342" translatable="false">w342</string>
+    <string name="w185" translatable="false">w185</string>
+
 </resources>

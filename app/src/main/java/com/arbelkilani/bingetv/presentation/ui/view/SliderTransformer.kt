@@ -37,7 +37,6 @@ class SliderTransformer(offscreenPageLimit: Int) : ViewPager2.PageTransformer {
             val scaleFactor = -SCALE_FACTOR * position + DEFAULT_SCALE
             val alphaFactor = -ALPHA_FACTOR * position + DEFAULT_ALPHA
 
-            Log.i(TAG, "position = $position")
 
             when {
                 position <= 0f -> {
@@ -53,12 +52,14 @@ class SliderTransformer(offscreenPageLimit: Int) : ViewPager2.PageTransformer {
                         -(width / DEFAULT_TRANSLATION_FACTOR) * position
                     alpha = alphaFactor
 
+                    Log.i(TAG, "position = $position")
+
                 }
                 else -> {
-                    translationX = DEFAULT_TRANSLATION_X
-                    scaleX = DEFAULT_SCALE
-                    scaleY = DEFAULT_SCALE
-                    alpha = DEFAULT_ALPHA
+                    //translationX = DEFAULT_TRANSLATION_X
+                    //scaleX = DEFAULT_SCALE
+                    //scaleY = DEFAULT_SCALE
+                    alpha = 0f
                 }
             }
         }

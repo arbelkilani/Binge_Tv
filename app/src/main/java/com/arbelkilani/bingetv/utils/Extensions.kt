@@ -14,6 +14,7 @@ import android.text.SpannableStringBuilder
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewTreeObserver
@@ -41,12 +42,16 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 
-@BindingAdapter("android:src_poster")
-fun bindPoster(view: ImageView, url: String?) {
+@BindingAdapter(value = ["custom:src_poster", "custom:size_poster"], requireAll = false)
+fun bindPoster(view: ImageView, url: String?, sizePoster: String?) {
     url?.let {
-        Picasso.get().load(url)
+        val link = String.format("https://image.tmdb.org/t/p/%s%s", sizePoster, it)
+        Log.i("TAG++", "link = $link")
+        Picasso.get().load(link)
             .placeholder(R.drawable.placeholder)
             .error(R.drawable.placeholder)
+            .fit()
+            .centerCrop()
             .into(view)
     }
 }

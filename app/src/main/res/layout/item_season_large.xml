@@ -152,7 +152,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/poster_height"
                 android:scaleType="centerCrop"
-                android:src_poster="@{seasonEntity.poster}"
                 tools:src="@mipmap/ic_launcher_foreground" />
 
         </androidx.cardview.widget.CardView>

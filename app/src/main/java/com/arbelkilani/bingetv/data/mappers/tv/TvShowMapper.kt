@@ -27,7 +27,7 @@ class TvShowMapper : Mapper<TvShowEntity, TvShowData> {
             type = type.type,
             voteAverage = type.voteAverage,
             homepage = type.homepage,
-            posterPath = type.poster?.removeRange(0, basePoster.length),
+            posterPath = type.poster,
             backdropPath = type.backdrop,
             watched = type.watched,
             watchlist = type.watchlist
@@ -60,11 +60,7 @@ class TvShowMapper : Mapper<TvShowEntity, TvShowData> {
                 seasonMapper.mapToEntity(seasonData)
             },
             backdrop = baseBackdrop + type.backdropPath,
-            poster = if (type.posterPath != null && type.posterPath!!.contains("http")) type.posterPath else String.format(
-                "%s%s",
-                basePoster,
-                type.posterPath
-            ),
+            poster = type.posterPath,
             watched = type.watched,
             watchlist = type.watchlist
         )

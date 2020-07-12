@@ -52,6 +52,7 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
         binding.viewPager.offscreenPageLimit = 3
         (binding.viewPager.getChildAt(0) as RecyclerView).overScrollMode =
             View.OVER_SCROLL_NEVER
+        binding.viewPager.setPageTransformer(SliderTransformer(3))
 
         viewModel.watchlist.observe(viewLifecycleOwner, Observer {
             it?.apply {
@@ -83,5 +84,6 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
         super.onResume()
         viewModel.refreshWatchlist()
         binding.viewPager.setCurrentItem(0, true)
+        binding.viewPager.setPageTransformer(SliderTransformer(3))
     }
 }

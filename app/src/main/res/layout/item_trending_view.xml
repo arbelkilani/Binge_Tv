@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/tools">
 
     <data>
 
@@ -36,8 +37,8 @@
                 android:id="@+id/iv_item_trending"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src_poster="@{tvEntity.poster}" />
+                custom:size_poster="@{@string/w185}"
+                custom:src_poster="@{tvEntity.poster}" />
 
             <View
                 android:layout_width="match_parent"
