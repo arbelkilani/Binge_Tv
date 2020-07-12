@@ -1,4 +1,4 @@
-package com.arbelkilani.bingetv.presentation.adapters
+package com.arbelkilani.bingetv.presentation.adapters.viewpager
 
 import android.view.Gravity
 import android.view.LayoutInflater

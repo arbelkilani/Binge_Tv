@@ -7,11 +7,12 @@ import com.arbelkilani.bingetv.R
 import kotlin.math.abs
 
 
-class CustomTransformer : ViewPager.PageTransformer {
+class CarouselTransformer : ViewPager.PageTransformer {
 
-    private val TAG = CustomTransformer::class.java.simpleName
+    private val TAG = CarouselTransformer::class.java.simpleName
 
     companion object {
+        const val TAG = "CarouselTransformer"
         const val DEFAULT_ELEVATION_VALUE = 0f
         const val DEFAULT_ALPHA_VALUE = 1f
     }

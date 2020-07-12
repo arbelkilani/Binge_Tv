@@ -6,12 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.databinding.FragmentWatchlistBinding
+import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
+import com.arbelkilani.bingetv.presentation.adapters.viewpager.WatchlistAdapter
+import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
+import com.arbelkilani.bingetv.presentation.ui.view.SliderTransformer
 import com.arbelkilani.bingetv.presentation.viewmodel.watchlist.WatchlistViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class WatchlistFragment : Fragment() {
+class WatchlistFragment : Fragment(), OnTvShowClickListener {
 
     private val viewModel: WatchlistViewModel by viewModel()
 
@@ -37,6 +42,20 @@ class WatchlistFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+        viewModel.watchlist.observe(viewLifecycleOwner, Observer {
+            binding.viewPager.apply {
+                adapter =
+                    WatchlistAdapter(
+                        it,
+                        this@WatchlistFragment
+                    )
+                offscreenPageLimit = 3
+                //pageMargin = resources.getDimensionPixelOffset(R.dimen.view_pager_margin)
+                //currentItem = it.size / 2
+                setPageTransformer(false, SliderTransformer())
+            }
+        })
+
         return binding.root
     }
 
@@ -45,5 +64,9 @@ class WatchlistFragment : Fragment() {
 
         @JvmStatic
         fun newInstance() = WatchlistFragment()
+    }
+
+    override fun onTvItemClicked(tvShowEntity: TvShowEntity) {
+
     }
 }

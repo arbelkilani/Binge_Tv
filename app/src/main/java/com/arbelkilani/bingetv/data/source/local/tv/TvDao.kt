@@ -22,4 +22,7 @@ interface TvDao {
     @Query("SELECT * FROM tv_table")
     suspend fun getAllTvShows(): List<TvShowData>?
 
+    @Query("SELECT * FROM tv_table WHERE watchlist=:state")
+    suspend fun watchlist(state: Boolean): List<TvShowData>?
+
 }

@@ -156,6 +156,12 @@ class TvShowRepositoryImp(
         }
     }
 
+    override suspend fun watchlist(): List<TvShowEntity> {
+        val tvShows = tvDao.watchlist(true)
+        tvShows?.map { Log.i(TAG, "item $it") }
+        return tvShows?.map { tvShowData -> tvShowMapper.mapToEntity(tvShowData) }!!
+    }
+
     override suspend fun saveWatchlist(
         watchlist: Boolean,
         tvShowEntity: TvShowEntity

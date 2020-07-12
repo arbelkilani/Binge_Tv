@@ -35,7 +35,7 @@ val ViewModelModule = module {
             get()
         )
     }
-    viewModel { WatchlistViewModel() }
+    viewModel { WatchlistViewModel(get()) }
 
 }
 

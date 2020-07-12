@@ -15,11 +15,11 @@ import com.arbelkilani.bingetv.databinding.FragmentDiscoverBinding
 import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
 import com.arbelkilani.bingetv.presentation.adapters.DataLoadStateAdapter
 import com.arbelkilani.bingetv.presentation.adapters.OnTheAirAdapter
-import com.arbelkilani.bingetv.presentation.adapters.TrendingAdapter
+import com.arbelkilani.bingetv.presentation.adapters.viewpager.TrendingAdapter
 import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
 import com.arbelkilani.bingetv.presentation.ui.activities.SearchActivity
 import com.arbelkilani.bingetv.presentation.ui.activities.TvDetailsActivity
-import com.arbelkilani.bingetv.presentation.ui.view.CustomTransformer
+import com.arbelkilani.bingetv.presentation.ui.view.CarouselTransformer
 import com.arbelkilani.bingetv.presentation.viewmodel.discover.DiscoverViewModel
 import com.arbelkilani.bingetv.utils.Constants
 import com.arbelkilani.bingetv.utils.getMenuItemAxis
@@ -48,11 +48,15 @@ class DiscoverFragment : Fragment(), OnTvShowClickListener {
                 .catch { cause -> Log.i(TAG, "cause = ${cause.localizedMessage}") }
                 .collect {
                     binding.viewPager.apply {
-                        adapter = TrendingAdapter(it, this@DiscoverFragment)
+                        adapter =
+                            TrendingAdapter(
+                                it,
+                                this@DiscoverFragment
+                            )
                         currentItem = it.size / 2
                         offscreenPageLimit = 3
                         pageMargin = resources.getDimensionPixelOffset(R.dimen.view_pager_margin)
-                        setPageTransformer(false, CustomTransformer())
+                        setPageTransformer(false, CarouselTransformer())
                     }
                 }
         }

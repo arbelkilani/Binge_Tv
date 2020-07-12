@@ -8,6 +8,7 @@ import com.arbelkilani.bingetv.domain.usecase.*
 import com.arbelkilani.bingetv.domain.usecase.episode.UpdateEpisodeUseCase
 import com.arbelkilani.bingetv.domain.usecase.season.GetSeasonDetailsUseCase
 import com.arbelkilani.bingetv.domain.usecase.season.UpdateSeasonUseCase
+import com.arbelkilani.bingetv.domain.usecase.tv.GetWatchListUseCase
 import com.arbelkilani.bingetv.domain.usecase.tv.UpdateTvShowUseCase
 import org.koin.dsl.module
 
@@ -36,6 +37,9 @@ val UseCasesModule = module {
     single { createGetSearchTvShowUseCase(get()) }
 
     single { updateTvShowUseCase(get()) }
+
+    // tv show
+    single { getWatchlistUseCase(get()) }
 
     // season
     single { getSeasonDetailsUseCase(get()) }
@@ -90,6 +94,7 @@ fun updateTvShowUseCase(tvShowRepository: TvShowRepository): UpdateTvShowUseCase
     return UpdateTvShowUseCase(tvShowRepository)
 }
 
+// season
 fun getSeasonDetailsUseCase(seasonRepository: SeasonRepository): GetSeasonDetailsUseCase {
     return GetSeasonDetailsUseCase(seasonRepository)
 }
@@ -98,6 +103,12 @@ fun updateSeasonUseCase(seasonRepository: SeasonRepository): UpdateSeasonUseCase
     return UpdateSeasonUseCase(seasonRepository)
 }
 
+// episode
 fun updateEpisodeUseCase(episodeRepository: EpisodeRepository): UpdateEpisodeUseCase {
     return UpdateEpisodeUseCase(episodeRepository)
+}
+
+// tv show
+fun getWatchlistUseCase(tvShowRepository: TvShowRepository): GetWatchListUseCase {
+    return GetWatchListUseCase(tvShowRepository)
 }
