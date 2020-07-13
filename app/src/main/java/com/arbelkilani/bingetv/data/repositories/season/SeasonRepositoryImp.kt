@@ -3,8 +3,10 @@ package com.arbelkilani.bingetv.data.repositories.season
 import android.util.Log
 import com.arbelkilani.bingetv.data.entities.base.Resource
 import com.arbelkilani.bingetv.data.mappers.season.SeasonMapper
+import com.arbelkilani.bingetv.data.mappers.tv.TvShowMapper
 import com.arbelkilani.bingetv.data.source.local.episode.EpisodeDao
 import com.arbelkilani.bingetv.data.source.local.season.SeasonDao
+import com.arbelkilani.bingetv.data.source.local.tv.TvDao
 import com.arbelkilani.bingetv.data.source.remote.apiservice.ApiTmdbService
 import com.arbelkilani.bingetv.domain.entities.season.SeasonEntity
 import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
@@ -13,10 +15,12 @@ import com.arbelkilani.bingetv.domain.repositories.SeasonRepository
 class SeasonRepositoryImp(
     private val apiTmdbService: ApiTmdbService,
     private val seasonDao: SeasonDao,
-    private val episodeDao: EpisodeDao
+    private val episodeDao: EpisodeDao,
+    private val tvDao: TvDao
 ) : SeasonRepository {
 
     private val seasonMapper = SeasonMapper()
+    private val tvShowMapper = TvShowMapper()
 
     companion object {
         private const val TAG = "SeasonRepository"
@@ -25,21 +29,37 @@ class SeasonRepositoryImp(
     override suspend fun saveWatched(
         watched: Boolean,
         seasonEntity: SeasonEntity,
-        tvShowId: Int
+        tvShowEntity: TvShowEntity
     ): SeasonEntity? {
-        val seasonData = seasonMapper.mapFromEntity(seasonEntity)
-        seasonData.watched = watched
-        seasonData.tv_season = tvShowId
-        seasonData.watchedCount = seasonEntity.episodeCount
 
-        try {
-            seasonDao.saveSeason(seasonData)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Log.e(TAG, "saveWatched : ${e.localizedMessage}")
+        tvShowEntity.seasons.map {
+            if (it.id == seasonEntity.id) {
+                it.watched = watched
+                it.watchedCount = if (watched) it.episodeCount else 0
+                val seasonData = seasonMapper.mapFromEntity(it)
+                seasonData.tv_season = tvShowEntity.id
+                seasonDao.saveSeason(seasonData)
+            }
         }
+        // map seasons in tvShowEntity in order to update parameters watched and watchCount
+        // create season data item and save it to database
 
-        return seasonMapper.mapToEntity(seasonData)
+        var count = 0
+        tvShowEntity.seasons.map {
+            if (it.watched)
+                count++
+            else
+                count--
+        } // calculate seasons count set as watched to compare to seasons size and update tvShow watched state
+
+        tvShowEntity.watched = count == tvShowEntity.seasons.size
+        tvDao.saveTv(tvShowMapper.mapFromEntity(tvShowEntity)) // save tvShow item
+
+        seasonEntity.watched = watched
+        seasonEntity.watchedCount =
+            if (watched) seasonEntity.episodeCount else 0 // this item is updated and should be returned to UI.
+
+        return seasonEntity
     }
 
     override suspend fun getSeasonDetails(

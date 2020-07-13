@@ -8,7 +8,7 @@ interface SeasonRepository {
     suspend fun saveWatched(
         watched: Boolean,
         seasonEntity: SeasonEntity,
-        tvShowId: Int
+        tvShowEntity: TvShowEntity
     ): SeasonEntity?
 
     suspend fun getSeasonDetails(

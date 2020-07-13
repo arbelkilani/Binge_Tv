@@ -90,7 +90,7 @@ class TvDetailsActivityViewModel constructor(
                 updateSeasonUseCase.saveWatched(
                     state,
                     seasonEntity,
-                    extraTvShowEntity.id
+                    _tvShowEntity.value!!
                 )
             }
         }

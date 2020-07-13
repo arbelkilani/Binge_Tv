@@ -21,7 +21,7 @@ val RepositoriesModule = module {
 
     single { tvShowRepository(get(), get(), get(), get()) }
 
-    single { seasonRepository(get(), get(), get()) }
+    single { seasonRepository(get(), get(), get(), get()) }
 
     single { episodeRepository(get(), get()) }
 }
@@ -36,9 +36,10 @@ fun episodeRepository(
 fun seasonRepository(
     apiTmdbService: ApiTmdbService,
     seasonDao: SeasonDao,
-    episodeDao: EpisodeDao
+    episodeDao: EpisodeDao,
+    tvDao: TvDao
 ): SeasonRepository {
-    return SeasonRepositoryImp(apiTmdbService, seasonDao, episodeDao)
+    return SeasonRepositoryImp(apiTmdbService, seasonDao, episodeDao, tvDao)
 }
 
 @ExperimentalCoroutinesApi
