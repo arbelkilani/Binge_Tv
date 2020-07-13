@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/tools">
 
     <data>
 
@@ -126,8 +127,8 @@
                     android:fontFamily="@font/avenir_next_regular"
                     android:gravity="center_horizontal"
                     android:padding="@dimen/details_bottom_sheet_padding"
-                    android:text="@{String.valueOf(tvShowEntity.voteAverage)}"
-                    android:textSize="@dimen/details_bottom_sheet_rate_text_size" />
+                    android:textSize="@dimen/details_bottom_sheet_rate_text_size"
+                    custom:vote_average="@{tvShowEntity.voteAverage}" />
 
             </RelativeLayout>
 

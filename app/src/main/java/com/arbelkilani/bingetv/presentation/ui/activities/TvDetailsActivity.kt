@@ -222,7 +222,6 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
         watchlistView.setOnClickListener {
             viewModel.saveWatchlist(!watchlistView.isSelected)
             watchlistView.isSelected = !watchlistView.isSelected
-            popupWindow.dismiss()
         }
 
         val watchedView = layout.findViewById<TextView>(R.id.tv_action_watched)
@@ -230,7 +229,6 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
         watchedView.setOnClickListener {
             viewModel.saveWatched(!watchedView.isSelected)
             watchedView.isSelected = !watchedView.isSelected
-            popupWindow.dismiss()
         }
 
     }

@@ -72,6 +72,7 @@ class TvDetailsActivityViewModel constructor(
         scope.launch(Dispatchers.IO) {
             val resulted = updateTvShowUseCase.saveWatched(watched, _tvShowEntity.value!!)
             _tvShowEntity.postValue(resulted)
+            _seasons.postValue(_tvShowEntity.value?.seasons)
         }
     }
 

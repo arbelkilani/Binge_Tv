@@ -127,25 +127,16 @@ class TvShowRepositoryImp(
 
         try {
             tvShowEntity.watched = watched
-            tvShowEntity.seasons.map {
-                it.watched = tvShowEntity.watched
-                if (tvShowEntity.watched) {
-                    //it.watchedEpisodeCount = it.episodeCount //TODO check after changing
-                    //it.progress = (it.watchedEpisodeCount / it.episodeCount) * 100
-                } else {
-                    //it.watchedEpisodeCount = 0
-                    //it.progress = 0
-                }
+            tvShowEntity.seasons.map { seasonEntity ->
+                seasonEntity.watched = tvShowEntity.watched
+                seasonEntity.watchedCount =
+                    if (tvShowEntity.watched) seasonEntity.episodeCount else 0
+                val seasonData = seasonMapper.mapFromEntity(seasonEntity)
+                seasonData.tv_season = tvShowEntity.id
+                seasonDao.saveSeason(seasonData)
             }
 
             tvDao.saveTv(tvShowMapper.mapFromEntity(tvShowEntity))
-
-            for (seasonEntity in tvShowEntity.seasons) {
-                val seasonData = seasonMapper.mapFromEntity(seasonEntity)
-                seasonData.tv_season = tvShowEntity.id
-                seasonData.watched = tvShowEntity.watched
-                seasonDao.saveSeason(seasonData)
-            }
 
             return tvShowEntity
         } catch (e: Exception) {

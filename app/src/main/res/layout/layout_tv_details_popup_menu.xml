@@ -46,8 +46,7 @@
             android:paddingEnd="15dp"
             android:paddingBottom="10dp"
             android:text="@string/action_watched"
-            android:textColor="@color/toolbar_title_color"
-            android:visibility="gone" />
+            android:textColor="@color/toolbar_title_color" />
 
     </LinearLayout>
 
