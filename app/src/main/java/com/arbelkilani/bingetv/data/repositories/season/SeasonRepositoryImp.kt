@@ -2,6 +2,7 @@ package com.arbelkilani.bingetv.data.repositories.season
 
 import android.util.Log
 import com.arbelkilani.bingetv.data.entities.base.Resource
+import com.arbelkilani.bingetv.data.mappers.episode.EpisodeMapper
 import com.arbelkilani.bingetv.data.mappers.season.SeasonMapper
 import com.arbelkilani.bingetv.data.mappers.tv.TvShowMapper
 import com.arbelkilani.bingetv.data.source.local.episode.EpisodeDao
@@ -21,6 +22,7 @@ class SeasonRepositoryImp(
 
     private val seasonMapper = SeasonMapper()
     private val tvShowMapper = TvShowMapper()
+    private val episodeMapper = EpisodeMapper()
 
     companion object {
         private const val TAG = "SeasonRepository"
@@ -71,17 +73,40 @@ class SeasonRepositoryImp(
             seasonNumber = seasonEntity.seasonNumber
         )
 
+        Log.i("TAG++", "season watched = ${seasonEntity.watched}")
+
         val seasonLocal = seasonDao.getSeason(seasonEntity.id)
-        seasonLocal?.let { seasonData ->
-            response.watched = seasonData.watched
-            response.watchedCount = seasonData.watchedCount
-            response.episodes.map { episodeData ->
-                episodeData.season_episode = seasonEntity.id
-                episodeData.tv_episode = tvShowEntity.id
-                episodeData.watched = seasonData.watched
-                episodeDao.saveEpisode(episodeData)
+        val episodeLocal = episodeDao.getEpisodes(seasonEntity.id)
+
+        response.watched = seasonEntity.watched
+        response.watchedCount = seasonEntity.watchedCount
+        response.episodes.map { remote ->
+            remote.tv_episode = tvShowEntity.id
+            remote.season_episode = seasonEntity.id
+            episodeLocal?.apply {
+                if (isEmpty()) {
+                    remote.watched = seasonEntity.watched
+                    episodeDao.saveEpisode(remote)
+                } else {
+
+                    map {
+                        Log.i("TAG++", "it = $it")
+                        if (remote.id == it.id) {
+                            remote.watched = it.watched
+                        }
+                    }
+                }
             }
         }
+
+        //FIXME
+        // user access list of episodes
+        // select all episodes
+        // back to seasons list -> found season checked
+        // uncheck season -> should uncheck episodes
+        // but if user select some episodes
+        // back to season list -> found season unchecked
+        // back to details ?
 
         Resource.success(seasonMapper.mapToEntity(response))
     } catch (e: Exception) {
