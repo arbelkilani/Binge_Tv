@@ -43,7 +43,6 @@ class SeasonDetailsViewModel(
             val response = getSeasonDetailsUseCase.invoke(extraTvShowEntity, extraSeasonEntity)
             response.data?.let {
                 it.episodeCount = extraSeasonEntity.episodeCount
-                //it.progress = it.watchedCount * 100 / it.episodeCount
                 _season.postValue(it)
                 _episodes.postValue(it.episodes)
             }
@@ -71,6 +70,8 @@ class SeasonDetailsViewModel(
             } else {
                 seasonValue.watchedCount--
             }
+
+            seasonValue.watched = seasonValue.watchedCount == extraSeasonEntity.episodeCount
             _season.postValue(seasonValue)
         }
 
@@ -78,7 +79,6 @@ class SeasonDetailsViewModel(
     }
 
     fun updateSeasonData(): SeasonEntity {
-        extraSeasonEntity.watchedCount = _season.value?.watchedCount!!
-        return extraSeasonEntity
+        return _season.value!!
     }
 }

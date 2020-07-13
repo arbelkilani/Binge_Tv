@@ -9,11 +9,6 @@ class SeasonMapper : Mapper<SeasonEntity, SeasonData> {
 
     private val episodeMapper = EpisodeMapper()
 
-    companion object {
-        private const val baseBackdrop = "https://image.tmdb.org/t/p/w780"
-        private const val basePoster = "https://image.tmdb.org/t/p/w185"
-    }
-
     override fun mapFromEntity(type: SeasonEntity): SeasonData {
         return SeasonData(
             id = type.id,
@@ -22,7 +17,7 @@ class SeasonMapper : Mapper<SeasonEntity, SeasonData> {
             name = type.name,
             overview = type.overview,
             airDate = type.airDate,
-            posterPath = type.poster.removeRange(0, basePoster.length),
+            posterPath = type.poster,
             watched = type.watched,
             watchedCount = type.watchedCount
         )
@@ -36,11 +31,7 @@ class SeasonMapper : Mapper<SeasonEntity, SeasonData> {
             name = type.name,
             overview = type.overview,
             airDate = type.airDate,
-            poster = if (type.posterPath.contains("http")) type.posterPath else String.format(
-                "%s%s",
-                basePoster,
-                type.posterPath
-            ),
+            poster = type.posterPath,
             watched = type.watched,
             watchedCount = type.watchedCount,
             episodes = type.episodes.map { episodeMapper.mapToEntity(it) }

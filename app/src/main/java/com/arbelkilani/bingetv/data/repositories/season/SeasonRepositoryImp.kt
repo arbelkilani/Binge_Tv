@@ -30,6 +30,8 @@ class SeasonRepositoryImp(
         val seasonData = seasonMapper.mapFromEntity(seasonEntity)
         seasonData.watched = watched
         seasonData.tv_season = tvShowId
+        seasonData.watchedCount = seasonEntity.episodeCount
+
         try {
             seasonDao.saveSeason(seasonData)
         } catch (e: Exception) {
@@ -37,8 +39,7 @@ class SeasonRepositoryImp(
             Log.e(TAG, "saveWatched : ${e.localizedMessage}")
         }
 
-        seasonEntity.watched = watched
-        return seasonEntity
+        return seasonMapper.mapToEntity(seasonData)
     }
 
     override suspend fun getSeasonDetails(
@@ -53,6 +54,7 @@ class SeasonRepositoryImp(
         seasonLocal?.let {
             response.watched = it.watched
             response.watchedCount = it.watchedCount
+            response.episodes.map { episodeData -> episodeData.watched = it.watched }
         }
 
         val episodesLocal = episodeDao.getEpisodes(response.id)

@@ -15,6 +15,5 @@ data class SeasonEntity(
     var poster: String = "",
     var watched: Boolean = false,
     var watchedCount: Int = 0,
-    var progress: Int = 0,
     var episodes: List<EpisodeEntity> = listOf()
 ) : Parcelable

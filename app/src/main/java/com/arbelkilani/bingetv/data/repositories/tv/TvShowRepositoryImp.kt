@@ -92,9 +92,11 @@ class TvShowRepositoryImp(
 
     override suspend fun tvShowEntityResponse(id: Int): Resource<TvShowEntity> =
         try {
-
             val tvShowData = apiTmdbService.getTvDetails(id, "videos,images")
             val localSeasons = seasonDao.getSeasons(id)
+
+            tvShowData.seasons.map { Log.i("TAG++", "remote seasons = $it") } //TODO REMOVE
+            localSeasons?.map { Log.i("TAG++", "local seasons = $it") } //TODO REMOVE
 
             tvShowData.seasons.map { remote ->
                 localSeasons?.map { local ->

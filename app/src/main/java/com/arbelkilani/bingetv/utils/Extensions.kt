@@ -14,7 +14,6 @@ import android.text.SpannableStringBuilder
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewTreeObserver
@@ -46,7 +45,6 @@ import java.util.concurrent.TimeUnit
 fun bindPoster(view: ImageView, url: String?, sizePoster: String?) {
     url?.let {
         val link = String.format("https://image.tmdb.org/t/p/%s%s", sizePoster, it)
-        Log.i("TAG++", "link = $link")
         Picasso.get().load(link)
             .placeholder(R.drawable.placeholder)
             .error(R.drawable.placeholder)
@@ -71,7 +69,7 @@ fun setSelected(view: ImageView, selected: Boolean) {
     view.isSelected = selected
 }
 
-@BindingAdapter(value = ["android:watched", "android:count"], requireAll = true)
+@BindingAdapter(value = ["custom:watched", "custom:count"], requireAll = true)
 fun calculatedProgress(view: ProgressBar, watched: Int, count: Int) {
     if (count == 0)
         return

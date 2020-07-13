@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/tools"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -116,20 +117,20 @@
                     android:layout_height="6dp"
                     android:layout_marginEnd="5dp"
                     android:layout_weight="0.8"
-                    android:count="@{seasonEntity.episodeCount}"
                     android:indeterminate="false"
                     android:progressDrawable="@drawable/rounded_corners_progress_bar"
-                    android:watched="@{seasonEntity.watchedCount}" />
+                    custom:count="@{seasonEntity.episodeCount}"
+                    custom:watched="@{seasonEntity.watchedCount}" />
 
                 <TextView
                     android:id="@+id/tv_episode_count"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
+                    android:layout_marginBottom="2dp"
                     android:layout_weight="0.2"
                     android:fontFamily="@font/avenir_next_regular"
                     android:gravity="end"
-                    android:layout_marginBottom="2dp"
                     android:text="@{String.format(@string/episode_count, seasonEntity.watchedCount, seasonEntity.episodeCount)}"
                     android:textColor="@color/details_titles_text_color"
                     android:textSize="@dimen/small_text_size"
@@ -152,6 +153,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/poster_height"
                 android:scaleType="centerCrop"
+                custom:size_poster="@{@string/w185}"
+                custom:src_poster="@{seasonEntity.poster}"
                 tools:src="@mipmap/ic_launcher_foreground" />
 
         </androidx.cardview.widget.CardView>

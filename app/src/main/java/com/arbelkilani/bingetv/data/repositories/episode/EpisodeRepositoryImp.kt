@@ -31,8 +31,6 @@ class EpisodeRepositoryImp(
         seasonEntity: SeasonEntity
     ): EpisodeEntity? {
 
-        //FIXME watched always return true
-
         val episodeData = episodeMapper.mapFromEntity(episodeEntity)
         episodeData.watched = watched
         episodeData.tv_episode = tvShowEntity.id
@@ -71,6 +69,7 @@ class EpisodeRepositoryImp(
         watched: Boolean,
         tvShowEntity: TvShowEntity
     ) {
+
         val seasonData = seasonMapper.mapFromEntity(seasonEntity)
         val localSeasonData = seasonDao.getSeason(seasonEntity.id)
 
@@ -84,10 +83,8 @@ class EpisodeRepositoryImp(
             seasonData.watchedCount--
         }
 
-        //FIXME
-        // while decreasing episode watched watched value is set to false despite that seen episodes still exists in database
 
-        seasonData.watched = watched
+        seasonData.watched = seasonData.watchedCount == seasonEntity.episodeCount
         seasonData.tv_season = tvShowEntity.id
 
         try {
