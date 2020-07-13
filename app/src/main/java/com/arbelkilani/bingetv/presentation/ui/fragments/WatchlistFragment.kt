@@ -13,7 +13,6 @@ import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.databinding.FragmentWatchlistBinding
 import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
 import com.arbelkilani.bingetv.presentation.adapters.viewpager.WatchlistAdapter
-import com.arbelkilani.bingetv.presentation.adapters.viewpager.WatchlistAdapter1
 import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
 import com.arbelkilani.bingetv.presentation.ui.activities.TvDetailsActivity
 import com.arbelkilani.bingetv.presentation.ui.view.SliderTransformer
@@ -27,10 +26,6 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
     private val viewModel: WatchlistViewModel by viewModel()
 
     private lateinit var binding: FragmentWatchlistBinding
-
-    private val watchlistAdapter = WatchlistAdapter(this)
-
-    private var currentItem = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,10 +51,10 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
             it?.apply {
                 binding.viewPager.apply {
                     offscreenPageLimit = min(3, it.size)
-                    adapter = WatchlistAdapter1(it, this@WatchlistFragment)
+                    adapter = WatchlistAdapter(it, this@WatchlistFragment)
                     (getChildAt(0) as RecyclerView).overScrollMode = View.OVER_SCROLL_NEVER
                     setPageTransformer(SliderTransformer(min(3, it.size)))
-                    setCurrentItem(currentItem, false)
+                    setCurrentItem(if (tag == null) 0 else tag as Int, false)
                 }
             }
         })
@@ -75,7 +70,7 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
     }
 
     override fun onTvItemClicked(tvShowEntity: TvShowEntity) {
-        currentItem = binding.viewPager.currentItem
+        binding.viewPager.tag = binding.viewPager.currentItem
         startActivity(
             Intent(activity, TvDetailsActivity::class.java)
                 .apply {

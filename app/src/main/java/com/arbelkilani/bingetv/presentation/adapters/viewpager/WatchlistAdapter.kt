@@ -11,10 +11,9 @@ import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
 
 
 class WatchlistAdapter(
+    private val tvShowList: List<TvShowEntity>,
     private val onTvShowClickListener: OnTvShowClickListener
 ) : RecyclerView.Adapter<WatchlistAdapter.WatchlistHolder>() {
-
-    private var tvShowList = listOf<TvShowEntity>()
 
     companion object {
         private const val TAG = "WatchlistAdapter"
@@ -38,11 +37,5 @@ class WatchlistAdapter(
         holder.itemWatchlistBindingImpl.tvShowEntity = tvShowList[position]
         holder.itemWatchlistBindingImpl.tvShowListener = onTvShowClickListener
     }
-
-    fun notifyDataSetChanged(it: List<TvShowEntity>) {
-        tvShowList = it
-        notifyDataSetChanged()
-    }
-
 
 }
