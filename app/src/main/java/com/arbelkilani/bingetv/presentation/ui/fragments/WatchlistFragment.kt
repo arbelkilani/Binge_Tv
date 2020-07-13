@@ -49,11 +49,16 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
 
         viewModel.watchlist.observe(viewLifecycleOwner, Observer {
             it?.apply {
+                val pageLimit =
+                    min(
+                        MIN_OFFSCREEN_PAGE_LIMIT,
+                        if (it.isEmpty()) MIN_OFFSCREEN_PAGE_LIMIT else it.size
+                    )
                 binding.viewPager.apply {
-                    offscreenPageLimit = min(3, it.size)
+                    offscreenPageLimit = pageLimit
                     adapter = WatchlistAdapter(it, this@WatchlistFragment)
                     (getChildAt(0) as RecyclerView).overScrollMode = View.OVER_SCROLL_NEVER
-                    setPageTransformer(SliderTransformer(min(3, it.size)))
+                    setPageTransformer(SliderTransformer(pageLimit))
                     setCurrentItem(if (tag == null) 0 else tag as Int, false)
                 }
             }
@@ -64,6 +69,7 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
 
     companion object {
         private const val TAG = "WatchlistFragment"
+        private const val MIN_OFFSCREEN_PAGE_LIMIT = 3
 
         @JvmStatic
         fun newInstance() = WatchlistFragment()

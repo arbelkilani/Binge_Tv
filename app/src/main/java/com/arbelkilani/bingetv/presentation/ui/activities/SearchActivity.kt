@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.databinding.ActivitySearchBinding
 import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
-import com.arbelkilani.bingetv.presentation.adapters.DataLoadStateAdapter
 import com.arbelkilani.bingetv.presentation.adapters.SearchAdapter
+import com.arbelkilani.bingetv.presentation.adapters.dataload.DataLoadStateAdapter
 import com.arbelkilani.bingetv.presentation.listeners.KeyboardListener
 import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
 import com.arbelkilani.bingetv.presentation.listeners.RevealAnimationListener

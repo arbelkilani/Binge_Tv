@@ -1,4 +1,4 @@
-package com.arbelkilani.bingetv.presentation.adapters
+package com.arbelkilani.bingetv.presentation.adapters.dataload
 
 import android.view.ViewGroup
 import androidx.paging.LoadState
@@ -15,6 +15,9 @@ class DataLoadStateAdapter(private val retry: () -> Unit) :
         parent: ViewGroup,
         loadState: LoadState
     ): DataLoadStateViewHolder {
-        return DataLoadStateViewHolder.create(parent, retry)
+        return DataLoadStateViewHolder.create(
+            parent,
+            retry
+        )
     }
 }

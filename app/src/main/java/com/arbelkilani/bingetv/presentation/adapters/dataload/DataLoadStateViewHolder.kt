@@ -1,4 +1,4 @@
-package com.arbelkilani.bingetv.presentation.adapters
+package com.arbelkilani.bingetv.presentation.adapters.dataload
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -31,7 +31,10 @@ class DataLoadStateViewHolder(
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_load_state, parent, false)
             val binding = ItemLoadStateBinding.bind(view)
-            return DataLoadStateViewHolder(binding, retry)
+            return DataLoadStateViewHolder(
+                binding,
+                retry
+            )
         }
     }
 }
