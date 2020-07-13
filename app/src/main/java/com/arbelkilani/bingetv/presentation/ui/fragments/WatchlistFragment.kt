@@ -2,7 +2,6 @@ package com.arbelkilani.bingetv.presentation.ui.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,16 +13,14 @@ import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.databinding.FragmentWatchlistBinding
 import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
 import com.arbelkilani.bingetv.presentation.adapters.viewpager.WatchlistAdapter
+import com.arbelkilani.bingetv.presentation.adapters.viewpager.WatchlistAdapter1
 import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
 import com.arbelkilani.bingetv.presentation.ui.activities.TvDetailsActivity
 import com.arbelkilani.bingetv.presentation.ui.view.SliderTransformer
 import com.arbelkilani.bingetv.presentation.viewmodel.watchlist.WatchlistViewModel
 import com.arbelkilani.bingetv.utils.Constants
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.math.min
 
 class WatchlistFragment : Fragment(), OnTvShowClickListener {
 
@@ -55,17 +52,15 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        binding.viewPager.adapter = watchlistAdapter
-        binding.viewPager.offscreenPageLimit = 3
-        (binding.viewPager.getChildAt(0) as RecyclerView).overScrollMode =
-            View.OVER_SCROLL_NEVER
-        binding.viewPager.setPageTransformer(SliderTransformer(3))
-
         viewModel.watchlist.observe(viewLifecycleOwner, Observer {
             it?.apply {
-                (binding.viewPager.adapter as WatchlistAdapter).notifyDataSetChanged(it)
-                binding.viewPager.setPageTransformer(SliderTransformer(3))
-
+                binding.viewPager.apply {
+                    offscreenPageLimit = min(3, it.size)
+                    adapter = WatchlistAdapter1(it, this@WatchlistFragment)
+                    (getChildAt(0) as RecyclerView).overScrollMode = View.OVER_SCROLL_NEVER
+                    setPageTransformer(SliderTransformer(min(3, it.size)))
+                    setCurrentItem(currentItem, false)
+                }
             }
         })
 
@@ -91,15 +86,5 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
     override fun onResume() {
         super.onResume()
         viewModel.refreshWatchlist()
-        Log.i("TAG++", "onResume")
-        //TODO URGENT try to perform this in order to prevent transform bug still happen
-        //TODO URGENT specially when count == 4 create bug which means it depends on offScreenPage limit and its condition in SliderTransform
-        binding.viewPager.setPageTransformer(SliderTransformer(3))
-        binding.viewPager.setCurrentItem(0, false)
-        CoroutineScope(Dispatchers.Main).launch {
-            delay(100)
-            binding.viewPager.setCurrentItem(currentItem, false)
-        }
-
     }
 }
