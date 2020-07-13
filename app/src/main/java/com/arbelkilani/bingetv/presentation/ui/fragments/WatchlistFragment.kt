@@ -2,6 +2,7 @@ package com.arbelkilani.bingetv.presentation.ui.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -90,11 +91,13 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
     override fun onResume() {
         super.onResume()
         viewModel.refreshWatchlist()
-
-        //TODO try to perform this in order to prevent transform bug
+        Log.i("TAG++", "onResume")
+        //TODO URGENT try to perform this in order to prevent transform bug still happen
+        //TODO URGENT specially when count == 4 create bug which means it depends on offScreenPage limit and its condition in SliderTransform
+        binding.viewPager.setPageTransformer(SliderTransformer(3))
         binding.viewPager.setCurrentItem(0, false)
         CoroutineScope(Dispatchers.Main).launch {
-            delay(50)
+            delay(100)
             binding.viewPager.setCurrentItem(currentItem, false)
         }
 

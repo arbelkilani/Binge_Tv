@@ -1,5 +1,6 @@
 package com.arbelkilani.bingetv.presentation.ui.view
 
+import android.util.Log
 import android.view.View
 import androidx.viewpager2.widget.ViewPager2
 import kotlin.math.abs
@@ -37,6 +38,7 @@ class SliderTransformer(offscreenPageLimit: Int) : ViewPager2.PageTransformer {
             val alphaFactor = -ALPHA_FACTOR * position + DEFAULT_ALPHA
 
 
+            Log.i("TAG++", "position = $position")
             when {
                 position <= 0f -> {
                     translationX = DEFAULT_TRANSLATION_X
