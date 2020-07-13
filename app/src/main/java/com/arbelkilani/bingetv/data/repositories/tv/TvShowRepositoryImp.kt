@@ -101,7 +101,6 @@ class TvShowRepositoryImp(
                         remote.watched = local.watched
                         remote.watchedCount = local.watchedCount
                     }
-
                 }
             }
 

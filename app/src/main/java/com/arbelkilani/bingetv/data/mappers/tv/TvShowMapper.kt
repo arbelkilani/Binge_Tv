@@ -19,10 +19,11 @@ class TvShowMapper : Mapper<TvShowEntity, TvShowData> {
 
         return TvShowData(
             id = type.id,
+            episodeCount = type.episodeCount,
             name = type.name,
             overview = type.overview,
             firstAirData = type.firstAirDate,
-            episodeRunTime = listOf(type.episodeRunTime),
+            runtime = type.runtime,
             status = type.status,
             type = type.type,
             voteAverage = type.voteAverage,
@@ -38,10 +39,11 @@ class TvShowMapper : Mapper<TvShowEntity, TvShowData> {
 
         return TvShowEntity(
             id = type.id,
+            episodeCount = type.episodeCount,
             name = type.name,
             overview = type.overview,
             firstAirDate = type.firstAirData,
-            episodeRunTime = if (type.episodeRunTime.isEmpty()) 0 else type.episodeRunTime[0],
+            runtime = if (type.episodeRunTime.isEmpty()) 0 else type.episodeRunTime[0],
             status = type.status,
             type = type.type,
             voteAverage = type.voteAverage,

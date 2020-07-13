@@ -67,6 +67,9 @@ data class TvShowData(
     @SerializedName("episode_run_time")
     var episodeRunTime: List<Int> = listOf(),
 
+    @ColumnInfo(name = "runtime")
+    var runtime: Int = 0,
+
     @Ignore
     @ColumnInfo(name = "first_air_date")
     @SerializedName("first_air_date")
@@ -107,10 +110,9 @@ data class TvShowData(
     @SerializedName("networks")
     var networks: List<Network> = listOf(),
 
-    @Ignore
-    @ColumnInfo(name = "number_of_episodes")
+    @ColumnInfo(name = "episode_count")
     @SerializedName("number_of_episodes")
-    var numberOfEpisodes: Int = 0,
+    var episodeCount: Int = 0,
 
     @Ignore
     @SerializedName("origin_country")

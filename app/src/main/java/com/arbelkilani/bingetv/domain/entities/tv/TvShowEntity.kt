@@ -10,10 +10,11 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class TvShowEntity(
     var id: Int = 0,
+    var episodeCount: Int = 0,
     var name: String = "",
     var overview: String = "",
     var firstAirDate: String = "",
-    var episodeRunTime: Int = 0,
+    var runtime: Int = 0,
     var status: String = "",
     var type: String = "",
     var voteAverage: Double = 0.0,
