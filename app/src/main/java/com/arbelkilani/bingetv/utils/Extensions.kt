@@ -14,7 +14,6 @@ import android.text.SpannableStringBuilder
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewTreeObserver
@@ -67,7 +66,6 @@ fun bindBackdrop(view: ImageView, url: String?) {
 
 @BindingAdapter("custom:vote_average")
 fun bindVoteAverage(view: TextView, average: Double?) {
-    Log.i("TAG++", "average = $average")
     view.text = String.format("%s", average.toString())
 }
 

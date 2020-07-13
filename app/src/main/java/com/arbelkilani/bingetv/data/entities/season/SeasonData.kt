@@ -43,7 +43,6 @@ data class SeasonData(
     @SerializedName("air_date")
     var airDate: String = "",
 
-    @Ignore
     @ColumnInfo(name = "episode_count")
     @SerializedName("episode_count")
     var episodeCount: Int = 0,

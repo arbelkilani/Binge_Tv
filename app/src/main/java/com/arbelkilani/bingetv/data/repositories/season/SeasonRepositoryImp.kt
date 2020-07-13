@@ -50,20 +50,19 @@ class SeasonRepositoryImp(
             tvId = tvShowEntity.id,
             seasonNumber = seasonEntity.seasonNumber
         )
-        val seasonLocal = seasonDao.getSeason(seasonEntity.id)
-        seasonLocal?.let {
-            response.watched = it.watched
-            response.watchedCount = it.watchedCount
-            response.episodes.map { episodeData -> episodeData.watched = it.watched }
-        }
 
-        val episodesLocal = episodeDao.getEpisodes(response.id)
-        episodesLocal?.map { local ->
-            response.episodes.map { remote ->
-                if (remote.id == local.id)
-                    remote.watched = local.watched
+        val seasonLocal = seasonDao.getSeason(seasonEntity.id)
+        seasonLocal?.let { seasonData ->
+            response.watched = seasonData.watched
+            response.watchedCount = seasonData.watchedCount
+            response.episodes.map { episodeData ->
+                episodeData.season_episode = seasonEntity.id
+                episodeData.tv_episode = tvShowEntity.id
+                episodeData.watched = seasonData.watched
+                episodeDao.saveEpisode(episodeData)
             }
         }
+
         Resource.success(seasonMapper.mapToEntity(response))
     } catch (e: Exception) {
         Log.e(TAG, "getSeasonDetails = ${e.localizedMessage}")
