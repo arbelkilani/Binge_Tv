@@ -1,6 +1,5 @@
 package com.arbelkilani.bingetv.presentation.viewmodel.season
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.arbelkilani.bingetv.domain.entities.episode.EpisodeEntity
@@ -75,8 +74,6 @@ class SeasonDetailsViewModel(
             seasonValue.watched = seasonValue.watchedCount == extraSeasonEntity.episodeCount
             _season.postValue(seasonValue)
         }
-
-        Log.i("TAG++", "_tvShow = ${_tvShow.value?.watchedCount}")
 
         return job!!
     }

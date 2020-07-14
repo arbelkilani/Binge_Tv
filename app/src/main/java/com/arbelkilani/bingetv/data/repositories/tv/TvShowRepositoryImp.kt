@@ -44,14 +44,12 @@ class TvShowRepositoryImp(
     }
 
     override suspend fun trending(): Flow<List<TvShowEntity>> {
-        Log.i(TAG, "trending()")
         val data = apiTmdbService.trending("tv", "day")
         val entities = data.results.map { tvShowMapper.mapToEntity(it) }
         return flow { emit(entities) }
     }
 
     override suspend fun discover(): Flow<PagingData<TvShowEntity>> {
-        Log.i(TAG, "discover()")
         return Pager(
             config = PagingConfig(PAGE_SIZE),
             pagingSourceFactory = { DiscoverPagingSource(apiTmdbService) }
@@ -59,7 +57,6 @@ class TvShowRepositoryImp(
     }
 
     override suspend fun airingToday(): Flow<PagingData<TvShowData>> {
-        Log.i(TAG, "airingToday()")
         return Pager(
             config = PagingConfig(PAGE_SIZE),
             pagingSourceFactory = { AiringTodayPagingSource(apiTmdbService) }
@@ -67,7 +64,6 @@ class TvShowRepositoryImp(
     }
 
     override suspend fun popular(): Flow<PagingData<TvShowData>> {
-        Log.i(TAG, "popular()")
         return Pager(
             config = PagingConfig(PAGE_SIZE),
             pagingSourceFactory = { PopularPagingSource(apiTmdbService) }
@@ -75,7 +71,6 @@ class TvShowRepositoryImp(
     }
 
     override suspend fun onTheAir(): Flow<PagingData<TvShowEntity>> {
-        Log.i(TAG, "onTheAir()")
         return Pager(
             config = PagingConfig(PAGE_SIZE),
             pagingSourceFactory = { OnTheAirPagingSource(apiTmdbService) }
@@ -83,7 +78,6 @@ class TvShowRepositoryImp(
     }
 
     override suspend fun search(query: String): Flow<PagingData<TvShowEntity>> {
-        Log.i(TAG, "search($query)")
         return Pager(
             config = PagingConfig(PAGE_SIZE),
             pagingSourceFactory = { SearchPagingSource(query, apiTmdbService) }
@@ -92,17 +86,18 @@ class TvShowRepositoryImp(
 
     override suspend fun tvShowEntityResponse(id: Int): Resource<TvShowEntity> =
         try {
-            val tvShowData = apiTmdbService.getTvDetails(id, "videos,images")
+            val tvShowData = apiTmdbService.getTvDetails(id, "")
             val localSeasons = seasonDao.getSeasons(id)
 
-            tvShowData.seasons.map { remote ->
-                localSeasons?.map { local ->
-                    if (remote.id == local.id) {
-                        remote.watched = local.watched
-                        remote.watchedCount = local.watchedCount
+            tvShowData.seasons
+                .map { remote ->
+                    localSeasons?.map { local ->
+                        if (remote.id == local.id) {
+                            remote.watched = local.watched
+                            remote.watchedCount = local.watchedCount
+                        }
                     }
                 }
-            }
 
             tvDao.getTvShow(id)?.let { localTvShow ->
                 tvShowData.watched = localTvShow.watched
@@ -113,6 +108,7 @@ class TvShowRepositoryImp(
             try {
                 val nextEpisodeData = getNextEpisodeData(id)
                 tvShowData.nextEpisode = nextEpisodeData.data
+
                 Resource.success(tvShowMapper.mapToEntity(tvShowData))
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -174,7 +170,6 @@ class TvShowRepositoryImp(
 
     override suspend fun getCredits(id: Int): Resource<CreditsResponse> =
         try {
-            Log.i(TAG, "getCredits() for item $id")
             val response = apiTmdbService.getCredits(id)
             Resource.success(response)
         } catch (e: Exception) {
@@ -183,7 +178,6 @@ class TvShowRepositoryImp(
         }
 
     override suspend fun getNextEpisodeData(id: Int): Resource<NextEpisodeData> {
-        Log.i(TAG, "getNextEpisodeData() for item $id")
         val nextEpisodeHashMap = getNextEpisodeId(id)
         if (nextEpisodeHashMap!!.isEmpty())
             return Resource.exception(Exception("next episode id is empty"), null)

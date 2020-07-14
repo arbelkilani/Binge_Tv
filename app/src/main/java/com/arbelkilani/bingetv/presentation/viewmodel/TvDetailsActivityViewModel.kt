@@ -43,7 +43,6 @@ class TvDetailsActivityViewModel constructor(
     init {
         scope.launch(Dispatchers.IO) {
             _tvShowEntity.value?.let {
-
                 getTvDetails(it)
                 getCredits(it)
             }
@@ -55,7 +54,7 @@ class TvDetailsActivityViewModel constructor(
         if (response.status == Status.SUCCESS) {
             response.data?.let {
                 _tvShowEntity.postValue(it)
-                _seasons.postValue(it.seasons)
+                _seasons.postValue(it.seasons.filter { item -> item.seasonNumber > 0 })
             }
         }
     }
@@ -70,8 +69,10 @@ class TvDetailsActivityViewModel constructor(
     fun saveWatched(watched: Boolean) {
         scope.launch(Dispatchers.IO) {
             val resulted = updateTvShowUseCase.saveWatched(watched, _tvShowEntity.value!!)
-            _tvShowEntity.postValue(resulted)
-            _seasons.postValue(_tvShowEntity.value?.seasons)
+            resulted?.let {
+                _tvShowEntity.postValue(it)
+                _seasons.postValue(it.seasons.filter { item -> item.seasonNumber > 0 })
+            }
         }
     }
 
