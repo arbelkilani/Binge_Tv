@@ -73,40 +73,37 @@ class SeasonRepositoryImp(
             seasonNumber = seasonEntity.seasonNumber
         )
 
-        Log.i("TAG++", "season watched = ${seasonEntity.watched}")
-
         val seasonLocal = seasonDao.getSeason(seasonEntity.id)
         val episodeLocal = episodeDao.getEpisodes(seasonEntity.id)
 
+        seasonLocal?.apply {
+            seasonEntity.watched =
+                watchedCount == episodeCount // set watched state depending on watch count.
+        }
+
         response.watched = seasonEntity.watched
         response.watchedCount = seasonEntity.watchedCount
-        response.episodes.map { remote ->
+        response.episodes.map { remote -> // map remote data episodes to create episode data
             remote.tv_episode = tvShowEntity.id
             remote.season_episode = seasonEntity.id
-            episodeLocal?.apply {
+            episodeLocal?.apply { // no episode state has been selected before - no episode in DB
                 if (isEmpty()) {
                     remote.watched = seasonEntity.watched
                     episodeDao.saveEpisode(remote)
-                } else {
-
+                } else { // episodes exists in DB so we need to keep there states.
                     map {
-                        Log.i("TAG++", "it = $it")
-                        if (remote.id == it.id) {
-                            remote.watched = it.watched
+                        if (seasonEntity.watchedCount == 0 || seasonEntity.watched)
+                            remote.watched =
+                                seasonEntity.watched // case where user set season as Watched/Not watched
+                        else {
+                            if (remote.id == it.id) { // case where we keep track on saved data for each episode.
+                                remote.watched = it.watched
+                            }
                         }
                     }
                 }
             }
         }
-
-        //FIXME
-        // user access list of episodes
-        // select all episodes
-        // back to seasons list -> found season checked
-        // uncheck season -> should uncheck episodes
-        // but if user select some episodes
-        // back to season list -> found season unchecked
-        // back to details ?
 
         Resource.success(seasonMapper.mapToEntity(response))
     } catch (e: Exception) {
