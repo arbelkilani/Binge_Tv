@@ -114,7 +114,7 @@ class SeasonDetailsActivity : AppCompatActivity(), OnEpisodeClickListener {
         setResult(
             Activity.RESULT_OK,
             Intent().apply {
-                putExtra(Constants.SEASON_ENTITY_REQUEST, viewModel.updateSeasonData())
+                putExtra(Constants.SEASON_ENTITY_REQUEST, viewModel.season.value)
                 putExtra(Constants.TV_SHOW_ENTITY_REQUEST, viewModel.tvShow.value)
             }
         )

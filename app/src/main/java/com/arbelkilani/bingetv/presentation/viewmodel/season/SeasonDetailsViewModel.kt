@@ -43,6 +43,7 @@ class SeasonDetailsViewModel(
             val response = getSeasonDetailsUseCase.invoke(extraTvShowEntity, extraSeasonEntity)
             response.data?.let {
                 it.episodeCount = extraSeasonEntity.episodeCount
+                it.futureEpisodeCount = extraSeasonEntity.futureEpisodeCount
                 _season.postValue(it)
                 _episodes.postValue(it.episodes)
             }
@@ -76,9 +77,5 @@ class SeasonDetailsViewModel(
         }
 
         return job!!
-    }
-
-    fun updateSeasonData(): SeasonEntity {
-        return _season.value!!
     }
 }

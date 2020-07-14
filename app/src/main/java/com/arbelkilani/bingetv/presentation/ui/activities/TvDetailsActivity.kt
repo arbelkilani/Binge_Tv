@@ -53,11 +53,11 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
             if (result.resultCode == Activity.RESULT_OK) {
 
                 result.data?.let {
-                    (rv_seasons.adapter as SeasonAdapter).notifyItemChanged(
-                        it.getParcelableExtra<SeasonEntity>(
-                            Constants.SEASON_ENTITY_REQUEST
-                        )!!
-                    )
+                    val season =
+                        it.getParcelableExtra<SeasonEntity>(Constants.SEASON_ENTITY_REQUEST)!!
+                    (rv_seasons.adapter as SeasonAdapter).notifyItemChanged(season)
+
+                    //Log.i("TAG++", "Season = $season")
 
                     viewModel.refresh(it.getParcelableExtra(Constants.TV_SHOW_ENTITY_REQUEST)!!)
                 }
