@@ -83,6 +83,8 @@ class SeasonRepositoryImp(
         seasonEntity: SeasonEntity
     ): Resource<SeasonEntity> = try {
 
+        Log.i("TAG++", "seasonEntity : $seasonEntity")
+
         val response = apiTmdbService.getSeasonDetails(
             tvId = tvShowEntity.id,
             seasonNumber = seasonEntity.seasonNumber

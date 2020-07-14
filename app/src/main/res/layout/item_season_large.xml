@@ -6,6 +6,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="seasonEntity"
             type="com.arbelkilani.bingetv.domain.entities.season.SeasonEntity" />
@@ -96,7 +98,8 @@
                     android:isSelected="@{seasonEntity.watched}"
                     android:onClick="@{(view) -> seasonClickListener.onWatchedSeasonClicked(view, seasonEntity)}"
                     android:padding="5dp"
-                    android:src="@drawable/selector_radio_button" />
+                    android:src="@drawable/selector_radio_button"
+                    android:visibility="@{seasonEntity.futureEpisodeCount == 0 ? View.VISIBLE : View.GONE}" />
 
             </RelativeLayout>
 

@@ -108,8 +108,10 @@ class TvShowRepositoryImp(
 
             tvShowData.futureEpisodesCount = futureEpisodesCount
 
-            tvShowData.seasons
-                .map { remote ->
+            tvShowData.seasons.let {
+                if (futureEpisodesCount > 0)
+                    it.last().futureEpisodeCount = futureEpisodesCount
+                it.map { remote ->
                     localSeasons?.map { local ->
                         if (remote.id == local.id) {
                             remote.futureEpisodeCount = local.futureEpisodeCount
@@ -118,6 +120,7 @@ class TvShowRepositoryImp(
                         }
                     }
                 }
+            }
 
             tvDao.getTvShow(id)?.let { localTvShow ->
                 tvShowData.watched = localTvShow.watched
@@ -128,7 +131,6 @@ class TvShowRepositoryImp(
             try {
                 val nextEpisodeData = getNextEpisodeData(id)
                 tvShowData.nextEpisode = nextEpisodeData.data
-
                 Resource.success(tvShowMapper.mapToEntity(tvShowData))
             } catch (e: Exception) {
                 e.printStackTrace()
