@@ -71,8 +71,10 @@ fun bindVoteAverage(view: TextView, average: Double?) {
 
 @BindingAdapter(value = ["custom:watched", "custom:count"], requireAll = true)
 fun bindProgressTextView(view: TextView, watched: Int, count: Int) {
-    val progress = watched * 100 / count
-    view.text = String.format("%s%%", progress.toString())
+    if (count == 0)
+        return
+    val progress = watched * 100 / count.toFloat()
+    view.text = String.format("%.1f%%", progress)
 }
 
 @BindingAdapter("android:isSelected")

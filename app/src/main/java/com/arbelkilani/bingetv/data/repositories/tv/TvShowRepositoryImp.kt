@@ -107,6 +107,7 @@ class TvShowRepositoryImp(
             tvDao.getTvShow(id)?.let { localTvShow ->
                 tvShowData.watched = localTvShow.watched
                 tvShowData.watchlist = localTvShow.watchlist
+                tvShowData.watchedCount = localTvShow.watchedCount
             }
 
             try {

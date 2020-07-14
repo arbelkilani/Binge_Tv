@@ -43,15 +43,14 @@ class TvDetailsActivityViewModel constructor(
     init {
         scope.launch(Dispatchers.IO) {
             _tvShowEntity.value?.let {
+
                 getTvDetails(it)
                 getCredits(it)
             }
         }
     }
 
-
     private suspend fun getTvDetails(extraTvShowEntity: TvShowEntity) {
-        // _tvId.postValue(extraTvShowEntity.id)
         val response = getTvDetailsUseCase.invoke(extraTvShowEntity.id)
         if (response.status == Status.SUCCESS) {
             response.data?.let {
@@ -95,6 +94,12 @@ class TvDetailsActivityViewModel constructor(
             }
         }
 
+        _tvShowEntity.postValue(_tvShowEntity.value)
+
         return job!!
+    }
+
+    fun refresh(tvShowEntity: TvShowEntity) {
+        _tvShowEntity.postValue(tvShowEntity)
     }
 }

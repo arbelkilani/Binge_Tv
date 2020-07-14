@@ -74,6 +74,9 @@ class EpisodeRepositoryImp(
 
         tvShowData.watchedCount = watchedCount
 
+        // update for the liveData
+        tvShowEntity.watchedCount = watchedCount
+
         try {
             tvDao.saveTv(tvShowData)
         } catch (e: Exception) {

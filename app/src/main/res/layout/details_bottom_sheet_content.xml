@@ -125,8 +125,8 @@
                         android:layout_weight=".85"
                         android:indeterminate="false"
                         android:progressDrawable="@drawable/rounded_corners_progress_bar"
-                        custom:count="@{15}"
-                        custom:watched="@{10}" />
+                        custom:count="@{tvShowEntity.episodeCount}"
+                        custom:watched="@{tvShowEntity.watchedCount}" />
 
                     <TextView
                         android:id="@+id/progress_tv"
@@ -138,8 +138,8 @@
                         android:fontFamily="@font/avenir_next_demi_bold"
                         android:textColor="@color/details_titles_text_color"
                         android:textSize="@dimen/small_text_size"
-                        custom:count="@{15}"
-                        custom:watched="@{10}" />
+                        custom:count="@{tvShowEntity.episodeCount}"
+                        custom:watched="@{tvShowEntity.watchedCount}" />
 
                 </LinearLayout>
 

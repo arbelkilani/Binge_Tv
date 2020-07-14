@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.databinding.ActivityDetailsTvBinding
 import com.arbelkilani.bingetv.domain.entities.season.SeasonEntity
+import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
 import com.arbelkilani.bingetv.presentation.adapters.CreditAdapter
 import com.arbelkilani.bingetv.presentation.adapters.SeasonAdapter
 import com.arbelkilani.bingetv.presentation.listeners.OnSeasonClickListener
@@ -51,10 +52,15 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
     private val getSeasonEntity =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                val receivedSeasonEntity =
-                    result.data?.getParcelableExtra<SeasonEntity>(Constants.SEASON_ENTITY_REQUEST)
-                receivedSeasonEntity?.let {
-                    (rv_seasons.adapter as SeasonAdapter).notifyItemChanged(it)
+
+                result.data?.let {
+                    (rv_seasons.adapter as SeasonAdapter).notifyItemChanged(
+                        it.getParcelableExtra<SeasonEntity>(
+                            Constants.SEASON_ENTITY_REQUEST
+                        )!!
+                    )
+
+                    viewModel.refresh(it.getParcelableExtra<TvShowEntity>(Constants.TV_SHOW_ENTITY_REQUEST)!!)
                 }
             }
         }
@@ -81,7 +87,8 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
         binding.lifecycleOwner = this
 
         viewModel.tvShowEntity.observe(this, Observer {
-            binding.tvShowEntity = it
+
+        binding.tvShowEntity = it
             flex_box_shimmer.stopShimmer()
             it.let {
                 if (it.genres.isNotEmpty() && it.networks.isNotEmpty())

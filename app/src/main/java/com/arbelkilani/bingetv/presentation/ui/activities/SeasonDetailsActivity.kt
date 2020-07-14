@@ -113,7 +113,10 @@ class SeasonDetailsActivity : AppCompatActivity(), OnEpisodeClickListener {
     override fun onBackPressed() {
         setResult(
             Activity.RESULT_OK,
-            Intent().putExtra(Constants.SEASON_ENTITY_REQUEST, viewModel.updateSeasonData())
+            Intent().apply {
+                putExtra(Constants.SEASON_ENTITY_REQUEST, viewModel.updateSeasonData())
+                putExtra(Constants.TV_SHOW_ENTITY_REQUEST, viewModel.tvShow.value)
+            }
         )
         super.onBackPressed()
     }

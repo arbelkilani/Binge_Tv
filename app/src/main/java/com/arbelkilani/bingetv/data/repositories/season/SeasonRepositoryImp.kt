@@ -45,7 +45,6 @@ class SeasonRepositoryImp(
         }
         // map seasons in tvShowEntity in order to update parameters watched and watchCount
         // create season data item and save it to database
-
         var count = 0
         tvShowEntity.seasons.map {
             if (it.watched)
@@ -55,11 +54,26 @@ class SeasonRepositoryImp(
         } // calculate seasons count set as watched to compare to seasons size and update tvShow watched state
 
         tvShowEntity.watched = count == tvShowEntity.seasons.size
-        tvDao.saveTv(tvShowMapper.mapFromEntity(tvShowEntity)) // save tvShow item
 
         seasonEntity.watched = watched
         seasonEntity.watchedCount =
             if (watched) seasonEntity.episodeCount else 0 // this item is updated and should be returned to UI.
+
+        val localTvShow = tvDao.getTvShow(tvShowEntity.id) // get local tvShow
+        var tvShowWatchedCount = 0
+        localTvShow?.apply {
+            tvShowWatchedCount = watchedCount
+        }
+
+        if (watched) { // update tv show watched count depending either season is set as watched or not.
+            tvShowWatchedCount += seasonEntity.episodeCount
+        } else {
+            tvShowWatchedCount -= seasonEntity.episodeCount
+        }
+
+        tvShowEntity.watchedCount = tvShowWatchedCount
+
+        tvDao.saveTv(tvShowMapper.mapFromEntity(tvShowEntity)) // save tvShow item
 
         return seasonEntity
     }
