@@ -160,6 +160,9 @@ data class TvShowData(
     @ColumnInfo(name = "watched")
     var watched: Boolean = false,
 
+    @ColumnInfo(name = "watched_count")
+    var watchedCount: Int = 0,
+
     @Ignore
     var nextEpisode: NextEpisodeData? = null
 

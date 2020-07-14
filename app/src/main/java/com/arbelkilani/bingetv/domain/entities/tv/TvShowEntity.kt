@@ -29,5 +29,6 @@ data class TvShowEntity(
     var poster: String? = null,
     var backdrop: String? = null,
     var watched: Boolean = false,
-    var watchlist: Boolean = false
+    var watchlist: Boolean = false,
+    var watchedCount: Int = 0
 ) : Parcelable

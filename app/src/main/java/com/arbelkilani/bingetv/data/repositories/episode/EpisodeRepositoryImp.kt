@@ -6,6 +6,7 @@ import com.arbelkilani.bingetv.data.mappers.season.SeasonMapper
 import com.arbelkilani.bingetv.data.mappers.tv.TvShowMapper
 import com.arbelkilani.bingetv.data.source.local.episode.EpisodeDao
 import com.arbelkilani.bingetv.data.source.local.season.SeasonDao
+import com.arbelkilani.bingetv.data.source.local.tv.TvDao
 import com.arbelkilani.bingetv.domain.entities.episode.EpisodeEntity
 import com.arbelkilani.bingetv.domain.entities.season.SeasonEntity
 import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
@@ -13,7 +14,8 @@ import com.arbelkilani.bingetv.domain.repositories.EpisodeRepository
 
 class EpisodeRepositoryImp(
     private val episodeDao: EpisodeDao,
-    private val seasonDao: SeasonDao
+    private val seasonDao: SeasonDao,
+    private val tvDao: TvDao
 ) : EpisodeRepository {
 
     private val episodeMapper = EpisodeMapper()
@@ -57,10 +59,27 @@ class EpisodeRepositoryImp(
         updateRelatedSeason(seasonEntity, watched, tvShowEntity)
 
         val tvShowData = tvShowMapper.mapFromEntity(tvShowEntity)
+        val localTvShowData = tvDao.getTvShow(tvShowEntity.id)
 
-        //FIXME once user clicked on last episode in this season tv should be notified that a hole season has been watched
-        // to do this we compare watched count to episode count
+        var watchedCount = tvShowData.watchedCount
+        localTvShowData?.let {
+            watchedCount = it.watchedCount
+        }
 
+        if (watched) {
+            watchedCount++
+        } else {
+            watchedCount--
+        }
+
+        tvShowData.watchedCount = watchedCount
+
+        try {
+            tvDao.saveTv(tvShowData)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.e(TAG, "update tv table = ${e.localizedMessage}")
+        }
 
     }
 
@@ -91,7 +110,7 @@ class EpisodeRepositoryImp(
             seasonDao.saveSeason(seasonData)
         } catch (e: Exception) {
             e.printStackTrace()
-            Log.e(TAG, "update tables = ${e.localizedMessage}")
+            Log.e(TAG, "update season table = ${e.localizedMessage}")
         }
     }
 

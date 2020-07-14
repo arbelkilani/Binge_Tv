@@ -69,6 +69,12 @@ fun bindVoteAverage(view: TextView, average: Double?) {
     view.text = String.format("%s", average.toString())
 }
 
+@BindingAdapter(value = ["custom:watched", "custom:count"], requireAll = true)
+fun bindProgressTextView(view: TextView, watched: Int, count: Int) {
+    val progress = watched * 100 / count
+    view.text = String.format("%s%%", progress.toString())
+}
+
 @BindingAdapter("android:isSelected")
 fun setSelected(view: ImageView, selected: Boolean) {
     view.isSelected = selected

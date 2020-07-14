@@ -31,7 +31,8 @@ class TvShowMapper : Mapper<TvShowEntity, TvShowData> {
             posterPath = type.poster,
             backdropPath = type.backdrop,
             watched = type.watched,
-            watchlist = type.watchlist
+            watchlist = type.watchlist,
+            watchedCount = type.watchedCount
         )
     }
 
@@ -64,7 +65,8 @@ class TvShowMapper : Mapper<TvShowEntity, TvShowData> {
             backdrop = baseBackdrop + type.backdropPath,
             poster = type.posterPath,
             watched = type.watched,
-            watchlist = type.watchlist
+            watchlist = type.watchlist,
+            watchedCount = type.watchedCount
         )
     }
 }
