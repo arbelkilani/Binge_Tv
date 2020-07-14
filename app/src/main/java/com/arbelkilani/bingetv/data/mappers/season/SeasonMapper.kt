@@ -19,7 +19,8 @@ class SeasonMapper : Mapper<SeasonEntity, SeasonData> {
             airDate = type.airDate,
             posterPath = type.poster,
             watched = type.watched,
-            watchedCount = type.watchedCount
+            watchedCount = type.watchedCount,
+            futureEpisodeCount = type.futureEpisodeCount
         )
     }
 
@@ -34,7 +35,8 @@ class SeasonMapper : Mapper<SeasonEntity, SeasonData> {
             poster = type.posterPath,
             watched = type.watched,
             watchedCount = type.watchedCount,
-            episodes = type.episodes.map { episodeMapper.mapToEntity(it) }
+            episodes = type.episodes.map { episodeMapper.mapToEntity(it) },
+            futureEpisodeCount = type.futureEpisodeCount
         )
     }
 }

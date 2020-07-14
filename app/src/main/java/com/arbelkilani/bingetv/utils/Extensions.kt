@@ -102,6 +102,17 @@ fun setRadioVisibility(view: ImageView, airDate: String) {
     }
 }
 
+fun checkAirDate(airDate: String): Boolean {
+    val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(airDate)
+    val today = Calendar.getInstance().time
+
+    date?.let {
+        return it > today
+    }
+
+    return false
+}
+
 @BindingAdapter("android:air_date")
 fun setAirDate(view: TextView, airDate: String) {
     val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(airDate)

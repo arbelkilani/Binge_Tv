@@ -19,6 +19,8 @@ import com.arbelkilani.bingetv.data.source.remote.apiservice.ApiTvMazeService
 import com.arbelkilani.bingetv.data.source.remote.pagingsource.*
 import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
 import com.arbelkilani.bingetv.domain.repositories.TvShowRepository
+import com.arbelkilani.bingetv.utils.Constants
+import com.arbelkilani.bingetv.utils.checkAirDate
 import com.arbelkilani.bingetv.utils.formatAirDate
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -88,11 +90,29 @@ class TvShowRepositoryImp(
         try {
             val tvShowData = apiTmdbService.getTvDetails(id, "")
             val localSeasons = seasonDao.getSeasons(id)
+            var futureEpisodesCount = 0
+
+            // this tv show is still running -> handle future episodes states.
+            // get last season episodes and count future episodes in order to get real episodes count aired.
+            if (tvShowData.status == Constants.STATUS_RETURNING_SERIES) {
+
+                val lastSeason = tvShowData.seasons[tvShowData.seasons.size - 1]
+                val lastSeasonDetails = apiTmdbService.getSeasonDetails(
+                    tvId = tvShowData.id,
+                    seasonNumber = lastSeason.seasonNumber
+                )
+                futureEpisodesCount =
+                    lastSeasonDetails.episodes.filter { checkAirDate(it.airDate) }.size
+
+            }
+
+            tvShowData.futureEpisodesCount = futureEpisodesCount
 
             tvShowData.seasons
                 .map { remote ->
                     localSeasons?.map { local ->
                         if (remote.id == local.id) {
+                            remote.futureEpisodeCount = local.futureEpisodeCount
                             remote.watched = local.watched
                             remote.watchedCount = local.watchedCount
                         }
@@ -123,16 +143,36 @@ class TvShowRepositoryImp(
     override suspend fun saveWatched(watched: Boolean, tvShowEntity: TvShowEntity): TvShowEntity? {
 
         try {
+
             tvShowEntity.watched = watched
             tvShowEntity.seasons.map { seasonEntity ->
-                seasonEntity.watched = tvShowEntity.watched
-                seasonEntity.watchedCount =
-                    if (tvShowEntity.watched) seasonEntity.episodeCount else 0
+
+                // check if at most one season get future episodes.
+                // if future episodes exists, get related season and update it
+                // else update other seasons standard.
+                val seasonWatchedCount: Int =
+                    if (tvShowEntity.futureEpisodesCount > 0) {
+                        if (seasonEntity.seasonNumber == tvShowEntity.seasons.size) {
+                            if (tvShowEntity.watched) (seasonEntity.episodeCount - tvShowEntity.futureEpisodesCount) else 0
+                        } else {
+                            if (tvShowEntity.watched) seasonEntity.episodeCount else 0
+                        }
+                    } else {
+                        if (tvShowEntity.watched) seasonEntity.episodeCount else 0
+                    }
+
+                seasonEntity.watchedCount = seasonWatchedCount
+                seasonEntity.futureEpisodeCount =
+                    seasonEntity.episodeCount - seasonEntity.watchedCount
+                seasonEntity.watched = seasonEntity.watchedCount == seasonEntity.episodeCount
                 val seasonData = seasonMapper.mapFromEntity(seasonEntity)
                 seasonData.tv_season = tvShowEntity.id
+
                 seasonDao.saveSeason(seasonData)
             }
-            tvShowEntity.watchedCount = if (watched) tvShowEntity.episodeCount else 0
+
+            tvShowEntity.watchedCount =
+                if (watched) (tvShowEntity.episodeCount - tvShowEntity.futureEpisodesCount) else 0
 
             tvDao.saveTv(tvShowMapper.mapFromEntity(tvShowEntity))
 

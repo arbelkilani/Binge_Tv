@@ -30,5 +30,6 @@ data class TvShowEntity(
     var backdrop: String? = null,
     var watched: Boolean = false,
     var watchlist: Boolean = false,
-    var watchedCount: Int = 0
+    var watchedCount: Int = 0,
+    var futureEpisodesCount: Int = 0
 ) : Parcelable

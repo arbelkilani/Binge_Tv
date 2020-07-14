@@ -8,6 +8,8 @@ object Constants {
     const val SEASON_ENTITY_REQUEST: String = "season_entity_request"
     const val TV_SHOW_ENTITY_REQUEST: String = "tv_show_entity_request"
 
+    const val STATUS_RETURNING_SERIES = "Returning Series"
+
     const val DISCOVER_DETAILS = "discover_fragment_to_details"
     const val SPLASH_DASHBOARD_DATA = "splash_to_dashboard_data"
     const val AIRING_TODAY_PARAM = "airing_today_param"

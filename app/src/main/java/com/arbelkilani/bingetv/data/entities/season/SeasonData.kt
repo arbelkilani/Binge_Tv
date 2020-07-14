@@ -67,8 +67,10 @@ data class SeasonData(
     var watched: Boolean = false,
 
     @ColumnInfo(name = "watched_count")
-    var watchedCount: Int = 0
+    var watchedCount: Int = 0,
 
+    @ColumnInfo(name = "future_episode_count")
+    var futureEpisodeCount: Int = 0
 
 ) : Parcelable {
 
