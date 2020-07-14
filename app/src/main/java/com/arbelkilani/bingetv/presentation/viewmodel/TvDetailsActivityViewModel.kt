@@ -54,7 +54,7 @@ class TvDetailsActivityViewModel constructor(
         if (response.status == Status.SUCCESS) {
             response.data?.let {
                 _tvShowEntity.postValue(it)
-                _seasons.postValue(it.seasons.filter { item -> item.seasonNumber > 0 })
+                _seasons.postValue(it.seasons)
             }
         }
     }
@@ -71,7 +71,7 @@ class TvDetailsActivityViewModel constructor(
             val resulted = updateTvShowUseCase.saveWatched(watched, _tvShowEntity.value!!)
             resulted?.let {
                 _tvShowEntity.postValue(it)
-                _seasons.postValue(it.seasons.filter { item -> item.seasonNumber > 0 })
+                _seasons.postValue(it.seasons)
             }
         }
     }

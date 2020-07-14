@@ -59,9 +59,11 @@ class TvShowMapper : Mapper<TvShowEntity, TvShowData> {
                 if (video.site == "YouTube") video.key else ""
             },
             seasonsCount = String.format("%d seasons", type.numberOfSeasons),
-            seasons = type.seasons.map { seasonData ->
-                seasonMapper.mapToEntity(seasonData)
-            },
+            seasons = type.seasons
+                .filter { seasonData -> seasonData.seasonNumber > 0 }
+                .map { seasonData ->
+                    seasonMapper.mapToEntity(seasonData)
+                },
             backdrop = baseBackdrop + type.backdropPath,
             poster = type.posterPath,
             watched = type.watched,
