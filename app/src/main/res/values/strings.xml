@@ -57,4 +57,7 @@
     <string name="w342" translatable="false">w342</string>
     <string name="w185" translatable="false">w185</string>
 
+    <string name="watched_label">watched</string>
+    <string name="watching_label">watching</string>
+
 </resources>
