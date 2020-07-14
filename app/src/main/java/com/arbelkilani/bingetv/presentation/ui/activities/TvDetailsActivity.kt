@@ -88,7 +88,7 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
 
         viewModel.tvShowEntity.observe(this, Observer {
 
-        binding.tvShowEntity = it
+            binding.tvShowEntity = it
             flex_box_shimmer.stopShimmer()
             it.let {
                 if (it.genres.isNotEmpty() && it.networks.isNotEmpty())

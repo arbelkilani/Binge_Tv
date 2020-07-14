@@ -132,6 +132,7 @@ class TvShowRepositoryImp(
                 seasonData.tv_season = tvShowEntity.id
                 seasonDao.saveSeason(seasonData)
             }
+            tvShowEntity.watchedCount = if (watched) tvShowEntity.episodeCount else 0
 
             tvDao.saveTv(tvShowMapper.mapFromEntity(tvShowEntity))
 
