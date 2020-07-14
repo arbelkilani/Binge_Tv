@@ -65,8 +65,13 @@ class SeasonRepositoryImp(
             tvShowWatchedCount = watchedCount
         }
 
+        var selectedEpisodesCount: Int =
+            0 // use case where some episodes are selected inside the season.
+        val localEpisodes = episodeDao.getEpisodes(seasonEntity.id)
+        selectedEpisodesCount = localEpisodes?.filter { it.watched }!!.size
+
         if (watched) { // update tv show watched count depending either season is set as watched or not.
-            tvShowWatchedCount += seasonEntity.episodeCount
+            tvShowWatchedCount += seasonEntity.episodeCount - selectedEpisodesCount
         } else {
             tvShowWatchedCount -= seasonEntity.episodeCount
         }
@@ -82,8 +87,6 @@ class SeasonRepositoryImp(
         tvShowEntity: TvShowEntity,
         seasonEntity: SeasonEntity
     ): Resource<SeasonEntity> = try {
-
-        Log.i("TAG++", "seasonEntity : $seasonEntity")
 
         val response = apiTmdbService.getSeasonDetails(
             tvId = tvShowEntity.id,
