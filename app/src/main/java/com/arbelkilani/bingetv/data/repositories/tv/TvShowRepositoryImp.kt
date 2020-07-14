@@ -19,7 +19,6 @@ import com.arbelkilani.bingetv.data.source.remote.apiservice.ApiTvMazeService
 import com.arbelkilani.bingetv.data.source.remote.pagingsource.*
 import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
 import com.arbelkilani.bingetv.domain.repositories.TvShowRepository
-import com.arbelkilani.bingetv.utils.Constants
 import com.arbelkilani.bingetv.utils.checkAirDate
 import com.arbelkilani.bingetv.utils.formatAirDate
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -94,7 +93,7 @@ class TvShowRepositoryImp(
 
             // this tv show is still running -> handle future episodes states.
             // get last season episodes and count future episodes in order to get real episodes count aired.
-            if (tvShowData.status == Constants.STATUS_RETURNING_SERIES) {
+            if (tvShowData.inProduction) {
 
                 val lastSeason = tvShowData.seasons[tvShowData.seasons.size - 1]
                 val lastSeasonDetails = apiTmdbService.getSeasonDetails(

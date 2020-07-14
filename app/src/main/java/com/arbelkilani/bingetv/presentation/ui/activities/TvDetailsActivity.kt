@@ -27,7 +27,6 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.databinding.ActivityDetailsTvBinding
 import com.arbelkilani.bingetv.domain.entities.season.SeasonEntity
-import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
 import com.arbelkilani.bingetv.presentation.adapters.CreditAdapter
 import com.arbelkilani.bingetv.presentation.adapters.SeasonAdapter
 import com.arbelkilani.bingetv.presentation.listeners.OnSeasonClickListener
@@ -60,7 +59,7 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
                         )!!
                     )
 
-                    viewModel.refresh(it.getParcelableExtra<TvShowEntity>(Constants.TV_SHOW_ENTITY_REQUEST)!!)
+                    viewModel.refresh(it.getParcelableExtra(Constants.TV_SHOW_ENTITY_REQUEST)!!)
                 }
             }
         }
@@ -234,9 +233,7 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
 
         val watchedView = layout.findViewById<TextView>(R.id.tv_action_watched)
         watchedView.text =
-            if (currentTvShow.futureEpisodesCount == 0) getString(R.string.watched_label) else getString(
-                R.string.watching_label
-            )
+            if (currentTvShow.inProduction) getString(R.string.watching_label) else getString(R.string.watched_label)
         watchedView.isSelected = currentTvShow.watched
         watchedView.setOnClickListener {
             viewModel.saveWatched(!watchedView.isSelected)

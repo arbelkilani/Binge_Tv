@@ -19,6 +19,7 @@ class TvShowMapper : Mapper<TvShowEntity, TvShowData> {
 
         return TvShowData(
             id = type.id,
+            inProduction = type.inProduction,
             episodeCount = type.episodeCount,
             name = type.name,
             overview = type.overview,
@@ -41,6 +42,7 @@ class TvShowMapper : Mapper<TvShowEntity, TvShowData> {
 
         return TvShowEntity(
             id = type.id,
+            inProduction = type.inProduction,
             episodeCount = type.episodeCount,
             name = type.name,
             overview = type.overview,
