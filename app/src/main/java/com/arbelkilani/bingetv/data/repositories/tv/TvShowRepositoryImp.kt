@@ -87,7 +87,7 @@ class TvShowRepositoryImp(
 
     override suspend fun tvShowEntityResponse(id: Int): Resource<TvShowEntity> =
         try {
-            val tvShowData = apiTmdbService.getTvDetails(id, "")
+            val tvShowData = apiTmdbService.getTvDetails(id, "videos")
             val localSeasons = seasonDao.getSeasons(id)
             var futureEpisodesCount = 0
 
