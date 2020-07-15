@@ -1,6 +1,5 @@
 package com.arbelkilani.bingetv.presentation.adapters.viewpager
 
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,7 +42,7 @@ class TrendingAdapter(
             .load(tvShow.backdrop)
             .placeholder(R.drawable.placeholder_large)
             .error(R.drawable.placeholder_large)
-            .fit().centerCrop(Gravity.CENTER)
+            .fit().centerCrop()
             .into(layout.iv_item_discover)
 
         layout.tv_title.text = tvShow.name
