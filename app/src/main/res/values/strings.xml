@@ -29,6 +29,7 @@
     <string name="next_episode_message"><![CDATA[S%1$dxE%2$d,<b><i> %3$s </i></b> will be first aired on %4$s]]></string>
     <string name="episode_name_details">S%1$sxE%2$s - %3$s</string>
 
+    <string name="details_bottom_sheet_content_progress_label">Progress</string>
     <string name="details_bottom_sheet_content_type_label">Status</string>
     <string name="details_bottom_sheet_content_cast_label">Cast</string>
     <string name="search_title">Search</string>
@@ -59,5 +60,7 @@
 
     <string name="watched_label">watched</string>
     <string name="watching_label">watching</string>
+
+    <string name="unwatched">%1$s unwatched</string>
 
 </resources>

@@ -83,7 +83,6 @@
 
             </RelativeLayout>
 
-
             <!-- name and vote -->
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -105,41 +104,79 @@
                     android:textColor="@color/details_titles_text_color"
                     android:textSize="@dimen/big_text_size" />
 
+                <TextView
+                    android:id="@+id/tv_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_name"
+                    android:layout_marginTop="@dimen/default_margin_min"
+                    android:layout_marginEnd="@dimen/default_margin"
+                    android:fontFamily="@font/avenir_next_regular"
+                    android:textColor="@color/details_titles_text_color"
+                    android:textSize="@dimen/small_text_size"
+                    android:visibility="@{tvShowEntity.status.empty ? View.GONE : View.VISIBLE}"
+                    custom:air_date="@{tvShowEntity.firstAirDate}"
+                    custom:status="@{tvShowEntity.status}" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_name"
+                    android:layout_below="@+id/tv_status"
                     android:layout_marginTop="@dimen/default_margin"
-                    android:layout_marginEnd="@dimen/default_margin"
+                    android:layout_marginEnd="40dp"
                     android:layout_toStartOf="@+id/tv_vote_average"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/default_margin"
+                        android:fontFamily="@font/avenir_next_demi_bold"
+                        android:text="@string/details_bottom_sheet_content_progress_label"
+                        android:textColor="@color/details_titles_text_color"
+                        android:textSize="@dimen/titles_text_size" />
 
                     <ProgressBar
                         android:id="@+id/progress_bar"
                         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="6dp"
                         android:layout_gravity="center_vertical"
-                        android:layout_weight=".85"
+                        android:layout_marginTop="@dimen/default_margin_min"
                         android:indeterminate="false"
                         android:progressDrawable="@drawable/rounded_corners_progress_bar"
                         custom:count="@{tvShowEntity.episodeCount}"
                         custom:watched="@{tvShowEntity.watchedCount}" />
 
-                    <TextView
-                        android:id="@+id/progress_tv"
-                        android:layout_width="0dp"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginStart="@dimen/default_margin"
-                        android:layout_weight=".15"
-                        android:fontFamily="@font/avenir_next_demi_bold"
-                        android:textColor="@color/details_titles_text_color"
-                        android:textSize="@dimen/small_text_size"
-                        custom:count="@{tvShowEntity.episodeCount}"
-                        custom:watched="@{tvShowEntity.watchedCount}" />
+                        android:layout_marginTop="@dimen/default_margin_min"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/unwatched_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:fontFamily="@font/avenir_next_medium"
+                            android:text="@{String.format(@string/unwatched, String.valueOf((tvShowEntity.episodeCount - tvShowEntity.watchedCount)))}"
+                            android:textColor="@color/details_titles_text_color"
+                            android:textSize="@dimen/small_text_size" />
+
+                        <TextView
+                            android:id="@+id/progress_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:fontFamily="@font/avenir_next_medium"
+                            android:textColor="@color/details_titles_text_color"
+                            android:textSize="@dimen/small_text_size"
+                            custom:count="@{tvShowEntity.episodeCount}"
+                            custom:watched="@{tvShowEntity.watchedCount}" />
+
+                    </RelativeLayout>
 
                 </LinearLayout>
 
@@ -222,29 +259,6 @@
 
             <!-- status  -->
             <include layout="@layout/shimmer_tv_details_status" />
-
-            <TextView
-                android:id="@+id/status_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginTop="@dimen/default_margin"
-                android:fontFamily="@font/avenir_next_demi_bold"
-                android:text="@string/details_bottom_sheet_content_type_label"
-                android:textColor="@color/details_titles_text_color"
-                android:textSize="@dimen/titles_text_size" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginTop="@dimen/default_margin_medium"
-                android:layout_marginEnd="@dimen/default_margin"
-                android:fontFamily="@font/avenir_next_regular"
-                android:text="@{tvShowEntity.status}"
-                android:textColor="@color/details_titles_text_color"
-                android:textSize="@dimen/small_text_size"
-                android:visibility="@{tvShowEntity.status.empty ? View.GONE : View.VISIBLE}" />
 
             <!-- overview  -->
             <TextView

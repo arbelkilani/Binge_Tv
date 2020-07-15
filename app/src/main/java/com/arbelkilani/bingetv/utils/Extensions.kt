@@ -14,6 +14,7 @@ import android.text.SpannableStringBuilder
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewTreeObserver
@@ -74,7 +75,15 @@ fun bindProgressTextView(view: TextView, watched: Int, count: Int) {
     if (count == 0)
         return
     val progress = watched * 100 / count
-    view.text = String.format("%d%%", progress)
+    view.text = String.format("%d/%d (%d%%)", watched, count, progress)
+}
+
+@BindingAdapter(value = ["custom:status", "custom:air_date"], requireAll = true)
+fun bindStatusTextView(view: TextView, status: String?, airDate: String?) {
+
+    Log.i("TAG++", "status = $status")
+    Log.i("TAG++", "airDate = $airDate")
+    view.text = String.format("%s - %s", airDate?.substring(0, 4), status)
 }
 
 @BindingAdapter("android:isSelected")

@@ -97,7 +97,7 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
                     next_episode_cardview.visibility = View.VISIBLE
 
                 if (it.status.isNotEmpty()) {
-                    status_label.visibility = View.VISIBLE
+                    //status_label.visibility = View.VISIBLE
                     tv_details_status_shimmer.visibility = View.GONE
                 }
 
