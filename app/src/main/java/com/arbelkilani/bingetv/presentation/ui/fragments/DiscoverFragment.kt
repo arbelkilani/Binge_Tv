@@ -47,6 +47,8 @@ class DiscoverFragment : Fragment(), OnTvShowClickListener {
             viewModel.getTrending()
                 .catch { cause -> Log.i(TAG, "cause = ${cause.localizedMessage}") }
                 .collect {
+                    binding.viewpagerShimmer.visibility = View.GONE
+
                     binding.viewPager.apply {
                         adapter =
                             TrendingAdapter(
