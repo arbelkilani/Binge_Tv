@@ -21,6 +21,7 @@
             android:layout_width="@dimen/item_credit_image_size"
             android:layout_height="@dimen/item_credit_image_size"
             android:scaleType="centerCrop"
+            android:src="@drawable/placeholder"
             app:civ_border_overlay="true"
             custom:size_poster="@{@string/w185}"
             custom:src_poster="@{credit.profilePath}" />
