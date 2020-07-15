@@ -28,14 +28,19 @@
                 <com.arbelkilani.bingetv.presentation.ui.view.CustomCardView
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:background="@color/bottom_navigation_view_icon_color_inactive"
-                    android:backgroundTint="@color/bottom_navigation_view_icon_color_inactive"
                     android:layoutMode="opticalBounds"
                     app:cardCornerRadius="@dimen/default_card_corner_radius"
                     app:layout_constraintDimensionRatio="2:3"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/placeholder" />
+
+                </com.arbelkilani.bingetv.presentation.ui.view.CustomCardView>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -49,14 +54,19 @@
                 <com.arbelkilani.bingetv.presentation.ui.view.CustomCardView
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:background="@color/bottom_navigation_view_icon_color_inactive"
-                    android:backgroundTint="@color/bottom_navigation_view_icon_color_inactive"
                     android:layoutMode="opticalBounds"
                     app:cardCornerRadius="@dimen/default_card_corner_radius"
                     app:layout_constraintDimensionRatio="2:3"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/placeholder" />
+
+                </com.arbelkilani.bingetv.presentation.ui.view.CustomCardView>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -70,14 +80,19 @@
                 <com.arbelkilani.bingetv.presentation.ui.view.CustomCardView
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:background="@color/bottom_navigation_view_icon_color_inactive"
-                    android:backgroundTint="@color/bottom_navigation_view_icon_color_inactive"
                     android:layoutMode="opticalBounds"
                     app:cardCornerRadius="@dimen/default_card_corner_radius"
                     app:layout_constraintDimensionRatio="2:3"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/placeholder" />
+
+                </com.arbelkilani.bingetv.presentation.ui.view.CustomCardView>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -99,14 +114,19 @@
                 <com.arbelkilani.bingetv.presentation.ui.view.CustomCardView
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:background="@color/bottom_navigation_view_icon_color_inactive"
-                    android:backgroundTint="@color/bottom_navigation_view_icon_color_inactive"
                     android:layoutMode="opticalBounds"
                     app:cardCornerRadius="@dimen/default_card_corner_radius"
                     app:layout_constraintDimensionRatio="2:3"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/placeholder" />
+
+                </com.arbelkilani.bingetv.presentation.ui.view.CustomCardView>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -120,14 +140,19 @@
                 <com.arbelkilani.bingetv.presentation.ui.view.CustomCardView
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:background="@color/bottom_navigation_view_icon_color_inactive"
-                    android:backgroundTint="@color/bottom_navigation_view_icon_color_inactive"
                     android:layoutMode="opticalBounds"
                     app:cardCornerRadius="@dimen/default_card_corner_radius"
                     app:layout_constraintDimensionRatio="2:3"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/placeholder" />
+
+                </com.arbelkilani.bingetv.presentation.ui.view.CustomCardView>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -141,14 +166,19 @@
                 <com.arbelkilani.bingetv.presentation.ui.view.CustomCardView
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:background="@color/bottom_navigation_view_icon_color_inactive"
-                    android:backgroundTint="@color/bottom_navigation_view_icon_color_inactive"
                     android:layoutMode="opticalBounds"
                     app:cardCornerRadius="@dimen/default_card_corner_radius"
                     app:layout_constraintDimensionRatio="2:3"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/placeholder" />
+
+                </com.arbelkilani.bingetv.presentation.ui.view.CustomCardView>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
