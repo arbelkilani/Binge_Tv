@@ -87,14 +87,14 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
             binding.tvShowEntity = it
             flex_box_shimmer.stopShimmer()
             it.let {
-                if (it.genres.isNotEmpty() && it.networks.isNotEmpty())
-                    flex_box_shimmer.visibility = View.GONE
 
-                if (it.nextEpisodeData != null)
+                if (it.nextEpisodeData != null) {
                     next_episode_cardview.visibility = View.VISIBLE
+                }
+
 
                 if (it.status.isNotEmpty()) {
-                    //status_label.visibility = View.VISIBLE
+                    flex_box_shimmer.visibility = View.GONE
                     tv_details_status_shimmer.visibility = View.GONE
                 }
 
