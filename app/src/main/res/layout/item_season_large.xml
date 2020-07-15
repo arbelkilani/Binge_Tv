@@ -21,30 +21,30 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="152dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/default_margin"
         android:background="@android:color/transparent"
-        android:minHeight="152dp"
         android:onClick="@{() -> seasonClickListener.onSeasonItemClicked(seasonEntity)}">
 
         <!-- content -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="35dp"
-            android:layout_marginEnd="2dp"
-            android:layout_marginBottom="2dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
             android:background="?attr/selectableItemBackground"
+            android:layoutMode="opticalBounds"
             app:cardCornerRadius="@dimen/item_season_large_corner_radius">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingStart="145dp"
-                android:paddingTop="10dp"
-                android:paddingEnd="@dimen/default_padding">
+                android:layout_height="wrap_content"
+                android:layout_marginStart="100dp"
+                android:paddingStart="@dimen/default_padding"
+                android:paddingTop="@dimen/default_padding"
+                android:paddingEnd="@dimen/default_padding_min"
+                android:paddingBottom="@dimen/default_padding_min">
 
+                <!-- season number -->
                 <TextView
                     android:id="@+id/tv_season_number"
                     android:layout_width="wrap_content"
@@ -52,8 +52,73 @@
                     android:fontFamily="@font/avenir_next_demi_bold"
                     android:text="@{String.valueOf(seasonEntity.name)}"
                     android:textColor="@color/details_titles_text_color"
-                    android:textSize="@dimen/titles_text_size"
-                    tools:text="Season : 7" />
+                    android:textSize="@dimen/titles_text_size" />
+
+                <!-- progress layout -->
+                <LinearLayout
+                    android:id="@+id/progress_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_season_number"
+                    android:layout_marginTop="@dimen/default_margin_min"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <ProgressBar
+                            android:id="@+id/progress_bar"
+                            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                            android:layout_width="0dp"
+                            android:layout_height="6dp"
+                            android:layout_weight=".8"
+                            android:indeterminate="false"
+                            android:progressDrawable="@drawable/rounded_corners_progress_bar"
+                            custom:count="@{seasonEntity.episodeCount}"
+                            custom:watched="@{seasonEntity.watchedCount}" />
+
+                        <ImageView
+                            android:id="@+id/rb_watched"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".2"
+                            android:background="?attr/actionBarItemBackground"
+                            android:isSelected="@{seasonEntity.watched}"
+                            android:onClick="@{(view) -> seasonClickListener.onWatchedSeasonClicked(view, seasonEntity)}"
+                            android:src="@drawable/selector_radio_button"
+                            android:visibility="@{seasonEntity.futureEpisodeCount == 0 ? View.VISIBLE : View.INVISIBLE}" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_episode_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenir_next_regular"
+                        android:textColor="@color/details_titles_text_color"
+                        android:textSize="@dimen/small_text_size"
+                        custom:count="@{seasonEntity.episodeCount}"
+                        custom:watched="@{seasonEntity.watchedCount}" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_air_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/progress_layout"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="@dimen/default_margin_min"
+                    android:fontFamily="@font/avenir_next_regular"
+                    android:text="@{seasonEntity.airDate}"
+                    android:textColor="@color/details_titles_text_color"
+                    android:textSize="@dimen/small_text_size"
+                    android:visibility="visible" />
 
                 <TextView
                     android:id="@+id/tv_overview"
@@ -62,105 +127,49 @@
                     android:layout_below="@+id/tv_season_number"
                     android:layout_centerVertical="true"
                     android:layout_marginTop="@dimen/default_margin_min"
-                    android:layout_toStartOf="@+id/rb_watched"
                     android:ellipsize="end"
                     android:fontFamily="@font/avenir_next_regular"
                     android:maxLines="2"
                     android:text="@{seasonEntity.overview}"
                     android:textColor="@color/details_titles_text_color"
                     android:textSize="@dimen/small_text_size"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     tools:text="@tools:sample/lorem/random" />
-
-                <TextView
-                    android:id="@+id/tv_air_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_overview"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginTop="@dimen/default_margin_min"
-                    android:layout_toStartOf="@+id/rb_watched"
-                    android:fontFamily="@font/avenir_next_regular"
-                    android:text="@{seasonEntity.airDate}"
-                    android:textColor="@color/details_titles_text_color"
-                    android:textSize="@dimen/small_text_size"
-                    android:visibility="visible"
-                    tools:text="First aired : 2019-04-30" />
-
-                <ImageView
-                    android:id="@+id/rb_watched"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:background="?attr/actionBarItemBackground"
-                    android:gravity="end"
-                    android:isSelected="@{seasonEntity.watched}"
-                    android:onClick="@{(view) -> seasonClickListener.onWatchedSeasonClicked(view, seasonEntity)}"
-                    android:padding="5dp"
-                    android:src="@drawable/selector_radio_button"
-                    android:visibility="@{seasonEntity.futureEpisodeCount == 0 ? View.VISIBLE : View.GONE}" />
 
             </RelativeLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="10dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:weightSum="1">
-
-                <ProgressBar
-                    android:id="@+id/progress_bar"
-                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                    android:layout_width="0dp"
-                    android:layout_height="6dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_weight="0.8"
-                    android:indeterminate="false"
-                    android:progressDrawable="@drawable/rounded_corners_progress_bar"
-                    custom:count="@{seasonEntity.episodeCount}"
-                    custom:watched="@{seasonEntity.watchedCount}" />
-
-                <TextView
-                    android:id="@+id/tv_episode_count"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginBottom="2dp"
-                    android:layout_weight="0.2"
-                    android:fontFamily="@font/avenir_next_regular"
-                    android:gravity="end"
-                    android:text="@{String.format(@string/episode_count, seasonEntity.watchedCount, seasonEntity.episodeCount)}"
-                    android:textColor="@color/details_titles_text_color"
-                    android:textSize="@dimen/small_text_size"
-                    tools:text="12/12" />
-
-            </LinearLayout>
-
-
         </androidx.cardview.widget.CardView>
 
-        <!-- image view -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="110dp"
-            android:layout_height="125dp"
-            android:layout_marginStart="25dp"
-            app:cardCornerRadius="@dimen/item_season_large_corner_radius">
+        <!-- poster -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/poster_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleX=".9"
+            android:scaleY=".95"
+            android:elevation="2dp"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/iv_season_poster"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/poster_height"
-                android:scaleType="centerCrop"
-                custom:size_poster="@{@string/w185}"
-                custom:src_poster="@{seasonEntity.poster}"
-                tools:src="@mipmap/ic_launcher_foreground" />
+            <com.arbelkilani.bingetv.presentation.ui.view.CustomCardView
+                android:id="@+id/card_view"
+                android:layout_width="105dp"
+                android:layout_height="0dp"
+                android:layoutMode="opticalBounds"
+                app:cardCornerRadius="@dimen/item_season_large_corner_radius"
+                app:layout_constraintDimensionRatio="2:3"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-        </androidx.cardview.widget.CardView>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    custom:size_poster="@{@string/w185}"
+                    custom:src_poster="@{seasonEntity.poster}" />
+
+            </com.arbelkilani.bingetv.presentation.ui.view.CustomCardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </FrameLayout>
 

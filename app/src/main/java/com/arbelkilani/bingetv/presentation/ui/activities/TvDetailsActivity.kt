@@ -164,7 +164,7 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         binding.toolbar.inflateMenu(R.menu.tv_details_menu)
-        toolbar_seasons.inflateMenu(R.menu.tv_details_seasons_menu)
+        //toolbar_seasons.inflateMenu(R.menu.tv_details_seasons_menu)
         return true
     }
 
