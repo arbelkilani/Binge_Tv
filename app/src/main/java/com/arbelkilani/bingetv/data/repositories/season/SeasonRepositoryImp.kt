@@ -108,7 +108,9 @@ class SeasonRepositoryImp(
             remote.season_episode = seasonEntity.id
             episodeLocal?.apply { // no episode state has been selected before - no episode in DB
                 if (isEmpty()) {
-                    remote.watched = seasonEntity.watched
+                    if (remote.episodeNumber in 1..seasonEntity.watchedCount) {
+                        remote.watched = seasonEntity.watchedCount > 0
+                    }
                     episodeDao.saveEpisode(remote)
                 } else { // episodes exists in DB so we need to keep there states.
                     map {
