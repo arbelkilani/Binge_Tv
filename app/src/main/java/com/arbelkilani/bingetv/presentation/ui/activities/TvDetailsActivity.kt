@@ -103,6 +103,8 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
 
         viewModel.credits.observe(this, Observer {
             shimmer_credits.visibility = View.GONE
+            if (it.isEmpty())
+                credit_label.visibility = View.GONE
             (rv_credits.adapter as CreditAdapter).notifyDataSetChanged(it)
         })
 
