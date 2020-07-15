@@ -79,7 +79,10 @@ fun bindProgressTextView(view: TextView, watched: Int, count: Int) {
 
 @BindingAdapter(value = ["custom:status", "custom:air_date"], requireAll = true)
 fun bindStatusTextView(view: TextView, status: String?, airDate: String?) {
-    view.text = String.format("%s - %s", airDate?.substring(0, 4), status)
+    if (status.isNullOrBlank() || airDate.isNullOrBlank())
+        return
+
+    view.text = String.format("%s - %s", airDate.substring(0, 4), status)
 }
 
 @BindingAdapter("custom:summary")
