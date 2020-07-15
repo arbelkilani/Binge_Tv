@@ -97,7 +97,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentStart="true"
-                    android:layout_toEndOf="@+id/tv_vote_average"
+                    android:layout_toStartOf="@+id/tv_vote_average"
                     android:fontFamily="@font/avenir_next_demi_bold"
                     android:onClick="@{() -> tvShowListener.openHomePage(tvShowEntity.homepage)}"
                     android:text="@{tvShowEntity.name}"
