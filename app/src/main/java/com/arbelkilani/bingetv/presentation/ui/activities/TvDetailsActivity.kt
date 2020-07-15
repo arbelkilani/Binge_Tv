@@ -233,7 +233,9 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
 
         val watchedView = layout.findViewById<TextView>(R.id.tv_action_watched)
         watchedView.text =
-            if (currentTvShow.inProduction) getString(R.string.watching_label) else getString(R.string.watched_label)
+            if (currentTvShow.inProduction || currentTvShow.watchedCount < currentTvShow.episodeCount && currentTvShow.watchedCount != 0) getString(
+                R.string.watching_label
+            ) else getString(R.string.watched_label)
         watchedView.isSelected = currentTvShow.watchedCount > 0
         watchedView.setOnClickListener {
             viewModel.saveWatched(!watchedView.isSelected)
