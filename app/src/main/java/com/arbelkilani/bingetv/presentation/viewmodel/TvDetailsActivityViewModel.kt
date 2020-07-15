@@ -51,6 +51,7 @@ class TvDetailsActivityViewModel constructor(
 
     private suspend fun getTvDetails(extraTvShowEntity: TvShowEntity) {
         val response = getTvDetailsUseCase.invoke(extraTvShowEntity.id)
+
         if (response.status == Status.SUCCESS) {
             response.data?.let {
                 _tvShowEntity.postValue(it)

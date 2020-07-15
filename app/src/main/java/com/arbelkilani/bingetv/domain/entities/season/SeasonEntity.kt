@@ -12,7 +12,7 @@ data class SeasonEntity(
     var name: String = "",
     var overview: String = "",
     var airDate: String = "",
-    var poster: String = "",
+    var poster: String? = null,
     var watched: Boolean = false,
     var watchedCount: Int = 0,
     var episodes: List<EpisodeEntity> = listOf(),

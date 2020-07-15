@@ -50,7 +50,7 @@ data class SeasonData(
     @Ignore
     @ColumnInfo(name = "poster_path")
     @SerializedName("poster_path")
-    var posterPath: String = "",
+    var posterPath: String? = null,
 
     @ColumnInfo(name = "season_number")
     @SerializedName("season_number")

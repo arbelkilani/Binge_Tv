@@ -92,9 +92,9 @@ fun bindOverviewTextView(view: TextView, summary: String?) {
 
     var newSummary = summary
 
-    if (summary.startsWith("<"))
-        newSummary = summary.removeRange(0, 3)
-    if (summary.endsWith(">"))
+    if (newSummary.startsWith("<"))
+        newSummary = newSummary.removeRange(0, 3)
+    if (newSummary.endsWith(">"))
         newSummary = newSummary.removeRange(newSummary.length - 4, newSummary.length)
 
     view.text = newSummary
