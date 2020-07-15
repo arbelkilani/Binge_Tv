@@ -164,7 +164,8 @@ class TvShowRepositoryImp(
 
                 seasonEntity.watchedCount = seasonWatchedCount
                 seasonEntity.futureEpisodeCount =
-                    seasonEntity.episodeCount - seasonEntity.watchedCount
+                    if (tvShowEntity.futureEpisodesCount > 0 && seasonEntity.seasonNumber == tvShowEntity.seasons.size) tvShowEntity.futureEpisodesCount else 0
+
                 seasonEntity.watched = seasonEntity.watchedCount == seasonEntity.episodeCount
                 val seasonData = seasonMapper.mapFromEntity(seasonEntity)
                 seasonData.tv_season = tvShowEntity.id
