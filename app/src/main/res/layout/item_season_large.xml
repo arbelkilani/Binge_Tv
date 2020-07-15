@@ -145,10 +145,10 @@
             android:id="@+id/poster_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleX=".9"
-            android:scaleY=".95"
             android:elevation="2dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:scaleX=".85"
+            android:scaleY=".92">
 
             <com.arbelkilani.bingetv.presentation.ui.view.CustomCardView
                 android:id="@+id/card_view"
