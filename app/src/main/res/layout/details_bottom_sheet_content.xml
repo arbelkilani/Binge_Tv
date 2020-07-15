@@ -192,6 +192,7 @@
                     android:gravity="center_horizontal"
                     android:padding="@dimen/details_bottom_sheet_padding"
                     android:textSize="@dimen/details_bottom_sheet_rate_text_size"
+                    android:visibility="@{tvShowEntity.voteAverage!=0.0 ? View.VISIBLE : View.INVISIBLE}"
                     custom:vote_average="@{tvShowEntity.voteAverage}" />
 
             </RelativeLayout>
@@ -248,10 +249,10 @@
                         android:layout_marginStart="@dimen/default_margin_min"
                         android:layout_marginTop="@dimen/default_margin_min"
                         android:fontFamily="@font/avenir_next_regular"
-                        custom:summary="@{tvShowEntity.nextEpisodeData.summary}"
                         android:textColor="@color/details_titles_text_color"
                         android:textSize="@dimen/small_text_size"
-                        android:visibility="@{tvShowEntity.nextEpisodeData.summary == null ? View.GONE : View.VISIBLE}" />
+                        android:visibility="@{tvShowEntity.nextEpisodeData.summary == null ? View.GONE : View.VISIBLE}"
+                        custom:summary="@{tvShowEntity.nextEpisodeData.summary}" />
 
                 </LinearLayout>
 
