@@ -14,7 +14,6 @@ import android.text.SpannableStringBuilder
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewTreeObserver
@@ -80,10 +79,23 @@ fun bindProgressTextView(view: TextView, watched: Int, count: Int) {
 
 @BindingAdapter(value = ["custom:status", "custom:air_date"], requireAll = true)
 fun bindStatusTextView(view: TextView, status: String?, airDate: String?) {
-
-    Log.i("TAG++", "status = $status")
-    Log.i("TAG++", "airDate = $airDate")
     view.text = String.format("%s - %s", airDate?.substring(0, 4), status)
+}
+
+@BindingAdapter("custom:summary")
+fun bindOverviewTextView(view: TextView, summary: String?) {
+    if (summary.isNullOrBlank())
+        return
+
+    var newSummary = summary
+
+    if (summary.startsWith("<"))
+        newSummary = summary.removeRange(0, 3)
+    if (summary.endsWith(">"))
+        newSummary = newSummary.removeRange(newSummary.length - 4, newSummary.length)
+
+    view.text = newSummary
+
 }
 
 @BindingAdapter("android:isSelected")

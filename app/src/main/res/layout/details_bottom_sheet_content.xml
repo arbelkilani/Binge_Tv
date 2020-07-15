@@ -248,7 +248,7 @@
                         android:layout_marginStart="@dimen/default_margin_min"
                         android:layout_marginTop="@dimen/default_margin_min"
                         android:fontFamily="@font/avenir_next_regular"
-                        android:text="@{tvShowEntity.nextEpisodeData.summary}"
+                        custom:summary="@{tvShowEntity.nextEpisodeData.summary}"
                         android:textColor="@color/details_titles_text_color"
                         android:textSize="@dimen/small_text_size"
                         android:visibility="@{tvShowEntity.nextEpisodeData.summary == null ? View.GONE : View.VISIBLE}" />
