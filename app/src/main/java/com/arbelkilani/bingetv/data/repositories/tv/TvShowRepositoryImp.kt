@@ -100,6 +100,9 @@ class TvShowRepositoryImp(
                     tvId = tvShowData.id,
                     seasonNumber = lastSeason.seasonNumber
                 )
+
+                Log.i("TAG++", "lastSeasonDetails = $lastSeasonDetails")
+
                 futureEpisodesCount =
                     lastSeasonDetails.episodes.filter { checkAirDate(it.airDate) }.size
 
@@ -138,6 +141,7 @@ class TvShowRepositoryImp(
 
         } catch (e: Exception) {
             e.printStackTrace()
+            Log.e("TAG++", "exception = ${e.localizedMessage}")
             Resource.exception(e, null)
         }
 

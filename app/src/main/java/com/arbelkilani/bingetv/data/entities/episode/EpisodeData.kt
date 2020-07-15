@@ -38,7 +38,7 @@ data class EpisodeData(
     @Ignore
     @ColumnInfo(name = "air_date")
     @SerializedName("air_date")
-    var airDate: String = "",
+    var airDate: String? = null,
 
     @Ignore
     @ColumnInfo(name = "episode_number")

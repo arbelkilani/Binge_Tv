@@ -164,6 +164,7 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:src="@drawable/placeholder"
                     custom:size_poster="@{@string/w185}"
                     custom:src_poster="@{seasonEntity.poster}" />
 

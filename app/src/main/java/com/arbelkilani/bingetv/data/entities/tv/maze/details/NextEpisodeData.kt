@@ -17,7 +17,7 @@ data class NextEpisodeData(
     val number: Int,
 
     @SerializedName("airdate")
-    val airDate: String,
+    val airDate: String?,
 
     @SerializedName("airstamp")
     val airStamp: String,

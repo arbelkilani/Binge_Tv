@@ -126,7 +126,10 @@ fun setRadioVisibility(view: ImageView, airDate: String) {
     }
 }
 
-fun checkAirDate(airDate: String): Boolean {
+fun checkAirDate(airDate: String?): Boolean {
+    if (airDate.isNullOrEmpty())
+        return false
+
     val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(airDate)
     val today = Calendar.getInstance().time
 
@@ -328,7 +331,7 @@ fun formatAirDate(data: NextEpisodeData?): String {
         val hourOfDay = airTime.substringBefore(":").toInt()
         val minute = airTime.substringAfter(":").toInt()
 
-        val year = airDate.substringBefore("-").toInt()
+        val year = airDate!!.substringBefore("-").toInt()
         val month = airDate.substringBeforeLast("-").substringAfter("-").toInt()
         val date = airDate.substringAfterLast("-").toInt()
 

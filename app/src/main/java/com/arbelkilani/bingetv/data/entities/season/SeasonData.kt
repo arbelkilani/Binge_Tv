@@ -41,7 +41,7 @@ data class SeasonData(
     @Ignore
     @ColumnInfo(name = "air_date")
     @SerializedName("air_date")
-    var airDate: String = "",
+    var airDate: String? = null,
 
     @ColumnInfo(name = "episode_count")
     @SerializedName("episode_count")

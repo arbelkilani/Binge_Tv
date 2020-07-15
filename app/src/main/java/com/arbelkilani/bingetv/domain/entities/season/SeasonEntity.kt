@@ -11,7 +11,7 @@ data class SeasonEntity(
     var episodeCount: Int = 0,
     var name: String = "",
     var overview: String = "",
-    var airDate: String = "",
+    var airDate: String? = null,
     var poster: String? = null,
     var watched: Boolean = false,
     var watchedCount: Int = 0,
