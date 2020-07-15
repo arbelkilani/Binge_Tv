@@ -17,10 +17,8 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="130dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
         android:padding="@dimen/default_padding_min">
 
         <com.arbelkilani.bingetv.presentation.ui.view.CustomCardView
