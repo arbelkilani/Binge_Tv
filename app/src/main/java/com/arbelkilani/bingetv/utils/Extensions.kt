@@ -114,7 +114,13 @@ fun calculatedProgress(view: ProgressBar, watched: Int, count: Int) {
 }
 
 @BindingAdapter("android:radio_visibility")
-fun setRadioVisibility(view: ImageView, airDate: String) {
+fun setRadioVisibility(view: ImageView, airDate: String?) {
+
+    if (airDate.isNullOrBlank()) {
+        view.visibility = View.INVISIBLE
+        return
+    }
+
     val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(airDate)
     val today = Calendar.getInstance().time
     date?.let {
@@ -141,7 +147,11 @@ fun checkAirDate(airDate: String?): Boolean {
 }
 
 @BindingAdapter("android:air_date")
-fun setAirDate(view: TextView, airDate: String) {
+fun setAirDate(view: TextView, airDate: String?) {
+
+    if (airDate.isNullOrBlank())
+        return
+
     val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(airDate)
     date?.let {
         SimpleDateFormat("EEEE, d MMMM yyyy", Locale.getDefault()).format(it.time).toString()
