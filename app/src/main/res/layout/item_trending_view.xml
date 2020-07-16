@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/default_padding_min">
+        android:padding="4dp">
 
         <com.arbelkilani.bingetv.presentation.ui.view.CustomCardView
             android:id="@+id/card_view"

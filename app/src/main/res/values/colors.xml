@@ -2,7 +2,7 @@
 <resources>
 
     <color name="colorPrimaryDark">#6b7dc3</color>
-    <color name="colorPrimary">@android:color/holo_red_dark</color>
+    <color name="colorPrimary">#778bd9</color>
     <color name="colorAccent">@android:color/holo_orange_dark</color>
 
     <color name="toolbar_title_color">#444444</color>
