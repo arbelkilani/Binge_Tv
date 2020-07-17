@@ -68,7 +68,6 @@ class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener, Revea
         binding.lifecycleOwner = this
 
         initAdapter()
-
         initViews()
 
     }

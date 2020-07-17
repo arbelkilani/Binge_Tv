@@ -62,5 +62,6 @@
     <string name="watching_label">watching</string>
 
     <string name="unwatched">%1$s unwatched</string>
+    <string name="title_recommendation">Recommendations</string>
 
 </resources>

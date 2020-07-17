@@ -25,5 +25,6 @@ interface TvShowRepository {
     suspend fun saveWatched(watched: Boolean, tvShowEntity: TvShowEntity): TvShowEntity?
 
     suspend fun watchlist(): List<TvShowEntity>
+    suspend fun recommendations(id: Int): Flow<PagingData<TvShowEntity>>
 
 }

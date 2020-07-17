@@ -34,7 +34,6 @@ android {
             buildConfigField "String", "TVMAZE_BASE_URL", "\"http://api.tvmaze.com/\""
             buildConfigField "String", "API_KEY", '"0b33b787dc83b7214ec8703829413707"'
 
-
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

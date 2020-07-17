@@ -40,6 +40,7 @@ val UseCasesModule = module {
 
     // tv show
     single { getWatchlistUseCase(get()) }
+    single { recommendationsUseCase(get()) }
 
     // season
     single { getSeasonDetailsUseCase(get()) }
@@ -111,4 +112,8 @@ fun updateEpisodeUseCase(episodeRepository: EpisodeRepository): UpdateEpisodeUse
 // tv show
 fun getWatchlistUseCase(tvShowRepository: TvShowRepository): GetWatchListUseCase {
     return GetWatchListUseCase(tvShowRepository)
+}
+
+fun recommendationsUseCase(tvShowRepository: TvShowRepository): RecommendationsUseCase {
+    return RecommendationsUseCase(tvShowRepository)
 }

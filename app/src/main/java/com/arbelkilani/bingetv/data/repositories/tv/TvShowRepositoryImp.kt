@@ -85,6 +85,13 @@ class TvShowRepositoryImp(
         ).flow
     }
 
+    override suspend fun recommendations(id: Int): Flow<PagingData<TvShowEntity>> {
+        return Pager(
+            config = PagingConfig(PAGE_SIZE),
+            pagingSourceFactory = { RecommendationsPagingSource(id, apiTmdbService) }
+        ).flow
+    }
+
     override suspend fun tvShowEntityResponse(id: Int): Resource<TvShowEntity> =
         try {
             val tvShowData = apiTmdbService.getTvDetails(id, "videos")
@@ -100,8 +107,6 @@ class TvShowRepositoryImp(
                     tvId = tvShowData.id,
                     seasonNumber = lastSeason.seasonNumber
                 )
-
-                Log.i("TAG++", "lastSeasonDetails = $lastSeasonDetails")
 
                 futureEpisodesCount =
                     lastSeasonDetails.episodes.filter { checkAirDate(it.airDate) }.size
@@ -141,7 +146,6 @@ class TvShowRepositoryImp(
 
         } catch (e: Exception) {
             e.printStackTrace()
-            Log.e("TAG++", "exception = ${e.localizedMessage}")
             Resource.exception(e, null)
         }
 

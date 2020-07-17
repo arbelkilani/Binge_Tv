@@ -28,7 +28,7 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight=".3">
+                android:layout_weight=".35">
 
                 <include
                     android:id="@+id/viewpager_shimmer"
@@ -52,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="@dimen/default_margin"
-                android:layout_weight="0.7"
+                android:layout_weight="0.65"
                 android:orientation="vertical">
 
                 <TextView

@@ -21,7 +21,7 @@ data class Network(
     val id: Int,
 
     @SerializedName("logo_path")
-    val logoPath: String,
+    val logoPath: String?,
 
     @SerializedName("origin_country")
     val originCountry: String

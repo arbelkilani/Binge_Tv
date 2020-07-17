@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -30,6 +31,29 @@
             android:overScrollMode="never"
             android:paddingStart="16dp"
             android:paddingEnd="140dp" />
+
+        <TextView
+            style="@style/Toolbar.TextTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="@dimen/default_margin"
+            android:layout_marginBottom="@dimen/default_margin"
+            android:text="@string/title_recommendation" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_related"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".4"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:layoutMode="clipBounds"
+            android:orientation="horizontal"
+            android:overScrollMode="never"
+            android:paddingStart="@dimen/default_padding"
+            android:paddingEnd="@dimen/default_padding"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     </LinearLayout>
 
