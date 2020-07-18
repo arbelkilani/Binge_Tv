@@ -5,6 +5,7 @@ import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
 import com.arbelkilani.bingetv.presentation.viewmodel.SearchViewModel
 import com.arbelkilani.bingetv.presentation.viewmodel.TvDetailsActivityViewModel
 import com.arbelkilani.bingetv.presentation.viewmodel.discover.DiscoverViewModel
+import com.arbelkilani.bingetv.presentation.viewmodel.profile.ProfileViewModel
 import com.arbelkilani.bingetv.presentation.viewmodel.season.SeasonDetailsViewModel
 import com.arbelkilani.bingetv.presentation.viewmodel.splash.SplashViewModel
 import com.arbelkilani.bingetv.presentation.viewmodel.watchlist.WatchlistViewModel
@@ -36,6 +37,7 @@ val ViewModelModule = module {
         )
     }
     viewModel { WatchlistViewModel(get(), get()) }
+    viewModel { ProfileViewModel(get()) }
 
 }
 

@@ -1,11 +1,9 @@
 package com.arbelkilani.bingetv.presentation.di
 
-import com.arbelkilani.bingetv.domain.repositories.EpisodeRepository
-import com.arbelkilani.bingetv.domain.repositories.GenresRepository
-import com.arbelkilani.bingetv.domain.repositories.SeasonRepository
-import com.arbelkilani.bingetv.domain.repositories.TvShowRepository
+import com.arbelkilani.bingetv.domain.repositories.*
 import com.arbelkilani.bingetv.domain.usecase.*
 import com.arbelkilani.bingetv.domain.usecase.episode.UpdateEpisodeUseCase
+import com.arbelkilani.bingetv.domain.usecase.profile.StatisticsUseCase
 import com.arbelkilani.bingetv.domain.usecase.season.GetSeasonDetailsUseCase
 import com.arbelkilani.bingetv.domain.usecase.season.UpdateSeasonUseCase
 import com.arbelkilani.bingetv.domain.usecase.tv.GetWatchListUseCase
@@ -48,6 +46,9 @@ val UseCasesModule = module {
 
     // episode
     single { updateEpisodeUseCase(get()) }
+
+    // profile
+    single { statisticsUseCase(get()) }
 }
 
 fun createDiscoverUseCase(tvShowRepository: TvShowRepository): DiscoverUseCase {
@@ -116,4 +117,9 @@ fun getWatchlistUseCase(tvShowRepository: TvShowRepository): GetWatchListUseCase
 
 fun recommendationsUseCase(tvShowRepository: TvShowRepository): RecommendationsUseCase {
     return RecommendationsUseCase(tvShowRepository)
+}
+
+// profile
+fun statisticsUseCase(profileRepository: ProfileRepository): StatisticsUseCase {
+    return StatisticsUseCase(profileRepository)
 }
