@@ -43,9 +43,9 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
             viewModel.recommendations(position)
                 .catch { cause -> cause.localizedMessage }
                 .collectLatest {
-                    binding.rvRelated.scrollToPosition(0)
                     recommendationsAdapter.submitData(it)
                 }
+            binding.rvRelated.smoothScrollToPosition(0)
         }
     }
 

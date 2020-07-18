@@ -47,7 +47,7 @@ interface ApiTmdbService {
         @Query("include_adult") adult: Boolean
     ): ApiResponse<TvShowData>
 
-    @GET("tv/{tv_id}/recommendations")
+    @GET("tv/{tv_id}/similar")
     suspend fun recommendations(
         @Path("tv_id") tvId: Int,
         @Query("page") page: Int
