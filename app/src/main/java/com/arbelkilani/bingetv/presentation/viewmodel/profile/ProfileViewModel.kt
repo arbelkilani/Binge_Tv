@@ -1,6 +1,8 @@
 package com.arbelkilani.bingetv.presentation.viewmodel.profile
 
-import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.arbelkilani.bingetv.domain.entities.profile.StatisticsEntity
 import com.arbelkilani.bingetv.domain.usecase.profile.StatisticsUseCase
 import com.arbelkilani.bingetv.presentation.viewmodel.BaseViewModel
 import kotlinx.coroutines.Dispatchers
@@ -10,15 +12,22 @@ class ProfileViewModel(
     private val statisticsUseCase: StatisticsUseCase
 ) : BaseViewModel() {
 
+
     companion object {
         private const val TAG = "ProfileViewModel"
     }
 
-    init {
+    private val _statistics = MutableLiveData<StatisticsEntity>()
+    val statistics: LiveData<StatisticsEntity>
+        get() = _statistics
 
+    fun refresh() {
+        getStatistics()
+    }
+
+    private fun getStatistics() {
         scope.launch(Dispatchers.IO) {
-            val size = statisticsUseCase.getWatchedEpisodesCount()
-            Log.i("TAG++", "size = $size")
+            _statistics.postValue(statisticsUseCase.getStatistics())
         }
     }
 }

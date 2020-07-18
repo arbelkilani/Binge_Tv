@@ -121,6 +121,6 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
 
     override fun onResume() {
         super.onResume()
-        viewModel.refreshWatchlist()
+        viewModel.refresh()
     }
 }

@@ -64,4 +64,7 @@
     <string name="unwatched">%1$s unwatched</string>
     <string name="title_recommendation">Recommendations</string>
 
+    <!-- Profile Fragment -->
+    <string name="count_episode">You\'ve watched a total of %1$s episodes</string>
+
 </resources>

@@ -34,7 +34,6 @@ import com.arbelkilani.bingetv.data.entities.tv.maze.details.NextEpisodeData
 import com.arbelkilani.bingetv.presentation.listeners.KeyboardListener
 import com.google.android.flexbox.FlexboxLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.details_bottom_sheet_seasons.view.*
 import java.text.SimpleDateFormat
@@ -47,7 +46,6 @@ fun bindPoster(view: ImageView, url: String?, sizePoster: String?) {
     url?.let {
         val link = String.format("https://image.tmdb.org/t/p/%s%s", sizePoster, it)
         Picasso.get().load(link)
-            .memoryPolicy(MemoryPolicy.NO_CACHE)
             .placeholder(R.drawable.placeholder)
             .error(R.drawable.placeholder)
             .fit()

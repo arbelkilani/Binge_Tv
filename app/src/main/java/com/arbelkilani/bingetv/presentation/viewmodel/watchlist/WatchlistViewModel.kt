@@ -26,7 +26,7 @@ class WatchlistViewModel(
     val watchlist: LiveData<List<TvShowEntity>>
         get() = _watchlist
 
-    fun refreshWatchlist() {
+    fun refresh() {
         watchlist()
     }
 

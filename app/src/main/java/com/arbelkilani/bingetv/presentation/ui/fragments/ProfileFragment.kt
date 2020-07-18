@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.databinding.FragmentProfileBinding
 import com.arbelkilani.bingetv.presentation.viewmodel.profile.ProfileViewModel
@@ -32,7 +33,16 @@ class ProfileFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+        viewModel.statistics.observe(viewLifecycleOwner, Observer {
+            binding.statistics = it
+        })
+
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.refresh()
     }
 
     companion object {
