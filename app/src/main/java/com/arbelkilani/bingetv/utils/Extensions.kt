@@ -1,6 +1,7 @@
 package com.arbelkilani.bingetv.utils
 
 import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
@@ -19,6 +20,7 @@ import android.view.View
 import android.view.ViewTreeObserver
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AlphaAnimation
+import android.view.animation.BounceInterpolator
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.ProgressBar
@@ -67,6 +69,22 @@ fun bindBackdrop(view: ImageView, url: String?) {
 @BindingAdapter("custom:vote_average")
 fun bindVoteAverage(view: TextView, average: Double?) {
     view.text = String.format("%s", average.toString())
+}
+
+@BindingAdapter("custom:count_value")
+fun bindCount(view: TextView, count: Int?) {
+    if (count == null)
+        return
+
+    val valueAnimator = ValueAnimator.ofInt(0, count)
+    valueAnimator.duration = 800
+    valueAnimator.interpolator = BounceInterpolator()
+    valueAnimator.addUpdateListener {
+        view.text = it.animatedValue.toString()
+    }
+
+    valueAnimator.start()
+
 }
 
 @BindingAdapter(value = ["custom:watched", "custom:count"], requireAll = true)

@@ -65,6 +65,7 @@
     <string name="title_recommendation">Recommendations</string>
 
     <!-- Profile Fragment -->
-    <string name="count_episode">You\'ve watched a total of %1$s episodes</string>
+    <string name="count_episode">You\'ve watched a total of %1$s episodes in exactly %2$s tv shows</string>
+    <string name="spent_time">You\'ve spent %1$s years, %2$s months and %3$s days watching tv shows.\nand %4$s hours and %5$s minutes.</string>
 
 </resources>

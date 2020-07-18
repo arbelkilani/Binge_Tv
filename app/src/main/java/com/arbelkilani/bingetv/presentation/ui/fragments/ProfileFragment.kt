@@ -34,15 +34,17 @@ class ProfileFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         viewModel.statistics.observe(viewLifecycleOwner, Observer {
-            binding.statistics = it
+            binding.statisticsEntity = it
         })
 
         return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.refresh()
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden) {
+            viewModel.refresh()
+        }
     }
 
     companion object {
