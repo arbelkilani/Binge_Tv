@@ -27,15 +27,15 @@ class DashboardActivity : AppCompatActivity(),
 
         initViews()
 
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .add(R.id.main_container, watchlistFragment)
-                .hide(profileFragment)
-                .hide(watchlistFragment).commit()
-            supportFragmentManager.beginTransaction().add(R.id.main_container, discoverFragment)
-                .commit()
-            supportActionBar?.title = getString(R.string.title_discovery)
-        }
+        supportFragmentManager.beginTransaction().add(R.id.main_container, profileFragment)
+            .hide(profileFragment).commit()
+        supportFragmentManager.beginTransaction().add(R.id.main_container, watchlistFragment)
+            .hide(watchlistFragment).commit()
+        supportFragmentManager.beginTransaction().add(R.id.main_container, discoverFragment)
+            .commit()
+
+        supportActionBar?.title = getString(R.string.title_discovery)
+
     }
 
     private fun initViews() {
