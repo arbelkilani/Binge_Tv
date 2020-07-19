@@ -83,7 +83,6 @@ data class TvShowData(
     @SerializedName("poster_path")
     var posterPath: String? = null,
 
-    @Ignore
     @ColumnInfo(name = "in_production")
     @SerializedName("in_production")
     var inProduction: Boolean = false,

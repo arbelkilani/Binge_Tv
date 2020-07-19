@@ -38,6 +38,7 @@ import com.google.android.flexbox.FlexboxLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.details_bottom_sheet_seasons.view.*
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -80,7 +81,7 @@ fun bindCount(view: TextView, count: Int?) {
     valueAnimator.duration = 800
     valueAnimator.interpolator = BounceInterpolator()
     valueAnimator.addUpdateListener {
-        view.text = it.animatedValue.toString()
+        view.text = NumberFormat.getIntegerInstance().format(it.animatedValue)
     }
 
     valueAnimator.start()
