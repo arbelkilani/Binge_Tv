@@ -45,7 +45,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/avenir_next_regular"
-                        android:text="You have seen a total of"
+                        android:text="@string/label_seen_episodes"
                         android:textColor="@color/details_titles_text_color"
                         android:textSize="@dimen/small_text_size" />
 
@@ -90,7 +90,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/avenir_next_regular"
-                        android:text="Total time spen watching Tv shows"
+                        android:text="@string/label_total_time_spent"
                         android:textColor="@color/details_titles_text_color"
                         android:textSize="@dimen/small_text_size" />
 
