@@ -2,6 +2,7 @@ package com.arbelkilani.bingetv.data.mappers.tv
 
 import com.arbelkilani.bingetv.data.entities.tv.TvShowData
 import com.arbelkilani.bingetv.data.mappers.base.Mapper
+import com.arbelkilani.bingetv.data.mappers.genre.GenreMapper
 import com.arbelkilani.bingetv.data.mappers.season.SeasonMapper
 import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
 
@@ -9,6 +10,7 @@ import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
 class TvShowMapper : Mapper<TvShowEntity, TvShowData> {
 
     private val seasonMapper = SeasonMapper()
+    private val genreMapper = GenreMapper()
 
     companion object {
         private const val baseBackdrop = "https://image.tmdb.org/t/p/w780"
@@ -53,7 +55,9 @@ class TvShowMapper : Mapper<TvShowEntity, TvShowData> {
             voteAverage = type.voteAverage,
             homepage = type.homepage,
             nextEpisodeData = type.nextEpisode,
-            genres = type.genres,
+            genres = type.genres.map { genreData ->
+                genreMapper.mapToEntity(genreData)
+            },
             networks = type.networks,
             images = type.images?.backdrops?.map { image ->
                 String.format("%s%s", baseBackdrop, image.filePath)

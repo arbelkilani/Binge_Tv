@@ -63,7 +63,6 @@ interface ApiTmdbService {
     @GET("genre/tv/list")
     suspend fun getGenres(): Response<GenreResponse>
 
-
     @GET("tv/{tv_id}")
     suspend fun getTvDetails(
         @Path("tv_id") id: Int,

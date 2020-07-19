@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import com.arbelkilani.bingetv.data.entities.genre.Genre
+import com.arbelkilani.bingetv.data.entities.genre.GenreData
 import com.arbelkilani.bingetv.data.entities.image.ImageResponse
 import com.arbelkilani.bingetv.data.entities.season.SeasonData
 import com.arbelkilani.bingetv.data.entities.tv.maze.details.NextEpisodeData
@@ -77,7 +77,7 @@ data class TvShowData(
 
     @Ignore
     @SerializedName("genres")
-    var genres: List<Genre> = listOf(),
+    var genres: List<GenreData> = listOf(),
 
     @ColumnInfo(name = "poster_path")
     @SerializedName("poster_path")

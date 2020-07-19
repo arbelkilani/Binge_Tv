@@ -30,9 +30,9 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.arbelkilani.bingetv.R
-import com.arbelkilani.bingetv.data.entities.genre.Genre
 import com.arbelkilani.bingetv.data.entities.tv.Network
 import com.arbelkilani.bingetv.data.entities.tv.maze.details.NextEpisodeData
+import com.arbelkilani.bingetv.domain.entities.genre.GenreEntity
 import com.arbelkilani.bingetv.presentation.listeners.KeyboardListener
 import com.google.android.flexbox.FlexboxLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -246,7 +246,7 @@ fun returnDuration(dateToValue: String): String {
 }
 
 @BindingAdapter("genres")
-fun setGenres(view: FlexboxLayout, list: List<Genre>?) {
+fun setGenres(view: FlexboxLayout, list: List<GenreEntity>?) {
     if (list == null)
         return
 

@@ -22,7 +22,6 @@ val UseCasesModule = module {
 
     single { createOnTheAirUseCase(get()) }
 
-    single { createGetGenreUseCase(get()) }
 
     single { createTvDetailsUseCase(get()) }
 
@@ -49,6 +48,10 @@ val UseCasesModule = module {
 
     // profile
     single { statisticsUseCase(get()) }
+
+    // genre
+    single { saveGenreUseCase(get()) }
+
 }
 
 fun createDiscoverUseCase(tvShowRepository: TvShowRepository): DiscoverUseCase {
@@ -69,10 +72,6 @@ fun createPopularUseCase(tvShowRepository: TvShowRepository): PopularUseCase {
 
 fun createOnTheAirUseCase(tvShowRepository: TvShowRepository): OnTheAirUseCase {
     return OnTheAirUseCase(tvShowRepository)
-}
-
-fun createGetGenreUseCase(genresRepository: GenresRepository): GetGenreUseCase {
-    return GetGenreUseCase(genresRepository)
 }
 
 fun createTvDetailsUseCase(tvShowRepository: TvShowRepository): GetTvDetailsUseCase {
@@ -122,4 +121,9 @@ fun recommendationsUseCase(tvShowRepository: TvShowRepository): RecommendationsU
 // profile
 fun statisticsUseCase(profileRepository: ProfileRepository): StatisticsUseCase {
     return StatisticsUseCase(profileRepository)
+}
+
+// genre
+fun saveGenreUseCase(genresRepository: GenresRepository): SaveGenreUseCase {
+    return SaveGenreUseCase(genresRepository)
 }
