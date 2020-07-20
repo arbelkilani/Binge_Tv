@@ -12,6 +12,7 @@ import com.arbelkilani.bingetv.data.entities.tv.maze.channel.WebChannel
 import com.arbelkilani.bingetv.data.entities.tv.maze.details.NextEpisodeData
 import com.arbelkilani.bingetv.data.mappers.season.SeasonMapper
 import com.arbelkilani.bingetv.data.mappers.tv.TvShowMapper
+import com.arbelkilani.bingetv.data.source.local.genre.GenreDao
 import com.arbelkilani.bingetv.data.source.local.season.SeasonDao
 import com.arbelkilani.bingetv.data.source.local.tv.TvDao
 import com.arbelkilani.bingetv.data.source.remote.apiservice.ApiTmdbService
@@ -33,7 +34,8 @@ class TvShowRepositoryImp(
     private val apiTmdbService: ApiTmdbService,
     private val apiTvMazeService: ApiTvMazeService,
     private val tvDao: TvDao,
-    private val seasonDao: SeasonDao
+    private val seasonDao: SeasonDao,
+    private val genreDao: GenreDao
 ) : TvShowRepository {
 
     private val tvShowMapper = TvShowMapper()
@@ -153,6 +155,7 @@ class TvShowRepositoryImp(
 
         try {
 
+            val localTvShow = tvDao.getTvShow(tvShowEntity.id)
             tvShowEntity.watched = watched
             tvShowEntity.seasons.map { seasonEntity ->
 
@@ -183,6 +186,24 @@ class TvShowRepositoryImp(
 
             tvShowEntity.watchedCount =
                 if (watched) (tvShowEntity.episodeCount - tvShowEntity.futureEpisodesCount) else 0
+
+            if (localTvShow == null) {
+                tvShowEntity.genres.map {
+                    genreDao.incrementCount(it.id, 1)
+                }
+            } else {
+                if (tvShowEntity.watchedCount == 0) {
+                    tvShowEntity.genres.map {
+                        genreDao.incrementCount(it.id, -1)
+                    }
+                }
+
+                if (tvShowEntity.watchedCount == (tvShowEntity.episodeCount - tvShowEntity.futureEpisodesCount) && tvShowEntity.watched) {
+                    tvShowEntity.genres.map {
+                        genreDao.incrementCount(it.id, 1)
+                    }
+                }
+            }
 
             tvDao.saveTv(tvShowMapper.mapFromEntity(tvShowEntity))
 

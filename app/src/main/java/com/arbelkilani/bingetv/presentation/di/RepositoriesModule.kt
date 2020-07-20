@@ -20,7 +20,7 @@ import org.koin.dsl.module
 @FlowPreview
 val RepositoriesModule = module {
 
-    single { tvShowRepository(get(), get(), get(), get()) }
+    single { tvShowRepository(get(), get(), get(), get(), get()) }
 
     single { seasonRepository(get(), get(), get(), get(), get()) }
 
@@ -69,12 +69,14 @@ fun tvShowRepository(
     apiTmdbService: ApiTmdbService,
     apiTvMazeService: ApiTvMazeService,
     tvDao: TvDao,
-    seasonDao: SeasonDao
+    seasonDao: SeasonDao,
+    genreDao: GenreDao
 ): TvShowRepository {
     return TvShowRepositoryImp(
         apiTmdbService,
         apiTvMazeService,
         tvDao,
-        seasonDao
+        seasonDao,
+        genreDao
     )
 }
