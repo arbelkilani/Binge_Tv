@@ -10,6 +10,14 @@
             name="statisticsEntity"
             type="com.arbelkilani.bingetv.domain.entities.profile.StatisticsEntity" />
 
+        <import type="java.util.List" />
+
+        <import type="com.arbelkilani.bingetv.domain.entities.genre.GenreEntity" />
+
+        <variable
+            name="genres"
+            type="List&lt;GenreEntity&gt;" />
+
         <variable
             name="viewModel"
             type="com.arbelkilani.bingetv.presentation.viewmodel.profile.ProfileViewModel" />
@@ -28,6 +36,7 @@
             android:orientation="vertical"
             android:padding="@dimen/default_padding">
 
+            <!-- episodes count -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -72,7 +81,7 @@
 
             </androidx.cardview.widget.CardView>
 
-
+            <!-- spent time -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -198,6 +207,44 @@
 
 
                     </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- genres order -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/default_margin"
+                app:cardCornerRadius="@dimen/default_card_corner_radius"
+                app:contentPadding="@dimen/default_padding">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenir_next_regular"
+                        android:text="@string/label_top_preferred_genre"
+                        android:textColor="@color/details_titles_text_color"
+                        android:textSize="@dimen/small_text_size" />
+
+                    <com.google.android.flexbox.FlexboxLayout
+                        android:id="@+id/flexGenres"
+                        genres="@{genres}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/default_margin"
+                        app:alignContent="flex_start"
+                        app:alignItems="flex_start"
+                        app:dividerDrawable="@drawable/divider"
+                        app:flexWrap="wrap"
+                        app:showDivider="middle" />
 
                 </LinearLayout>
 

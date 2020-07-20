@@ -33,8 +33,12 @@ class ProfileFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        viewModel.statistics.observe(viewLifecycleOwner, Observer {
-            binding.statisticsEntity = it
+        viewModel.statistics.observe(viewLifecycleOwner, Observer { statisticsEntity ->
+            binding.statisticsEntity = statisticsEntity
+        })
+
+        viewModel.genres.observe(viewLifecycleOwner, Observer { genres ->
+            binding.genres = genres
         })
 
         return binding.root
