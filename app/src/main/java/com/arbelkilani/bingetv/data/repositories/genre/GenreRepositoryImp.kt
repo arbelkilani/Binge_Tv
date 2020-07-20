@@ -11,9 +11,15 @@ class GenreRepositoryImp(
 
     override suspend fun saveGenres() {
         apiTmdbService.getGenres().body()?.apply {
-            genres.map { genreData ->
+            genres.map { remote ->
+                val localGenres = genreDao.getGenres()
+                localGenres.map { local ->
+                    if (remote.id == local.id)
+                        remote.count = local.count
+                }
+
                 try {
-                    genreDao.saveGenre(genreData)
+                    genreDao.saveGenre(remote)
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
