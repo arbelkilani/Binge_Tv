@@ -9,10 +9,7 @@ import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.PopupWindow
@@ -212,6 +209,11 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
         view.getLocationInWindow(axis)
 
         val popupWindow = PopupWindow(this)
+        popupWindow.setWindowLayoutMode(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+
         val layout = layoutInflater.inflate(R.layout.layout_tv_details_popup_menu, null)
 
         layout.measure(View.MeasureSpec.EXACTLY, View.MeasureSpec.EXACTLY)
