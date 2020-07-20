@@ -15,6 +15,9 @@ data class GenreData(
 
     @ColumnInfo(name = "name")
     @SerializedName("name")
-    val name: String
+    var name: String = "",
+
+    @ColumnInfo(name = "count")
+    var count: Int = 0
 
 )

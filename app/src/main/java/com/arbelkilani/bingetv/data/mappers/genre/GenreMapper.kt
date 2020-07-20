@@ -9,14 +9,16 @@ class GenreMapper : Mapper<GenreEntity, GenreData> {
     override fun mapFromEntity(type: GenreEntity): GenreData {
         return GenreData(
             id = type.id,
-            name = type.name
+            name = type.name,
+            count = type.count
         )
     }
 
     override fun mapToEntity(type: GenreData): GenreEntity {
         return GenreEntity(
             id = type.id,
-            name = type.name
+            name = type.name,
+            count = type.count
         )
     }
 }

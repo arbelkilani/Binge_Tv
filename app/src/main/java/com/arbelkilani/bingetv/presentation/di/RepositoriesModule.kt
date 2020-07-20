@@ -24,7 +24,7 @@ val RepositoriesModule = module {
 
     single { seasonRepository(get(), get(), get(), get()) }
 
-    single { episodeRepository(get(), get(), get()) }
+    single { episodeRepository(get(), get(), get(), get()) }
 
     single { profileRepository(get()) }
 
@@ -47,9 +47,10 @@ fun profileRepository(
 fun episodeRepository(
     episodeDao: EpisodeDao,
     seasonDao: SeasonDao,
-    tvDao: TvDao
+    tvDao: TvDao,
+    genreDao: GenreDao
 ): EpisodeRepository {
-    return EpisodeRepositoryImp(episodeDao, seasonDao, tvDao)
+    return EpisodeRepositoryImp(episodeDao, seasonDao, tvDao, genreDao)
 }
 
 fun seasonRepository(
