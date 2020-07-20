@@ -10,7 +10,8 @@ class GenreMapper : Mapper<GenreEntity, GenreData> {
         return GenreData(
             id = type.id,
             name = type.name,
-            count = type.count
+            count = type.count,
+            percentage = type.percentage
         )
     }
 
@@ -18,7 +19,8 @@ class GenreMapper : Mapper<GenreEntity, GenreData> {
         return GenreEntity(
             id = type.id,
             name = type.name,
-            count = type.count
+            count = type.count,
+            percentage = type.percentage
         )
     }
 }

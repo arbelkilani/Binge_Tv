@@ -7,5 +7,6 @@ import kotlinx.android.parcel.Parcelize
 data class GenreEntity(
     var id: Int = -1,
     var name: String = "",
-    var count: Int = 0
+    var count: Int = 0,
+    var percentage: Int = 0
 ) : Parcelable

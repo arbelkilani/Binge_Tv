@@ -245,6 +245,22 @@ fun returnDuration(dateToValue: String): String {
     return duration.toString()
 }
 
+@BindingAdapter("custom:favorite_genre")
+fun setFavoriteGenres(view: FlexboxLayout, list: List<GenreEntity>?) {
+    if (list.isNullOrEmpty())
+        return
+
+    view.removeAllViews()
+    for (item in list) {
+        val textView = TextView(ContextThemeWrapper(view.context, R.style.TextView_Genre), null, 0)
+        textView.text = String.format("%s %s%%", item.name, item.percentage.toString())
+        view.addView(textView)
+    }
+
+    view.requestLayout()
+    view.invalidate()
+}
+
 @BindingAdapter("genres")
 fun setGenres(view: FlexboxLayout, list: List<GenreEntity>?) {
     if (list == null)

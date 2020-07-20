@@ -18,6 +18,8 @@ data class GenreData(
     var name: String = "",
 
     @ColumnInfo(name = "count")
-    var count: Int = 0
+    var count: Int = 0,
+
+    var percentage: Int = 0
 
 )

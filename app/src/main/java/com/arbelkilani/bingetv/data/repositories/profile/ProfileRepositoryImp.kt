@@ -37,6 +37,11 @@ class ProfileRepositoryImp(
     }
 
     override suspend fun getGenres(): List<GenreEntity> {
-        return genreDao.getGenres().map { genreMapper.mapToEntity(it) }
+        return genreDao.getGenres().let {
+            it.map { genreData ->
+                genreData.percentage = genreData.count * 100 / it.size
+                genreMapper.mapToEntity(genreData)
+            }
+        }
     }
 }
