@@ -128,6 +128,7 @@ class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener, Revea
         Log.i(TAG, "afterTextChanged = $s")
         if (s!!.isEmpty())
             closeMenuItem?.isVisible = false
+
     }
 
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -136,9 +137,7 @@ class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener, Revea
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
         closeMenuItem?.isVisible = true
-        if (start >= 3) {
-            search(s.toString())
-        }
+        search(s.toString())
     }
 
     override fun onKeyboardShown(currentKeyboardHeight: Int) {
