@@ -26,6 +26,8 @@ class SeasonRepositoryImp(
     private val tvShowMapper = TvShowMapper()
     private val episodeMapper = EpisodeMapper()
 
+    private var initialWatchListState: Boolean = false
+
     companion object {
         private const val TAG = "SeasonRepository"
     }
@@ -35,6 +37,8 @@ class SeasonRepositoryImp(
         seasonEntity: SeasonEntity,
         tvShowEntity: TvShowEntity
     ): SeasonEntity? {
+
+        initialWatchListState = tvShowEntity.watchlist
 
         tvShowEntity.seasons.map {
             if (it.id == seasonEntity.id) {
@@ -80,6 +84,23 @@ class SeasonRepositoryImp(
 
         tvShowEntity.watchedCount = tvShowWatchedCount
 
+        //TODO check case where user select a season and un-select it
+        // tv show should return to watchlist initial state -> case where watchlist = true
+        val watchlistState: Boolean
+        watchlistState = if (watched) {
+            false
+        } else {
+            if (tvShowWatchedCount == 0) {
+                initialWatchListState
+            } else {
+                false
+            }
+        }
+
+        tvShowEntity.watchlist = watchlistState
+
+
+        // increment genres count if user start tv show by selecting a season as watched.
         if (localTvShow == null) {
             tvShowEntity.genres.map {
                 genreDao.incrementCount(it.id, 1)
