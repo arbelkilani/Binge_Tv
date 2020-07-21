@@ -11,7 +11,7 @@ import androidx.lifecycle.Observer
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.databinding.FragmentWatchedBinding
 import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
-import com.arbelkilani.bingetv.presentation.adapters.viewpager.WatchlistAdapter
+import com.arbelkilani.bingetv.presentation.adapters.WatchedAdapter
 import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
 import com.arbelkilani.bingetv.presentation.viewmodel.watched.WatchedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -21,6 +21,8 @@ class WatchedFragment : Fragment(), OnTvShowClickListener {
     private val viewModel: WatchedViewModel by viewModel()
 
     private lateinit var binding: FragmentWatchedBinding
+
+    private val returningAdapter = WatchedAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +47,7 @@ class WatchedFragment : Fragment(), OnTvShowClickListener {
         initAdapter()
 
         viewModel.returningSeries.observe(viewLifecycleOwner, Observer {
-            binding.rvReturning.adapter = WatchlistAdapter(it, this)
+            (binding.rvReturning.adapter as WatchedAdapter).notifyDataSetChanged(it)
         })
 
 
@@ -53,7 +55,7 @@ class WatchedFragment : Fragment(), OnTvShowClickListener {
     }
 
     private fun initAdapter() {
-
+        binding.rvReturning.adapter = returningAdapter
     }
 
     override fun onResume() {
