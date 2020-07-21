@@ -79,6 +79,17 @@ class EpisodeRepositoryImp(
         // update for the liveData
         tvShowEntity.watchedCount = watchedCount
 
+        // set watchlist to false if user start tv show watching by selecting an episode
+        if (watched)
+            tvShowData.watchlist = false
+        else {
+            if (watchedCount == 0)
+                tvShowData.watchlist = tvShowEntity.watchlist
+            else
+                tvShowData.watchlist = false
+        }
+
+        // increment genre count while user click on current episode.
         // for this tv show clicking on episode is the first action
         if (localTvShowData == null) {
             tvShowEntity.genres.map {
