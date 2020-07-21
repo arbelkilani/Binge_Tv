@@ -78,5 +78,6 @@
     <string name="label_ended">Ended</string>
     <string name="label_returning">Returning</string>
     <string name="hours_and_minutes_label">"more %1$s hours and %2$s minutes"</string>
+    <string name="title_watched">My shows</string>
 
 </resources>

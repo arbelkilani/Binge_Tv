@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.presentation.ui.fragments.DiscoverFragment
 import com.arbelkilani.bingetv.presentation.ui.fragments.ProfileFragment
+import com.arbelkilani.bingetv.presentation.ui.fragments.WatchedFragment
 import com.arbelkilani.bingetv.presentation.ui.fragments.WatchlistFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_dashboard.*
@@ -18,6 +19,7 @@ class DashboardActivity : AppCompatActivity(),
 
     private val discoverFragment = DiscoverFragment()
     private val watchlistFragment = WatchlistFragment()
+    private val watchedFragment = WatchedFragment()
     private val profileFragment = ProfileFragment()
     private var active: Fragment = discoverFragment
 
@@ -29,6 +31,8 @@ class DashboardActivity : AppCompatActivity(),
 
         supportFragmentManager.beginTransaction().add(R.id.main_container, profileFragment)
             .hide(profileFragment).commit()
+        supportFragmentManager.beginTransaction().add(R.id.main_container, watchedFragment)
+            .hide(watchedFragment).commit()
         supportFragmentManager.beginTransaction().add(R.id.main_container, watchlistFragment)
             .hide(watchlistFragment).commit()
         supportFragmentManager.beginTransaction().add(R.id.main_container, discoverFragment)
@@ -61,6 +65,14 @@ class DashboardActivity : AppCompatActivity(),
                     .commit()
                 active = watchlistFragment
                 supportActionBar?.title = getString(R.string.title_watch_list)
+                return true
+            }
+
+            R.id.menu_watched -> {
+                supportFragmentManager.beginTransaction().hide(active).show(watchedFragment)
+                    .commit()
+                active = watchedFragment
+                supportActionBar?.title = getString(R.string.title_watched)
                 return true
             }
 

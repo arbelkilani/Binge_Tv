@@ -16,6 +16,13 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/menu_watched"
+        android:enabled="true"
+        android:icon="@drawable/ic_menu_watched"
+        android:title="@string/title_watched"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/menu_profile"
         android:enabled="true"
         android:icon="@drawable/ic_profile"
