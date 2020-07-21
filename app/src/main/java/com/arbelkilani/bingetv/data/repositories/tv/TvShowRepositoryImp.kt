@@ -156,6 +156,10 @@ class TvShowRepositoryImp(
         try {
 
             val localTvShow = tvDao.getTvShow(tvShowEntity.id)
+
+            if (watched)
+                tvShowEntity.watchlist = false
+
             tvShowEntity.watched = watched
             tvShowEntity.seasons.map { seasonEntity ->
 
@@ -216,6 +220,11 @@ class TvShowRepositoryImp(
 
     override suspend fun watchlist(): List<TvShowEntity> {
         val tvShows = tvDao.watchlist(true)
+        return tvShows?.map { tvShowData -> tvShowMapper.mapToEntity(tvShowData) }!!
+    }
+
+    override suspend fun watched(): List<TvShowEntity> {
+        val tvShows = tvDao.watched()
         return tvShows?.map { tvShowData -> tvShowMapper.mapToEntity(tvShowData) }!!
     }
 

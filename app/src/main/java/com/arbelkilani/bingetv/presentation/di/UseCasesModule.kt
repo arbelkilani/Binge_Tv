@@ -8,6 +8,7 @@ import com.arbelkilani.bingetv.domain.usecase.season.GetSeasonDetailsUseCase
 import com.arbelkilani.bingetv.domain.usecase.season.UpdateSeasonUseCase
 import com.arbelkilani.bingetv.domain.usecase.tv.GetWatchListUseCase
 import com.arbelkilani.bingetv.domain.usecase.tv.UpdateTvShowUseCase
+import com.arbelkilani.bingetv.domain.usecase.tv.WatchedUseCase
 import org.koin.dsl.module
 
 val UseCasesModule = module {
@@ -38,6 +39,7 @@ val UseCasesModule = module {
     // tv show
     single { getWatchlistUseCase(get()) }
     single { recommendationsUseCase(get()) }
+    single { watchedUseCase(get()) }
 
     // season
     single { getSeasonDetailsUseCase(get()) }
@@ -112,6 +114,10 @@ fun updateEpisodeUseCase(episodeRepository: EpisodeRepository): UpdateEpisodeUse
 // tv show
 fun getWatchlistUseCase(tvShowRepository: TvShowRepository): GetWatchListUseCase {
     return GetWatchListUseCase(tvShowRepository)
+}
+
+fun watchedUseCase(tvShowRepository: TvShowRepository): WatchedUseCase {
+    return WatchedUseCase(tvShowRepository)
 }
 
 fun recommendationsUseCase(tvShowRepository: TvShowRepository): RecommendationsUseCase {

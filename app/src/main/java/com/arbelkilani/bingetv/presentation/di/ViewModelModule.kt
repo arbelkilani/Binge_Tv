@@ -8,6 +8,7 @@ import com.arbelkilani.bingetv.presentation.viewmodel.discover.DiscoverViewModel
 import com.arbelkilani.bingetv.presentation.viewmodel.profile.ProfileViewModel
 import com.arbelkilani.bingetv.presentation.viewmodel.season.SeasonDetailsViewModel
 import com.arbelkilani.bingetv.presentation.viewmodel.splash.SplashViewModel
+import com.arbelkilani.bingetv.presentation.viewmodel.watched.WatchedViewModel
 import com.arbelkilani.bingetv.presentation.viewmodel.watchlist.WatchlistViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -37,6 +38,7 @@ val ViewModelModule = module {
         )
     }
     viewModel { WatchlistViewModel(get(), get()) }
+    viewModel { WatchedViewModel(get()) }
     viewModel { ProfileViewModel(get()) }
 
 }
