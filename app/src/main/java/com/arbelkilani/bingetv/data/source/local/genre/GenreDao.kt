@@ -18,4 +18,7 @@ interface GenreDao {
     @Query("SELECT * FROM genre_table ORDER BY count DESC")
     suspend fun getGenres(): List<GenreData>
 
+    @Query("SELECT SUM(count) AS sum FROM genre_table")
+    suspend fun sum(): Int
+
 }

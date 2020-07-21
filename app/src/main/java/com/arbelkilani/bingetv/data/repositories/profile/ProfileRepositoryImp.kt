@@ -38,8 +38,9 @@ class ProfileRepositoryImp(
 
     override suspend fun getGenres(): List<GenreEntity> {
         return genreDao.getGenres().let {
+            val sum = genreDao.sum()
             it.map { genreData ->
-                genreData.percentage = genreData.count * 100 / it.size
+                genreData.percentage = genreData.count * 100 / sum
                 genreMapper.mapToEntity(genreData)
             }
         }
