@@ -116,7 +116,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/default_margin_min"
                                     android:fontFamily="@font/avenir_next_demi_bold"
-                                    android:text="Returning"
+                                    android:text="@string/label_returning"
                                     android:textColor="@color/details_titles_text_color"
                                     android:textSize="@dimen/small_text_size" />
 
@@ -150,7 +150,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/default_margin_min"
                                     android:fontFamily="@font/avenir_next_demi_bold"
-                                    android:text="Ended"
+                                    android:text="@string/label_ended"
                                     android:textColor="@color/details_titles_text_color"
                                     android:textSize="@dimen/small_text_size" />
 
@@ -199,7 +199,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/default_margin_min"
                             android:fontFamily="@font/avenir_next_demi_bold"
-                            android:text="episodes"
+                            android:text="@string/episodes"
                             android:textColor="@color/details_titles_text_color"
                             android:textSize="@dimen/small_text_size" />
 
@@ -258,7 +258,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/default_margin_min"
                                     android:fontFamily="@font/avenir_next_demi_bold"
-                                    android:text="years"
+                                    android:text="@string/years"
                                     android:textColor="@color/details_titles_text_color"
                                     android:textSize="@dimen/small_text_size" />
 
@@ -292,7 +292,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/default_margin_min"
                                     android:fontFamily="@font/avenir_next_demi_bold"
-                                    android:text="months"
+                                    android:text="@string/label_months"
                                     android:textColor="@color/details_titles_text_color"
                                     android:textSize="@dimen/small_text_size" />
 
@@ -326,7 +326,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/default_margin_min"
                                     android:fontFamily="@font/avenir_next_demi_bold"
-                                    android:text="days"
+                                    android:text="@string/label_days"
                                     android:textColor="@color/details_titles_text_color"
                                     android:textSize="@dimen/small_text_size" />
 
