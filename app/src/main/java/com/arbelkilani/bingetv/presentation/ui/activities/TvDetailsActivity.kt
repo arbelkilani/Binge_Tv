@@ -225,6 +225,7 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
         popupWindow.showAtLocation(view, Gravity.NO_GRAVITY, widthPixels - view.width, 0)
 
         val watchlistView = layout.findViewById<TextView>(R.id.tv_action_watchlist)
+        watchlistView.visibility = if (currentTvShow.watchedCount > 0) View.GONE else View.VISIBLE
         watchlistView.isSelected = currentTvShow.watchlist
         watchlistView.setOnClickListener {
             viewModel.saveWatchlist(!watchlistView.isSelected)
