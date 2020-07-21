@@ -107,7 +107,7 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
 
     companion object {
         private const val TAG = "WatchlistFragment"
-        private const val MIN_OFFSCREEN_PAGE_LIMIT = 4
+        private const val MIN_OFFSCREEN_PAGE_LIMIT = 3
     }
 
     override fun onTvItemClicked(tvShowEntity: TvShowEntity) {
