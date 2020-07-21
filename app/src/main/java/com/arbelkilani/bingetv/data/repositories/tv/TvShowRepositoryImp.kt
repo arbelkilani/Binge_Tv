@@ -94,7 +94,7 @@ class TvShowRepositoryImp(
         ).flow
     }
 
-    override suspend fun tvShowEntityResponse(id: Int): Resource<TvShowEntity> =
+    override suspend fun getTvShowDetails(id: Int): Resource<TvShowEntity> =
         try {
             val tvShowData = apiTmdbService.getTvDetails(id, "videos")
             val localSeasons = seasonDao.getSeasons(id)
@@ -209,11 +209,14 @@ class TvShowRepositoryImp(
                 }
             }
 
-            tvDao.saveTv(tvShowMapper.mapFromEntity(tvShowEntity))
+            val test = tvShowMapper.mapFromEntity(tvShowEntity)
+            Log.i("TAG++", "check test = $tvShowEntity")
+            tvDao.saveTv(test)
 
             return tvShowEntity
         } catch (e: Exception) {
             e.printStackTrace()
+            Log.e("TAG++", "e.message = ${e.localizedMessage}")
             return null
         }
     }
@@ -240,14 +243,6 @@ class TvShowRepositoryImp(
             e.printStackTrace()
             null
         }
-
-    private suspend fun saveNextEpisode(tvShow: TvShowData) {
-        val nextEpisode = tvShow.nextEpisodeToAir
-        nextEpisode?.let {
-            it.tv_next_episode = tvShow.id
-            tvDao.saveNextEpisode(it)
-        }
-    }
 
     override suspend fun getCredits(id: Int): Resource<CreditsResponse> =
         try {

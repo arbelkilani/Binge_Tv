@@ -17,7 +17,7 @@ interface TvShowRepository {
     suspend fun onTheAir(): Flow<PagingData<TvShowEntity>>
     suspend fun search(query: String): Flow<PagingData<TvShowEntity>>
 
-    suspend fun tvShowEntityResponse(id: Int): Resource<TvShowEntity>
+    suspend fun getTvShowDetails(id: Int): Resource<TvShowEntity>
     suspend fun getCredits(id: Int): Resource<CreditsResponse>
     suspend fun getNextEpisodeData(id: Int): Resource<NextEpisodeData>
 

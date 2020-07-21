@@ -36,7 +36,8 @@ class TvShowMapper : Mapper<TvShowEntity, TvShowData> {
             watched = type.watched,
             watchlist = type.watchlist,
             watchedCount = type.watchedCount,
-            futureEpisodesCount = type.futureEpisodesCount
+            futureEpisodesCount = type.futureEpisodesCount,
+            nextEpisode = type.nextEpisodeData
         )
     }
 
@@ -59,9 +60,9 @@ class TvShowMapper : Mapper<TvShowEntity, TvShowData> {
                 genreMapper.mapToEntity(genreData)
             },
             networks = type.networks,
-            images = type.images?.backdrops?.map { image ->
-                String.format("%s%s", baseBackdrop, image.filePath)
-            },
+            //images = type.images?.backdrops?.map { image ->
+            //    String.format("%s%s", baseBackdrop, image.filePath)
+            //},
             videos = type.videos?.results?.map { video ->
                 if (video.site == "YouTube") video.key else ""
             },
@@ -71,7 +72,7 @@ class TvShowMapper : Mapper<TvShowEntity, TvShowData> {
                 .map { seasonData ->
                     seasonMapper.mapToEntity(seasonData)
                 },
-            backdrop = baseBackdrop + type.backdropPath,
+            backdrop = type.backdropPath,
             poster = type.posterPath,
             watched = type.watched,
             watchlist = type.watchlist,

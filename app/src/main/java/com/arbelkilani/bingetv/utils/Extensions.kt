@@ -384,8 +384,8 @@ fun formatAirDate(data: NextEpisodeData?): String {
         val minute = airTime.substringAfter(":").toInt()
 
         val year = airDate!!.substringBefore("-").toInt()
-        val month = airDate.substringBeforeLast("-").substringAfter("-").toInt()
-        val date = airDate.substringAfterLast("-").toInt()
+        val month = airDate!!.substringBeforeLast("-").substringAfter("-").toInt()
+        val date = airDate!!.substringAfterLast("-").toInt()
 
         val calendar = Calendar.getInstance(TimeZone.getTimeZone(timezone))
         calendar.set(year, month - 1, date, hourOfDay, minute)

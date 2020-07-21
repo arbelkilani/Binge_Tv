@@ -8,28 +8,28 @@ import kotlinx.android.parcel.Parcelize
 data class NextEpisodeData(
 
     @SerializedName("name")
-    val name: String,
+    var name: String = "",
 
     @SerializedName("season")
-    val season: Int,
+    var season: Int = 0,
 
     @SerializedName("number")
-    val number: Int,
+    var number: Int = 0,
 
     @SerializedName("airdate")
-    val airDate: String?,
+    var airDate: String? = "",
 
     @SerializedName("airstamp")
-    val airStamp: String,
+    var airStamp: String = "",
 
     @SerializedName("airtime")
-    var airTime: String,
+    var airTime: String = "",
 
     @SerializedName("summary")
-    val summary: String?,
+    var summary: String? = null,
 
-    var timezone: String,
+    var timezone: String = "",
 
-    var formattedAirDate: String
+    var formattedAirDate: String = ""
 
 ) : Parcelable

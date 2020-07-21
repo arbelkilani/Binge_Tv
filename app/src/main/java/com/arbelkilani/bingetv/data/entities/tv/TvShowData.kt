@@ -18,7 +18,6 @@ data class TvShowData(
     @PrimaryKey
     var id: Int = -1,
 
-    @Ignore
     @ColumnInfo(name = "name")
     @SerializedName("name")
     var name: String = "",
@@ -53,7 +52,6 @@ data class TvShowData(
     @SerializedName("number_of_seasons")
     var numberOfSeasons: Int = 0,
 
-    @Ignore
     @ColumnInfo(name = "backdrop_path")
     @SerializedName("backdrop_path")
     var backdropPath: String? = null,
@@ -165,7 +163,7 @@ data class TvShowData(
     @ColumnInfo(name = "future_episodes_count")
     var futureEpisodesCount: Int = 0,
 
-    @Ignore
+    @ColumnInfo(name = "next_episode")
     var nextEpisode: NextEpisodeData? = null
 
 )
