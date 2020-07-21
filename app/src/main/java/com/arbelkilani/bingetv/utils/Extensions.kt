@@ -252,8 +252,14 @@ fun setFavoriteGenres(view: FlexboxLayout, list: List<GenreEntity>?) {
 
     view.removeAllViews()
     for (item in list) {
-        val textView = TextView(ContextThemeWrapper(view.context, R.style.TextView_Genre), null, 0)
-        textView.text = String.format("%s %s%%", item.name, item.percentage.toString())
+        val textView = TextView(view.context)
+        textView.text =
+            String.format(
+                "%d. %s %s%%",
+                list.indexOf(item) + 1,
+                item.name,
+                item.percentage.toString()
+            )
         view.addView(textView)
     }
 
