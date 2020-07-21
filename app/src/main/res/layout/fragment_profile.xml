@@ -335,6 +335,14 @@
 
                         </LinearLayout>
 
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/default_margin"
+                            android:fontFamily="@font/avenir_next_medium"
+                            android:textSize="@dimen/small_text_size"
+                            android:text="@{String.format(@string/hours_and_minutes_label, statisticsEntity.hours, statisticsEntity.minutes)}" />
+
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
