@@ -70,5 +70,6 @@
     <string name="label_total_time_spent">Total time spent watching Tv shows</string>
     <string name="label_seen_episodes">You have seen a total of</string>
     <string name="label_top_preferred_genre">Top 3 favorite genres are</string>
+    <string name="label_watched_tv_show_label">You\'ve watched a total of %1$s tv show</string>
 
 </resources>

@@ -24,4 +24,5 @@ interface TvDao {
 
     @Query("SELECT * FROM tv_table WHERE watchlist=:state")
     suspend fun watchlist(state: Boolean): List<TvShowData>?
+
 }

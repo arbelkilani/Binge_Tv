@@ -11,6 +11,7 @@ class StatisticsMapper : Mapper<StatisticsEntity, StatisticsData> {
         return StatisticsData(
             episodeCount = type.episodeCount,
             tvShowCount = type.tvShowCount,
+            returningTvShowCount = type.returningTvShowCount,
             totalSpentTime = type.totalSpentTime
         )
     }
@@ -19,6 +20,7 @@ class StatisticsMapper : Mapper<StatisticsEntity, StatisticsData> {
         return StatisticsEntity(
             episodeCount = type.episodeCount,
             tvShowCount = type.tvShowCount,
+            returningTvShowCount = type.returningTvShowCount,
             totalSpentTime = type.totalSpentTime,
             minutes = type.totalSpentTime % 60,
             hours = (type.totalSpentTime / 60) % 24,

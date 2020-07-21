@@ -20,6 +20,7 @@ class ProfileRepositoryImp(
     override suspend fun getStatistics(): StatisticsEntity {
         var episodeCount = 0
         var tvShowCount = 0
+        var returningTvShowCount = 0
         var totalSpentTime = 0
         val tvShows = tvDao.getAllTvShows()
         tvShows?.apply {
@@ -28,11 +29,14 @@ class ProfileRepositoryImp(
                 if (it.watchedCount > 0) {
                     tvShowCount += 1
                     totalSpentTime += (it.runtime * it.watchedCount)
+                    if (it.inProduction)
+                        returningTvShowCount += 1
                 }
             }
         }
 
-        val statisticsData = StatisticsData(episodeCount, tvShowCount, totalSpentTime)
+        val statisticsData =
+            StatisticsData(episodeCount, tvShowCount, returningTvShowCount, totalSpentTime)
         return statisticsMapper.mapToEntity(statisticsData)
     }
 
