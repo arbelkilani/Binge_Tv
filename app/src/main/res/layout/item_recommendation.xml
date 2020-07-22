@@ -17,17 +17,17 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/poster_container"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginEnd="@dimen/default_margin"
         android:orientation="vertical">
 
         <com.arbelkilani.bingetv.presentation.ui.view.CustomCardView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layoutMode="opticalBounds"
             android:onClick="@{() -> tvShowListener.onTvItemClicked(tvShowEntity)}"
             app:cardCornerRadius="@dimen/item_season_large_corner_radius"
-            app:layout_constraintDimensionRatio="1:1.5"
+            app:layout_constraintDimensionRatio="2:3"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">

@@ -23,6 +23,7 @@ class WatchedFragment : Fragment(), OnTvShowClickListener {
     private lateinit var binding: FragmentWatchedBinding
 
     private val returningAdapter = WatchedAdapter(this)
+    private val endedAdapter = WatchedAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,12 +51,17 @@ class WatchedFragment : Fragment(), OnTvShowClickListener {
             (binding.rvReturning.adapter as WatchedAdapter).notifyDataSetChanged(it)
         })
 
+        viewModel.endedSeries.observe(viewLifecycleOwner, Observer {
+            (binding.rvEnded.adapter as WatchedAdapter).notifyDataSetChanged(it)
+        })
+
 
         return binding.root
     }
 
     private fun initAdapter() {
         binding.rvReturning.adapter = returningAdapter
+        binding.rvEnded.adapter = endedAdapter
     }
 
     override fun onResume() {
