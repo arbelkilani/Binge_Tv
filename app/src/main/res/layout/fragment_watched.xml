@@ -30,7 +30,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/default_margin"
-                android:paddingBottom="@dimen/default_padding_min"
                 android:text="Returning series" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -42,8 +41,7 @@
                 android:layoutMode="clipBounds"
                 android:orientation="horizontal"
                 android:overScrollMode="never"
-                android:paddingStart="@dimen/default_padding"
-                android:paddingEnd="@dimen/default_padding"
+                android:padding="@dimen/default_padding"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         </LinearLayout>
@@ -59,7 +57,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/default_margin"
-                android:paddingBottom="@dimen/default_padding_min"
                 android:text="Ended" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -71,8 +68,7 @@
                 android:layoutMode="clipBounds"
                 android:orientation="horizontal"
                 android:overScrollMode="never"
-                android:paddingStart="@dimen/default_padding"
-                android:paddingEnd="@dimen/default_padding"
+                android:padding="@dimen/default_padding"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         </LinearLayout>

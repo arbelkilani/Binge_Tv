@@ -1,7 +1,7 @@
 package com.arbelkilani.bingetv.presentation.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +13,9 @@ import com.arbelkilani.bingetv.databinding.FragmentWatchedBinding
 import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
 import com.arbelkilani.bingetv.presentation.adapters.WatchedAdapter
 import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
+import com.arbelkilani.bingetv.presentation.ui.activities.TvDetailsActivity
 import com.arbelkilani.bingetv.presentation.viewmodel.watched.WatchedViewModel
+import com.arbelkilani.bingetv.utils.Constants
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class WatchedFragment : Fragment(), OnTvShowClickListener {
@@ -74,7 +76,11 @@ class WatchedFragment : Fragment(), OnTvShowClickListener {
     }
 
     override fun onTvItemClicked(tvShowEntity: TvShowEntity) {
-        Log.i("TAG++", "tvShowEntity : $tvShowEntity")
+        startActivity(
+            Intent(activity, TvDetailsActivity::class.java)
+                .apply {
+                    putExtra(Constants.TV_SHOW_ENTITY, tvShowEntity)
+                })
     }
 
 }

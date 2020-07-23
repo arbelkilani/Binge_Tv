@@ -210,13 +210,11 @@ class TvShowRepositoryImp(
             }
 
             val test = tvShowMapper.mapFromEntity(tvShowEntity)
-            Log.i("TAG++", "check test = $tvShowEntity")
             tvDao.saveTv(test)
 
             return tvShowEntity
         } catch (e: Exception) {
             e.printStackTrace()
-            Log.e("TAG++", "e.message = ${e.localizedMessage}")
             return null
         }
     }
