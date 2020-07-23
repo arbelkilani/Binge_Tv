@@ -43,7 +43,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-
 @BindingAdapter(value = ["custom:src_poster", "custom:size_poster"], requireAll = false)
 fun bindPoster(view: ImageView, url: String?, sizePoster: String?) {
     url?.let {
@@ -371,29 +370,56 @@ fun doOnBottomSheetDetailsSeason(it: View) {
     }
 }
 
-fun formatAirDate(data: NextEpisodeData?): String {
+@BindingAdapter("custom:date_countdown")
+fun setDateCountdown(view: TextView, nextEpisodeData: NextEpisodeData?) {
+    if (nextEpisodeData == null)
+        return
 
-    if (data == null) return ""
+    nextEpisodeData.apply {
 
-    data.apply {
+        val diff = toTime(nextEpisodeData) - Calendar.getInstance().timeInMillis
 
-        if (data.airTime.isEmpty())
-            data.airTime = "00:00"
+        val days = diff / (24 * 60 * 60 * 1000)
+        val hours = diff / (1000 * 60 * 60) % 24
+        val minutes = diff / (1000 * 60) % 60
+        val seconds = (diff / 1000) % 60
 
-        val hourOfDay = airTime.substringBefore(":").toInt()
-        val minute = airTime.substringAfter(":").toInt()
+        val labelDays = if (days == 0L) "" else String.format("%d days, ", days)
+        val labelHours = if (hours == 0L) "" else String.format("%d hours", hours)
 
-        val year = airDate!!.substringBefore("-").toInt()
-        val month = airDate!!.substringBeforeLast("-").substringAfter("-").toInt()
-        val date = airDate!!.substringAfterLast("-").toInt()
+        view.text = String.format("Next episode will air in\n%s%s", labelDays, labelHours)
+    }
+}
 
-        val calendar = Calendar.getInstance(TimeZone.getTimeZone(timezone))
-        calendar.set(year, month - 1, date, hourOfDay, minute)
+fun NextEpisodeData.toTime(
+    nextEpisodeData: NextEpisodeData?
+): Long {
 
-        val simpleDateFormat =
+    if (nextEpisodeData == null)
+        return 0
+
+    nextEpisodeData.apply {
+        val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX", Locale.getDefault())
+        parser.timeZone = Calendar.getInstance().timeZone
+        val parsed = parser.parse(airStamp)!!
+        return parsed.time
+    }
+}
+
+fun formatAirDate(nextEpisode: NextEpisodeData?): String {
+
+    if (nextEpisode == null) return ""
+
+    nextEpisode.apply {
+
+        val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX", Locale.getDefault())
+        parser.timeZone = Calendar.getInstance().timeZone
+        val parsed = parser.parse(airStamp)!!
+
+        val formatter =
             SimpleDateFormat("EEEE, d MMMM yyyy 'at' HH:mm a", Locale.getDefault())
 
-        return simpleDateFormat.format(calendar.timeInMillis)
+        return formatter.format(parsed.time)
 
     }
 }
