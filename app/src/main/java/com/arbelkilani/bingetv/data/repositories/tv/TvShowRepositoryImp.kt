@@ -13,6 +13,7 @@ import com.arbelkilani.bingetv.data.mappers.season.SeasonMapper
 import com.arbelkilani.bingetv.data.mappers.tv.TvShowMapper
 import com.arbelkilani.bingetv.data.source.local.genre.GenreDao
 import com.arbelkilani.bingetv.data.source.local.season.SeasonDao
+import com.arbelkilani.bingetv.data.source.local.tv.NextEpisodeDao
 import com.arbelkilani.bingetv.data.source.local.tv.TvDao
 import com.arbelkilani.bingetv.data.source.remote.apiservice.ApiTmdbService
 import com.arbelkilani.bingetv.data.source.remote.apiservice.ApiTvMazeService
@@ -34,7 +35,8 @@ class TvShowRepositoryImp(
     private val apiTvMazeService: ApiTvMazeService,
     private val tvDao: TvDao,
     private val seasonDao: SeasonDao,
-    private val genreDao: GenreDao
+    private val genreDao: GenreDao,
+    private val nextEpisodeDao: NextEpisodeDao
 ) : TvShowRepository {
 
     private val tvShowMapper = TvShowMapper()
@@ -176,6 +178,8 @@ class TvShowRepositoryImp(
 
             val episode = apiTvMazeService.getNextEpisode(showId)
             episode.time = episode.time()
+            episode.tv_next_episode = id
+            //nextEpisodeDao.saveNextEpisode(episode) //TODO
             episode
 
         } catch (e: Exception) {

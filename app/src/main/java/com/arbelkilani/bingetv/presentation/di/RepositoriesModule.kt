@@ -8,6 +8,7 @@ import com.arbelkilani.bingetv.data.repositories.tv.TvShowRepositoryImp
 import com.arbelkilani.bingetv.data.source.local.episode.EpisodeDao
 import com.arbelkilani.bingetv.data.source.local.genre.GenreDao
 import com.arbelkilani.bingetv.data.source.local.season.SeasonDao
+import com.arbelkilani.bingetv.data.source.local.tv.NextEpisodeDao
 import com.arbelkilani.bingetv.data.source.local.tv.TvDao
 import com.arbelkilani.bingetv.data.source.remote.apiservice.ApiTmdbService
 import com.arbelkilani.bingetv.data.source.remote.apiservice.ApiTvMazeService
@@ -20,7 +21,7 @@ import org.koin.dsl.module
 @FlowPreview
 val RepositoriesModule = module {
 
-    single { tvShowRepository(get(), get(), get(), get(), get()) }
+    single { tvShowRepository(get(), get(), get(), get(), get(), get()) }
 
     single { seasonRepository(get(), get(), get(), get(), get()) }
 
@@ -71,13 +72,15 @@ fun tvShowRepository(
     apiTvMazeService: ApiTvMazeService,
     tvDao: TvDao,
     seasonDao: SeasonDao,
-    genreDao: GenreDao
+    genreDao: GenreDao,
+    nextEpisodeDao: NextEpisodeDao
 ): TvShowRepository {
     return TvShowRepositoryImp(
         apiTmdbService,
         apiTvMazeService,
         tvDao,
         seasonDao,
-        genreDao
+        genreDao,
+        nextEpisodeDao
     )
 }
