@@ -67,6 +67,27 @@ fun bindBackdrop(view: ImageView, url: String?) {
     }
 }
 
+@BindingAdapter("custom:next_episode")
+fun bindNextEpisode(view: TextView, nextEpisode: NextEpisodeData?) {
+    if (nextEpisode == null)
+        return
+
+    val formatter =
+        SimpleDateFormat("EEEE, d MMMM yyyy 'at' HH:mm a", Locale.getDefault())
+
+    val text = String.format(
+        view.context.getString(R.string.next_episode_message),
+        nextEpisode.season,
+        nextEpisode.number,
+        nextEpisode.name,
+        formatter.format(nextEpisode.time)
+    )
+
+    view.text = text
+
+}
+
+
 @BindingAdapter("custom:vote_average")
 fun bindVoteAverage(view: TextView, average: Double?) {
     view.text = String.format("%s", average.toString())
@@ -414,10 +435,6 @@ fun NextEpisodeData.time(): Long {
         val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX", Locale.getDefault())
         parser.timeZone = Calendar.getInstance().timeZone
         val parsed = parser.parse(airStamp)!!
-
-        val formatter =
-            SimpleDateFormat("EEEE, d MMMM yyyy 'at' HH:mm a", Locale.getDefault())
-
         return parsed.time
 
     }
