@@ -11,7 +11,7 @@ data class GenreData(
     @PrimaryKey
     @ColumnInfo(name = "id")
     @SerializedName("id")
-    var id: Int,
+    var id: Int = -1,
 
     @ColumnInfo(name = "name")
     @SerializedName("name")

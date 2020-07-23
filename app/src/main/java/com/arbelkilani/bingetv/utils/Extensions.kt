@@ -34,6 +34,7 @@ import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.entities.tv.Network
 import com.arbelkilani.bingetv.data.entities.tv.maze.details.NextEpisodeData
 import com.arbelkilani.bingetv.domain.entities.genre.GenreEntity
+import com.arbelkilani.bingetv.domain.entities.tv.NextEpisodeEntity
 import com.arbelkilani.bingetv.presentation.listeners.KeyboardListener
 import com.google.android.flexbox.FlexboxLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -68,7 +69,7 @@ fun bindBackdrop(view: ImageView, url: String?) {
 }
 
 @BindingAdapter("custom:next_episode")
-fun bindNextEpisode(view: TextView, nextEpisode: NextEpisodeData?) {
+fun bindNextEpisode(view: TextView, nextEpisode: NextEpisodeEntity?) {
     if (nextEpisode == null)
         return
 
@@ -393,13 +394,13 @@ fun doOnBottomSheetDetailsSeason(it: View) {
 }
 
 @BindingAdapter("custom:date_countdown")
-fun setDateCountdown(view: TextView, nextEpisodeData: NextEpisodeData?) {
+fun setDateCountdown(view: TextView, nextEpisodeData: NextEpisodeEntity?) {
     if (nextEpisodeData == null)
         return
 
     nextEpisodeData.apply {
 
-        val diff = toTime(nextEpisodeData) - Calendar.getInstance().timeInMillis
+        val diff = nextEpisodeData.time - Calendar.getInstance().timeInMillis
 
         val days = diff / (24 * 60 * 60 * 1000)
         val hours = diff / (1000 * 60 * 60) % 24

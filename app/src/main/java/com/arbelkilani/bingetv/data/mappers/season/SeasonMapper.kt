@@ -9,7 +9,11 @@ class SeasonMapper : Mapper<SeasonEntity, SeasonData> {
 
     private val episodeMapper = EpisodeMapper()
 
-    override fun mapFromEntity(type: SeasonEntity): SeasonData {
+    override fun mapFromEntity(type: SeasonEntity?): SeasonData {
+
+        if (type == null)
+            return SeasonData()
+
         return SeasonData(
             id = type.id,
             seasonNumber = type.seasonNumber,
@@ -24,7 +28,11 @@ class SeasonMapper : Mapper<SeasonEntity, SeasonData> {
         )
     }
 
-    override fun mapToEntity(type: SeasonData): SeasonEntity {
+    override fun mapToEntity(type: SeasonData?): SeasonEntity {
+
+        if (type == null)
+            return SeasonEntity()
+
         return SeasonEntity(
             id = type.id,
             seasonNumber = type.seasonNumber,

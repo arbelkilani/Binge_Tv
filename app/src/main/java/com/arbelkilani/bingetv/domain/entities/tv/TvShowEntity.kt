@@ -2,7 +2,6 @@ package com.arbelkilani.bingetv.domain.entities.tv
 
 import android.os.Parcelable
 import com.arbelkilani.bingetv.data.entities.tv.Network
-import com.arbelkilani.bingetv.data.entities.tv.maze.details.NextEpisodeData
 import com.arbelkilani.bingetv.domain.entities.genre.GenreEntity
 import com.arbelkilani.bingetv.domain.entities.season.SeasonEntity
 import kotlinx.android.parcel.Parcelize
@@ -10,7 +9,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class TvShowEntity(
     var id: Int = 0,
-    var inProduction: Boolean,
+    var inProduction: Boolean = false,
     var episodeCount: Int = 0,
     var name: String = "",
     var overview: String = "",
@@ -20,7 +19,7 @@ data class TvShowEntity(
     var type: String = "",
     var voteAverage: Double = 0.0,
     var homepage: String = "",
-    var nextEpisodeData: NextEpisodeData? = null,
+    var nextEpisode: NextEpisodeEntity? = null,
     var genres: List<GenreEntity> = listOf(),
     var networks: List<Network> = listOf(),
     var images: List<String>? = listOf(),

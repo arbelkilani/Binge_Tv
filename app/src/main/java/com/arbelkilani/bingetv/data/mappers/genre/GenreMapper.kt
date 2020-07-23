@@ -6,7 +6,11 @@ import com.arbelkilani.bingetv.domain.entities.genre.GenreEntity
 
 class GenreMapper : Mapper<GenreEntity, GenreData> {
 
-    override fun mapFromEntity(type: GenreEntity): GenreData {
+    override fun mapFromEntity(type: GenreEntity?): GenreData {
+
+        if (type == null)
+            return GenreData()
+
         return GenreData(
             id = type.id,
             name = type.name,
@@ -15,7 +19,11 @@ class GenreMapper : Mapper<GenreEntity, GenreData> {
         )
     }
 
-    override fun mapToEntity(type: GenreData): GenreEntity {
+    override fun mapToEntity(type: GenreData?): GenreEntity {
+
+        if (type == null)
+            return GenreEntity()
+
         return GenreEntity(
             id = type.id,
             name = type.name,

@@ -6,7 +6,11 @@ import com.arbelkilani.bingetv.domain.entities.episode.EpisodeEntity
 
 class EpisodeMapper : Mapper<EpisodeEntity, EpisodeData> {
 
-    override fun mapFromEntity(type: EpisodeEntity): EpisodeData {
+    override fun mapFromEntity(type: EpisodeEntity?): EpisodeData {
+
+        if (type == null)
+            return EpisodeData()
+
         return EpisodeData(
             id = type.id,
             name = type.name,
@@ -19,7 +23,11 @@ class EpisodeMapper : Mapper<EpisodeEntity, EpisodeData> {
         )
     }
 
-    override fun mapToEntity(type: EpisodeData): EpisodeEntity {
+    override fun mapToEntity(type: EpisodeData?): EpisodeEntity {
+
+        if (type == null)
+            return EpisodeEntity()
+
         return EpisodeEntity(
             id = type.id,
             name = type.name,

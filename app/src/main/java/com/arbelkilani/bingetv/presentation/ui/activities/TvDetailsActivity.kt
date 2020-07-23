@@ -85,7 +85,7 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
             flex_box_shimmer.stopShimmer()
             it.let {
 
-                if (it.nextEpisodeData != null) {
+                if (it.nextEpisode != null) {
                     next_episode_cardview.visibility = View.VISIBLE
                 }
 
