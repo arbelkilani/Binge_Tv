@@ -28,8 +28,6 @@ data class NextEpisodeData(
     @SerializedName("summary")
     var summary: String? = null,
 
-    var timezone: String = "",
-
-    var formattedAirDate: String = ""
+    var time: Long = 0L
 
 ) : Parcelable

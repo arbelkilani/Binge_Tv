@@ -12,6 +12,7 @@ import android.graphics.drawable.GradientDrawable
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
+import android.text.format.DateUtils
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.util.DisplayMetrics
@@ -150,7 +151,7 @@ fun setRadioVisibility(view: ImageView, airDate: String?) {
     }
 }
 
-fun checkAirDate(airDate: String?): Boolean {
+fun filterEpisodeAirDate(airDate: String?): Boolean {
     if (airDate.isNullOrEmpty())
         return false
 
@@ -158,7 +159,7 @@ fun checkAirDate(airDate: String?): Boolean {
     val today = Calendar.getInstance().time
 
     date?.let {
-        return it > today
+        return it.time + DateUtils.DAY_IN_MILLIS > today.time
     }
 
     return false
@@ -391,7 +392,7 @@ fun setDateCountdown(view: TextView, nextEpisodeData: NextEpisodeData?) {
     }
 }
 
-fun NextEpisodeData.toTime(
+fun toTime(
     nextEpisodeData: NextEpisodeData?
 ): Long {
 
@@ -406,11 +407,9 @@ fun NextEpisodeData.toTime(
     }
 }
 
-fun formatAirDate(nextEpisode: NextEpisodeData?): String {
+fun NextEpisodeData.time(): Long {
 
-    if (nextEpisode == null) return ""
-
-    nextEpisode.apply {
+    apply {
 
         val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX", Locale.getDefault())
         parser.timeZone = Calendar.getInstance().timeZone
@@ -419,7 +418,7 @@ fun formatAirDate(nextEpisode: NextEpisodeData?): String {
         val formatter =
             SimpleDateFormat("EEEE, d MMMM yyyy 'at' HH:mm a", Locale.getDefault())
 
-        return formatter.format(parsed.time)
+        return parsed.time
 
     }
 }

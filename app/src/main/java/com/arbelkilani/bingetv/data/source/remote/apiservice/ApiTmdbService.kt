@@ -73,5 +73,5 @@ interface ApiTmdbService {
     suspend fun getCredits(@Path("tv_id") id: Int): CreditsResponse
 
     @GET("tv/{tv_id}/external_ids")
-    suspend fun getExternalIds(@Path("tv_id") id: Int): ExternalIds
+    suspend fun getExternalIds(@Path("tv_id") id: Int): ExternalIds?
 }
