@@ -29,12 +29,13 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
         android:fitsSystemWindows="true"
         tools:context=".presentation.ui.fragments.ProfileFragment">
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <!-- circles design -->
             <FrameLayout
@@ -62,7 +63,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:padding="@dimen/default_padding">
 
@@ -340,8 +341,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/default_margin"
                             android:fontFamily="@font/avenir_next_medium"
-                            android:textSize="@dimen/small_text_size"
-                            android:text="@{String.format(@string/hours_and_minutes_label, statisticsEntity.hours, statisticsEntity.minutes)}" />
+                            android:text="@{String.format(@string/hours_and_minutes_label, statisticsEntity.hours, statisticsEntity.minutes)}"
+                            android:textSize="@dimen/small_text_size" />
 
                     </LinearLayout>
 
@@ -386,6 +387,13 @@
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
+
+                <com.arbelkilani.bingetv.presentation.ui.view.PieChart
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/default_margin"
+                    custom:pie_chart="@{genres}" />
 
             </LinearLayout>
 

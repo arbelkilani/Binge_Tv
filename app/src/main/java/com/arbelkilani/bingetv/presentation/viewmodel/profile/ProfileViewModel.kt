@@ -34,7 +34,7 @@ class ProfileViewModel(
     private fun getStatistics() {
         scope.launch(Dispatchers.IO) {
             _statistics.postValue(statisticsUseCase.getStatistics())
-            _genres.postValue(statisticsUseCase.getGenres().filter { it.percentage > 0 })
+            _genres.postValue(statisticsUseCase.getGenres())
         }
     }
 }

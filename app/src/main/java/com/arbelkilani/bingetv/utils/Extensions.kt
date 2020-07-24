@@ -515,3 +515,4 @@ fun AppCompatActivity.interceptKeyboardVisibility(keyboardListener: KeyboardList
 
 val Int.px: Int
     get() = (this * Resources.getSystem().displayMetrics.density).toInt()
+
