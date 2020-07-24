@@ -7,6 +7,7 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.content.ContextCompat
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.utils.px
 import kotlin.math.cos
@@ -17,7 +18,7 @@ class PieChart(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
     companion object {
         private const val DEFAULT_UNSPECIFIED_SIZE = 180
-        private const val DEFAULT_BORDER_THICKNESS = 20f
+        private const val DEFAULT_BORDER_THICKNESS = 4f
     }
 
     private var paint: Paint = Paint()
@@ -33,7 +34,8 @@ class PieChart(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
     data class Test(
         var percentage: Int = 0,
-        var color: Int = Color.BLACK
+        var color: Int = Color.BLACK,
+        var name: String = ""
     )
 
     private lateinit var datas: MutableList<Test>
@@ -43,10 +45,11 @@ class PieChart(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
         setupAttributes(attrs)
 
         datas = mutableListOf()
-        datas.add(Test(20, Color.WHITE))
-        datas.add(Test(20, Color.CYAN))
-        datas.add(Test(30, Color.YELLOW))
-        datas.add(Test(30, Color.LTGRAY))
+
+        datas.add(Test(20, Color.WHITE, "name 1"))
+        datas.add(Test(20, Color.CYAN, "name 2"))
+        datas.add(Test(30, Color.YELLOW, "name 3"))
+        datas.add(Test(30, Color.LTGRAY, "name 4"))
 
     }
 
@@ -72,18 +75,13 @@ class PieChart(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
         center = size / 2f
 
-        drawBorder(canvas, center)
 
-        for (data in datas) {
-
-        }
         drawSlice(canvas)
-
-        drawSeparator(canvas)
-
+        //drawSeparator(canvas)
+        //drawBorder(canvas)
     }
 
-    private fun drawBorder(canvas: Canvas?, center: Float) {
+    private fun drawBorder(canvas: Canvas?) {
         paint.style = Paint.Style.STROKE
         paint.color = Color.DKGRAY
         paint.strokeWidth = borderThickness
@@ -94,13 +92,28 @@ class PieChart(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
         }
     }
 
+    private fun blendColors(from: Int, to: Int, ratio: Float): Int {
+        val inverseRatio = 1f - ratio
+        val r: Float = Color.red(to) * ratio + Color.red(from) * inverseRatio
+        val g: Float = Color.green(to) * ratio + Color.green(from) * inverseRatio
+        val b: Float = Color.blue(to) * ratio + Color.blue(from) * inverseRatio
+        return Color.rgb(r.toInt(), g.toInt(), b.toInt())
+    }
+
     private fun drawSlice(
         canvas: Canvas?
     ) {
+        val rnd = java.util.Random()
+
         paint.style = Paint.Style.FILL
 
-        for (data in datas) {
-            paint.color = data.color
+        for ((index, data) in datas.withIndex()) {
+            paint.color =
+                blendColors(
+                    ContextCompat.getColor(context, R.color.colorPrimaryDark),
+                    ContextCompat.getColor(context, R.color.colorAccent),
+                    (1f - index * 0.1f)
+                )
             sweepAngle = data.percentage * 360f / 100
 
             canvas?.apply {
@@ -120,7 +133,7 @@ class PieChart(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
     private fun drawSeparator(canvas: Canvas?) {
         paint.style = Paint.Style.STROKE
         paint.color = Color.RED
-        paint.strokeWidth = 10f
+        paint.strokeWidth = borderThickness
 
         for (data in datas) {
             sweepAngle = data.percentage * 360f / 100

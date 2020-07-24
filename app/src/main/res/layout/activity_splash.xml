@@ -55,10 +55,4 @@
         android:textColor="@color/credit_text_color"
         android:textSize="@dimen/small_text_size" />
 
-
-    <com.arbelkilani.bingetv.presentation.ui.view.PieChart
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-
 </RelativeLayout>
