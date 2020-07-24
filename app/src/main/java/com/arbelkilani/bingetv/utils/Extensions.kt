@@ -20,7 +20,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewTreeObserver
 import android.view.animation.AccelerateDecelerateInterpolator
-import android.view.animation.AlphaAnimation
 import android.view.animation.BounceInterpolator
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
@@ -514,10 +513,5 @@ fun AppCompatActivity.interceptKeyboardVisibility(keyboardListener: KeyboardList
     })
 }
 
-fun setFadeAnimation(view: View) {
-    view.apply {
-        val anim = AlphaAnimation(0.0f, 1.0f)
-        anim.duration = 400
-        startAnimation(anim)
-    }
-}
+val Int.px: Int
+    get() = (this * Resources.getSystem().displayMetrics.density).toInt()

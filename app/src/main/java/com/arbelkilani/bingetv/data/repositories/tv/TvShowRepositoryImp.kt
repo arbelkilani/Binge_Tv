@@ -18,6 +18,7 @@ import com.arbelkilani.bingetv.data.source.local.tv.TvDao
 import com.arbelkilani.bingetv.data.source.remote.apiservice.ApiTmdbService
 import com.arbelkilani.bingetv.data.source.remote.apiservice.ApiTvMazeService
 import com.arbelkilani.bingetv.data.source.remote.pagingsource.*
+import com.arbelkilani.bingetv.domain.entities.season.SeasonEntity
 import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
 import com.arbelkilani.bingetv.domain.repositories.TvShowRepository
 import com.arbelkilani.bingetv.utils.filterEpisodeAirDate
@@ -189,66 +190,63 @@ class TvShowRepositoryImp(
 
     }
 
+    private suspend fun saveTvShow(tvShowEntity: TvShowEntity) {
+        val tvShowData = tvShowMapper.mapFromEntity(tvShowEntity)
+        tvDao.saveTv(tvShowData)
+    }
+
+    private suspend fun saveSeason(seasonEntity: SeasonEntity, tvShowEntity: TvShowEntity) {
+        val seasonData = seasonMapper.mapFromEntity(seasonEntity)
+        seasonData.tv_season = tvShowEntity.id
+        seasonDao.saveSeason(seasonData)
+    }
+
+    private suspend fun saveGenre(tvShowEntity: TvShowEntity) {
+
+        val local = tvDao.getTvShow(tvShowEntity.id)
+        val diff = tvShowEntity.episodeCount - tvShowEntity.futureEpisodesCount
+
+        if (local == null) {
+            tvShowEntity.genres.map {
+                genreDao.incrementCount(it.id, 1)
+            }
+        } else {
+            if (tvShowEntity.watchedCount == 0) {
+                tvShowEntity.genres.map {
+                    genreDao.incrementCount(it.id, -1)
+                }
+            }
+
+            if (tvShowEntity.watchedCount == diff && tvShowEntity.watched) {
+                tvShowEntity.genres.map {
+                    genreDao.incrementCount(it.id, 1)
+                }
+            }
+        }
+    }
+
     override suspend fun saveWatched(watched: Boolean, tvShowEntity: TvShowEntity): TvShowEntity? {
 
         try {
 
-            val localTvShow = tvDao.getTvShow(tvShowEntity.id)
-
-            if (watched)
-                tvShowEntity.watchlist = false
-
             tvShowEntity.watched = watched
-            tvShowEntity.seasons.map { seasonEntity ->
-
-                // check if at most one season get future episodes.
-                // if future episodes exists, get related season and update it
-                // else update other seasons standard.
-                val seasonWatchedCount: Int =
-                    if (tvShowEntity.futureEpisodesCount > 0) {
-                        if (seasonEntity.seasonNumber == tvShowEntity.seasons.size) {
-                            if (tvShowEntity.watched) (seasonEntity.episodeCount - tvShowEntity.futureEpisodesCount) else 0
-                        } else {
-                            if (tvShowEntity.watched) seasonEntity.episodeCount else 0
-                        }
-                    } else {
-                        if (tvShowEntity.watched) seasonEntity.episodeCount else 0
-                    }
-
-                seasonEntity.watchedCount = seasonWatchedCount
-                seasonEntity.futureEpisodeCount =
-                    if (tvShowEntity.futureEpisodesCount > 0 && seasonEntity.seasonNumber == tvShowEntity.seasons.size) tvShowEntity.futureEpisodesCount else 0
-
-                seasonEntity.watched = seasonEntity.watchedCount == seasonEntity.episodeCount
-                val seasonData = seasonMapper.mapFromEntity(seasonEntity)
-                seasonData.tv_season = tvShowEntity.id
-
-                seasonDao.saveSeason(seasonData)
-            }
-
+            tvShowEntity.watchlist = if (watched) false else tvShowEntity.watchlist
             tvShowEntity.watchedCount =
                 if (watched) (tvShowEntity.episodeCount - tvShowEntity.futureEpisodesCount) else 0
 
-            if (localTvShow == null) {
-                tvShowEntity.genres.map {
-                    genreDao.incrementCount(it.id, 1)
-                }
-            } else {
-                if (tvShowEntity.watchedCount == 0) {
-                    tvShowEntity.genres.map {
-                        genreDao.incrementCount(it.id, -1)
-                    }
-                }
-
-                if (tvShowEntity.watchedCount == (tvShowEntity.episodeCount - tvShowEntity.futureEpisodesCount) && tvShowEntity.watched) {
-                    tvShowEntity.genres.map {
-                        genreDao.incrementCount(it.id, 1)
-                    }
+            tvShowEntity.seasons.let { seasonList ->
+                val last = seasonList.last()
+                last.futureEpisodeCount = tvShowEntity.futureEpisodesCount
+                seasonList.map { season ->
+                    season.watchedCount =
+                        if (tvShowEntity.watched) (season.episodeCount - season.futureEpisodeCount) else 0
+                    season.watched = season.episodeCount == season.watchedCount
+                    saveSeason(season, tvShowEntity)
                 }
             }
 
-            val test = tvShowMapper.mapFromEntity(tvShowEntity)
-            tvDao.saveTv(test)
+            saveGenre(tvShowEntity)
+            saveTvShow(tvShowEntity)
 
             return tvShowEntity
         } catch (e: Exception) {
