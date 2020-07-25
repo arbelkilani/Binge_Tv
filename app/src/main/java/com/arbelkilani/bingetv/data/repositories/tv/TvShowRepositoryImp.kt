@@ -190,6 +190,13 @@ class TvShowRepositoryImp(
 
     }
 
+    private suspend fun saveNextEpisode(tvShowEntity: TvShowEntity) {
+        val nextEpisodeData = tvShowEntity.nextEpisode
+        nextEpisodeData?.apply {
+            nextEpisodeDao.saveNextEpisode(this)
+        }
+    }
+
     private suspend fun saveTvShow(tvShowEntity: TvShowEntity) {
         val tvShowData = tvShowMapper.mapFromEntity(tvShowEntity)
         tvDao.saveTv(tvShowData)
@@ -247,6 +254,7 @@ class TvShowRepositoryImp(
 
             saveGenre(tvShowEntity)
             saveTvShow(tvShowEntity)
+            saveNextEpisode(tvShowEntity)
 
             return tvShowEntity
         } catch (e: Exception) {
