@@ -33,7 +33,6 @@ import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.data.entities.tv.Network
 import com.arbelkilani.bingetv.data.entities.tv.maze.details.NextEpisodeData
 import com.arbelkilani.bingetv.domain.entities.genre.GenreEntity
-import com.arbelkilani.bingetv.domain.entities.tv.NextEpisodeEntity
 import com.arbelkilani.bingetv.presentation.listeners.KeyboardListener
 import com.google.android.flexbox.FlexboxLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -68,7 +67,7 @@ fun bindBackdrop(view: ImageView, url: String?) {
 }
 
 @BindingAdapter("custom:next_episode")
-fun bindNextEpisode(view: TextView, nextEpisode: NextEpisodeEntity?) {
+fun bindNextEpisode(view: TextView, nextEpisode: NextEpisodeData?) {
     if (nextEpisode == null)
         return
 
@@ -393,7 +392,7 @@ fun doOnBottomSheetDetailsSeason(it: View) {
 }
 
 @BindingAdapter("custom:date_countdown")
-fun setDateCountdown(view: TextView, nextEpisodeData: NextEpisodeEntity?) {
+fun setDateCountdown(view: TextView, nextEpisodeData: NextEpisodeData?) {
     if (nextEpisodeData == null)
         return
 

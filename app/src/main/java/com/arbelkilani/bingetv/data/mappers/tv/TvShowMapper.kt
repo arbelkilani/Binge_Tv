@@ -11,11 +11,8 @@ class TvShowMapper : Mapper<TvShowEntity, TvShowData> {
 
     private val seasonMapper = SeasonMapper()
     private val genreMapper = GenreMapper()
-    private val nextEpisodeMapper = NextEpisodeMapper()
 
-    override fun mapFromEntity(type: TvShowEntity?): TvShowData {
-        if (type == null)
-            return TvShowData()
+    override fun mapFromEntity(type: TvShowEntity): TvShowData {
 
         return TvShowData(
             id = type.id,
@@ -35,14 +32,11 @@ class TvShowMapper : Mapper<TvShowEntity, TvShowData> {
             watchlist = type.watchlist,
             watchedCount = type.watchedCount,
             futureEpisodesCount = type.futureEpisodesCount,
-            nextEpisode = nextEpisodeMapper.mapFromEntity(type.nextEpisode)
+            nextEpisode = type.nextEpisode
         )
     }
 
-    override fun mapToEntity(type: TvShowData?): TvShowEntity {
-
-        if (type == null)
-            return TvShowEntity()
+    override fun mapToEntity(type: TvShowData): TvShowEntity {
 
         return TvShowEntity(
             id = type.id,
@@ -56,7 +50,7 @@ class TvShowMapper : Mapper<TvShowEntity, TvShowData> {
             type = type.type,
             voteAverage = type.voteAverage,
             homepage = type.homepage,
-            nextEpisode = nextEpisodeMapper.mapToEntity(type.nextEpisode),
+            nextEpisode = type.nextEpisode,
             genres = type.genres.map { genreData ->
                 genreMapper.mapToEntity(genreData)
             },

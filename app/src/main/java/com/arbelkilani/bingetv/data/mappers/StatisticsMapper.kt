@@ -7,10 +7,7 @@ import java.util.concurrent.TimeUnit
 
 class StatisticsMapper : Mapper<StatisticsEntity, StatisticsData> {
 
-    override fun mapFromEntity(type: StatisticsEntity?): StatisticsData {
-
-        if (type == null)
-            return StatisticsData()
+    override fun mapFromEntity(type: StatisticsEntity): StatisticsData {
 
         return StatisticsData(
             episodeCount = type.episodeCount,
@@ -20,11 +17,7 @@ class StatisticsMapper : Mapper<StatisticsEntity, StatisticsData> {
         )
     }
 
-    override fun mapToEntity(type: StatisticsData?): StatisticsEntity {
-
-        if (type == null)
-            return StatisticsEntity()
-
+    override fun mapToEntity(type: StatisticsData): StatisticsEntity {
 
         return StatisticsEntity(
             episodeCount = type.episodeCount,
