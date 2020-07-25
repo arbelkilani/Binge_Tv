@@ -69,7 +69,7 @@
     <string name="spent_time">You\'ve spent %1$s years, %2$s months and %3$s days watching tv shows.\nand %4$s hours and %5$s minutes.</string>
     <string name="label_total_time_spent">Total time spent watching Tv shows</string>
     <string name="label_seen_episodes">You have seen a total of</string>
-    <string name="label_top_preferred_genre">Top favorite genres are</string>
+    <string name="label_top_preferred_genre">Top favorite genres</string>
     <string name="label_watched_tv_show_label">You\'ve watched a total of %1$s tv show</string>
     <string name="label_days">days</string>
     <string name="label_months">months</string>
@@ -79,6 +79,5 @@
     <string name="label_returning">Returning</string>
     <string name="hours_and_minutes_label">"more %1$s hours and %2$s minutes"</string>
     <string name="title_watched">My shows</string>
-    <string name="new_line">\n</string>
 
 </resources>

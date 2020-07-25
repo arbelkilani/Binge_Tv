@@ -42,15 +42,32 @@ class ProfileRepositoryImp(
     }
 
     override suspend fun getGenres(): List<GenreEntity> {
-        return genreDao.getGenres().let {
+        return genreDao.getGenres().let { genresData ->
             val sum = genreDao.sum()
             if (sum == 0)
                 return emptyList()
-            else
-                it.map { genreData ->
+            else {
+                val list = genresData.map { genreData ->
                     genreData.percentage = genreData.count.toFloat() * 100 / sum
                     genreMapper.mapToEntity(genreData)
                 }
+
+                var othersPercentage = 0f
+                var othersCount = 0
+                list.filter { it.percentage < 15 }
+                    .map {
+                        othersPercentage += it.percentage
+                        othersCount += it.count
+                    }
+
+                val mutable = list.filter { it.percentage >= 15 }.toMutableList()
+                mutable.add(GenreEntity(-1, "Others", othersCount, othersPercentage))
+
+                mutable
+
+            }
+
+
         }
     }
 }
