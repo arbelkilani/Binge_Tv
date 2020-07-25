@@ -180,7 +180,6 @@ class TvShowRepositoryImp(
             val episode = apiTvMazeService.getNextEpisode(showId)
             episode.time = episode.time()
             episode.tv_next_episode = id
-            //nextEpisodeDao.saveNextEpisode(episode) //TODO
             episode
 
         } catch (e: Exception) {
@@ -190,9 +189,18 @@ class TvShowRepositoryImp(
 
     }
 
+    override suspend fun updateNextEpisode() {
+        val watchedTvShow = tvDao.watchedTvShow()
+        watchedTvShow?.map { tvShowData ->
+            tvShowData.nextEpisode()?.apply {
+                nextEpisodeDao.saveNextEpisode(this)
+            }
+        }
+    }
+
     private suspend fun saveNextEpisode(tvShowEntity: TvShowEntity) {
-        val nextEpisodeData = tvShowEntity.nextEpisode
-        nextEpisodeData?.apply {
+        val nextEpisode = tvShowEntity.nextEpisode
+        nextEpisode?.apply {
             nextEpisodeDao.saveNextEpisode(this)
         }
     }

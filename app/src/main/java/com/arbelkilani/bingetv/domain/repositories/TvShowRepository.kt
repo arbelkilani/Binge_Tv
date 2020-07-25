@@ -27,5 +27,6 @@ interface TvShowRepository {
     suspend fun watchlist(): List<TvShowEntity>
     suspend fun recommendations(id: Int): Flow<PagingData<TvShowEntity>>
     suspend fun watched(): List<TvShowEntity>
+    suspend fun updateNextEpisode()
 
 }

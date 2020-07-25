@@ -13,10 +13,8 @@ class ProfileViewModel(
     private val statisticsUseCase: StatisticsUseCase
 ) : BaseViewModel() {
 
-
     companion object {
         private const val TAG = "ProfileViewModel"
-        private const val TOP_GENRES_SIZE = 3
     }
 
     private val _statistics = MutableLiveData<StatisticsEntity>()
