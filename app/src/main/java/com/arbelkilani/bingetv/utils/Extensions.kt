@@ -272,7 +272,7 @@ fun setFavoriteGenres(view: FlexboxLayout, list: List<GenreEntity>?) {
         return
 
     view.removeAllViews()
-    for (item in list) {
+    for (item in list.filter { it.percentage > 0 }) {
         val textView =
             TextView(ContextThemeWrapper(view.context, R.style.TextView_Genre_Favorite), null, 0)
         val text = String.format(
@@ -429,14 +429,11 @@ fun toTime(
 }
 
 fun NextEpisodeData.time(): Long {
-
     apply {
-
         val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX", Locale.getDefault())
         parser.timeZone = Calendar.getInstance().timeZone
         val parsed = parser.parse(airStamp)!!
         return parsed.time
-
     }
 }
 

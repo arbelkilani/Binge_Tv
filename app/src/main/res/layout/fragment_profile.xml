@@ -353,7 +353,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/default_margin"
-                    android:visibility="@{genres.empty ? View.GONE : View.VISIBLE}"
                     app:cardCornerRadius="@dimen/default_card_corner_radius"
                     app:contentPadding="@dimen/default_padding">
 
@@ -387,13 +386,6 @@
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
-
-                <com.arbelkilani.bingetv.presentation.ui.view.PieChart
-                    android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/default_margin"
-                    custom:pie_chart="@{genres}" />
 
             </LinearLayout>
 

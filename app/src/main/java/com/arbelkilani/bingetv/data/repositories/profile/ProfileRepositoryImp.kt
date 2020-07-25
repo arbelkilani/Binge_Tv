@@ -23,6 +23,7 @@ class ProfileRepositoryImp(
         var returningTvShowCount = 0
         var totalSpentTime = 0
         val tvShows = tvDao.getAllTvShows()
+
         tvShows?.apply {
             map {
                 episodeCount += it.watchedCount
@@ -47,7 +48,7 @@ class ProfileRepositoryImp(
                 return emptyList()
             else
                 it.map { genreData ->
-                    genreData.percentage = genreData.count * 100 / sum
+                    genreData.percentage = genreData.count.toFloat() * 100 / sum
                     genreMapper.mapToEntity(genreData)
                 }
         }

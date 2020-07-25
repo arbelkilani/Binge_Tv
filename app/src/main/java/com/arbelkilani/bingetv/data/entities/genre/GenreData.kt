@@ -20,6 +20,6 @@ data class GenreData(
     @ColumnInfo(name = "count")
     var count: Int = 0,
 
-    var percentage: Int = 0
+    var percentage: Float = 0f
 
 )

@@ -8,7 +8,6 @@ import android.view.View
 import androidx.databinding.BindingAdapter
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.domain.entities.genre.GenreEntity
-import com.arbelkilani.bingetv.utils.px
 import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.sin
@@ -27,7 +26,7 @@ class PieChart(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
                 return
 
             datas.clear()
-            datas.addAll(list)
+            datas.addAll(list.filter { it.percentage > 0 })
             invalidate()
         }
     }
@@ -64,10 +63,7 @@ class PieChart(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
 
-        when (MeasureSpec.getMode(widthMeasureSpec)) {
-            MeasureSpec.UNSPECIFIED, MeasureSpec.AT_MOST -> size = DEFAULT_UNSPECIFIED_SIZE.px
-            MeasureSpec.EXACTLY -> size = min(measuredWidth, measuredHeight)
-        }
+        size = min(measuredWidth, measuredHeight)
 
         setMeasuredDimension(size, size)
     }
@@ -99,13 +95,16 @@ class PieChart(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
             canvas?.apply {
 
+
+                val text = data.name
+
                 val radius = center - borderThickness
                 sweepAngle = data.percentage * 360f / 100
 
-                textPaint.getTextBounds(data.name, 0, data.name.length, rect)
-                textPaint.textSize = (radius - rect.width()) * .11f
+                textPaint.getTextBounds(text, 0, text.length, rect)
+                textPaint.textSize = (radius - rect.width()) * .13f
 
-                val offset = (radius / 2) - (rect.width() / 2)
+                val offset = (radius / 2) - (rect.width() * 2)
                 middleAngle = startAngle + (sweepAngle / 2)
 
                 val startX =
@@ -116,24 +115,20 @@ class PieChart(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
                 val endX = center + radius * cos(Math.toRadians(middleAngle.toDouble())).toFloat()
                 val endY = center + radius * sin(Math.toRadians(middleAngle.toDouble())).toFloat()
 
-                paint.color = Color.BLACK
-                paint.strokeWidth = 1f
-                drawLine(startX, startY, endX, endY, paint)
-
                 path.moveTo(startX, startY)
                 path.lineTo(endX, endY)
                 path.close()
 
-                if (data.percentage > 0)
-                    drawTextOnPath(
-                        data.name.toCharArray(),
-                        0,
-                        data.name.length,
-                        path,
-                        0f,
-                        rect.height().toFloat(),
-                        textPaint
-                    )
+                drawTextOnPath(
+                    text.toCharArray(),
+                    0,
+                    text.length,
+                    path,
+                    rect.width().toFloat(),
+                    rect.height().toFloat(),
+                    textPaint
+                )
+
             }
 
             startAngle += sweepAngle
