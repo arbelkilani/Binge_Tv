@@ -19,11 +19,14 @@
     <string name="details_seasons_label">Seasons</string>
     <string name="details_next_episode_label">Next episode</string>
 
-    <string name="day">day</string>
-    <string name="days">days</string>
-    <plurals name="days">
-        <item quantity="one">@string/day</item>
-        <item quantity="other">@string/days</item>
+    <plurals name="numberOfDays">
+        <item quantity="one">%d day</item>
+        <item quantity="other">%d days</item>
+    </plurals>
+
+    <plurals name="numberOfHours">
+        <item quantity="one">%d hour</item>
+        <item quantity="other">%d hours</item>
     </plurals>
 
     <string name="next_episode_message">S%1$dxE%2$d, %3$s will be aired on %4$s</string>
@@ -80,5 +83,6 @@
     <string name="hours_and_minutes_label">"more %1$s hours and %2$s minutes"</string>
     <string name="title_watched">My shows</string>
     <string name="title_popular">Popular</string>
+    <string name="label_returning_series">Returning series</string>
 
 </resources>

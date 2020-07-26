@@ -23,8 +23,8 @@ class WatchedViewModel(
         scope.launch {
 
             val tvShows = watchedUseCase.watched()
-            _returningSeries.postValue(tvShows.filter { it.inProduction })
-            _endedSeries.postValue(tvShows.filter { !it.inProduction })
+            _returningSeries.postValue(tvShows?.filter { it.inProduction })
+            _endedSeries.postValue(tvShows?.filter { !it.inProduction })
         }
     }
 

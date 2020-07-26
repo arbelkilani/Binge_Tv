@@ -31,6 +31,7 @@ class WatchedAdapter(
     }
 
     override fun onBindViewHolder(holder: WatchedHolder, position: Int) {
+        holder.setIsRecyclable(false)
         holder.binding.tvShowEntity = tvShows[position]
         holder.binding.tvShowListener = onTvShowClickListener
     }

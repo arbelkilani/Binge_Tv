@@ -392,24 +392,34 @@ fun doOnBottomSheetDetailsSeason(it: View) {
     }
 }
 
-@BindingAdapter("custom:date_countdown")
-fun setDateCountdown(view: TextView, nextEpisodeData: NextEpisodeData?) {
-    if (nextEpisodeData == null)
+@BindingAdapter("custom:next_episode_date")
+fun setNextEpisodeDate(view: TextView, nextEpisode: NextEpisodeData?) {
+    if (nextEpisode == null)
         return
 
-    nextEpisodeData.apply {
+    nextEpisode.apply {
 
-        val diff = nextEpisodeData.time - Calendar.getInstance().timeInMillis
+        val diff = nextEpisode.time - Calendar.getInstance().timeInMillis
 
         val days = diff / (24 * 60 * 60 * 1000)
         val hours = diff / (1000 * 60 * 60) % 24
         val minutes = diff / (1000 * 60) % 60
         val seconds = (diff / 1000) % 60
 
-        val labelDays = if (days == 0L) "" else String.format("%d days, ", days)
-        val labelHours = if (hours == 0L) "" else String.format("%d hours", hours)
+        val labelDays = if (days == 0L) "" else String.format(
+            view.resources.getQuantityString(
+                R.plurals.numberOfDays,
+                days.toInt()
+            ), days
+        )
+        val labelHours = if (hours == 0L) "" else String.format(
+            view.resources.getQuantityString(
+                R.plurals.numberOfHours,
+                hours.toInt()
+            ), hours
+        )
 
-        view.text = String.format("Next episode will air in\n%s%s", labelDays, labelHours)
+        view.text = String.format("Next in %s %s", labelDays, labelHours)
     }
 }
 

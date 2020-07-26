@@ -279,9 +279,12 @@ class TvShowRepositoryImp(
         return tvShows?.map { tvShowData -> tvShowMapper.mapToEntity(tvShowData) }!!
     }
 
-    override suspend fun watched(): List<TvShowEntity> {
+    override suspend fun watched(): List<TvShowEntity>? {
         val tvShows = tvDao.watched()
-        return tvShows?.map { tvShowData -> tvShowMapper.mapToEntity(tvShowData) }!!
+        return tvShows?.map { tvShowData ->
+            tvShowData.nextEpisode = nextEpisodeDao.getNextEpisode(tvShowData.id)
+            tvShowMapper.mapToEntity(tvShowData)
+        }?.sortedWith(compareBy({ it.nextEpisode == null }, { it.nextEpisode?.time }))
     }
 
     override suspend fun saveWatchlist(

@@ -15,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:paddingTop="@dimen/default_margin"
         android:paddingBottom="@dimen/default_padding"
         android:weightSum="2"
         tools:context=".presentation.ui.fragments.WatchedFragment">
@@ -29,8 +30,8 @@
                 style="@style/Toolbar.TextTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/default_margin"
-                android:text="Returning series" />
+                android:layout_marginStart="@dimen/default_margin"
+                android:text="@string/label_returning_series" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_returning"
@@ -56,8 +57,8 @@
                 style="@style/Toolbar.TextTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/default_margin"
-                android:text="Ended" />
+                android:layout_marginStart="@dimen/default_margin"
+                android:text="@string/label_ended" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_ended"
