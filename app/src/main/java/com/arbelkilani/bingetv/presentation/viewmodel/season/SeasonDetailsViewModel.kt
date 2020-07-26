@@ -16,7 +16,7 @@ import kotlinx.coroutines.withContext
 class SeasonDetailsViewModel(
     private val extraSeasonEntity: SeasonEntity,
     private val extraTvShowEntity: TvShowEntity,
-    getSeasonDetailsUseCase: GetSeasonDetailsUseCase,
+    private val getSeasonDetailsUseCase: GetSeasonDetailsUseCase,
     private val updateEpisodeUseCase: UpdateEpisodeUseCase
 ) : BaseViewModel() {
 

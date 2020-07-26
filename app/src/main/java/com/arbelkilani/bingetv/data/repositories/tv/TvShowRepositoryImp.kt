@@ -72,7 +72,7 @@ class TvShowRepositoryImp(
         ).flow
     }
 
-    override suspend fun popular(): Flow<PagingData<TvShowData>> {
+    override suspend fun popular(): Flow<PagingData<TvShowEntity>> {
         return Pager(
             config = PagingConfig(PAGE_SIZE),
             pagingSourceFactory = { PopularPagingSource(apiTmdbService) }

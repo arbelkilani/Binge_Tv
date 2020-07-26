@@ -2,6 +2,7 @@ package com.arbelkilani.bingetv.utils
 
 object Constants {
 
+    const val SHOW_MORE_TAG: String = "show_more_tag"
     const val TV_SHOW_ENTITY: String = "tv_show_entity"
     const val SEASON_ENTITY: String = "season_entity"
 

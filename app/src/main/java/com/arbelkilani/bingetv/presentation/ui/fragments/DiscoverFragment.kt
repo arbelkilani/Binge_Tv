@@ -14,9 +14,11 @@ import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.databinding.FragmentDiscoverBinding
 import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
 import com.arbelkilani.bingetv.presentation.adapters.OnTheAirAdapter
+import com.arbelkilani.bingetv.presentation.adapters.PopularAdapter
 import com.arbelkilani.bingetv.presentation.adapters.dataload.DataLoadStateAdapter
 import com.arbelkilani.bingetv.presentation.adapters.viewpager.TrendingAdapter
 import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
+import com.arbelkilani.bingetv.presentation.ui.activities.ListAllTvShowActivity
 import com.arbelkilani.bingetv.presentation.ui.activities.SearchActivity
 import com.arbelkilani.bingetv.presentation.ui.activities.TvDetailsActivity
 import com.arbelkilani.bingetv.presentation.ui.view.CarouselTransformer
@@ -30,16 +32,18 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class DiscoverFragment : Fragment(), OnTvShowClickListener {
+class DiscoverFragment : Fragment(), OnTvShowClickListener, View.OnClickListener {
 
     private val viewModel: DiscoverViewModel by viewModel()
 
     private lateinit var binding: FragmentDiscoverBinding
 
     private val onTheAirAdapter = OnTheAirAdapter(this)
+    private val popularAdapter = PopularAdapter(this)
 
     private var trendingJob: Job? = null
     private var onTheAir: Job? = null
+    private var popular: Job? = null
 
     private fun getTrendingList() {
         trendingJob?.cancel()
@@ -75,6 +79,17 @@ class DiscoverFragment : Fragment(), OnTvShowClickListener {
         }
     }
 
+    private fun getPopularList() {
+        popular?.cancel()
+        popular = lifecycleScope.launch {
+            viewModel.getPopular()
+                .catch { cause -> Log.i(TAG, "cause = ${cause.localizedMessage}") }
+                .collectLatest {
+                    popularAdapter.submitData(it)
+                }
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,24 +110,60 @@ class DiscoverFragment : Fragment(), OnTvShowClickListener {
         binding.viewmodel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+        binding.ivOnTheAir.setOnClickListener(this)
+        binding.ivPopular.setOnClickListener(this)
+
         initAdapter()
         getTrendingList()
         getOnTheAirList()
+        getPopularList()
 
         return binding.root
     }
 
     private fun initAdapter() {
-        binding.rvPopular.adapter = onTheAirAdapter.withLoadStateFooter(
+        onTheAirAdapter()
+        popularAdapter()
+    }
+
+    private fun onTheAirAdapter() {
+        binding.rvOnTheAir.adapter = onTheAirAdapter.withLoadStateFooter(
             footer = DataLoadStateAdapter { onTheAirAdapter.retry() })
 
         onTheAirAdapter.addLoadStateListener { loadState ->
 
             // Only show the list if refresh succeeds.
-            binding.rvPopular.isVisible = loadState.refresh is LoadState.NotLoading
+            binding.rvOnTheAir.isVisible = loadState.refresh is LoadState.NotLoading
 
             // Show loading spinner during initial load or refresh.
             binding.rvShimmer.isVisible = loadState.refresh is LoadState.Loading
+
+            // Toast on any error, regardless of whether it came from RemoteMediator or PagingSource
+            val errorState = loadState.source.append as? LoadState.Error
+                ?: loadState.source.prepend as? LoadState.Error
+                ?: loadState.append as? LoadState.Error
+                ?: loadState.prepend as? LoadState.Error
+            errorState?.let {
+                Toast.makeText(
+                    activity,
+                    "\uD83D\uDE28 Wooops ${it.error}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
+
+    private fun popularAdapter() {
+        binding.rvPopular.adapter = popularAdapter.withLoadStateFooter(
+            footer = DataLoadStateAdapter { popularAdapter.retry() })
+
+        popularAdapter.addLoadStateListener { loadState ->
+
+            // Only show the list if refresh succeeds.
+            binding.rvPopular.isVisible = loadState.refresh is LoadState.NotLoading
+
+            // Show loading spinner during initial load or refresh.
+            binding.rvShimmer1.isVisible = loadState.refresh is LoadState.Loading
 
             // Toast on any error, regardless of whether it came from RemoteMediator or PagingSource
             val errorState = loadState.source.append as? LoadState.Error
@@ -162,5 +213,30 @@ class DiscoverFragment : Fragment(), OnTvShowClickListener {
             .apply {
                 putExtra(Constants.TV_SHOW_ENTITY, tvShowEntity)
             })
+    }
+
+    override fun onClick(v: View?) {
+        v?.apply {
+            when (id) {
+                R.id.iv_popular -> startActivity(Intent(activity, ListAllTvShowActivity::class.java)
+                    .apply {
+                        putExtra(
+                            Constants.SHOW_MORE_TAG,
+                            PopularAdapter::class.java.simpleName
+                        )
+                    })
+
+                R.id.iv_on_the_air -> startActivity(Intent(
+                    activity,
+                    ListAllTvShowActivity::class.java
+                )
+                    .apply {
+                        putExtra(
+                            Constants.SHOW_MORE_TAG,
+                            OnTheAirAdapter::class.java.simpleName
+                        )
+                    })
+            }
+        }
     }
 }

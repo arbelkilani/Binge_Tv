@@ -23,12 +23,13 @@
             android:clipToPadding="false"
             android:orientation="vertical"
             android:paddingTop="@dimen/default_padding"
+            android:paddingBottom="16dp"
             android:weightSum="1">
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight=".35">
+                android:layout_weight=".3">
 
                 <include
                     android:id="@+id/viewpager_shimmer"
@@ -52,16 +53,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="@dimen/default_margin"
-                android:layout_weight="0.65"
+                android:layout_weight="0.35"
                 android:orientation="vertical">
 
-                <TextView
-                    style="@style/Toolbar.TextTitle"
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/default_margin"
-                    android:paddingBottom="@dimen/default_padding_min"
-                    android:text="@string/title_on_the_air" />
+                    android:layout_marginEnd="@dimen/default_margin"
+                    android:paddingBottom="@dimen/default_padding_min">
+
+                    <TextView
+                        style="@style/Toolbar.TextTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:text="@string/title_on_the_air" />
+
+                    <ImageView
+                        android:id="@+id/iv_on_the_air"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:background="?attr/actionBarItemBackground"
+                        android:src="@drawable/ic_arrow_right" />
+
+                </RelativeLayout>
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -71,17 +88,77 @@
                         android:id="@+id/rv_shimmer"
                         layout="@layout/shimmer_discover_recycler" />
 
-                    <com.arbelkilani.bingetv.presentation.ui.view.AutofitRecyclerView
-                        android:id="@+id/rv_popular"
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_on_the_air"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:clipToPadding="false"
-                        android:columnWidth="130dp"
                         android:layoutMode="clipBounds"
+                        android:orientation="horizontal"
                         android:overScrollMode="never"
                         android:paddingStart="@dimen/default_padding_min"
                         android:paddingEnd="@dimen/default_padding_min"
                         android:scrollbars="none"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/default_margin"
+                android:layout_weight="0.35"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_marginEnd="@dimen/default_margin"
+                    android:paddingBottom="@dimen/default_padding_min">
+
+                    <TextView
+                        style="@style/Toolbar.TextTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:text="@string/title_popular" />
+
+                    <ImageView
+                        android:id="@+id/iv_popular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:background="?attr/actionBarItemBackground"
+                        android:padding="2dp"
+                        android:src="@drawable/ic_arrow_right" />
+
+                </RelativeLayout>
+
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <include
+                        android:id="@+id/rv_shimmer1"
+                        layout="@layout/shimmer_discover_recycler" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_popular"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:clipToPadding="false"
+                        android:layoutMode="clipBounds"
+                        android:orientation="horizontal"
+                        android:overScrollMode="never"
+                        android:paddingStart="@dimen/default_padding_min"
+                        android:paddingEnd="@dimen/default_padding_min"
+                        android:scrollbars="none"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
                 </FrameLayout>

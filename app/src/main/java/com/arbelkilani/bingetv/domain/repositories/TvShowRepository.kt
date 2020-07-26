@@ -13,7 +13,7 @@ interface TvShowRepository {
     suspend fun trending(): Flow<List<TvShowEntity>>
     suspend fun discover(): Flow<PagingData<TvShowEntity>>
     suspend fun airingToday(): Flow<PagingData<TvShowData>>
-    suspend fun popular(): Flow<PagingData<TvShowData>>
+    suspend fun popular(): Flow<PagingData<TvShowEntity>>
     suspend fun onTheAir(): Flow<PagingData<TvShowEntity>>
     suspend fun search(query: String): Flow<PagingData<TvShowEntity>>
 
