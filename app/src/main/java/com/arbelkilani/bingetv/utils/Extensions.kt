@@ -59,7 +59,8 @@ fun bindPoster(view: ImageView, url: String?, sizePoster: String?) {
 @BindingAdapter("android:src_backdrop")
 fun bindBackdrop(view: ImageView, url: String?) {
     url?.let {
-        Picasso.get().load(url)
+        val link = String.format("https://image.tmdb.org/t/p/%s%s", "w780", it)
+        Picasso.get().load(link)
             .placeholder(R.drawable.placeholder_large)
             .error(R.drawable.placeholder_large)
             .into(view)

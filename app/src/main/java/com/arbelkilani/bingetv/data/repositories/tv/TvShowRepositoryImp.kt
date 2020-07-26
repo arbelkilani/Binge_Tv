@@ -47,10 +47,13 @@ class TvShowRepositoryImp(
         private const val TAG = "TvShowRepository"
         private const val PAGE_SIZE = 20
         private const val EMBED_NEXT_EPISODE = "nextepisode"
+
+        private const val TRENDING_MEDIA_TYPE = "tv"
+        private const val TRENDING_TIME_WINDOW = "week" // "day"
     }
 
     override suspend fun trending(): Flow<List<TvShowEntity>> {
-        val data = apiTmdbService.trending("tv", "day")
+        val data = apiTmdbService.trending(TRENDING_MEDIA_TYPE, TRENDING_TIME_WINDOW)
         val entities = data.results.map { tvShowMapper.mapToEntity(it) }
         return flow { emit(entities) }
     }
