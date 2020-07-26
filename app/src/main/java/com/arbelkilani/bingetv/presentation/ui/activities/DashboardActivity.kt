@@ -17,16 +17,17 @@ class DashboardActivity : AppCompatActivity(),
 
     private val TAG = DashboardActivity::class.java.simpleName
 
-    private val discoverFragment = DiscoverFragment()
-    private val watchlistFragment = WatchlistFragment()
-    private val watchedFragment = WatchedFragment()
-    private val profileFragment = ProfileFragment()
-    private var active: Fragment = discoverFragment
+    private lateinit var discoverFragment: Fragment
+    private lateinit var watchlistFragment: Fragment
+    private lateinit var watchedFragment: Fragment
+    private lateinit var profileFragment: Fragment
+    private lateinit var active: Fragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
 
+        initFragments()
         initViews()
 
         supportFragmentManager.beginTransaction().add(R.id.main_container, profileFragment)
@@ -40,6 +41,15 @@ class DashboardActivity : AppCompatActivity(),
 
         supportActionBar?.title = getString(R.string.title_discovery)
 
+    }
+
+    private fun initFragments() {
+        discoverFragment = DiscoverFragment()
+        watchlistFragment = WatchlistFragment()
+        watchedFragment = WatchedFragment()
+        profileFragment = ProfileFragment()
+
+        active = discoverFragment
     }
 
     private fun initViews() {
