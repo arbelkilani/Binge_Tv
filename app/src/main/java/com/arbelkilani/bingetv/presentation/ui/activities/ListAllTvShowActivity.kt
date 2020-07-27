@@ -47,8 +47,7 @@ class ListAllTvShowActivity : AppCompatActivity(), OnTvShowClickListener {
                             }
 
                             GridAdapter::class.java.simpleName -> {
-                                if (!tvShow.watched)
-                                    gridAdapter.notifyItemRemoved(position)
+                                gridAdapter.notifyTvShow(position, tvShow)
                             }
                         }
                     }

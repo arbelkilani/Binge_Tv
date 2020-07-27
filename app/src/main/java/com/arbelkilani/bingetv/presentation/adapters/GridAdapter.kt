@@ -30,7 +30,6 @@ class GridAdapter(
     }
 
     override fun onBindViewHolder(holder: GridHolder, position: Int) {
-        holder.setIsRecyclable(false)
         holder.binding.tvShowEntity = tvShows[position]
         holder.binding.onTvShowClickListener = onTvShowClickListener
         holder.binding.position = position
@@ -40,5 +39,17 @@ class GridAdapter(
     fun notifyDataSetChanged(tvShows: List<TvShowEntity>) {
         this.tvShows = tvShows.toMutableList()
         notifyDataSetChanged()
+    }
+
+    fun notifyTvShow(position: Int, tvShow: TvShowEntity) {
+        if (position == -1)
+            return
+
+        if (!tvShow.watched) {
+            this.tvShows.removeAt(position)
+            notifyItemRemoved(position)
+            notifyItemRangeChanged(position, this.tvShows.size)
+        }
+
     }
 }
