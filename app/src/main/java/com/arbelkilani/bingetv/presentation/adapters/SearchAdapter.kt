@@ -31,6 +31,7 @@ class SearchAdapter(private val tvShowClickListener: OnTvShowClickListener) :
             (holder as SearchHolder).itemTvShowSearchBinding.tvShowEntity = tvShow
             holder.itemTvShowSearchBinding.onTvShowClickListener = tvShowClickListener
             holder.itemTvShowSearchBinding.position = position
+            holder.itemTvShowSearchBinding.adapter = SearchAdapter::class.java.simpleName
         }
     }
 

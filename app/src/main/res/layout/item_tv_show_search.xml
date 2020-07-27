@@ -19,6 +19,10 @@
             name="position"
             type="Integer" />
 
+        <variable
+            name="adapter"
+            type="String" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,7 +35,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layoutMode="opticalBounds"
-            android:onClick="@{() -> onTvShowClickListener.onTvItemClicked(tvShowEntity, position)}"
+            android:onClick="@{() -> onTvShowClickListener.onTvItemClicked(tvShowEntity, position, adapter)}"
             app:cardCornerRadius="@dimen/default_card_corner_radius"
             app:layout_constraintDimensionRatio="2:3"
             app:layout_constraintLeft_toLeftOf="parent"

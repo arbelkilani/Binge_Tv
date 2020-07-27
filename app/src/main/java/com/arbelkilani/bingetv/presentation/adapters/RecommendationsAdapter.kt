@@ -30,6 +30,7 @@ class RecommendationsAdapter(private val tvShowClickListener: OnTvShowClickListe
             (holder as RecommendationsHolder).itemTrendingViewBinding.tvEntity = tvShow
             holder.itemTrendingViewBinding.itemClick = tvShowClickListener
             holder.itemTrendingViewBinding.position = position
+            holder.itemTrendingViewBinding.adapter = RecommendationsAdapter::class.java.simpleName
         }
     }
 

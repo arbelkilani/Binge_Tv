@@ -61,7 +61,8 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
     private val viewModel: TvDetailsActivityViewModel by viewModel {
         parametersOf(
             intent.getParcelableExtra(Constants.TV_SHOW_ENTITY)!!,
-            intent.getIntExtra(Constants.TV_SHOW_ENTITY_POSITION, -1)
+            intent.getIntExtra(Constants.TV_SHOW_ENTITY_POSITION, -1),
+            intent.getStringExtra(Constants.TV_SHOW_ENTITY_ADAPTER)
         )
     }
 
@@ -257,6 +258,7 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
             Intent().apply {
                 putExtra(Constants.TV_SHOW_ENTITY_REQUEST, viewModel.tvShowEntity.value)
                 putExtra(Constants.TV_SHOW_ENTITY_POSITION_REQUEST, viewModel.position.value)
+                putExtra(Constants.TV_SHOW_ENTITY_ADAPTER_REQUEST, viewModel.adapter.value)
             }
         )
 

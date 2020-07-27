@@ -34,6 +34,7 @@ class WatchedAdapter(
         holder.setIsRecyclable(false)
         holder.binding.tvShowEntity = tvShows[position]
         holder.binding.tvShowListener = onTvShowClickListener
+        holder.binding.adapter = WatchedAdapter::class.java.simpleName
     }
 
     fun notifyDataSetChanged(tvShows: List<TvShowEntity>) {

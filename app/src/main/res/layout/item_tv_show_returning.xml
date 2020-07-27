@@ -18,6 +18,10 @@
         <variable
             name="countdown"
             type="String" />
+
+        <variable
+            name="adapter"
+            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,7 +35,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layoutMode="opticalBounds"
-            android:onClick="@{() -> tvShowListener.onTvItemClicked(tvShowEntity,-1)}"
+            android:onClick="@{() -> tvShowListener.onTvItemClicked(tvShowEntity,-1, adapter)}"
             app:cardCornerRadius="@dimen/item_season_large_corner_radius"
             app:layout_constraintDimensionRatio="2:3"
             app:layout_constraintLeft_toLeftOf="parent"

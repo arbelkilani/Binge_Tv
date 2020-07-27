@@ -126,13 +126,14 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
         private const val MIN_OFFSCREEN_PAGE_LIMIT = 3
     }
 
-    override fun onTvItemClicked(tvShowEntity: TvShowEntity, position: Int) {
+    override fun onTvItemClicked(tvShowEntity: TvShowEntity, position: Int, adapter: String) {
         binding.viewPager.tag = binding.viewPager.currentItem
         getTvShowEntity.launch(Intent(
             activity, TvDetailsActivity::class.java
         ).apply {
             putExtra(Constants.TV_SHOW_ENTITY, tvShowEntity)
             putExtra(Constants.TV_SHOW_ENTITY_POSITION, position)
+            putExtra(Constants.TV_SHOW_ENTITY_ADAPTER, adapter)
         })
     }
 

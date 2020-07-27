@@ -48,9 +48,21 @@ class DiscoverFragment : Fragment(), OnTvShowClickListener, View.OnClickListener
                     val tvShow =
                         it.getParcelableExtra<TvShowEntity>(Constants.TV_SHOW_ENTITY_REQUEST)!!
                     val position = it.getIntExtra(Constants.TV_SHOW_ENTITY_POSITION_REQUEST, -1)
+                    val adapter = it.getStringExtra(Constants.TV_SHOW_ENTITY_ADAPTER_REQUEST)
 
-                    onTheAirAdapter.notifyTvShow(position, tvShow)
-                    popularAdapter.notifyTvShow(position, tvShow)
+                    Log.e("TAG++", "adapter = $adapter")
+                    adapter?.let { adapterName ->
+                        when (adapterName) {
+                            OnTheAirAdapter::class.java.simpleName -> {
+                                onTheAirAdapter.notifyTvShow(position, tvShow)
+
+                            }
+
+                            PopularAdapter::class.java.simpleName -> {
+                                popularAdapter.notifyTvShow(position, tvShow)
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -222,12 +234,13 @@ class DiscoverFragment : Fragment(), OnTvShowClickListener, View.OnClickListener
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onTvItemClicked(tvShowEntity: TvShowEntity, position: Int) {
+    override fun onTvItemClicked(tvShowEntity: TvShowEntity, position: Int, adapter: String) {
         getTvShowEntity.launch(Intent(
             activity, TvDetailsActivity::class.java
         ).apply {
             putExtra(Constants.TV_SHOW_ENTITY, tvShowEntity)
             putExtra(Constants.TV_SHOW_ENTITY_POSITION, position)
+            putExtra(Constants.TV_SHOW_ENTITY_ADAPTER, adapter)
         })
     }
 
@@ -240,8 +253,8 @@ class DiscoverFragment : Fragment(), OnTvShowClickListener, View.OnClickListener
                             putExtra(
                                 Constants.SHOW_MORE_TAG,
                                 PopularAdapter::class.java.simpleName
-                        )
-                    })
+                            )
+                        })
 
                 R.id.iv_on_the_air -> startActivity(Intent(
                     activity,

@@ -36,6 +36,7 @@ class PopularAdapter(private val tvShowClickListener: OnTvShowClickListener) :
             (holder as OnTheAirHolder).itemTrendingViewBinding.tvEntity = tvShow
             holder.itemTrendingViewBinding.itemClick = tvShowClickListener
             holder.itemTrendingViewBinding.position = position
+            holder.itemTrendingViewBinding.adapter = PopularAdapter::class.java.simpleName
         }
     }
 

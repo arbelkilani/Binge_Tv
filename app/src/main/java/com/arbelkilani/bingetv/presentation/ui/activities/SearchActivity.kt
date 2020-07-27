@@ -177,12 +177,13 @@ class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener, Revea
         hideKeyboard()
     }
 
-    override fun onTvItemClicked(tvShowEntity: TvShowEntity, position: Int) {
+    override fun onTvItemClicked(tvShowEntity: TvShowEntity, position: Int, adapter: String) {
         getTvShowEntity.launch(Intent(
             this, TvDetailsActivity::class.java
         ).apply {
             putExtra(Constants.TV_SHOW_ENTITY, tvShowEntity)
             putExtra(Constants.TV_SHOW_ENTITY_POSITION, position)
+            putExtra(Constants.TV_SHOW_ENTITY_ADAPTER, adapter)
         })
     }
 

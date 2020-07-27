@@ -36,6 +36,7 @@ class WatchlistAdapter(
     override fun onBindViewHolder(holder: WatchlistHolder, position: Int) {
         holder.itemWatchlistBindingImpl.tvShowEntity = tvShowList[position]
         holder.itemWatchlistBindingImpl.tvShowListener = onTvShowClickListener
+        holder.itemWatchlistBindingImpl.adapter = WatchlistAdapter::class.java.simpleName
     }
 
 }

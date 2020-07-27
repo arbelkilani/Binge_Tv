@@ -12,6 +12,11 @@
         <variable
             name="tvShowListener"
             type="com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener" />
+
+        <variable
+            name="adapter"
+            type="String" />
+
     </data>
 
     <androidx.cardview.widget.CardView
@@ -20,7 +25,7 @@
         android:layout_height="match_parent"
         android:elevation="0dp"
         android:layoutMode="clipBounds"
-        android:onClick="@{() -> tvShowListener.onTvItemClicked(tvShowEntity, -1)}"
+        android:onClick="@{() -> tvShowListener.onTvItemClicked(tvShowEntity, -1, adapter)}"
         app:cardCornerRadius="@dimen/default_card_corner_radius">
 
         <ImageView
