@@ -24,7 +24,7 @@ interface TvDao {
     @Query("SELECT * FROM tv_table WHERE watched_count>'0'")
     suspend fun watched(): List<TvShowData>?
 
-    @Query("SELECT * FROM tv_table WHERE watched='1'")
+    @Query("SELECT * FROM tv_table WHERE watched='1' AND in_production='1'")
     suspend fun watchedTvShow(): List<TvShowData>?
 
 }

@@ -50,7 +50,6 @@ class DiscoverFragment : Fragment(), OnTvShowClickListener, View.OnClickListener
                     val position = it.getIntExtra(Constants.TV_SHOW_ENTITY_POSITION_REQUEST, -1)
                     val adapter = it.getStringExtra(Constants.TV_SHOW_ENTITY_ADAPTER_REQUEST)
 
-                    Log.e("TAG++", "adapter = $adapter")
                     adapter?.let { adapterName ->
                         when (adapterName) {
                             OnTheAirAdapter::class.java.simpleName -> {

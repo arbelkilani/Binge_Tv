@@ -12,9 +12,6 @@ import kotlinx.android.parcel.Parcelize
 @Entity(tableName = "next_episode_table")
 data class NextEpisodeData(
 
-    @PrimaryKey(autoGenerate = true)
-    var id: Int = 0,
-
     @ColumnInfo(name = "name")
     @SerializedName("name")
     var name: String = "",
@@ -46,6 +43,7 @@ data class NextEpisodeData(
     @ColumnInfo(name = "time")
     var time: Long = 0L,
 
+    @PrimaryKey
     @ColumnInfo(name = "tv_next_episode")
     var tv_next_episode: Int = -1
 
