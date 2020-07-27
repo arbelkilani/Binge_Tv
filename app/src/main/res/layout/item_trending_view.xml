@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="tvEntity"
             type="com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity" />
@@ -43,8 +45,27 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/background_backdrop_gradient"
-                android:visibility="gone" />
+                android:background="@drawable/background_backdrop_gradient" />
+
+            <ImageView
+                android:id="@+id/rb_watched"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:clickable="false"
+                android:isSelected="@{true}"
+                android:padding="4dp"
+                android:src="@drawable/ic_tick_full_white"
+                android:visibility="@{tvEntity.watched ?  View.VISIBLE : View.GONE}" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:clickable="false"
+                android:padding="4dp"
+                android:src="@drawable/ic_bookmark_full_white"
+                android:visibility="@{tvEntity.watchlist ?  View.VISIBLE : View.GONE}" />
 
         </com.arbelkilani.bingetv.presentation.ui.view.CustomCardView>
 

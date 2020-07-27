@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:custom="http://schemas.android.com/tools"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:custom="http://schemas.android.com/tools">
 
     <data>
+
+        <import type="android.view.View" />
 
         <variable
             name="tvShowEntity"
@@ -45,29 +46,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/background_backdrop_gradient"
-                android:visibility="gone" />
+                android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/rb_watched"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:clickable="false"
+                android:isSelected="@{true}"
+                android:padding="4dp"
+                android:src="@drawable/ic_tick_full_white"
+                android:visibility="@{tvShowEntity.watched ?  View.VISIBLE : View.GONE}" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:clickable="false"
+                android:padding="4dp"
+                android:src="@drawable/ic_bookmark_full_white"
+                android:visibility="@{tvShowEntity.watchlist ?  View.VISIBLE : View.GONE}" />
 
         </com.arbelkilani.bingetv.presentation.ui.view.CustomCardView>
-
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/poster"
-            android:layout_alignStart="@id/poster"
-            android:layout_alignEnd="@id/poster"
-            android:layout_marginTop="@dimen/default_margin_min"
-            android:ellipsize="end"
-            android:fontFamily="@font/avenir_next_medium"
-            android:text="@{tvShowEntity.name}"
-            android:textColor="@color/item_trending_name_color"
-            android:textSize="@dimen/item_tv_show_search_title_size"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/poster"
-            tools:text="this is a name" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

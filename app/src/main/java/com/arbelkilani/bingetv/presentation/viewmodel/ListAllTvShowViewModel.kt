@@ -54,7 +54,7 @@ class ListAllTvShowViewModel(
         popularJob?.cancel()
         popularJob = scope.launch {
             popularUseCase.invoke()
-                .catch { cause -> Log.i("TAG++", "e = ${cause.localizedMessage}") }
+                .catch { cause -> Log.i("TAG", "e = ${cause.localizedMessage}") }
                 .collect {
                     _tvShowPagingData.postValue(it)
                 }
@@ -65,7 +65,7 @@ class ListAllTvShowViewModel(
         onTheAirJob?.cancel()
         onTheAirJob = scope.launch {
             onTheAirUseCase.invoke()
-                .catch { cause -> Log.i("TAG++", "e = ${cause.localizedMessage}") }
+                .catch { cause -> Log.i("TAG", "e = ${cause.localizedMessage}") }
                 .collect {
                     _tvShowPagingData.postValue(it)
                 }

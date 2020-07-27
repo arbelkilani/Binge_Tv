@@ -248,6 +248,14 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
     }
 
     override fun onBackPressed() {
+
+        setResult(
+            Activity.RESULT_OK,
+            Intent().apply {
+                putExtra(Constants.TV_SHOW_ENTITY_REQUEST, viewModel.tvShowEntity.value)
+            }
+        )
+
         when {
             bottomSheetBehaviorSeasons.state == BottomSheetBehavior.STATE_EXPANDED ->
                 bottomSheetBehaviorSeasons.state = BottomSheetBehavior.STATE_COLLAPSED
@@ -282,7 +290,6 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
         val result = viewModel.seasonWatchState(!(view as ImageView).isSelected, seasonEntity)
         (rv_seasons.adapter as SeasonAdapter).notifyItemChanged(result)
     }
-
 }
 
 

@@ -34,6 +34,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DiscoverFragment : Fragment(), OnTvShowClickListener, View.OnClickListener {
 
+    companion object {
+        private const val TAG = "DiscoverFragment"
+    }
+
     private val viewModel: DiscoverViewModel by viewModel()
 
     private lateinit var binding: FragmentDiscoverBinding
@@ -114,11 +118,15 @@ class DiscoverFragment : Fragment(), OnTvShowClickListener, View.OnClickListener
         binding.ivPopular.setOnClickListener(this)
 
         initAdapter()
+
+        return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
         getTrendingList()
         getOnTheAirList()
         getPopularList()
-
-        return binding.root
     }
 
     private fun initAdapter() {
@@ -178,14 +186,6 @@ class DiscoverFragment : Fragment(), OnTvShowClickListener, View.OnClickListener
                 ).show()
             }
         }
-    }
-
-    companion object {
-
-        private const val TAG = "DiscoverFragment"
-
-        @JvmStatic
-        fun newInstance() = DiscoverFragment()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

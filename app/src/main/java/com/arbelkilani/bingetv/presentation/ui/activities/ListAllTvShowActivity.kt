@@ -1,8 +1,11 @@
 package com.arbelkilani.bingetv.presentation.ui.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -25,6 +28,19 @@ class ListAllTvShowActivity : AppCompatActivity(), OnTvShowClickListener {
     companion object {
         private const val TAG = "ListAllTvShowActivity"
     }
+
+    private val getTvShowEntity =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+
+                result.data?.let {
+                    val tvShow =
+                        it.getParcelableExtra<TvShowEntity>(Constants.TV_SHOW_ENTITY_REQUEST)!!
+                    Log.i("TAG++", "tvShow = ${tvShow.watched}")
+                    adapter.refresh()
+                }
+            }
+        }
 
     private val viewModel: ListAllTvShowViewModel by viewModel {
         parametersOf(
@@ -97,10 +113,10 @@ class ListAllTvShowActivity : AppCompatActivity(), OnTvShowClickListener {
     }
 
     override fun onTvItemClicked(tvShowEntity: TvShowEntity) {
-        startActivity(
-            Intent(this, TvDetailsActivity::class.java)
-                .apply {
-                    putExtra(Constants.TV_SHOW_ENTITY, tvShowEntity)
-                })
+        getTvShowEntity.launch(Intent(
+            this, TvDetailsActivity::class.java
+        ).apply {
+            putExtra(Constants.TV_SHOW_ENTITY, tvShowEntity)
+        })
     }
 }
