@@ -1,5 +1,6 @@
 package com.arbelkilani.bingetv.presentation.ui.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -8,6 +9,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
@@ -58,6 +60,19 @@ class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener, Revea
                 }
         }
     }
+
+    private val getTvShowEntity =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+
+                result.data?.let {
+                    val tvShow =
+                        it.getParcelableExtra<TvShowEntity>(Constants.TV_SHOW_ENTITY_REQUEST)!!
+                    val position = it.getIntExtra(Constants.TV_SHOW_ENTITY_POSITION_REQUEST, -1)
+                    searchAdapter.notifyTvShow(position, tvShow)
+                }
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -162,12 +177,13 @@ class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener, Revea
         hideKeyboard()
     }
 
-    override fun onTvItemClicked(tvShowEntity: TvShowEntity) {
-        startActivity(
-            Intent(this, TvDetailsActivity::class.java)
-                .apply {
-                    putExtra(Constants.TV_SHOW_ENTITY, tvShowEntity)
-                })
+    override fun onTvItemClicked(tvShowEntity: TvShowEntity, position: Int) {
+        getTvShowEntity.launch(Intent(
+            this, TvDetailsActivity::class.java
+        ).apply {
+            putExtra(Constants.TV_SHOW_ENTITY, tvShowEntity)
+            putExtra(Constants.TV_SHOW_ENTITY_POSITION, position)
+        })
     }
 
 }

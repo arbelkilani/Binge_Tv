@@ -75,7 +75,7 @@ class WatchedFragment : Fragment(), OnTvShowClickListener {
         private const val TAG = "WatchedFragment"
     }
 
-    override fun onTvItemClicked(tvShowEntity: TvShowEntity) {
+    override fun onTvItemClicked(tvShowEntity: TvShowEntity, position: Int) {
         startActivity(
             Intent(activity, TvDetailsActivity::class.java)
                 .apply {

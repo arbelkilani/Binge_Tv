@@ -7,29 +7,43 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.arbelkilani.bingetv.R
-import com.arbelkilani.bingetv.databinding.ItemRecommendationBinding
+import com.arbelkilani.bingetv.databinding.ItemTrendingViewBinding
 import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
 import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
 
 class RecommendationsAdapter(private val tvShowClickListener: OnTvShowClickListener) :
     PagingDataAdapter<TvShowEntity, RecyclerView.ViewHolder>(TvShowComparator) {
 
-    class RecommendationsHolder(val itemRecommendationBinding: ItemRecommendationBinding) :
-        RecyclerView.ViewHolder(itemRecommendationBinding.root)
+    class RecommendationsHolder(val itemTrendingViewBinding: ItemTrendingViewBinding) :
+        RecyclerView.ViewHolder(itemTrendingViewBinding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val itemRecommendationBinding = DataBindingUtil.inflate<ItemRecommendationBinding>(
-            LayoutInflater.from(parent.context), R.layout.item_recommendation, parent, false
+        val itemTrendingViewBinding = DataBindingUtil.inflate<ItemTrendingViewBinding>(
+            LayoutInflater.from(parent.context), R.layout.item_trending_view, parent, false
         )
-        return RecommendationsHolder(itemRecommendationBinding)
+        return RecommendationsHolder(itemTrendingViewBinding)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val tvShow = getItem(position)
         if (tvShow != null) {
-            (holder as RecommendationsHolder).itemRecommendationBinding.tvShowEntity = tvShow
-            holder.itemRecommendationBinding.tvShowListener = tvShowClickListener
+            (holder as RecommendationsHolder).itemTrendingViewBinding.tvEntity = tvShow
+            holder.itemTrendingViewBinding.itemClick = tvShowClickListener
+            holder.itemTrendingViewBinding.position = position
         }
+    }
+
+    fun notifyTvShow(position: Int, tvShow: TvShowEntity) {
+        if (position == -1)
+            return
+
+        getItem(position)?.let {
+            if (it.id == tvShow.id) {
+                it.watched = tvShow.watched
+                it.watchlist = tvShow.watchlist
+            }
+        }
+        notifyItemChanged(position)
     }
 
     companion object {

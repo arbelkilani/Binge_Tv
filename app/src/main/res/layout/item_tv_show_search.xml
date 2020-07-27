@@ -15,6 +15,10 @@
             name="onTvShowClickListener"
             type="com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener" />
 
+        <variable
+            name="position"
+            type="Integer" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,7 +31,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layoutMode="opticalBounds"
-            android:onClick="@{() -> onTvShowClickListener.onTvItemClicked(tvShowEntity)}"
+            android:onClick="@{() -> onTvShowClickListener.onTvItemClicked(tvShowEntity, position)}"
             app:cardCornerRadius="@dimen/default_card_corner_radius"
             app:layout_constraintDimensionRatio="2:3"
             app:layout_constraintLeft_toLeftOf="parent"

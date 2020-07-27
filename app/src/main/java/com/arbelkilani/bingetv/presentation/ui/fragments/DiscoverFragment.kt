@@ -1,10 +1,12 @@
 package com.arbelkilani.bingetv.presentation.ui.fragments
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -37,6 +39,21 @@ class DiscoverFragment : Fragment(), OnTvShowClickListener, View.OnClickListener
     companion object {
         private const val TAG = "DiscoverFragment"
     }
+
+    private val getTvShowEntity =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+
+                result.data?.let {
+                    val tvShow =
+                        it.getParcelableExtra<TvShowEntity>(Constants.TV_SHOW_ENTITY_REQUEST)!!
+                    val position = it.getIntExtra(Constants.TV_SHOW_ENTITY_POSITION_REQUEST, -1)
+
+                    onTheAirAdapter.notifyTvShow(position, tvShow)
+                    popularAdapter.notifyTvShow(position, tvShow)
+                }
+            }
+        }
 
     private val viewModel: DiscoverViewModel by viewModel()
 
@@ -119,14 +136,11 @@ class DiscoverFragment : Fragment(), OnTvShowClickListener, View.OnClickListener
 
         initAdapter()
 
-        return binding.root
-    }
-
-    override fun onResume() {
-        super.onResume()
         getTrendingList()
         getOnTheAirList()
         getPopularList()
+
+        return binding.root
     }
 
     private fun initAdapter() {
@@ -208,21 +222,24 @@ class DiscoverFragment : Fragment(), OnTvShowClickListener, View.OnClickListener
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onTvItemClicked(tvShowEntity: TvShowEntity) {
-        startActivity(Intent(activity, TvDetailsActivity::class.java)
-            .apply {
-                putExtra(Constants.TV_SHOW_ENTITY, tvShowEntity)
-            })
+    override fun onTvItemClicked(tvShowEntity: TvShowEntity, position: Int) {
+        getTvShowEntity.launch(Intent(
+            activity, TvDetailsActivity::class.java
+        ).apply {
+            putExtra(Constants.TV_SHOW_ENTITY, tvShowEntity)
+            putExtra(Constants.TV_SHOW_ENTITY_POSITION, position)
+        })
     }
 
     override fun onClick(v: View?) {
         v?.apply {
             when (id) {
-                R.id.iv_popular -> startActivity(Intent(activity, ListAllTvShowActivity::class.java)
-                    .apply {
-                        putExtra(
-                            Constants.SHOW_MORE_TAG,
-                            PopularAdapter::class.java.simpleName
+                R.id.iv_popular -> startActivity(
+                    Intent(activity, ListAllTvShowActivity::class.java)
+                        .apply {
+                            putExtra(
+                                Constants.SHOW_MORE_TAG,
+                                PopularAdapter::class.java.simpleName
                         )
                     })
 

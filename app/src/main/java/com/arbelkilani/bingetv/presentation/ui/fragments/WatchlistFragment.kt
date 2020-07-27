@@ -1,10 +1,12 @@
 package com.arbelkilani.bingetv.presentation.ui.fragments
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -48,6 +50,20 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
             binding.rvRelated.smoothScrollToPosition(0)
         }
     }
+
+    private val getTvShowEntity =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+
+                result.data?.let {
+                    val tvShow =
+                        it.getParcelableExtra<TvShowEntity>(Constants.TV_SHOW_ENTITY_REQUEST)!!
+                    val position = it.getIntExtra(Constants.TV_SHOW_ENTITY_POSITION_REQUEST, -1)
+
+                    recommendationsAdapter.notifyTvShow(position, tvShow)
+                }
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -110,13 +126,14 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
         private const val MIN_OFFSCREEN_PAGE_LIMIT = 3
     }
 
-    override fun onTvItemClicked(tvShowEntity: TvShowEntity) {
+    override fun onTvItemClicked(tvShowEntity: TvShowEntity, position: Int) {
         binding.viewPager.tag = binding.viewPager.currentItem
-        startActivity(
-            Intent(activity, TvDetailsActivity::class.java)
-                .apply {
-                    putExtra(Constants.TV_SHOW_ENTITY, tvShowEntity)
-                })
+        getTvShowEntity.launch(Intent(
+            activity, TvDetailsActivity::class.java
+        ).apply {
+            putExtra(Constants.TV_SHOW_ENTITY, tvShowEntity)
+            putExtra(Constants.TV_SHOW_ENTITY_POSITION, position)
+        })
     }
 
     override fun onResume() {

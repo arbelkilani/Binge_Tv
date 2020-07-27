@@ -31,7 +31,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layoutMode="opticalBounds"
-            android:onClick="@{() -> tvShowListener.onTvItemClicked(tvShowEntity)}"
+            android:onClick="@{() -> tvShowListener.onTvItemClicked(tvShowEntity,-1)}"
             app:cardCornerRadius="@dimen/item_season_large_corner_radius"
             app:layout_constraintDimensionRatio="2:3"
             app:layout_constraintLeft_toLeftOf="parent"

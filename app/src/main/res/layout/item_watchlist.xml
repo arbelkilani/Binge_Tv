@@ -20,7 +20,7 @@
         android:layout_height="match_parent"
         android:elevation="0dp"
         android:layoutMode="clipBounds"
-        android:onClick="@{() -> tvShowListener.onTvItemClicked(tvShowEntity)}"
+        android:onClick="@{() -> tvShowListener.onTvItemClicked(tvShowEntity, -1)}"
         app:cardCornerRadius="@dimen/default_card_corner_radius">
 
         <ImageView

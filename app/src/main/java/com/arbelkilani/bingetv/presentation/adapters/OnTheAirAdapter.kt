@@ -36,7 +36,21 @@ class OnTheAirAdapter(private val tvShowClickListener: OnTvShowClickListener) :
         if (tvShow != null) {
             (holder as OnTheAirHolder).itemTrendingViewBinding.tvEntity = tvShow
             holder.itemTrendingViewBinding.itemClick = tvShowClickListener
+            holder.itemTrendingViewBinding.position = position
         }
+    }
+
+    fun notifyTvShow(position: Int, tvShow: TvShowEntity) {
+        if (position == -1)
+            return
+
+        getItem(position)?.let {
+            if (it.id == tvShow.id) {
+                it.watched = tvShow.watched
+                it.watchlist = tvShow.watchlist
+            }
+        }
+        notifyItemChanged(position)
     }
 
     companion object {

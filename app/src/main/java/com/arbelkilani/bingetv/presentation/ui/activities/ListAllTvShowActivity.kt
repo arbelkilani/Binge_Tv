@@ -3,7 +3,6 @@ package com.arbelkilani.bingetv.presentation.ui.activities
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +19,7 @@ import com.arbelkilani.bingetv.presentation.adapters.dataload.DataLoadStateAdapt
 import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
 import com.arbelkilani.bingetv.presentation.viewmodel.ListAllTvShowViewModel
 import com.arbelkilani.bingetv.utils.Constants
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -36,8 +36,8 @@ class ListAllTvShowActivity : AppCompatActivity(), OnTvShowClickListener {
                 result.data?.let {
                     val tvShow =
                         it.getParcelableExtra<TvShowEntity>(Constants.TV_SHOW_ENTITY_REQUEST)!!
-                    Log.i("TAG++", "tvShow = ${tvShow.watched}")
-                    adapter.refresh()
+                    val position = it.getIntExtra(Constants.TV_SHOW_ENTITY_POSITION_REQUEST, -1)
+                    adapter.notifyTvShow(position, tvShow)
                 }
             }
         }
@@ -61,7 +61,7 @@ class ListAllTvShowActivity : AppCompatActivity(), OnTvShowClickListener {
         binding.lifecycleOwner = this
 
         viewModel.tvShowPagingData.observe(this, Observer {
-            lifecycleScope.launchWhenResumed {
+            lifecycleScope.launch {
                 adapter.submitData(it)
             }
         })
@@ -112,11 +112,12 @@ class ListAllTvShowActivity : AppCompatActivity(), OnTvShowClickListener {
         binding.toolbar.setNavigationOnClickListener { onBackPressed() }
     }
 
-    override fun onTvItemClicked(tvShowEntity: TvShowEntity) {
+    override fun onTvItemClicked(tvShowEntity: TvShowEntity, position: Int) {
         getTvShowEntity.launch(Intent(
             this, TvDetailsActivity::class.java
         ).apply {
             putExtra(Constants.TV_SHOW_ENTITY, tvShowEntity)
+            putExtra(Constants.TV_SHOW_ENTITY_POSITION, position)
         })
     }
 }

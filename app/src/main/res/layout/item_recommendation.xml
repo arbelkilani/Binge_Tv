@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="tvShowEntity"
             type="com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity" />
@@ -12,20 +14,24 @@
         <variable
             name="tvShowListener"
             type="com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener" />
+
+        <variable
+            name="position"
+            type="Integer" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/poster_container"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginEnd="@dimen/default_margin"
-        android:orientation="vertical">
+        android:padding="4dp">
 
         <com.arbelkilani.bingetv.presentation.ui.view.CustomCardView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layoutMode="opticalBounds"
-            android:onClick="@{() -> tvShowListener.onTvItemClicked(tvShowEntity)}"
+            android:onClick="@{() -> tvShowListener.onTvItemClicked(tvShowEntity, position)}"
             app:cardCornerRadius="@dimen/item_season_large_corner_radius"
             app:layout_constraintDimensionRatio="2:3"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -39,6 +45,31 @@
                 android:src="@drawable/placeholder"
                 custom:size_poster="@{@string/w342}"
                 custom:src_poster="@{tvShowEntity.poster}" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_backdrop_gradient" />
+
+            <ImageView
+                android:id="@+id/rb_watched"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:clickable="false"
+                android:isSelected="@{true}"
+                android:padding="4dp"
+                android:src="@drawable/ic_tick_full_white"
+                android:visibility="@{tvShowEntity.watched ?  View.VISIBLE : View.GONE}" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:clickable="false"
+                android:padding="4dp"
+                android:src="@drawable/ic_bookmark_full_white"
+                android:visibility="@{tvShowEntity.watchlist ?  View.VISIBLE : View.GONE}" />
 
         </com.arbelkilani.bingetv.presentation.ui.view.CustomCardView>
 

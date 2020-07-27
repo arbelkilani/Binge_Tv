@@ -19,9 +19,10 @@ import org.koin.dsl.module
 @ExperimentalCoroutinesApi
 val ViewModelModule = module {
     viewModel { SplashViewModel(get(), get()) }
-    viewModel { (tvShowEntity: TvShowEntity) ->
+    viewModel { (tvShowEntity: TvShowEntity, position: Int) ->
         TvDetailsActivityViewModel(
             tvShowEntity,
+            position,
             get(),
             get(),
             get(),

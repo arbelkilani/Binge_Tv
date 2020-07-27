@@ -90,14 +90,14 @@ class TvShowRepositoryImp(
     override suspend fun search(query: String): Flow<PagingData<TvShowEntity>> {
         return Pager(
             config = PagingConfig(PAGE_SIZE),
-            pagingSourceFactory = { SearchPagingSource(query, apiTmdbService) }
+            pagingSourceFactory = { SearchPagingSource(query, apiTmdbService, tvDao) }
         ).flow
     }
 
     override suspend fun recommendations(id: Int): Flow<PagingData<TvShowEntity>> {
         return Pager(
             config = PagingConfig(PAGE_SIZE),
-            pagingSourceFactory = { RecommendationsPagingSource(id, apiTmdbService) }
+            pagingSourceFactory = { RecommendationsPagingSource(id, apiTmdbService, tvDao) }
         ).flow
     }
 
