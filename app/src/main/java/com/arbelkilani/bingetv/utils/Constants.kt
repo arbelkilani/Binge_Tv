@@ -8,6 +8,12 @@ object Constants {
     const val TV_SHOW_ENTITY_ADAPTER: String = "tv_show_entity_adapter"
     const val SEASON_ENTITY: String = "season_entity"
 
+    const val RETURNING_SERIES: String = "Returning Series"
+    const val ENDED: String = "Ended"
+    const val ON_THE_AIR: String = "On the air"
+    const val POPULAR: String = "Popular"
+    const val RECOMMENDATIONS: String = "Recommendations"
+
     const val SEASON_ENTITY_REQUEST: String = "season_entity_request"
     const val TV_SHOW_ENTITY_REQUEST: String = "tv_show_entity_request"
     const val TV_SHOW_ENTITY_POSITION_REQUEST: String = "tv_show_entity_position_request"

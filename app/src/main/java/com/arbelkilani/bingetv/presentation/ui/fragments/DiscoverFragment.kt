@@ -251,7 +251,7 @@ class DiscoverFragment : Fragment(), OnTvShowClickListener, View.OnClickListener
                         .apply {
                             putExtra(
                                 Constants.SHOW_MORE_TAG,
-                                PopularAdapter::class.java.simpleName
+                                Constants.POPULAR
                             )
                         })
 
@@ -262,7 +262,7 @@ class DiscoverFragment : Fragment(), OnTvShowClickListener, View.OnClickListener
                     .apply {
                         putExtra(
                             Constants.SHOW_MORE_TAG,
-                            OnTheAirAdapter::class.java.simpleName
+                            Constants.ON_THE_AIR
                         )
                     })
             }

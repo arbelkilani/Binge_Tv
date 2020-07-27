@@ -14,6 +14,7 @@ import androidx.paging.LoadState
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.databinding.ActivityListAllTvShowBinding
 import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
+import com.arbelkilani.bingetv.presentation.adapters.GridAdapter
 import com.arbelkilani.bingetv.presentation.adapters.SearchAdapter
 import com.arbelkilani.bingetv.presentation.adapters.dataload.DataLoadStateAdapter
 import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
@@ -32,12 +33,25 @@ class ListAllTvShowActivity : AppCompatActivity(), OnTvShowClickListener {
     private val getTvShowEntity =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-
                 result.data?.let {
                     val tvShow =
                         it.getParcelableExtra<TvShowEntity>(Constants.TV_SHOW_ENTITY_REQUEST)!!
                     val position = it.getIntExtra(Constants.TV_SHOW_ENTITY_POSITION_REQUEST, -1)
-                    adapter.notifyTvShow(position, tvShow)
+                    val adapter = it.getStringExtra(Constants.TV_SHOW_ENTITY_ADAPTER_REQUEST)
+
+                    adapter?.let { adapterName ->
+                        when (adapterName) {
+                            SearchAdapter::class.java.simpleName -> {
+                                gridPagindAdapter.notifyTvShow(position, tvShow)
+
+                            }
+
+                            GridAdapter::class.java.simpleName -> {
+                                if (!tvShow.watched)
+                                    gridAdapter.notifyItemRemoved(position)
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -50,7 +64,8 @@ class ListAllTvShowActivity : AppCompatActivity(), OnTvShowClickListener {
 
     private lateinit var binding: ActivityListAllTvShowBinding
 
-    private val adapter = SearchAdapter(this)
+    private val gridPagindAdapter = SearchAdapter(this)
+    private val gridAdapter = GridAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,8 +77,13 @@ class ListAllTvShowActivity : AppCompatActivity(), OnTvShowClickListener {
 
         viewModel.tvShowPagingData.observe(this, Observer {
             lifecycleScope.launch {
-                adapter.submitData(it)
+                gridPagindAdapter.submitData(it)
             }
+        })
+
+        viewModel.tvShowList.observe(this, Observer {
+            binding.rv.adapter = gridAdapter
+            (binding.rv.adapter as GridAdapter).notifyDataSetChanged(it)
         })
 
         viewModel.toolbarTitle.observe(this, Observer {
@@ -76,10 +96,10 @@ class ListAllTvShowActivity : AppCompatActivity(), OnTvShowClickListener {
     }
 
     private fun initAdapter() {
-        binding.rv.adapter = adapter.withLoadStateFooter(
-            footer = DataLoadStateAdapter { adapter.retry() })
+        binding.rv.adapter = gridPagindAdapter.withLoadStateFooter(
+            footer = DataLoadStateAdapter { gridPagindAdapter.retry() })
 
-        adapter.addLoadStateListener { loadState ->
+        gridPagindAdapter.addLoadStateListener { loadState ->
 
             // Only show the list if refresh succeeds.
             binding.rv.isVisible = loadState.refresh is LoadState.NotLoading

@@ -13,12 +13,13 @@ import com.arbelkilani.bingetv.databinding.FragmentWatchedBinding
 import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
 import com.arbelkilani.bingetv.presentation.adapters.WatchedAdapter
 import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
+import com.arbelkilani.bingetv.presentation.ui.activities.ListAllTvShowActivity
 import com.arbelkilani.bingetv.presentation.ui.activities.TvDetailsActivity
 import com.arbelkilani.bingetv.presentation.viewmodel.watched.WatchedViewModel
 import com.arbelkilani.bingetv.utils.Constants
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class WatchedFragment : Fragment(), OnTvShowClickListener {
+class WatchedFragment : Fragment(), OnTvShowClickListener, View.OnClickListener {
 
     private val viewModel: WatchedViewModel by viewModel()
 
@@ -46,6 +47,9 @@ class WatchedFragment : Fragment(), OnTvShowClickListener {
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+
+        binding.ivEnded.setOnClickListener(this)
+        binding.ivReturning.setOnClickListener(this)
 
         initAdapter()
 
@@ -85,4 +89,25 @@ class WatchedFragment : Fragment(), OnTvShowClickListener {
                 })
     }
 
+    override fun onClick(v: View?) {
+        v?.apply {
+            when (id) {
+                R.id.iv_returning -> startActivity(
+                    Intent(activity, ListAllTvShowActivity::class.java).apply {
+                        putExtra(
+                            Constants.SHOW_MORE_TAG,
+                            Constants.RETURNING_SERIES
+                        )
+                    })
+
+                R.id.iv_ended -> startActivity(
+                    Intent(activity, ListAllTvShowActivity::class.java).apply {
+                        putExtra(
+                            Constants.SHOW_MORE_TAG,
+                            Constants.ENDED
+                        )
+                    })
+            }
+        }
+    }
 }

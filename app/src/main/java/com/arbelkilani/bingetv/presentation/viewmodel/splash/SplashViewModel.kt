@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import com.arbelkilani.bingetv.domain.usecase.SaveGenreUseCase
 import com.arbelkilani.bingetv.domain.usecase.tv.UpdateNextEpisodeUseCase
 import com.arbelkilani.bingetv.presentation.viewmodel.BaseViewModel
-import com.arbelkilani.bingetv.utils.Constants
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
@@ -30,10 +30,16 @@ class SplashViewModel constructor(
     }
 
     private fun fetchData() {
-        scope.launch {
-            updateNextEpisodeUseCase.updateNextEpisode()
-            saveGenreUseCase.invoke().let { _state.postValue(true) }
-            delay(Constants.SPLASH_DELAY)
+        scope.launch(Dispatchers.IO) {
+            val nextEpisode = async {
+                updateNextEpisodeUseCase.updateNextEpisode()
+            }
+            val genres = async {
+                saveGenreUseCase.invoke().let { _state.postValue(true) }
+            }
+
+            nextEpisode.await()
+            genres.await()
         }
     }
 }

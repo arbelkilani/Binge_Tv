@@ -19,6 +19,7 @@ import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
 import com.arbelkilani.bingetv.presentation.adapters.RecommendationsAdapter
 import com.arbelkilani.bingetv.presentation.adapters.viewpager.WatchlistAdapter
 import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
+import com.arbelkilani.bingetv.presentation.ui.activities.ListAllTvShowActivity
 import com.arbelkilani.bingetv.presentation.ui.activities.TvDetailsActivity
 import com.arbelkilani.bingetv.presentation.ui.view.SliderTransformer
 import com.arbelkilani.bingetv.presentation.viewmodel.watchlist.WatchlistViewModel
@@ -30,7 +31,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.min
 
-class WatchlistFragment : Fragment(), OnTvShowClickListener {
+class WatchlistFragment : Fragment(), OnTvShowClickListener, View.OnClickListener {
 
     private val viewModel: WatchlistViewModel by viewModel()
 
@@ -84,6 +85,8 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+
+        binding.ivRecommendations.setOnClickListener(this)
 
         initAdapter()
 
@@ -140,5 +143,19 @@ class WatchlistFragment : Fragment(), OnTvShowClickListener {
     override fun onResume() {
         super.onResume()
         viewModel.refresh()
+    }
+
+    override fun onClick(v: View?) {
+        v?.apply {
+            when (id) {
+                R.id.iv_recommendations -> startActivity(
+                    Intent(activity, ListAllTvShowActivity::class.java).apply {
+                        putExtra(
+                            Constants.SHOW_MORE_TAG,
+                            Constants.RECOMMENDATIONS
+                        )
+                    })
+            }
+        }
     }
 }

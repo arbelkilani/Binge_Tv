@@ -43,7 +43,7 @@ val ViewModelModule = module {
     viewModel { WatchlistViewModel(get(), get()) }
     viewModel { WatchedViewModel(get()) }
     viewModel { ProfileViewModel(get()) }
-    viewModel { (tag: String) -> ListAllTvShowViewModel(tag, get(), get()) }
+    viewModel { (tag: String) -> ListAllTvShowViewModel(tag, get(), get(), get(), get()) }
 
 }
 
