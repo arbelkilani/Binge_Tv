@@ -93,7 +93,6 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
                     next_episode_cardview.visibility = View.VISIBLE
                 }
 
-
                 if (it.status.isNotEmpty()) {
                     flex_box_shimmer.visibility = View.GONE
                     tv_details_status_shimmer.visibility = View.GONE
@@ -169,7 +168,6 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
         val view = findViewById<View>(R.id.action_show_more)
         when (item.itemId) {
             R.id.action_show_more -> {

@@ -84,5 +84,6 @@
     <string name="title_watched">My shows</string>
     <string name="title_popular">Popular</string>
     <string name="label_returning_series">Returning series</string>
+    <string name="action_connect">Sign in</string>
 
 </resources>
