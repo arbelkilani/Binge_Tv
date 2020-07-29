@@ -69,6 +69,7 @@ class ProfileFragment : Fragment(), OnProfilePopupClicked {
 
         viewModel.firebaseUser.observe(viewLifecycleOwner, Observer {
             popupWindowBinding.user = it
+            binding.user = it
         })
 
         return binding.root

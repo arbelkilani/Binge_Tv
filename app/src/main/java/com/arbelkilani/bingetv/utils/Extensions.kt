@@ -9,6 +9,7 @@ import android.graphics.Rect
 import android.graphics.Typeface.ITALIC
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.GradientDrawable
+import android.net.Uri
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
@@ -65,6 +66,16 @@ fun bindBackdrop(view: ImageView, url: String?) {
         Picasso.get().load(link)
             .placeholder(R.drawable.placeholder_large)
             .error(R.drawable.placeholder_large)
+            .into(view)
+    }
+}
+
+@BindingAdapter("custom:profile_photo")
+fun bindProfilePhoto(view: ImageView, url: Uri?) {
+    url?.let {
+        Picasso.get().load(url)
+            .placeholder(R.drawable.placeholder)
+            .error(R.drawable.placeholder)
             .into(view)
     }
 }
