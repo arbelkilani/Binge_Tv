@@ -77,16 +77,25 @@
                     android:layout_marginStart="@dimen/default_margin"
                     android:layout_marginEnd="@dimen/default_margin"
                     android:layout_marginBottom="@dimen/default_margin"
-                    android:gravity="top"
+                    android:gravity="center_vertical"
                     android:visibility="@{user == null ? View.GONE : View.VISIBLE}">
 
-                    <de.hdodenhof.circleimageview.CircleImageView
+                    <androidx.cardview.widget.CardView
                         android:id="@+id/photo"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_alignParentStart="true"
-                        android:src="@drawable/placeholder"
-                        custom:profile_photo="@{user.photoUrl}" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        app:cardCornerRadius="65dp"
+                        app:contentPadding="3dp">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="65dp"
+                            android:layout_height="65dp"
+                            android:layout_alignParentStart="true"
+                            android:src="@drawable/placeholder"
+                            custom:profile_photo="@{user.photoUrl}" />
+
+                    </androidx.cardview.widget.CardView>
 
                     <TextView
                         android:id="@+id/display_name"
@@ -97,6 +106,7 @@
                         android:layout_toEndOf="@+id/photo"
                         android:fontFamily="@font/avenir_next_demi_bold"
                         android:text="@{user.displayName}"
+                        android:textColor="@color/details_titles_text_color"
                         android:textSize="@dimen/titles_text_size" />
 
                     <TextView
@@ -104,9 +114,11 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/display_name"
                         android:layout_marginStart="@dimen/default_margin"
+                        android:layout_marginTop="@dimen/default_margin_min"
                         android:layout_toEndOf="@+id/photo"
                         android:fontFamily="@font/avenir_next_regular"
                         android:text="@{user.email}"
+                        android:textColor="@color/details_titles_text_color"
                         android:textSize="@dimen/small_text_size" />
 
                 </RelativeLayout>
