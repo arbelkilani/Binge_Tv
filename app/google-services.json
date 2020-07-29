@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "246932382747",
+    "firebase_url": "https://binge-tv-279320.firebaseio.com",
+    "project_id": "binge-tv-279320",
+    "storage_bucket": "binge-tv-279320.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:246932382747:android:0efb4141dd5fd32f73c4be",
+        "android_client_info": {
+          "package_name": "com.arbelkilani.bingetv"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "246932382747-60b46he8nrssom5nk0nfgv0bq3pn8b1b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.arbelkilani.bingetv",
+            "certificate_hash": "0f9efa06177a0da4a60a7a000dfc755d5a3a2504"
+          }
+        },
+        {
+          "client_id": "246932382747-8nt28duskfaqa2d5vqab9qi3vqb7l77s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXCiQwUcjNEHvfY41_kYxHioS3id-CizI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "246932382747-8nt28duskfaqa2d5vqab9qi3vqb7l77s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

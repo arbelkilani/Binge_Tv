@@ -1,27 +1,45 @@
 package com.arbelkilani.bingetv.presentation.ui.fragments
 
+import android.app.Activity
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
 import android.widget.PopupWindow
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.databinding.FragmentProfileBinding
+import com.arbelkilani.bingetv.databinding.LayoutProfilePopupMenuBinding
+import com.arbelkilani.bingetv.presentation.listeners.OnProfilePopupClicked
 import com.arbelkilani.bingetv.presentation.viewmodel.profile.ProfileViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ProfileFragment : Fragment() {
+class ProfileFragment : Fragment(), OnProfilePopupClicked {
+
+    companion object {
+        private const val TAG = "ProfileFragment"
+    }
 
     private val viewModel: ProfileViewModel by viewModel()
-
     private lateinit var binding: FragmentProfileBinding
+    private lateinit var popupWindowBinding: LayoutProfilePopupMenuBinding
+
+    private val googleSignIn =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                viewModel.getSignedInAccountFromIntent(result.data)
+            }
+        }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+
+        viewModel.onCreate(requireContext())
     }
 
     override fun onCreateView(
@@ -39,6 +57,8 @@ class ProfileFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+        initPopupWindowBinding()
+
         viewModel.statistics.observe(viewLifecycleOwner, Observer { statisticsEntity ->
             binding.statisticsEntity = statisticsEntity
         })
@@ -47,7 +67,22 @@ class ProfileFragment : Fragment() {
             binding.genres = genres
         })
 
+        viewModel.firebaseUser.observe(viewLifecycleOwner, Observer {
+            popupWindowBinding.user = it
+        })
+
         return binding.root
+    }
+
+    private fun initPopupWindowBinding() {
+        popupWindowBinding = DataBindingUtil.inflate(
+            layoutInflater,
+            R.layout.layout_profile_popup_menu,
+            null,
+            false
+        )
+        popupWindowBinding.viewModel = viewModel
+        popupWindowBinding.onProfilePopupClicked = this
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -78,8 +113,7 @@ class ProfileFragment : Fragment() {
         val axis = IntArray(2)
         val widthPixels = resources.displayMetrics.widthPixels
 
-        val layout = layoutInflater.inflate(R.layout.layout_profile_popup_menu, null)
-        layout?.apply {
+        popupWindowBinding.root.apply {
             measure(View.MeasureSpec.EXACTLY, View.MeasureSpec.EXACTLY)
         }
 
@@ -93,7 +127,7 @@ class ProfileFragment : Fragment() {
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
-            contentView = layout
+            contentView = popupWindowBinding.root
             isOutsideTouchable = true
             isFocusable = true
             setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -101,7 +135,7 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    companion object {
-        private const val TAG = "ProfileFragment"
+    override fun signIn() {
+        googleSignIn.launch(viewModel.signInIntent.value)
     }
 }
