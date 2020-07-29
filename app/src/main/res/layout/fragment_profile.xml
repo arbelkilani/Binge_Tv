@@ -104,7 +104,6 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/display_name"
                         android:layout_marginStart="@dimen/default_margin"
-                        android:layout_marginTop="@dimen/default_margin_min"
                         android:layout_toEndOf="@+id/photo"
                         android:fontFamily="@font/avenir_next_regular"
                         android:text="@{user.email}"
@@ -245,7 +244,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/default_margin_min"
                             android:fontFamily="@font/avenir_next_demi_bold"
-                            android:text="@string/episodes"
+                            android:text="@{@plurals/label_episodes(statisticsEntity.episodeCount)}"
                             android:textColor="@color/details_titles_text_color"
                             android:textSize="@dimen/small_text_size" />
 
@@ -304,7 +303,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/default_margin_min"
                                     android:fontFamily="@font/avenir_next_demi_bold"
-                                    android:text="@string/years"
+                                    android:text="@{@plurals/label_years(statisticsEntity.years)}"
                                     android:textColor="@color/details_titles_text_color"
                                     android:textSize="@dimen/small_text_size" />
 
@@ -338,7 +337,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/default_margin_min"
                                     android:fontFamily="@font/avenir_next_demi_bold"
-                                    android:text="@string/label_months"
+                                    android:text="@{@plurals/label_months(statisticsEntity.months)}"
                                     android:textColor="@color/details_titles_text_color"
                                     android:textSize="@dimen/small_text_size" />
 
@@ -372,7 +371,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/default_margin_min"
                                     android:fontFamily="@font/avenir_next_demi_bold"
-                                    android:text="@string/label_days"
+                                    android:text="@{@plurals/label_days(statisticsEntity.days)}"
                                     android:textColor="@color/details_titles_text_color"
                                     android:textSize="@dimen/small_text_size" />
 

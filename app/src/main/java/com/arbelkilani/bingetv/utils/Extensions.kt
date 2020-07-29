@@ -133,7 +133,6 @@ fun bindCount(view: TextView, count: Int?) {
     }
 
     valueAnimator.start()
-
 }
 
 @BindingAdapter(value = ["custom:watched", "custom:count"], requireAll = true)
