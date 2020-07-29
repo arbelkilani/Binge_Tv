@@ -98,4 +98,11 @@ class ProfileViewModel(
                 }
             }
     }
+
+    fun signOut() {
+        firebaseAuth.signOut()
+        googleSignInClient.signOut().addOnCompleteListener {
+            _firebaseUser.postValue(null)
+        }
+    }
 }

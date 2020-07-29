@@ -34,8 +34,10 @@ import com.arbelkilani.bingetv.data.entities.tv.Network
 import com.arbelkilani.bingetv.data.entities.tv.maze.details.NextEpisodeData
 import com.arbelkilani.bingetv.domain.entities.genre.GenreEntity
 import com.arbelkilani.bingetv.presentation.listeners.KeyboardListener
+import com.arbelkilani.bingetv.presentation.listeners.OnProfilePopupClicked
 import com.google.android.flexbox.FlexboxLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.firebase.auth.FirebaseUser
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.details_bottom_sheet_seasons.view.*
 import java.text.NumberFormat
@@ -64,6 +66,20 @@ fun bindBackdrop(view: ImageView, url: String?) {
             .placeholder(R.drawable.placeholder_large)
             .error(R.drawable.placeholder_large)
             .into(view)
+    }
+}
+
+@BindingAdapter(value = ["custom:sign_in", "custom:sign_in_listener"], requireAll = true)
+fun bindSignIn(view: TextView, user: FirebaseUser?, listener: OnProfilePopupClicked?) {
+    if (listener == null)
+        return
+
+    if (user == null) {
+        view.text = view.context.getString(R.string.label_sign_in)
+        view.setOnClickListener { listener.signIn() }
+    } else {
+        view.text = view.context.getString(R.string.label_sign_out)
+        view.setOnClickListener { listener.signOut() }
     }
 }
 

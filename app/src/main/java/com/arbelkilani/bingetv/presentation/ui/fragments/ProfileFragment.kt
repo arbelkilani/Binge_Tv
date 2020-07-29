@@ -138,4 +138,8 @@ class ProfileFragment : Fragment(), OnProfilePopupClicked {
     override fun signIn() {
         googleSignIn.launch(viewModel.signInIntent.value)
     }
+
+    override fun signOut() {
+        viewModel.signOut()
+    }
 }

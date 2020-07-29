@@ -353,6 +353,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/default_margin"
+                    android:visibility="@{genres.size() > 0 ? View.VISIBLE : View.GONE}"
                     app:cardCornerRadius="@dimen/default_card_corner_radius"
                     app:contentPadding="@dimen/default_padding">
 
