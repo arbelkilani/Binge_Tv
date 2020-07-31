@@ -8,22 +8,24 @@ import androidx.lifecycle.MutableLiveData
 import com.arbelkilani.bingetv.R
 import com.arbelkilani.bingetv.domain.entities.genre.GenreEntity
 import com.arbelkilani.bingetv.domain.entities.profile.StatisticsEntity
+import com.arbelkilani.bingetv.domain.usecase.profile.ProfileUseCase
 import com.arbelkilani.bingetv.domain.usecase.profile.StatisticsUseCase
 import com.arbelkilani.bingetv.presentation.viewmodel.BaseViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ProfileViewModel(
-    private val statisticsUseCase: StatisticsUseCase
+    private val statisticsUseCase: StatisticsUseCase,
+    private val profileUseCase: ProfileUseCase
 ) : BaseViewModel() {
 
     companion object {
@@ -32,6 +34,7 @@ class ProfileViewModel(
 
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var firebaseFireStore: FirebaseFirestore
 
     private val _statistics = MutableLiveData<StatisticsEntity>()
     val statistics: LiveData<StatisticsEntity>
@@ -67,7 +70,10 @@ class ProfileViewModel(
             .build()
 
         googleSignInClient = GoogleSignIn.getClient(context, googleSignInOptions)
+
         firebaseAuth = Firebase.auth
+        firebaseFireStore = Firebase.firestore
+
         _signInIntent.postValue(googleSignInClient.signInIntent)
 
         firebaseAuth.currentUser?.let {
@@ -76,27 +82,32 @@ class ProfileViewModel(
     }
 
     fun getSignedInAccountFromIntent(data: Intent?) {
-        data?.let {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            try {
-                val account = task.getResult(ApiException::class.java)!!
-                firebaseAuthWithGoogle(account.idToken!!)
-            } catch (e: ApiException) {
-                Log.e(TAG, "Exception : ${e.localizedMessage}")
-            }
+        profileUseCase.getSignedInAccountFromIntent(data)?.let {
+            // _firebaseUser.postValue(it)
+            Log.i("TAG++", "it : $it")
         }
     }
 
-    private fun firebaseAuthWithGoogle(idToken: String) {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        firebaseAuth.signInWithCredential(credential)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    _firebaseUser.postValue(firebaseAuth.currentUser)
-                } else {
-                    Log.e(TAG, "Exception : ${task.exception}")
+
+    private fun sync() {
+
+        _genres.value?.map {
+            firebaseFireStore.collection("genre_table")
+                .add(it)
+                .addOnSuccessListener { documentReference ->
+                    Log.i(
+                        TAG,
+                        "documentReference : $documentReference"
+                    )
                 }
-            }
+                .addOnFailureListener { exception ->
+                    Log.e(
+                        TAG,
+                        "exception : ${exception.localizedMessage}"
+                    )
+                }
+        }
+
     }
 
     fun signOut() {

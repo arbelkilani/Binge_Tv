@@ -3,6 +3,7 @@ package com.arbelkilani.bingetv.presentation.di
 import com.arbelkilani.bingetv.domain.repositories.*
 import com.arbelkilani.bingetv.domain.usecase.*
 import com.arbelkilani.bingetv.domain.usecase.episode.UpdateEpisodeUseCase
+import com.arbelkilani.bingetv.domain.usecase.profile.ProfileUseCase
 import com.arbelkilani.bingetv.domain.usecase.profile.StatisticsUseCase
 import com.arbelkilani.bingetv.domain.usecase.season.GetSeasonDetailsUseCase
 import com.arbelkilani.bingetv.domain.usecase.season.UpdateSeasonUseCase
@@ -55,6 +56,7 @@ val UseCasesModule = module {
 
     // profile
     single { statisticsUseCase(get()) }
+    single { profileUseCase(get()) }
 
     // genre
     single { saveGenreUseCase(get()) }
@@ -138,6 +140,10 @@ fun updateNextEpisodeUseCase(tvShowRepository: TvShowRepository): UpdateNextEpis
 // profile
 fun statisticsUseCase(profileRepository: ProfileRepository): StatisticsUseCase {
     return StatisticsUseCase(profileRepository)
+}
+
+fun profileUseCase(profileRepository: ProfileRepository): ProfileUseCase {
+    return ProfileUseCase(profileRepository)
 }
 
 // genre

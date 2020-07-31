@@ -23,6 +23,9 @@ import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
 import com.arbelkilani.bingetv.domain.repositories.TvShowRepository
 import com.arbelkilani.bingetv.utils.filterEpisodeAirDate
 import com.arbelkilani.bingetv.utils.time
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
@@ -42,6 +45,9 @@ class TvShowRepositoryImp(
 
     private val tvShowMapper = TvShowMapper()
     private val seasonMapper = SeasonMapper()
+
+    val firebaseFireStore = Firebase.firestore
+    val currentUser = FirebaseAuth.getInstance().currentUser
 
     companion object {
         private const val TAG = "TvShowRepository"
@@ -190,7 +196,22 @@ class TvShowRepositoryImp(
             e.printStackTrace()
             null
         }
+    }
 
+    private suspend fun TvShowData.mapOf(): Map<String, String> {
+        return mapOf(
+            "id" to id.toString(),
+            "name" to name,
+            "backdrop_path" to backdropPath!!,
+            "runtime" to runtime.toString(),
+            "poster_path" to posterPath!!,
+            "in_production" to inProduction.toString(),
+            "episode_count" to episodeCount.toString(),
+            "watchlist" to watchlist.toString(),
+            "watched" to watched.toString(),
+            "watched_count" to watchedCount.toString(),
+            "future_episodes_count" to futureEpisodesCount.toString()
+        )
     }
 
     override suspend fun updateNextEpisode() {
@@ -212,6 +233,15 @@ class TvShowRepositoryImp(
     private suspend fun saveTvShow(tvShowEntity: TvShowEntity) {
         val tvShowData = tvShowMapper.mapFromEntity(tvShowEntity)
         tvDao.saveTv(tvShowData)
+
+        currentUser?.apply {
+            firebaseFireStore.collection("users")
+                .document(this.uid)
+                .collection("tv_table")
+                .document(tvShowData.id.toString())
+                .set(tvShowData.mapOf())
+        }
+
     }
 
     private suspend fun saveSeason(seasonEntity: SeasonEntity, tvShowEntity: TvShowEntity) {
