@@ -1,7 +1,6 @@
 package com.arbelkilani.bingetv.data.repositories.profile
 
 import android.content.Intent
-import android.util.Log
 import com.arbelkilani.bingetv.BingeTvApp
 import com.arbelkilani.bingetv.data.entities.profile.StatisticsData
 import com.arbelkilani.bingetv.data.mappers.StatisticsMapper
@@ -13,9 +12,9 @@ import com.arbelkilani.bingetv.domain.entities.profile.StatisticsEntity
 import com.arbelkilani.bingetv.domain.repositories.ProfileRepository
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -31,7 +30,6 @@ class ProfileRepositoryImp(
     private val statisticsMapper = StatisticsMapper()
     private val genreMapper = GenreMapper()
 
-    private var firebaseAuth = Firebase.auth
     private var firebaseFireStore = Firebase.firestore
 
     override suspend fun getStatistics(): StatisticsEntity {
@@ -89,39 +87,17 @@ class ProfileRepositoryImp(
         return GoogleSignIn.getLastSignedInAccount(BingeTvApp.instance) != null
     }
 
-    override fun getSignedInAccountFromIntent(data: Intent?): FirebaseUser? {
-        var user: FirebaseUser? = null
-        data?.let {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            try {
-                val account = task.getResult(ApiException::class.java)
-                account?.apply {
-                    user = firebaseAuthWithGoogle(idToken)
-                }
-            } catch (e: ApiException) {
-                Log.e(TAG, "Exception : ${e.localizedMessage}")
-            }
+    override fun getSignedInAccountFromIntent(data: Intent?): AuthCredential? {
+        if (data == null)
+            return null
+        val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+        val account = task.getResult(ApiException::class.java) ?: return null
+        account.apply {
+            return GoogleAuthProvider.getCredential(idToken, null)
         }
-
-        return user
     }
 
-    private fun firebaseAuthWithGoogle(idToken: String?): FirebaseUser? {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        var user: FirebaseUser? = null
-        firebaseAuth.signInWithCredential(credential)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    user = firebaseAuth.currentUser
-                    fireStoreUser(user)
-                } else {
-                    Log.e(TAG, "Exception : ${task.exception}")
-                }
-            }
-        return user
-    }
-
-    private fun fireStoreUser(user: FirebaseUser?) {
+    override fun saveUser(user: FirebaseUser?) {
         user?.apply {
             val map = mapOf(
                 "uid" to this.uid,

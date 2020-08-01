@@ -17,7 +17,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
@@ -33,8 +32,8 @@ class ProfileViewModel(
     }
 
     private lateinit var googleSignInClient: GoogleSignInClient
-    private lateinit var firebaseAuth: FirebaseAuth
-    private lateinit var firebaseFireStore: FirebaseFirestore
+    private var firebaseAuth: FirebaseAuth = Firebase.auth
+    private var firebaseFireStore = Firebase.firestore
 
     private val _statistics = MutableLiveData<StatisticsEntity>()
     val statistics: LiveData<StatisticsEntity>
@@ -70,10 +69,6 @@ class ProfileViewModel(
             .build()
 
         googleSignInClient = GoogleSignIn.getClient(context, googleSignInOptions)
-
-        firebaseAuth = Firebase.auth
-        firebaseFireStore = Firebase.firestore
-
         _signInIntent.postValue(googleSignInClient.signInIntent)
 
         firebaseAuth.currentUser?.let {
@@ -82,32 +77,15 @@ class ProfileViewModel(
     }
 
     fun getSignedInAccountFromIntent(data: Intent?) {
-        profileUseCase.getSignedInAccountFromIntent(data)?.let {
-            // _firebaseUser.postValue(it)
-            Log.i("TAG++", "it : $it")
-        }
-    }
-
-
-    private fun sync() {
-
-        _genres.value?.map {
-            firebaseFireStore.collection("genre_table")
-                .add(it)
-                .addOnSuccessListener { documentReference ->
-                    Log.i(
-                        TAG,
-                        "documentReference : $documentReference"
-                    )
-                }
-                .addOnFailureListener { exception ->
-                    Log.e(
-                        TAG,
-                        "exception : ${exception.localizedMessage}"
-                    )
+        profileUseCase.getSignedInAccountFromIntent(data)?.let { it ->
+            firebaseAuth.signInWithCredential(it)
+                .addOnSuccessListener {
+                    profileUseCase.saveUser(firebaseAuth.currentUser)
+                    _firebaseUser.postValue(firebaseAuth.currentUser)
+                }.addOnFailureListener { exception ->
+                    Log.i(TAG, "Exception : ${exception.localizedMessage}")
                 }
         }
-
     }
 
     fun signOut() {

@@ -23,7 +23,7 @@ import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
 import com.arbelkilani.bingetv.domain.repositories.TvShowRepository
 import com.arbelkilani.bingetv.utils.filterEpisodeAirDate
 import com.arbelkilani.bingetv.utils.time
-import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -46,8 +46,8 @@ class TvShowRepositoryImp(
     private val tvShowMapper = TvShowMapper()
     private val seasonMapper = SeasonMapper()
 
-    val firebaseFireStore = Firebase.firestore
-    val currentUser = FirebaseAuth.getInstance().currentUser
+    private val fireStore = Firebase.firestore
+    private val auth = Firebase.auth
 
     companion object {
         private const val TAG = "TvShowRepository"
@@ -198,7 +198,7 @@ class TvShowRepositoryImp(
         }
     }
 
-    private suspend fun TvShowData.mapOf(): Map<String, String> {
+    private fun TvShowData.mapOf(): Map<String, String> {
         return mapOf(
             "id" to id.toString(),
             "name" to name,
@@ -234,14 +234,13 @@ class TvShowRepositoryImp(
         val tvShowData = tvShowMapper.mapFromEntity(tvShowEntity)
         tvDao.saveTv(tvShowData)
 
-        currentUser?.apply {
-            firebaseFireStore.collection("users")
+        auth.currentUser?.apply {
+            fireStore.collection("users")
                 .document(this.uid)
                 .collection("tv_table")
                 .document(tvShowData.id.toString())
                 .set(tvShowData.mapOf())
         }
-
     }
 
     private suspend fun saveSeason(seasonEntity: SeasonEntity, tvShowEntity: TvShowEntity) {
