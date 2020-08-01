@@ -7,6 +7,7 @@ import androidx.paging.PagingData
 import com.arbelkilani.bingetv.data.entities.base.Resource
 import com.arbelkilani.bingetv.data.entities.credit.CreditsResponse
 import com.arbelkilani.bingetv.data.entities.external.ExternalIds
+import com.arbelkilani.bingetv.data.entities.season.SeasonData
 import com.arbelkilani.bingetv.data.entities.tv.TvShowData
 import com.arbelkilani.bingetv.data.entities.tv.maze.details.NextEpisodeData
 import com.arbelkilani.bingetv.data.mappers.season.SeasonMapper
@@ -214,6 +215,18 @@ class TvShowRepositoryImp(
         )
     }
 
+    private fun SeasonData.mapOf(): Map<String, String> {
+        return mapOf(
+            "id" to id.toString(),
+            "episode_count" to episodeCount.toString(),
+            "season_number" to seasonNumber.toString(),
+            "tv_season" to tv_season.toString(),
+            "watched" to if (watched) "1" else "0",
+            "watched_count" to watchedCount.toString(),
+            "future_episode_count" to futureEpisodeCount.toString()
+        )
+    }
+
     override suspend fun updateNextEpisode() {
         val watchedTvShow = tvDao.watchedTvShow()
         watchedTvShow?.map { tvShowData ->
@@ -247,6 +260,14 @@ class TvShowRepositoryImp(
         val seasonData = seasonMapper.mapFromEntity(seasonEntity)
         seasonData.tv_season = tvShowEntity.id
         seasonDao.saveSeason(seasonData)
+
+        auth.currentUser?.apply {
+            fireStore.collection("users")
+                .document(this.uid)
+                .collection("season_table")
+                .document(seasonData.id.toString())
+                .set(seasonData.mapOf())
+        }
     }
 
     private suspend fun saveGenre(tvShowEntity: TvShowEntity) {
