@@ -26,7 +26,7 @@ class GenreRepositoryImp(
                         remote.count = local.count
                 }
                 try {
-                    fireStore(remote)
+                    fireStoreGenre(remote)
                     genreDao.saveGenre(remote)
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -44,7 +44,7 @@ class GenreRepositoryImp(
         )
     }
 
-    private fun fireStore(genreData: GenreData) {
+    private fun fireStoreGenre(genreData: GenreData) {
         auth.currentUser?.apply {
             fireStore.collection("users")
                 .document(this.uid)

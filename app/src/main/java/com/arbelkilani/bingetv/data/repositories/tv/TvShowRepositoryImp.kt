@@ -227,26 +227,52 @@ class TvShowRepositoryImp(
         )
     }
 
+    private fun NextEpisodeData.mapOf(): Map<String, String> {
+        return mapOf(
+            "name" to name,
+            "season" to season.toString(),
+            "number" to number.toString(),
+            "summary" to summary.toString(),
+            "time" to time.toString(),
+            "tv_next_episode" to tv_next_episode.toString()
+        )
+    }
+
     override suspend fun updateNextEpisode() {
         val watchedTvShow = tvDao.watchedTvShow()
         watchedTvShow?.map { tvShowData ->
-            tvShowData.nextEpisode()?.apply {
-                nextEpisodeDao.saveNextEpisode(this)
+            tvShowData.nextEpisode()?.let {
+                nextEpisodeDao.saveNextEpisode(it)
+                fireStoreNextEpisode(it)
             }
+        }
+    }
+
+    private fun fireStoreNextEpisode(it: NextEpisodeData) {
+        auth.currentUser?.apply {
+            fireStore.collection("users")
+                .document(this.uid)
+                .collection("next_episode_table")
+                .document(it.tv_next_episode.toString())
+                .set(it.mapOf())
         }
     }
 
     private suspend fun saveNextEpisode(tvShowEntity: TvShowEntity) {
         val nextEpisode = tvShowEntity.nextEpisode
-        nextEpisode?.apply {
-            nextEpisodeDao.saveNextEpisode(this)
+        nextEpisode?.let {
+            nextEpisodeDao.saveNextEpisode(it)
+            fireStoreNextEpisode(it)
         }
     }
 
     private suspend fun saveTvShow(tvShowEntity: TvShowEntity) {
         val tvShowData = tvShowMapper.mapFromEntity(tvShowEntity)
         tvDao.saveTv(tvShowData)
+        fireStoreTvShow(tvShowData)
+    }
 
+    private fun fireStoreTvShow(tvShowData: TvShowData) {
         auth.currentUser?.apply {
             fireStore.collection("users")
                 .document(this.uid)
@@ -344,7 +370,9 @@ class TvShowRepositoryImp(
     ): TvShowEntity? =
         try {
             tvShowEntity.watchlist = watchlist
-            tvDao.saveTv(tvShowMapper.mapFromEntity(tvShowEntity))
+            val tvShowData = tvShowMapper.mapFromEntity(tvShowEntity)
+            fireStoreTvShow(tvShowData)
+            tvDao.saveTv(tvShowData)
             tvShowEntity
         } catch (e: Exception) {
             e.printStackTrace()
