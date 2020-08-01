@@ -1,11 +1,9 @@
 package com.arbelkilani.bingetv.data.repositories.genre
 
-import com.arbelkilani.bingetv.BingeTvApp
 import com.arbelkilani.bingetv.data.entities.genre.GenreData
 import com.arbelkilani.bingetv.data.source.local.genre.GenreDao
 import com.arbelkilani.bingetv.data.source.remote.apiservice.ApiTmdbService
 import com.arbelkilani.bingetv.domain.repositories.GenresRepository
-import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -15,8 +13,9 @@ class GenreRepositoryImp(
     private val genreDao: GenreDao
 ) : GenresRepository {
 
-    val firebaseFireStore = Firebase.firestore
-    val firebaseAuth = Firebase.auth
+    private val fireStore = Firebase.firestore
+    private val auth = Firebase.auth
+
 
     override suspend fun saveGenres() {
         apiTmdbService.getGenres().body()?.apply {
@@ -27,7 +26,7 @@ class GenreRepositoryImp(
                         remote.count = local.count
                 }
                 try {
-                    //saveGenre(remote)
+                    fireStore(remote)
                     genreDao.saveGenre(remote)
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -36,15 +35,23 @@ class GenreRepositoryImp(
         }
     }
 
-    private fun saveGenre(genre: GenreData) {
-        val account = GoogleSignIn.getLastSignedInAccount(BingeTvApp.instance)
-        account?.apply {
-            firebaseFireStore.collection("users")
-                .document(this.idToken!!)
-                .collection("genres")
-                .add(genre)
+    private fun GenreData.mapOf(): Map<String, String> {
+        return mapOf(
+            "id" to id.toString(),
+            "name" to name,
+            "count" to count.toString(),
+            "percentage" to percentage.toString()
+        )
+    }
 
+    private fun fireStore(genreData: GenreData) {
+        auth.currentUser?.apply {
+            fireStore.collection("users")
+                .document(this.uid)
+                .collection("genre_table")
+                .document(genreData.id.toString())
+                .set(genreData.mapOf())
         }
-
     }
 }
+

@@ -207,8 +207,8 @@ class TvShowRepositoryImp(
             "poster_path" to posterPath!!,
             "in_production" to inProduction.toString(),
             "episode_count" to episodeCount.toString(),
-            "watchlist" to watchlist.toString(),
-            "watched" to watched.toString(),
+            "watchlist" to if (watchlist) "1" else "0",
+            "watched" to if (watched) "1" else "0",
             "watched_count" to watchedCount.toString(),
             "future_episodes_count" to futureEpisodesCount.toString()
         )
