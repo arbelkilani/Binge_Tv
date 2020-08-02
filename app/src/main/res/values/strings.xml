@@ -111,5 +111,6 @@
     <string name="action_connect">Sign in</string>
     <string name="label_sign_in">Sign in</string>
     <string name="label_sign_out">Sign out</string>
+    <string name="synchronise">Synchronise</string>
 
 </resources>

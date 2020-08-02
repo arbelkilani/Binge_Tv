@@ -13,4 +13,5 @@ interface ProfileRepository {
     fun isConnected(): Boolean
     fun getSignedInAccountFromIntent(data: Intent?): AuthCredential?
     suspend fun saveUser(user: FirebaseUser?)
+    suspend fun synchronise()
 }

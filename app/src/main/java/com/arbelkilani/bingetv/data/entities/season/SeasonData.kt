@@ -77,7 +77,7 @@ data class SeasonData(
             "episode_count" to episodeCount.toString(),
             "season_number" to seasonNumber.toString(),
             "tv_season" to tv_season.toString(),
-            "watched" to if (watched) "1" else "0",
+            "watched" to watched.toString(),
             "watched_count" to watchedCount.toString(),
             "future_episode_count" to futureEpisodeCount.toString()
         )

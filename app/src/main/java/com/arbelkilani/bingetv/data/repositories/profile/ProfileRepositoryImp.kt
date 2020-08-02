@@ -1,6 +1,7 @@
 package com.arbelkilani.bingetv.data.repositories.profile
 
 import android.content.Intent
+import android.util.Log
 import com.arbelkilani.bingetv.BingeTvApp
 import com.arbelkilani.bingetv.data.entities.genre.GenreData
 import com.arbelkilani.bingetv.data.entities.profile.StatisticsData
@@ -24,6 +25,21 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+
+
+data class Test(
+    var backdrop_path: String = "",
+    var episode_count: String = "",
+    var future_episodes_count: String = "",
+    var id: String = "",
+    var in_production: String = "",
+    var name: String = "",
+    var poster_path: String = "",
+    var runtime: String = "",
+    var watched: String = "",
+    var watched_count: String = "",
+    var watchlist: String = ""
+)
 
 class ProfileRepositoryImp(
     private val tvDao: TvDao,
@@ -118,15 +134,34 @@ class ProfileRepositoryImp(
                 .document(this.uid)
                 .set(map)
 
-            synchroniseDataBase()
+            synchronise()
         }
     }
 
-    private suspend fun synchroniseDataBase() {
+    override suspend fun synchronise() {
         val tvShows = tvDao.getAllTvShows()
-        tvShows?.map {
-            fireStoreTvShow(it)
+
+        tvShows?.apply {
+            if (isEmpty()) {
+                fireStore.collection("users")
+                    .document("Da8KFr0kIeSNdYYdKlTIEkOo49E2")
+                    .collection("tv_table")
+                    .get()
+                    .addOnSuccessListener {
+                        try {
+                            val list = it.toObjects(Test::class.java)
+                            Log.i("TAG++", "list = $list")
+                        } catch (e: Exception) {
+                            Log.e("TAG++", "e = ${e.localizedMessage}")
+                        }
+                    }
+            } else {
+                map { item ->
+                    fireStoreTvShow(item)
+                }
+            }
         }
+
 
         val seasons = seasonDao.getAllSeasons()
         seasons?.map {
@@ -142,7 +177,6 @@ class ProfileRepositoryImp(
         genres?.map {
             fireStoreGenre(it)
         }
-
     }
 
     private fun fireStoreGenre(genreData: GenreData) {

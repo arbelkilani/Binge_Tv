@@ -92,4 +92,10 @@ class ProfileViewModel(
             _firebaseUser.postValue(null)
         }
     }
+
+    fun synchronise() {
+        scope.launch(Dispatchers.IO) {
+            profileUseCase.synchronise()
+        }
+    }
 }

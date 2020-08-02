@@ -10,4 +10,5 @@ class ProfileUseCase(private val profileRepository: ProfileRepository) {
         profileRepository.getSignedInAccountFromIntent(data)
 
     suspend fun saveUser(user: FirebaseUser?) = profileRepository.saveUser(user)
+    suspend fun synchronise() = profileRepository.synchronise()
 }

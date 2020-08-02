@@ -27,6 +27,8 @@ class ProfileFragment : Fragment(), OnProfilePopupClicked {
     private lateinit var binding: FragmentProfileBinding
     private lateinit var popupWindowBinding: LayoutProfilePopupMenuBinding
 
+    private var popupWindow: PopupWindow? = null
+
     private val googleSignIn =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -70,6 +72,7 @@ class ProfileFragment : Fragment(), OnProfilePopupClicked {
         viewModel.firebaseUser.observe(viewLifecycleOwner, Observer {
             popupWindowBinding.user = it
             binding.user = it
+            popupWindow?.dismiss()
         })
 
         return binding.root
@@ -122,8 +125,8 @@ class ProfileFragment : Fragment(), OnProfilePopupClicked {
             getLocationInWindow(axis)
         }
 
-        val popupWindow = PopupWindow(activity)
-        popupWindow.apply {
+        popupWindow = PopupWindow(activity)
+        popupWindow?.apply {
             setWindowLayoutMode(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
@@ -142,5 +145,10 @@ class ProfileFragment : Fragment(), OnProfilePopupClicked {
 
     override fun signOut() {
         viewModel.signOut()
+    }
+
+    override fun synchronise() {
+        viewModel.synchronise()
+        popupWindow?.dismiss()
     }
 }
