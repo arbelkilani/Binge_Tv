@@ -148,7 +148,7 @@ class ProfileFragment : Fragment(), OnProfilePopupClicked {
     }
 
     override fun synchronise() {
-        viewModel.synchronise()
+        viewModel.refresh()
         popupWindow?.dismiss()
     }
 }

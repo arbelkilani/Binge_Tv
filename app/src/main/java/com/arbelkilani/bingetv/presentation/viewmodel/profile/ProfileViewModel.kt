@@ -45,8 +45,8 @@ class ProfileViewModel(
     val signInIntent: LiveData<Intent>
         get() = _signInIntent
 
-    private val _firebaseUser = MutableLiveData<FirebaseUser>()
-    val firebaseUser: LiveData<FirebaseUser>
+    private val _firebaseUser = MutableLiveData<FirebaseUser?>()
+    val firebaseUser: MutableLiveData<FirebaseUser?>
         get() = _firebaseUser
 
     fun refresh() {
@@ -57,6 +57,7 @@ class ProfileViewModel(
         scope.launch(Dispatchers.IO) {
             _statistics.postValue(statisticsUseCase.getStatistics())
             _genres.postValue(statisticsUseCase.getGenres())
+            profileUseCase.synchronise()
         }
     }
 
@@ -78,8 +79,13 @@ class ProfileViewModel(
         profileUseCase.getSignedInAccountFromIntent(data)?.let { it ->
             firebaseAuth.signInWithCredential(it)
                 .addOnSuccessListener {
-                    scope.launch(Dispatchers.IO) { profileUseCase.saveUser(firebaseAuth.currentUser) }
-                    _firebaseUser.postValue(firebaseAuth.currentUser)
+                    val job =
+                        scope.launch(Dispatchers.IO) { profileUseCase.saveUser(firebaseAuth.currentUser) }
+                    job.invokeOnCompletion {
+                        _firebaseUser.postValue(firebaseAuth.currentUser)
+                        refresh()
+                    }
+
                 }.addOnFailureListener { exception ->
                     Log.i(TAG, "Exception : ${exception.localizedMessage}")
                 }
@@ -91,12 +97,5 @@ class ProfileViewModel(
         googleSignInClient.signOut().addOnCompleteListener {
             _firebaseUser.postValue(null)
         }
-    }
-
-    fun synchronise() {
-        scope.launch(Dispatchers.IO) {
-            profileUseCase.synchronise()
-        }
-        refresh()
     }
 }

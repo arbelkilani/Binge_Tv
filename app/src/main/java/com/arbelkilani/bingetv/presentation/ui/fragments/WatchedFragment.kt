@@ -21,8 +21,11 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class WatchedFragment : Fragment(), OnTvShowClickListener, View.OnClickListener {
 
-    private val viewModel: WatchedViewModel by viewModel()
+    companion object {
+        private const val TAG = "WatchedFragment"
+    }
 
+    private val viewModel: WatchedViewModel by viewModel()
     private lateinit var binding: FragmentWatchedBinding
 
     private val returningAdapter = WatchedAdapter(this)
@@ -73,10 +76,6 @@ class WatchedFragment : Fragment(), OnTvShowClickListener, View.OnClickListener 
     override fun onResume() {
         super.onResume()
         viewModel.refresh()
-    }
-
-    companion object {
-        private const val TAG = "WatchedFragment"
     }
 
     override fun onTvItemClicked(tvShowEntity: TvShowEntity, position: Int, adapter: String) {
