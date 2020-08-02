@@ -97,5 +97,6 @@ class ProfileViewModel(
         scope.launch(Dispatchers.IO) {
             profileUseCase.synchronise()
         }
+        refresh()
     }
 }

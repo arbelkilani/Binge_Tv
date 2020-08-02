@@ -5,11 +5,16 @@ import com.arbelkilani.bingetv.BingeTvApp
 import com.arbelkilani.bingetv.data.entities.genre.GenreData
 import com.arbelkilani.bingetv.data.entities.profile.StatisticsData
 import com.arbelkilani.bingetv.data.entities.season.SeasonData
+import com.arbelkilani.bingetv.data.entities.season.SeasonDocument
 import com.arbelkilani.bingetv.data.entities.tv.TvShowData
 import com.arbelkilani.bingetv.data.entities.tv.TvShowDocument
 import com.arbelkilani.bingetv.data.entities.tv.maze.details.NextEpisodeData
+import com.arbelkilani.bingetv.data.entities.tv.maze.details.NextEpisodeDocument
 import com.arbelkilani.bingetv.data.mappers.StatisticsMapper
 import com.arbelkilani.bingetv.data.mappers.genre.GenreMapper
+import com.arbelkilani.bingetv.data.mappers.season.SeasonDocumentDataMapper
+import com.arbelkilani.bingetv.data.mappers.tv.NextEpisodeDocumentDataMapper
+import com.arbelkilani.bingetv.data.mappers.tv.TvShowDocumentDataMapper
 import com.arbelkilani.bingetv.data.source.local.genre.GenreDao
 import com.arbelkilani.bingetv.data.source.local.season.SeasonDao
 import com.arbelkilani.bingetv.data.source.local.tv.NextEpisodeDao
@@ -25,6 +30,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.tasks.await
 
 class ProfileRepositoryImp(
     private val tvDao: TvDao,
@@ -39,6 +45,10 @@ class ProfileRepositoryImp(
 
     private val statisticsMapper = StatisticsMapper()
     private val genreMapper = GenreMapper()
+
+    private val tvShowDocumentMapper = TvShowDocumentDataMapper()
+    private val nextEpisodeDocumentDataMapper = NextEpisodeDocumentDataMapper()
+    private val seasonDocumentDataMapper = SeasonDocumentDataMapper()
 
     private val fireStore = Firebase.firestore
     private val auth = Firebase.auth
@@ -124,38 +134,29 @@ class ProfileRepositoryImp(
     }
 
     override suspend fun synchronise() {
-        val tvShows = tvDao.getAllTvShows()
+        syncTvShow()
 
-        tvShows?.apply {
+        val seasons = seasonDao.getAllSeasons()
+        seasons?.apply {
             if (isEmpty()) {
                 auth.currentUser?.apply {
-                    fireStore.collection("users")
+                    val snapshot = fireStore.collection("users")
                         .document(uid)
-                        .collection("tv_table")
-                        .get()
-                        .addOnSuccessListener {
-                            it.toObjects(TvShowDocument::class.java).map { document ->
-                                val data = document.fromDocumentToData()
-                            }
-                        }
+                        .collection("season_table")
+                        .get().await()
+
+                    snapshot.toObjects(SeasonDocument::class.java).map {
+                        seasonDao.saveSeason(seasonDocumentDataMapper.mapFromDocument(it))
+                    }
                 }
             } else {
                 map { item ->
-                    fireStoreTvShow(item)
+                    fireStoreSeason(item)
                 }
             }
         }
 
-
-        val seasons = seasonDao.getAllSeasons()
-        seasons?.map {
-            fireStoreSeason(it)
-        }
-
-        val nextEpisodes = nextEpisodeDao.getAllNextEpisodes()
-        nextEpisodes?.map {
-            fireStoreNextEpisode(it)
-        }
+        syncNextEpisode()
 
         val genres = genreDao.getAllGenres()
         genres?.map {
@@ -163,10 +164,58 @@ class ProfileRepositoryImp(
         }
     }
 
+    private suspend fun syncNextEpisode() {
+        val nextEpisodes = nextEpisodeDao.getAllNextEpisodes()
+        nextEpisodes?.apply {
+            if (isEmpty()) {
+                auth.currentUser?.apply {
+                    val snapshot = fireStore.collection("users")
+                        .document(uid)
+                        .collection("next_episode_table")
+                        .get().await()
+
+                    snapshot.toObjects(NextEpisodeDocument::class.java).map {
+                        nextEpisodeDao.saveNextEpisode(
+                            nextEpisodeDocumentDataMapper.mapFromDocument(
+                                it
+                            )
+                        )
+                    }
+                }
+            } else {
+                map { item ->
+                    fireStoreNextEpisode(item)
+                }
+            }
+        }
+    }
+
+    private suspend fun syncTvShow() {
+        val tvShows = tvDao.getAllTvShows()
+        tvShows?.apply {
+            if (isEmpty()) {
+                auth.currentUser?.apply {
+                    val snapshot = fireStore.collection("users")
+                        .document(uid)
+                        .collection("tv_table")
+                        .get().await()
+
+                    snapshot.toObjects(TvShowDocument::class.java).map {
+                        tvDao.saveTv(tvShowDocumentMapper.mapFromDocument(it))
+                    }
+                }
+            } else {
+                map { item ->
+                    fireStoreTvShow(item)
+                }
+            }
+        }
+    }
+
     private fun fireStoreGenre(genreData: GenreData) {
         auth.currentUser?.apply {
             fireStore.collection("users")
-                .document(this.uid)
+                .document(uid)
                 .collection("genre_table")
                 .document(genreData.id.toString())
                 .set(genreData.mapOf())
@@ -176,7 +225,7 @@ class ProfileRepositoryImp(
     private fun fireStoreNextEpisode(nextEpisodeData: NextEpisodeData) {
         auth.currentUser?.apply {
             fireStore.collection("users")
-                .document(this.uid)
+                .document(uid)
                 .collection("next_episode_table")
                 .document(nextEpisodeData.tv_next_episode.toString())
                 .set(nextEpisodeData.mapOf())
@@ -186,7 +235,7 @@ class ProfileRepositoryImp(
     private fun fireStoreSeason(seasonData: SeasonData) {
         auth.currentUser?.apply {
             fireStore.collection("users")
-                .document(this.uid)
+                .document(uid)
                 .collection("season_table")
                 .document(seasonData.id.toString())
                 .set(seasonData.mapOf())
@@ -196,7 +245,7 @@ class ProfileRepositoryImp(
     private fun fireStoreTvShow(tvShowData: TvShowData) {
         auth.currentUser?.apply {
             fireStore.collection("users")
-                .document(this.uid)
+                .document(uid)
                 .collection("tv_table")
                 .document(tvShowData.id.toString())
                 .set(tvShowData.mapOf())
