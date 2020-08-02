@@ -9,5 +9,5 @@ class ProfileUseCase(private val profileRepository: ProfileRepository) {
     fun getSignedInAccountFromIntent(data: Intent?) =
         profileRepository.getSignedInAccountFromIntent(data)
 
-    fun saveUser(user: FirebaseUser?) = profileRepository.saveUser(user)
+    suspend fun saveUser(user: FirebaseUser?) = profileRepository.saveUser(user)
 }

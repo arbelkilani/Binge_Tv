@@ -1,15 +1,12 @@
 package com.arbelkilani.bingetv.data.entities.season
 
-import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.arbelkilani.bingetv.data.entities.episode.EpisodeData
 import com.google.gson.annotations.SerializedName
-import kotlinx.android.parcel.Parcelize
 
-@Parcelize
 /*@Entity(
     tableName = "season_table",
     foreignKeys = [ForeignKey(
@@ -72,32 +69,17 @@ data class SeasonData(
     @ColumnInfo(name = "future_episode_count")
     var futureEpisodeCount: Int = 0
 
-) : Parcelable {
+) {
 
-    /*val getPosterPath: String?
-        get() = "https://image.tmdb.org/t/p/w500${this.posterPath}"
-
-    val posterPath185: String?
-        get() = "https://image.tmdb.org/t/p/w185${this.posterPath}"
-
-    val getSeasonNumber: String
-        get() = String.format("%s : %d", "Season", seasonNumber, Locale.getDefault())
-
-    val getEpisodeCount: String
-        get() {
-            return if (watched)
-                String.format("%d/%d", _episodeCount, _episodeCount) else String.format(
-                "%d/%d",
-                0,
-                _episodeCount
-            )
-        }
-
-    val getAirDate: String
-        get() = String.format("First aired %s ", airDate, Locale.getDefault())
-
-    val watchedCount: String
-        get() = String.format("%d/%d", 0, _episodeCount, Locale.getDefault())*/
-
-
+    fun mapOf(): Map<String, String> {
+        return mapOf(
+            "id" to id.toString(),
+            "episode_count" to episodeCount.toString(),
+            "season_number" to seasonNumber.toString(),
+            "tv_season" to tv_season.toString(),
+            "watched" to if (watched) "1" else "0",
+            "watched_count" to watchedCount.toString(),
+            "future_episode_count" to futureEpisodeCount.toString()
+        )
+    }
 }

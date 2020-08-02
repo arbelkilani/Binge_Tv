@@ -22,4 +22,14 @@ data class GenreData(
 
     var percentage: Float = 0f
 
-)
+) {
+
+    fun mapOf(): Map<String, String> {
+        return mapOf(
+            "id" to id.toString(),
+            "name" to name,
+            "count" to count.toString(),
+            "percentage" to percentage.toString()
+        )
+    }
+}

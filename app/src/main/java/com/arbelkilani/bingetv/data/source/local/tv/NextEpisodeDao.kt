@@ -14,4 +14,7 @@ interface NextEpisodeDao {
 
     @Query("SELECT * FROM next_episode_table WHERE tv_next_episode=:tvShowId")
     suspend fun getNextEpisode(tvShowId: Int): NextEpisodeData?
+
+    @Query("SELECT * FROM next_episode_table")
+    suspend fun getAllNextEpisodes(): List<NextEpisodeData>?
 }

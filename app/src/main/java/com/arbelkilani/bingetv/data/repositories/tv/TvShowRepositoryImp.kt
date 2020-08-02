@@ -7,7 +7,6 @@ import androidx.paging.PagingData
 import com.arbelkilani.bingetv.data.entities.base.Resource
 import com.arbelkilani.bingetv.data.entities.credit.CreditsResponse
 import com.arbelkilani.bingetv.data.entities.external.ExternalIds
-import com.arbelkilani.bingetv.data.entities.season.SeasonData
 import com.arbelkilani.bingetv.data.entities.tv.TvShowData
 import com.arbelkilani.bingetv.data.entities.tv.maze.details.NextEpisodeData
 import com.arbelkilani.bingetv.data.mappers.season.SeasonMapper
@@ -197,45 +196,6 @@ class TvShowRepositoryImp(
             e.printStackTrace()
             null
         }
-    }
-
-    private fun TvShowData.mapOf(): Map<String, String> {
-        return mapOf(
-            "id" to id.toString(),
-            "name" to name,
-            "backdrop_path" to backdropPath!!,
-            "runtime" to runtime.toString(),
-            "poster_path" to posterPath!!,
-            "in_production" to inProduction.toString(),
-            "episode_count" to episodeCount.toString(),
-            "watchlist" to if (watchlist) "1" else "0",
-            "watched" to if (watched) "1" else "0",
-            "watched_count" to watchedCount.toString(),
-            "future_episodes_count" to futureEpisodesCount.toString()
-        )
-    }
-
-    private fun SeasonData.mapOf(): Map<String, String> {
-        return mapOf(
-            "id" to id.toString(),
-            "episode_count" to episodeCount.toString(),
-            "season_number" to seasonNumber.toString(),
-            "tv_season" to tv_season.toString(),
-            "watched" to if (watched) "1" else "0",
-            "watched_count" to watchedCount.toString(),
-            "future_episode_count" to futureEpisodeCount.toString()
-        )
-    }
-
-    private fun NextEpisodeData.mapOf(): Map<String, String> {
-        return mapOf(
-            "name" to name,
-            "season" to season.toString(),
-            "number" to number.toString(),
-            "summary" to summary.toString(),
-            "time" to time.toString(),
-            "tv_next_episode" to tv_next_episode.toString()
-        )
     }
 
     override suspend fun updateNextEpisode() {

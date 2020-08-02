@@ -47,4 +47,16 @@ data class NextEpisodeData(
     @ColumnInfo(name = "tv_next_episode")
     var tv_next_episode: Int = -1
 
-) : Parcelable
+) : Parcelable {
+
+    fun mapOf(): Map<String, String> {
+        return mapOf(
+            "name" to name,
+            "season" to season.toString(),
+            "number" to number.toString(),
+            "summary" to summary.toString(),
+            "time" to time.toString(),
+            "tv_next_episode" to tv_next_episode.toString()
+        )
+    }
+}

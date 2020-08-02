@@ -17,7 +17,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -33,7 +32,6 @@ class ProfileViewModel(
 
     private lateinit var googleSignInClient: GoogleSignInClient
     private var firebaseAuth: FirebaseAuth = Firebase.auth
-    private var firebaseFireStore = Firebase.firestore
 
     private val _statistics = MutableLiveData<StatisticsEntity>()
     val statistics: LiveData<StatisticsEntity>
@@ -80,7 +78,7 @@ class ProfileViewModel(
         profileUseCase.getSignedInAccountFromIntent(data)?.let { it ->
             firebaseAuth.signInWithCredential(it)
                 .addOnSuccessListener {
-                    profileUseCase.saveUser(firebaseAuth.currentUser)
+                    scope.launch(Dispatchers.IO) { profileUseCase.saveUser(firebaseAuth.currentUser) }
                     _firebaseUser.postValue(firebaseAuth.currentUser)
                 }.addOnFailureListener { exception ->
                     Log.i(TAG, "Exception : ${exception.localizedMessage}")

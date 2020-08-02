@@ -12,5 +12,5 @@ interface ProfileRepository {
     suspend fun getGenres(): List<GenreEntity>
     fun isConnected(): Boolean
     fun getSignedInAccountFromIntent(data: Intent?): AuthCredential?
-    fun saveUser(user: FirebaseUser?)
+    suspend fun saveUser(user: FirebaseUser?)
 }

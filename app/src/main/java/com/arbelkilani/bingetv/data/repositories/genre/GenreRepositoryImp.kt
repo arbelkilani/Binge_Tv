@@ -35,15 +35,6 @@ class GenreRepositoryImp(
         }
     }
 
-    private fun GenreData.mapOf(): Map<String, String> {
-        return mapOf(
-            "id" to id.toString(),
-            "name" to name,
-            "count" to count.toString(),
-            "percentage" to percentage.toString()
-        )
-    }
-
     private fun fireStoreGenre(genreData: GenreData) {
         auth.currentUser?.apply {
             fireStore.collection("users")

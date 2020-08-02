@@ -167,4 +167,21 @@ data class TvShowData(
     @ColumnInfo(name = "next_episode")
     var nextEpisode: NextEpisodeData? = null
 
-)
+) {
+
+    fun mapOf(): Map<String, String> {
+        return mapOf(
+            "id" to id.toString(),
+            "name" to name,
+            "backdrop_path" to backdropPath!!,
+            "runtime" to runtime.toString(),
+            "poster_path" to posterPath!!,
+            "in_production" to inProduction.toString(),
+            "episode_count" to episodeCount.toString(),
+            "watchlist" to if (watchlist) "1" else "0",
+            "watched" to if (watched) "1" else "0",
+            "watched_count" to watchedCount.toString(),
+            "future_episodes_count" to futureEpisodesCount.toString()
+        )
+    }
+}
