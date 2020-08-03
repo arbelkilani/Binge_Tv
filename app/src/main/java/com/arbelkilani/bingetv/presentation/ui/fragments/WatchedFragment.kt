@@ -1,10 +1,12 @@
 package com.arbelkilani.bingetv.presentation.ui.fragments
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.edit
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -17,7 +19,9 @@ import com.arbelkilani.bingetv.presentation.ui.activities.ListAllTvShowActivity
 import com.arbelkilani.bingetv.presentation.ui.activities.TvDetailsActivity
 import com.arbelkilani.bingetv.presentation.viewmodel.watched.WatchedViewModel
 import com.arbelkilani.bingetv.utils.Constants
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.qualifier.named
 
 class WatchedFragment : Fragment(), OnTvShowClickListener, View.OnClickListener {
 
@@ -26,6 +30,8 @@ class WatchedFragment : Fragment(), OnTvShowClickListener, View.OnClickListener 
     }
 
     private val viewModel: WatchedViewModel by viewModel()
+    private val preferences: SharedPreferences by inject(named("settingsPrefs"))
+
     private lateinit var binding: FragmentWatchedBinding
 
     private val returningAdapter = WatchedAdapter(this)
@@ -76,6 +82,14 @@ class WatchedFragment : Fragment(), OnTvShowClickListener, View.OnClickListener 
     override fun onResume() {
         super.onResume()
         viewModel.refresh()
+    }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden && preferences.getBoolean("SYNC", false)) {
+            viewModel.refresh()
+            preferences.edit { putBoolean("SYNC", false) }
+        }
     }
 
     override fun onTvItemClicked(tvShowEntity: TvShowEntity, position: Int, adapter: String) {

@@ -1,12 +1,14 @@
 package com.arbelkilani.bingetv.presentation.ui.fragments
 
 import android.app.Activity
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
 import android.widget.PopupWindow
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.edit
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -15,7 +17,9 @@ import com.arbelkilani.bingetv.databinding.FragmentProfileBinding
 import com.arbelkilani.bingetv.databinding.LayoutProfilePopupMenuBinding
 import com.arbelkilani.bingetv.presentation.listeners.OnProfilePopupClicked
 import com.arbelkilani.bingetv.presentation.viewmodel.profile.ProfileViewModel
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.qualifier.named
 
 class ProfileFragment : Fragment(), OnProfilePopupClicked {
 
@@ -24,6 +28,8 @@ class ProfileFragment : Fragment(), OnProfilePopupClicked {
     }
 
     private val viewModel: ProfileViewModel by viewModel()
+    private val preferences: SharedPreferences by inject(named("settingsPrefs"))
+
     private lateinit var binding: FragmentProfileBinding
     private lateinit var popupWindowBinding: LayoutProfilePopupMenuBinding
 
@@ -150,5 +156,8 @@ class ProfileFragment : Fragment(), OnProfilePopupClicked {
     override fun synchronise() {
         viewModel.refresh()
         popupWindow?.dismiss()
+        preferences.edit {
+            putBoolean("SYNC", true)
+        }
     }
 }
