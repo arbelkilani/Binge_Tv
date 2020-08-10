@@ -173,9 +173,9 @@ data class TvShowData(
         return mapOf(
             "id" to id.toString(),
             "name" to name,
-            "backdrop_path" to backdropPath!!,
+            "backdrop_path" to if (backdropPath == null) "" else backdropPath.toString(),
             "runtime" to runtime.toString(),
-            "poster_path" to posterPath!!,
+            "poster_path" to if (posterPath == null) "" else posterPath.toString(),
             "in_production" to inProduction.toString(),
             "episode_count" to episodeCount.toString(),
             "watchlist" to watchlist.toString(),
