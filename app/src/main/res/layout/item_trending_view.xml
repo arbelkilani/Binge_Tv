@@ -29,8 +29,8 @@
         android:id="@+id/main_container"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="4dp">
+        android:layout_marginEnd="@dimen/default_margin_min"
+        android:orientation="vertical">
 
         <com.arbelkilani.bingetv.presentation.ui.view.CustomCardView
             android:id="@+id/card_view"
