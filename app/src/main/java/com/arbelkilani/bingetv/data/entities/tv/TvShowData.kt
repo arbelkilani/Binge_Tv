@@ -18,7 +18,6 @@ data class TvShowData(
     @PrimaryKey
     var id: Int = -1,
 
-    @Ignore
     @ColumnInfo(name = "name")
     @SerializedName("name")
     var name: String = "",
@@ -53,7 +52,6 @@ data class TvShowData(
     @SerializedName("number_of_seasons")
     var numberOfSeasons: Int = 0,
 
-    @Ignore
     @ColumnInfo(name = "backdrop_path")
     @SerializedName("backdrop_path")
     var backdropPath: String? = null,
@@ -166,6 +164,24 @@ data class TvShowData(
     var futureEpisodesCount: Int = 0,
 
     @Ignore
+    @ColumnInfo(name = "next_episode")
     var nextEpisode: NextEpisodeData? = null
 
-)
+) {
+
+    fun mapOf(): Map<String, String> {
+        return mapOf(
+            "id" to id.toString(),
+            "name" to name,
+            "backdrop_path" to if (backdropPath == null) "" else backdropPath.toString(),
+            "runtime" to runtime.toString(),
+            "poster_path" to if (posterPath == null) "" else posterPath.toString(),
+            "in_production" to inProduction.toString(),
+            "episode_count" to episodeCount.toString(),
+            "watchlist" to watchlist.toString(),
+            "watched" to watched.toString(),
+            "watched_count" to watchedCount.toString(),
+            "future_episodes_count" to futureEpisodesCount.toString()
+        )
+    }
+}

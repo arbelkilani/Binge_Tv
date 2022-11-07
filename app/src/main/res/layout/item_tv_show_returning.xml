@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="tvShowEntity"
+            type="com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity" />
+
+        <variable
+            name="tvShowListener"
+            type="com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener" />
+
+        <variable
+            name="countdown"
+            type="String" />
+
+        <variable
+            name="adapter"
+            type="String" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/poster_container"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:orientation="vertical">
+
+        <com.arbelkilani.bingetv.presentation.ui.view.CustomCardView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layoutMode="opticalBounds"
+            android:onClick="@{() -> tvShowListener.onTvItemClicked(tvShowEntity,-1, adapter)}"
+            app:cardCornerRadius="@dimen/item_season_large_corner_radius"
+            app:layout_constraintDimensionRatio="2:3"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/placeholder"
+                    custom:size_poster="@{@string/w342}"
+                    custom:src_poster="@{tvShowEntity.poster}" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/background_backdrop_gradient"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:fontFamily="@font/avenir_next_medium"
+                    android:padding="@dimen/default_padding"
+                    android:textColor="@android:color/white"
+                    custom:next_episode_date="@{tvShowEntity.nextEpisode}" />
+
+            </FrameLayout>
+
+        </com.arbelkilani.bingetv.presentation.ui.view.CustomCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

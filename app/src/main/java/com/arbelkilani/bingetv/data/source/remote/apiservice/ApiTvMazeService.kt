@@ -10,9 +10,11 @@ interface ApiTvMazeService {
 
     @GET("lookup/shows")
     suspend fun getShow(
-        @Query("imdb") imdbId: String, @Query("embed") embed: String
-    ): TvDetailsMaze
+        @Query("imdb") imdbId: String?, @Query("embed") embed: String
+    ): TvDetailsMaze?
 
     @GET("episodes/{episode_id}")
-    suspend fun getNextEpisode(@Path("episode_id") nextEpisodeId: String): NextEpisodeData
+    suspend fun getNextEpisode(@Path("episode_id") nextEpisodeId: String?): NextEpisodeData
+
+
 }

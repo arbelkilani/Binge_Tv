@@ -13,11 +13,11 @@ interface TvShowRepository {
     suspend fun trending(): Flow<List<TvShowEntity>>
     suspend fun discover(): Flow<PagingData<TvShowEntity>>
     suspend fun airingToday(): Flow<PagingData<TvShowData>>
-    suspend fun popular(): Flow<PagingData<TvShowData>>
+    suspend fun popular(): Flow<PagingData<TvShowEntity>>
     suspend fun onTheAir(): Flow<PagingData<TvShowEntity>>
     suspend fun search(query: String): Flow<PagingData<TvShowEntity>>
 
-    suspend fun tvShowEntityResponse(id: Int): Resource<TvShowEntity>
+    suspend fun getTvShowDetails(id: Int): Resource<TvShowEntity>
     suspend fun getCredits(id: Int): Resource<CreditsResponse>
     suspend fun getNextEpisodeData(id: Int): Resource<NextEpisodeData>
 
@@ -26,5 +26,7 @@ interface TvShowRepository {
 
     suspend fun watchlist(): List<TvShowEntity>
     suspend fun recommendations(id: Int): Flow<PagingData<TvShowEntity>>
+    suspend fun watched(): List<TvShowEntity>?
+    suspend fun updateNextEpisode()
 
 }

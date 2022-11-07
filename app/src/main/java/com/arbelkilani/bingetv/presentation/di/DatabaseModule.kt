@@ -21,4 +21,6 @@ val DatabaseModule = module {
     single { get<BingeTvDatabase>().getEpisodeDao() }
 
     single { get<BingeTvDatabase>().getGenreDao() }
+
+    single { get<BingeTvDatabase>().getNextEpisodeDao() }
 }

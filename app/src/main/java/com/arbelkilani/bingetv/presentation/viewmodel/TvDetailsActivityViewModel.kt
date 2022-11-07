@@ -17,6 +17,8 @@ import kotlinx.coroutines.withContext
 
 class TvDetailsActivityViewModel constructor(
     private val extraTvShowEntity: TvShowEntity,
+    private val extraTvShowPosition: Int,
+    private val extraTvShowAdapter: String,
     private val getTvDetailsUseCase: GetTvDetailsUseCase,
     private val getCreditsUseCase: GetCreditsUseCase,
     private val updateTvShowUseCase: UpdateTvShowUseCase,
@@ -35,6 +37,14 @@ class TvDetailsActivityViewModel constructor(
     private val _seasons = MutableLiveData<List<SeasonEntity>>()
     val seasons: LiveData<List<SeasonEntity>>
         get() = _seasons
+
+    private val _position = MutableLiveData<Int>(extraTvShowPosition)
+    val position: LiveData<Int>
+        get() = _position
+
+    private val _adapter = MutableLiveData<String>(extraTvShowAdapter)
+    val adapter: LiveData<String>
+        get() = _adapter
 
     companion object {
         const val TAG = "TvShowViewModel"

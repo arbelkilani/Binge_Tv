@@ -7,16 +7,22 @@ import com.arbelkilani.bingetv.domain.entities.genre.GenreEntity
 class GenreMapper : Mapper<GenreEntity, GenreData> {
 
     override fun mapFromEntity(type: GenreEntity): GenreData {
+
         return GenreData(
             id = type.id,
-            name = type.name
+            name = type.name,
+            count = type.count,
+            percentage = type.percentage
         )
     }
 
     override fun mapToEntity(type: GenreData): GenreEntity {
+
         return GenreEntity(
             id = type.id,
-            name = type.name
+            name = type.name,
+            count = type.count,
+            percentage = type.percentage
         )
     }
 }

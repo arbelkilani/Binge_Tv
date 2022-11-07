@@ -1,0 +1,126 @@
+package com.arbelkilani.bingetv.presentation.ui.fragments
+
+import android.content.Intent
+import android.content.SharedPreferences
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.core.content.edit
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import com.arbelkilani.bingetv.R
+import com.arbelkilani.bingetv.databinding.FragmentWatchedBinding
+import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
+import com.arbelkilani.bingetv.presentation.adapters.WatchedAdapter
+import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
+import com.arbelkilani.bingetv.presentation.ui.activities.ListAllTvShowActivity
+import com.arbelkilani.bingetv.presentation.ui.activities.TvDetailsActivity
+import com.arbelkilani.bingetv.presentation.viewmodel.watched.WatchedViewModel
+import com.arbelkilani.bingetv.utils.Constants
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.qualifier.named
+
+class WatchedFragment : Fragment(), OnTvShowClickListener, View.OnClickListener {
+
+    companion object {
+        private const val TAG = "WatchedFragment"
+    }
+
+    private val viewModel: WatchedViewModel by viewModel()
+    private val preferences: SharedPreferences by inject(named("settingsPrefs"))
+
+    private lateinit var binding: FragmentWatchedBinding
+
+    private val returningAdapter = WatchedAdapter(this)
+    private val endedAdapter = WatchedAdapter(this)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_watched,
+            container,
+            false
+        )
+
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+
+        binding.ivEnded.setOnClickListener(this)
+        binding.ivReturning.setOnClickListener(this)
+
+        initAdapter()
+
+        viewModel.returningSeries.observe(viewLifecycleOwner, Observer {
+            (binding.rvReturning.adapter as WatchedAdapter).notifyDataSetChanged(it)
+        })
+
+        viewModel.endedSeries.observe(viewLifecycleOwner, Observer {
+            (binding.rvEnded.adapter as WatchedAdapter).notifyDataSetChanged(it)
+        })
+
+
+        return binding.root
+    }
+
+    private fun initAdapter() {
+        binding.rvReturning.adapter = returningAdapter
+        binding.rvEnded.adapter = endedAdapter
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.refresh()
+    }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden && preferences.getBoolean("SYNC", false)) {
+            viewModel.refresh()
+            preferences.edit { putBoolean("SYNC", false) }
+        }
+    }
+
+    override fun onTvItemClicked(tvShowEntity: TvShowEntity, position: Int, adapter: String) {
+        startActivity(
+            Intent(activity, TvDetailsActivity::class.java)
+                .apply {
+                    putExtra(Constants.TV_SHOW_ENTITY, tvShowEntity)
+                    putExtra(Constants.TV_SHOW_ENTITY_POSITION, position)
+                    putExtra(Constants.TV_SHOW_ENTITY_ADAPTER, adapter)
+                })
+    }
+
+    override fun onClick(v: View?) {
+        v?.apply {
+            when (id) {
+                R.id.iv_returning -> startActivity(
+                    Intent(activity, ListAllTvShowActivity::class.java).apply {
+                        putExtra(
+                            Constants.SHOW_MORE_TAG,
+                            Constants.RETURNING_SERIES
+                        )
+                    })
+
+                R.id.iv_ended -> startActivity(
+                    Intent(activity, ListAllTvShowActivity::class.java).apply {
+                        putExtra(
+                            Constants.SHOW_MORE_TAG,
+                            Constants.ENDED
+                        )
+                    })
+            }
+        }
+    }
+}

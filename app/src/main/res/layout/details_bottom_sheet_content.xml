@@ -229,7 +229,7 @@
                         android:layout_marginStart="@dimen/default_margin_min"
                         android:layout_marginTop="@dimen/default_margin_min"
                         android:fontFamily="@font/avenir_next_regular"
-                        android:text="@{Html.fromHtml(String.format(@string/next_episode_message, tvShowEntity.nextEpisodeData.season, tvShowEntity.nextEpisodeData.number,tvShowEntity.nextEpisodeData.name, tvShowEntity.nextEpisodeData.formattedAirDate))}"
+                        custom:next_episode="@{tvShowEntity.nextEpisode}"
                         android:textColor="@color/details_titles_text_color"
                         android:textSize="@dimen/small_text_size" />
 
@@ -241,7 +241,7 @@
                         android:text="@string/details_story_label"
                         android:textColor="@color/details_titles_text_color"
                         android:textSize="@dimen/titles_text_size"
-                        android:visibility="@{tvShowEntity.nextEpisodeData.summary == null ? View.GONE : View.VISIBLE}" />
+                        android:visibility="@{tvShowEntity.nextEpisode.summary == null ? View.GONE : View.VISIBLE}" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -251,8 +251,8 @@
                         android:fontFamily="@font/avenir_next_regular"
                         android:textColor="@color/details_titles_text_color"
                         android:textSize="@dimen/small_text_size"
-                        android:visibility="@{tvShowEntity.nextEpisodeData.summary == null ? View.GONE : View.VISIBLE}"
-                        custom:summary="@{tvShowEntity.nextEpisodeData.summary}" />
+                        android:visibility="@{tvShowEntity.nextEpisode.summary == null ? View.GONE : View.VISIBLE}"
+                        custom:summary="@{tvShowEntity.nextEpisode.summary}" />
 
                 </LinearLayout>
 

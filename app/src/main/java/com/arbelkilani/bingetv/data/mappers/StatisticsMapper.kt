@@ -8,17 +8,21 @@ import java.util.concurrent.TimeUnit
 class StatisticsMapper : Mapper<StatisticsEntity, StatisticsData> {
 
     override fun mapFromEntity(type: StatisticsEntity): StatisticsData {
+
         return StatisticsData(
             episodeCount = type.episodeCount,
             tvShowCount = type.tvShowCount,
+            returningTvShowCount = type.returningTvShowCount,
             totalSpentTime = type.totalSpentTime
         )
     }
 
     override fun mapToEntity(type: StatisticsData): StatisticsEntity {
+
         return StatisticsEntity(
             episodeCount = type.episodeCount,
             tvShowCount = type.tvShowCount,
+            returningTvShowCount = type.returningTvShowCount,
             totalSpentTime = type.totalSpentTime,
             minutes = type.totalSpentTime % 60,
             hours = (type.totalSpentTime / 60) % 24,

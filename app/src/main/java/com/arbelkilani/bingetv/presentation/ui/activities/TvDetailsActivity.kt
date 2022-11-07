@@ -9,10 +9,7 @@ import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.PopupWindow
@@ -62,7 +59,11 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
         }
 
     private val viewModel: TvDetailsActivityViewModel by viewModel {
-        parametersOf(intent.getParcelableExtra(Constants.TV_SHOW_ENTITY)!!)
+        parametersOf(
+            intent.getParcelableExtra(Constants.TV_SHOW_ENTITY)!!,
+            intent.getIntExtra(Constants.TV_SHOW_ENTITY_POSITION, -1),
+            intent.getStringExtra(Constants.TV_SHOW_ENTITY_ADAPTER)
+        )
     }
 
     private lateinit var binding: ActivityDetailsTvBinding
@@ -88,10 +89,9 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
             flex_box_shimmer.stopShimmer()
             it.let {
 
-                if (it.nextEpisodeData != null) {
+                if (it.nextEpisode != null) {
                     next_episode_cardview.visibility = View.VISIBLE
                 }
-
 
                 if (it.status.isNotEmpty()) {
                     flex_box_shimmer.visibility = View.GONE
@@ -168,7 +168,6 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
         val view = findViewById<View>(R.id.action_show_more)
         when (item.itemId) {
             R.id.action_show_more -> {
@@ -212,6 +211,11 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
         view.getLocationInWindow(axis)
 
         val popupWindow = PopupWindow(this)
+        popupWindow.setWindowLayoutMode(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+
         val layout = layoutInflater.inflate(R.layout.layout_tv_details_popup_menu, null)
 
         layout.measure(View.MeasureSpec.EXACTLY, View.MeasureSpec.EXACTLY)
@@ -223,6 +227,7 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
         popupWindow.showAtLocation(view, Gravity.NO_GRAVITY, widthPixels - view.width, 0)
 
         val watchlistView = layout.findViewById<TextView>(R.id.tv_action_watchlist)
+        watchlistView.visibility = if (currentTvShow.watchedCount > 0) View.GONE else View.VISIBLE
         watchlistView.isSelected = currentTvShow.watchlist
         watchlistView.setOnClickListener {
             viewModel.saveWatchlist(!watchlistView.isSelected)
@@ -245,6 +250,16 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
     }
 
     override fun onBackPressed() {
+
+        setResult(
+            Activity.RESULT_OK,
+            Intent().apply {
+                putExtra(Constants.TV_SHOW_ENTITY_REQUEST, viewModel.tvShowEntity.value)
+                putExtra(Constants.TV_SHOW_ENTITY_POSITION_REQUEST, viewModel.position.value)
+                putExtra(Constants.TV_SHOW_ENTITY_ADAPTER_REQUEST, viewModel.adapter.value)
+            }
+        )
+
         when {
             bottomSheetBehaviorSeasons.state == BottomSheetBehavior.STATE_EXPANDED ->
                 bottomSheetBehaviorSeasons.state = BottomSheetBehavior.STATE_COLLAPSED
@@ -279,7 +294,6 @@ class TvDetailsActivity : AppCompatActivity(), OnSeasonClickListener, TvShowDeta
         val result = viewModel.seasonWatchState(!(view as ImageView).isSelected, seasonEntity)
         (rv_seasons.adapter as SeasonAdapter).notifyItemChanged(result)
     }
-
 }
 
 

@@ -1,5 +1,6 @@
 package com.arbelkilani.bingetv.presentation.ui.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -8,6 +9,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
@@ -58,6 +60,19 @@ class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener, Revea
                 }
         }
     }
+
+    private val getTvShowEntity =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+
+                result.data?.let {
+                    val tvShow =
+                        it.getParcelableExtra<TvShowEntity>(Constants.TV_SHOW_ENTITY_REQUEST)!!
+                    val position = it.getIntExtra(Constants.TV_SHOW_ENTITY_POSITION_REQUEST, -1)
+                    searchAdapter.notifyTvShow(position, tvShow)
+                }
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -128,6 +143,7 @@ class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener, Revea
         Log.i(TAG, "afterTextChanged = $s")
         if (s!!.isEmpty())
             closeMenuItem?.isVisible = false
+
     }
 
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -136,9 +152,7 @@ class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener, Revea
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
         closeMenuItem?.isVisible = true
-        if (start >= 3) {
-            search(s.toString())
-        }
+        search(s.toString())
     }
 
     override fun onKeyboardShown(currentKeyboardHeight: Int) {
@@ -163,12 +177,14 @@ class SearchActivity : AppCompatActivity(), TextWatcher, KeyboardListener, Revea
         hideKeyboard()
     }
 
-    override fun onTvItemClicked(tvShowEntity: TvShowEntity) {
-        startActivity(
-            Intent(this, TvDetailsActivity::class.java)
-                .apply {
-                    putExtra(Constants.TV_SHOW_ENTITY, tvShowEntity)
-                })
+    override fun onTvItemClicked(tvShowEntity: TvShowEntity, position: Int, adapter: String) {
+        getTvShowEntity.launch(Intent(
+            this, TvDetailsActivity::class.java
+        ).apply {
+            putExtra(Constants.TV_SHOW_ENTITY, tvShowEntity)
+            putExtra(Constants.TV_SHOW_ENTITY_POSITION, position)
+            putExtra(Constants.TV_SHOW_ENTITY_ADAPTER, adapter)
+        })
     }
 
 }

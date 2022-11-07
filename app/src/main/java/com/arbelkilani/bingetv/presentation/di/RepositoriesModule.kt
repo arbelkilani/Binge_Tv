@@ -8,6 +8,7 @@ import com.arbelkilani.bingetv.data.repositories.tv.TvShowRepositoryImp
 import com.arbelkilani.bingetv.data.source.local.episode.EpisodeDao
 import com.arbelkilani.bingetv.data.source.local.genre.GenreDao
 import com.arbelkilani.bingetv.data.source.local.season.SeasonDao
+import com.arbelkilani.bingetv.data.source.local.tv.NextEpisodeDao
 import com.arbelkilani.bingetv.data.source.local.tv.TvDao
 import com.arbelkilani.bingetv.data.source.remote.apiservice.ApiTmdbService
 import com.arbelkilani.bingetv.data.source.remote.apiservice.ApiTvMazeService
@@ -20,13 +21,13 @@ import org.koin.dsl.module
 @FlowPreview
 val RepositoriesModule = module {
 
-    single { tvShowRepository(get(), get(), get(), get()) }
+    single { tvShowRepository(get(), get(), get(), get(), get(), get()) }
 
-    single { seasonRepository(get(), get(), get(), get()) }
+    single { seasonRepository(get(), get(), get(), get(), get()) }
 
-    single { episodeRepository(get(), get(), get()) }
+    single { episodeRepository(get(), get(), get(), get()) }
 
-    single { profileRepository(get()) }
+    single { profileRepository(get(), get(), get(), get()) }
 
     single { genreRepository(get(), get()) }
 }
@@ -39,26 +40,31 @@ fun genreRepository(
 }
 
 fun profileRepository(
-    tvDao: TvDao
+    tvDao: TvDao,
+    genreDao: GenreDao,
+    seasonDao: SeasonDao,
+    nextEpisodeDao: NextEpisodeDao
 ): ProfileRepository {
-    return ProfileRepositoryImp(tvDao)
+    return ProfileRepositoryImp(tvDao, genreDao, seasonDao, nextEpisodeDao)
 }
 
 fun episodeRepository(
     episodeDao: EpisodeDao,
     seasonDao: SeasonDao,
-    tvDao: TvDao
+    tvDao: TvDao,
+    genreDao: GenreDao
 ): EpisodeRepository {
-    return EpisodeRepositoryImp(episodeDao, seasonDao, tvDao)
+    return EpisodeRepositoryImp(episodeDao, seasonDao, tvDao, genreDao)
 }
 
 fun seasonRepository(
     apiTmdbService: ApiTmdbService,
     seasonDao: SeasonDao,
     episodeDao: EpisodeDao,
-    tvDao: TvDao
+    tvDao: TvDao,
+    genreDao: GenreDao
 ): SeasonRepository {
-    return SeasonRepositoryImp(apiTmdbService, seasonDao, episodeDao, tvDao)
+    return SeasonRepositoryImp(apiTmdbService, seasonDao, episodeDao, tvDao, genreDao)
 }
 
 @ExperimentalCoroutinesApi
@@ -67,12 +73,16 @@ fun tvShowRepository(
     apiTmdbService: ApiTmdbService,
     apiTvMazeService: ApiTvMazeService,
     tvDao: TvDao,
-    seasonDao: SeasonDao
+    seasonDao: SeasonDao,
+    genreDao: GenreDao,
+    nextEpisodeDao: NextEpisodeDao
 ): TvShowRepository {
     return TvShowRepositoryImp(
         apiTmdbService,
         apiTvMazeService,
         tvDao,
-        seasonDao
+        seasonDao,
+        genreDao,
+        nextEpisodeDao
     )
 }

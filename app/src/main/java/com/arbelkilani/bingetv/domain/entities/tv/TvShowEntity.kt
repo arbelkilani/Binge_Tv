@@ -10,7 +10,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class TvShowEntity(
     var id: Int = 0,
-    var inProduction: Boolean,
+    var inProduction: Boolean = false,
     var episodeCount: Int = 0,
     var name: String = "",
     var overview: String = "",
@@ -20,7 +20,7 @@ data class TvShowEntity(
     var type: String = "",
     var voteAverage: Double = 0.0,
     var homepage: String = "",
-    var nextEpisodeData: NextEpisodeData? = null,
+    var nextEpisode: NextEpisodeData? = null,
     var genres: List<GenreEntity> = listOf(),
     var networks: List<Network> = listOf(),
     var images: List<String>? = listOf(),

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.arbelkilani.bingetv.presentation.viewmodel.ListAllTvShowViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/screen_background_color"
+        android:orientation="vertical"
+        tools:context=".presentation.ui.activities.ListAllTvShowActivity">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/toolbar_background_color"
+            android:theme="@style/ThemeOverlay.AppCompat">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:navigationIcon="@drawable/ic_arrow_left_colored"
+                app:popupTheme="@style/ThemeOverlay.AppCompat"
+                app:titleTextAppearance="@style/Toolbar.TextTitle"
+                app:titleTextColor="@color/toolbar_title_color" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- circles design -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <!-- circles design -->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:layout_width="@dimen/circle_radius"
+                        android:layout_height="@dimen/circle_radius"
+                        android:layout_gravity="start"
+                        android:layout_marginStart="@dimen/circle_margin_start"
+                        android:layout_marginTop="@dimen/circle_margin_top"
+                        android:background="@drawable/circle"
+                        android:fitsSystemWindows="true" />
+
+                    <ImageView
+                        android:layout_width="@dimen/circle_radius"
+                        android:layout_height="@dimen/circle_radius"
+                        android:layout_gravity="end"
+                        android:layout_marginEnd="@dimen/circle_margin_end"
+                        android:background="@drawable/circle"
+                        android:fitsSystemWindows="true" />
+                </FrameLayout>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <include
+                    android:id="@+id/shimmer"
+                    layout="@layout/shimmer_discover_recycler" />
+
+                <com.arbelkilani.bingetv.presentation.ui.view.AutofitRecyclerView
+                    android:id="@+id/rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:columnWidth="130dp"
+                    android:layoutMode="clipBounds"
+                    android:overScrollMode="never"
+                    android:paddingStart="@dimen/default_padding_min"
+                    android:paddingTop="@dimen/default_padding"
+                    android:paddingEnd="@dimen/default_padding_min"
+                    android:scrollbars="none"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+            </FrameLayout>
+
+        </FrameLayout>
+
+    </LinearLayout>
+</layout>

@@ -5,6 +5,10 @@
     <color name="colorPrimary">@android:color/holo_red_dark</color>
     <color name="colorAccent">@android:color/holo_orange_dark</color>
 
+    <color name="white">@android:color/white</color>
+    <color name="black">@android:color/black</color>
+    <color name="transparent">@android:color/transparent</color>
+
     <color name="toolbar_title_color">@android:color/white</color>
     <color name="toolbar_background_color">#1f3354</color>
     <color name="bottom_navigation_view_background_color">#1f3354</color>

@@ -6,9 +6,23 @@
 
     <data>
 
+        <import type="java.util.List" />
+
+        <import type="android.view.View" />
+
+        <import type="com.arbelkilani.bingetv.domain.entities.genre.GenreEntity" />
+
         <variable
             name="statisticsEntity"
             type="com.arbelkilani.bingetv.domain.entities.profile.StatisticsEntity" />
+
+        <variable
+            name="genres"
+            type="List&lt;GenreEntity&gt;" />
+
+        <variable
+            name="user"
+            type="com.google.firebase.auth.FirebaseUser" />
 
         <variable
             name="viewModel"
@@ -19,191 +33,421 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
         android:fitsSystemWindows="true"
+        android:overScrollMode="never"
         tools:context=".presentation.ui.fragments.ProfileFragment">
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/default_padding">
+            android:layout_height="wrap_content">
 
-            <androidx.cardview.widget.CardView
+            <!-- circles design -->
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/default_margin"
-                app:cardCornerRadius="@dimen/default_card_corner_radius"
-                app:contentPadding="@dimen/default_padding">
+                android:layout_height="match_parent">
 
-                <LinearLayout
+                <ImageView
+                    android:layout_width="@dimen/circle_radius"
+                    android:layout_height="@dimen/circle_radius"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="@dimen/circle_margin_start"
+                    android:layout_marginTop="@dimen/circle_margin_top"
+                    android:background="@drawable/circle"
+                    android:fitsSystemWindows="true" />
+
+                <ImageView
+                    android:layout_width="@dimen/circle_radius"
+                    android:layout_height="@dimen/circle_radius"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="@dimen/circle_margin_end"
+                    android:background="@drawable/circle"
+                    android:fitsSystemWindows="true" />
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="@dimen/default_padding">
+
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_marginEnd="@dimen/default_margin"
+                    android:layout_marginBottom="@dimen/default_margin"
+                    android:gravity="center_vertical"
+                    android:visibility="@{user == null ? View.GONE : View.VISIBLE}">
 
-                    <TextView
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/photo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/avenir_next_regular"
-                        android:text="@string/label_seen_episodes"
-                        android:textColor="@color/details_titles_text_color"
-                        android:textSize="@dimen/small_text_size" />
+                        android:layout_margin="2dp"
+                        app:cardCornerRadius="65dp"
+                        app:contentPadding="3dp">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="65dp"
+                            android:layout_height="65dp"
+                            android:layout_alignParentStart="true"
+                            android:src="@drawable/placeholder"
+                            custom:profile_photo="@{user.photoUrl}" />
+
+                    </androidx.cardview.widget.CardView>
 
                     <TextView
+                        android:id="@+id/display_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/default_margin_min"
+                        android:layout_marginStart="@dimen/default_margin"
+                        android:layout_marginTop="@dimen/default_margin"
+                        android:layout_toEndOf="@+id/photo"
                         android:fontFamily="@font/avenir_next_demi_bold"
+                        android:text="@{user.displayName}"
                         android:textColor="@color/details_titles_text_color"
-                        android:textSize="@dimen/titles_text_size"
-                        custom:count_value="@{statisticsEntity.episodeCount}" />
+                        android:textSize="@dimen/titles_text_size" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_below="@+id/display_name"
+                        android:layout_marginStart="@dimen/default_margin"
                         android:layout_marginTop="@dimen/default_margin_min"
+                        android:layout_toEndOf="@+id/photo"
                         android:fontFamily="@font/avenir_next_regular"
-                        android:text="episodes"
+                        android:text="@{user.email}"
                         android:textColor="@color/details_titles_text_color"
                         android:textSize="@dimen/small_text_size" />
 
-                </LinearLayout>
+                </RelativeLayout>
 
-
-            </androidx.cardview.widget.CardView>
-
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/default_margin"
-                app:cardCornerRadius="@dimen/default_card_corner_radius"
-                app:contentPadding="@dimen/default_padding">
-
-                <LinearLayout
+                <!-- tv show count -->
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/avenir_next_regular"
-                        android:text="@string/label_total_time_spent"
-                        android:textColor="@color/details_titles_text_color"
-                        android:textSize="@dimen/small_text_size" />
+                    android:layout_margin="@dimen/default_margin"
+                    app:cardCornerRadius="@dimen/default_card_corner_radius"
+                    app:contentPadding="@dimen/default_padding">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/default_margin_min"
-                        android:orientation="horizontal"
-                        android:weightSum="3">
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/avenir_next_demi_bold"
+                            android:text="@{String.format(@string/label_watched_tv_show_label, statisticsEntity.tvShowCount)}"
+                            android:textColor="@color/details_titles_text_color"
+                            android:textSize="@dimen/titles_text_size" />
 
                         <LinearLayout
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center_horizontal"
-                            android:orientation="vertical">
+                            android:layout_marginTop="@dimen/default_margin_min"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
 
-                            <TextView
-                                android:layout_width="wrap_content"
+                            <LinearLayout
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/default_margin_min"
-                                android:fontFamily="@font/avenir_next_demi_bold"
-                                android:textColor="@color/details_titles_text_color"
-                                android:textSize="@dimen/titles_text_size"
-                                custom:count_value="@{statisticsEntity.years}" />
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical">
 
-                            <TextView
-                                android:layout_width="wrap_content"
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/default_margin_min"
+                                    android:fontFamily="@font/avenir_next_regular"
+                                    android:textColor="@color/details_titles_text_color"
+                                    android:textSize="16sp"
+                                    custom:count_value="@{statisticsEntity.returningTvShowCount}" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/default_margin_min"
+                                    android:fontFamily="@font/avenir_next_demi_bold"
+                                    android:text="@string/label_returning"
+                                    android:textColor="@color/details_titles_text_color"
+                                    android:textSize="@dimen/small_text_size" />
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:background="@color/details_titles_text_color" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/default_margin_min"
-                                android:fontFamily="@font/avenir_next_regular"
-                                android:text="years"
-                                android:textColor="@color/details_titles_text_color"
-                                android:textSize="@dimen/small_text_size" />
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/default_margin_min"
+                                    android:fontFamily="@font/avenir_next_regular"
+                                    android:textColor="@color/details_titles_text_color"
+                                    android:textSize="16sp"
+                                    custom:count_value="@{statisticsEntity.tvShowCount - statisticsEntity.returningTvShowCount}" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/default_margin_min"
+                                    android:fontFamily="@font/avenir_next_demi_bold"
+                                    android:text="@string/label_ended"
+                                    android:textColor="@color/details_titles_text_color"
+                                    android:textSize="@dimen/small_text_size" />
+
+                            </LinearLayout>
+
 
                         </LinearLayout>
-
-                        <View
-                            android:layout_width="1dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:background="@color/details_titles_text_color" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center_horizontal"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/default_margin_min"
-                                android:fontFamily="@font/avenir_next_demi_bold"
-                                android:textColor="@color/details_titles_text_color"
-                                android:textSize="@dimen/titles_text_size"
-                                custom:count_value="@{statisticsEntity.months}" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/default_margin_min"
-                                android:fontFamily="@font/avenir_next_regular"
-                                android:text="months"
-                                android:textColor="@color/details_titles_text_color"
-                                android:textSize="@dimen/small_text_size" />
-
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="1dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:background="@color/details_titles_text_color" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center_horizontal"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/default_margin_min"
-                                android:fontFamily="@font/avenir_next_demi_bold"
-                                android:textColor="@color/details_titles_text_color"
-                                android:textSize="@dimen/titles_text_size"
-                                custom:count_value="@{statisticsEntity.days}" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/default_margin_min"
-                                android:fontFamily="@font/avenir_next_regular"
-                                android:text="days"
-                                android:textColor="@color/details_titles_text_color"
-                                android:textSize="@dimen/small_text_size" />
-
-                        </LinearLayout>
-
 
                     </LinearLayout>
 
-                </LinearLayout>
+                </androidx.cardview.widget.CardView>
 
-            </androidx.cardview.widget.CardView>
+                <!-- episodes count -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/default_margin"
+                    app:cardCornerRadius="@dimen/default_card_corner_radius"
+                    app:contentPadding="@dimen/default_padding">
 
-        </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/avenir_next_demi_bold"
+                            android:text="@string/label_seen_episodes"
+                            android:textColor="@color/details_titles_text_color"
+                            android:textSize="@dimen/titles_text_size" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/default_margin_min"
+                            android:fontFamily="@font/avenir_next_regular"
+                            android:textColor="@color/details_titles_text_color"
+                            android:textSize="16sp"
+                            custom:count_value="@{statisticsEntity.episodeCount}" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/default_margin_min"
+                            android:fontFamily="@font/avenir_next_demi_bold"
+                            android:text="@{@plurals/label_episodes(statisticsEntity.episodeCount)}"
+                            android:textColor="@color/details_titles_text_color"
+                            android:textSize="@dimen/small_text_size" />
+
+                    </LinearLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+                <!-- spent time -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/default_margin"
+                    app:cardCornerRadius="@dimen/default_card_corner_radius"
+                    app:contentPadding="@dimen/default_padding">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/avenir_next_demi_bold"
+                            android:text="@string/label_total_time_spent"
+                            android:textColor="@color/details_titles_text_color"
+                            android:textSize="@dimen/titles_text_size" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/default_margin_min"
+                            android:orientation="horizontal"
+                            android:weightSum="3">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/default_margin_min"
+                                    android:fontFamily="@font/avenir_next_regular"
+                                    android:textColor="@color/details_titles_text_color"
+                                    android:textSize="16sp"
+                                    custom:count_value="@{statisticsEntity.years}" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/default_margin_min"
+                                    android:fontFamily="@font/avenir_next_demi_bold"
+                                    android:text="@{@plurals/label_years(statisticsEntity.years)}"
+                                    android:textColor="@color/details_titles_text_color"
+                                    android:textSize="@dimen/small_text_size" />
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:background="@color/details_titles_text_color" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/default_margin_min"
+                                    android:fontFamily="@font/avenir_next_regular"
+                                    android:textColor="@color/details_titles_text_color"
+                                    android:textSize="16sp"
+                                    custom:count_value="@{statisticsEntity.months}" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/default_margin_min"
+                                    android:fontFamily="@font/avenir_next_demi_bold"
+                                    android:text="@{@plurals/label_months(statisticsEntity.months)}"
+                                    android:textColor="@color/details_titles_text_color"
+                                    android:textSize="@dimen/small_text_size" />
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:background="@color/details_titles_text_color" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/default_margin_min"
+                                    android:fontFamily="@font/avenir_next_regular"
+                                    android:textColor="@color/details_titles_text_color"
+                                    android:textSize="16sp"
+                                    custom:count_value="@{statisticsEntity.days}" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/default_margin_min"
+                                    android:fontFamily="@font/avenir_next_demi_bold"
+                                    android:text="@{@plurals/label_days(statisticsEntity.days)}"
+                                    android:textColor="@color/details_titles_text_color"
+                                    android:textSize="@dimen/small_text_size" />
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/default_margin"
+                            android:fontFamily="@font/avenir_next_medium"
+                            android:text="@{String.format(@string/hours_and_minutes_label, statisticsEntity.hours, statisticsEntity.minutes)}"
+                            android:textSize="@dimen/small_text_size" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <!-- genres order -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/default_margin"
+                    android:visibility="@{genres.size() > 0 ? View.VISIBLE : View.GONE}"
+                    app:cardCornerRadius="@dimen/default_card_corner_radius"
+                    app:contentPadding="@dimen/default_padding">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/avenir_next_demi_bold"
+                            android:text="@string/label_top_preferred_genre"
+                            android:textColor="@color/details_titles_text_color"
+                            android:textSize="@dimen/titles_text_size" />
+
+                        <com.google.android.flexbox.FlexboxLayout
+                            android:id="@+id/flexGenres"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/default_margin"
+                            app:alignContent="flex_start"
+                            app:alignItems="flex_start"
+                            app:dividerDrawable="@drawable/divider"
+                            app:flexDirection="column"
+                            app:flexWrap="wrap"
+                            app:showDivider="middle"
+                            custom:favorite_genre="@{genres}" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+        </FrameLayout>
 
     </ScrollView>
 </layout>

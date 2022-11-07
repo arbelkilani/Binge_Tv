@@ -3,24 +3,27 @@ package com.arbelkilani.bingetv.presentation.di
 import com.arbelkilani.bingetv.domain.repositories.*
 import com.arbelkilani.bingetv.domain.usecase.*
 import com.arbelkilani.bingetv.domain.usecase.episode.UpdateEpisodeUseCase
+import com.arbelkilani.bingetv.domain.usecase.profile.ProfileUseCase
 import com.arbelkilani.bingetv.domain.usecase.profile.StatisticsUseCase
 import com.arbelkilani.bingetv.domain.usecase.season.GetSeasonDetailsUseCase
 import com.arbelkilani.bingetv.domain.usecase.season.UpdateSeasonUseCase
 import com.arbelkilani.bingetv.domain.usecase.tv.GetWatchListUseCase
+import com.arbelkilani.bingetv.domain.usecase.tv.UpdateNextEpisodeUseCase
 import com.arbelkilani.bingetv.domain.usecase.tv.UpdateTvShowUseCase
+import com.arbelkilani.bingetv.domain.usecase.tv.WatchedUseCase
 import org.koin.dsl.module
 
 val UseCasesModule = module {
 
     single { createDiscoverUseCase(get()) }
 
-    single { createTrendingUseCase(get()) }
+
 
     single { createAiringTodayUseCase(get()) }
 
-    single { createPopularUseCase(get()) }
 
-    single { createOnTheAirUseCase(get()) }
+
+
 
 
     single { createTvDetailsUseCase(get()) }
@@ -36,8 +39,13 @@ val UseCasesModule = module {
     single { updateTvShowUseCase(get()) }
 
     // tv show
+    single { trendingUseCase(get()) }
+    single { onTheAirUseCase(get()) }
+    single { popularUseCase(get()) }
     single { getWatchlistUseCase(get()) }
     single { recommendationsUseCase(get()) }
+    single { watchedUseCase(get()) }
+    single { updateNextEpisodeUseCase(get()) }
 
     // season
     single { getSeasonDetailsUseCase(get()) }
@@ -48,6 +56,7 @@ val UseCasesModule = module {
 
     // profile
     single { statisticsUseCase(get()) }
+    single { profileUseCase(get()) }
 
     // genre
     single { saveGenreUseCase(get()) }
@@ -58,21 +67,11 @@ fun createDiscoverUseCase(tvShowRepository: TvShowRepository): DiscoverUseCase {
     return DiscoverUseCase(tvShowRepository)
 }
 
-fun createTrendingUseCase(tvShowRepository: TvShowRepository): TrendingUseCase {
-    return TrendingUseCase(tvShowRepository)
-}
 
 fun createAiringTodayUseCase(tvShowRepository: TvShowRepository): AiringTodayUseCase {
     return AiringTodayUseCase(tvShowRepository)
 }
 
-fun createPopularUseCase(tvShowRepository: TvShowRepository): PopularUseCase {
-    return PopularUseCase(tvShowRepository)
-}
-
-fun createOnTheAirUseCase(tvShowRepository: TvShowRepository): OnTheAirUseCase {
-    return OnTheAirUseCase(tvShowRepository)
-}
 
 fun createTvDetailsUseCase(tvShowRepository: TvShowRepository): GetTvDetailsUseCase {
     return GetTvDetailsUseCase(tvShowRepository)
@@ -110,17 +109,41 @@ fun updateEpisodeUseCase(episodeRepository: EpisodeRepository): UpdateEpisodeUse
 }
 
 // tv show
+fun trendingUseCase(tvShowRepository: TvShowRepository): TrendingUseCase {
+    return TrendingUseCase(tvShowRepository)
+}
+
+fun onTheAirUseCase(tvShowRepository: TvShowRepository): OnTheAirUseCase {
+    return OnTheAirUseCase(tvShowRepository)
+}
+
+fun popularUseCase(tvShowRepository: TvShowRepository): PopularUseCase {
+    return PopularUseCase(tvShowRepository)
+}
+
 fun getWatchlistUseCase(tvShowRepository: TvShowRepository): GetWatchListUseCase {
     return GetWatchListUseCase(tvShowRepository)
+}
+
+fun watchedUseCase(tvShowRepository: TvShowRepository): WatchedUseCase {
+    return WatchedUseCase(tvShowRepository)
 }
 
 fun recommendationsUseCase(tvShowRepository: TvShowRepository): RecommendationsUseCase {
     return RecommendationsUseCase(tvShowRepository)
 }
 
+fun updateNextEpisodeUseCase(tvShowRepository: TvShowRepository): UpdateNextEpisodeUseCase {
+    return UpdateNextEpisodeUseCase(tvShowRepository)
+}
+
 // profile
 fun statisticsUseCase(profileRepository: ProfileRepository): StatisticsUseCase {
     return StatisticsUseCase(profileRepository)
+}
+
+fun profileUseCase(profileRepository: ProfileRepository): ProfileUseCase {
+    return ProfileUseCase(profileRepository)
 }
 
 // genre

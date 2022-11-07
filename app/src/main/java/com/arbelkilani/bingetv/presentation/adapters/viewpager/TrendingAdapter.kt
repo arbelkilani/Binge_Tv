@@ -3,12 +3,12 @@ package com.arbelkilani.bingetv.presentation.adapters.viewpager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.viewpager.widget.PagerAdapter
 import com.arbelkilani.bingetv.R
+import com.arbelkilani.bingetv.databinding.ItemDicoverViewBinding
 import com.arbelkilani.bingetv.domain.entities.tv.TvShowEntity
 import com.arbelkilani.bingetv.presentation.listeners.OnTvShowClickListener
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.item_dicover_view.view.*
 
 class TrendingAdapter(
     private val tvList: List<TvShowEntity>,
@@ -33,25 +33,15 @@ class TrendingAdapter(
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
 
         val virtualPosition = position % getRealCount()
-        val layout = LayoutInflater.from(container.context)
-            .inflate(R.layout.item_dicover_view, container, false)
 
+        val binding = DataBindingUtil.inflate<ItemDicoverViewBinding>(
+            LayoutInflater.from(container.context), R.layout.item_dicover_view, container, false
+        )
         val tvShow = tvList[virtualPosition]
+        binding.tvShowEntity = tvShow
+        binding.tvShowListener = onTvShowClickListener
 
-        Picasso.get()
-            .load(tvShow.backdrop)
-            .placeholder(R.drawable.placeholder_large)
-            .error(R.drawable.placeholder_large)
-            .fit().centerCrop()
-            .into(layout.iv_item_discover)
-
-        layout.tv_title.text = tvShow.name
-
-        layout.main_container.setOnClickListener {
-            onTvShowClickListener.onTvItemClicked(tvShow)
-        }
-
-        container.addView(layout)
-        return layout
+        container.addView(binding.root)
+        return binding.root
     }
 }

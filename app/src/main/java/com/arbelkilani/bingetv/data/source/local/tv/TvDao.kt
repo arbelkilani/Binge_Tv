@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.arbelkilani.bingetv.data.entities.tv.EpisodeToAir
 import com.arbelkilani.bingetv.data.entities.tv.TvShowData
 
 @Dao
@@ -12,9 +11,6 @@ interface TvDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveTv(tv: TvShowData)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveNextEpisode(episodeToAir: EpisodeToAir)
 
     @Query("SELECT * FROM tv_table WHERE id=:id")
     suspend fun getTvShow(id: Int): TvShowData?
@@ -24,5 +20,11 @@ interface TvDao {
 
     @Query("SELECT * FROM tv_table WHERE watchlist=:state")
     suspend fun watchlist(state: Boolean): List<TvShowData>?
+
+    @Query("SELECT * FROM tv_table WHERE watched_count>'0'")
+    suspend fun watched(): List<TvShowData>?
+
+    @Query("SELECT * FROM tv_table WHERE watched='1' AND in_production='1'")
+    suspend fun watchedTvShow(): List<TvShowData>?
 
 }

@@ -26,10 +26,24 @@ class SearchAdapter(private val tvShowClickListener: OnTvShowClickListener) :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val tvShow = getItem(position)
+
         if (tvShow != null) {
             (holder as SearchHolder).itemTvShowSearchBinding.tvShowEntity = tvShow
             holder.itemTvShowSearchBinding.onTvShowClickListener = tvShowClickListener
+            holder.itemTvShowSearchBinding.position = position
+            holder.itemTvShowSearchBinding.adapter = SearchAdapter::class.java.simpleName
         }
+    }
+
+    fun notifyTvShow(position: Int, tvShow: TvShowEntity) {
+        if (position == -1)
+            return
+
+        getItem(position)?.let {
+            it.watched = tvShow.watched
+            it.watchlist = tvShow.watchlist
+        }
+        notifyItemChanged(position)
     }
 
     companion object {

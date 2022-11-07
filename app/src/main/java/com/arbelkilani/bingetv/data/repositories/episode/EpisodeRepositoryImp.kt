@@ -5,6 +5,7 @@ import com.arbelkilani.bingetv.data.mappers.episode.EpisodeMapper
 import com.arbelkilani.bingetv.data.mappers.season.SeasonMapper
 import com.arbelkilani.bingetv.data.mappers.tv.TvShowMapper
 import com.arbelkilani.bingetv.data.source.local.episode.EpisodeDao
+import com.arbelkilani.bingetv.data.source.local.genre.GenreDao
 import com.arbelkilani.bingetv.data.source.local.season.SeasonDao
 import com.arbelkilani.bingetv.data.source.local.tv.TvDao
 import com.arbelkilani.bingetv.domain.entities.episode.EpisodeEntity
@@ -15,7 +16,8 @@ import com.arbelkilani.bingetv.domain.repositories.EpisodeRepository
 class EpisodeRepositoryImp(
     private val episodeDao: EpisodeDao,
     private val seasonDao: SeasonDao,
-    private val tvDao: TvDao
+    private val tvDao: TvDao,
+    private val genreDao: GenreDao
 ) : EpisodeRepository {
 
     private val episodeMapper = EpisodeMapper()
@@ -76,6 +78,43 @@ class EpisodeRepositoryImp(
 
         // update for the liveData
         tvShowEntity.watchedCount = watchedCount
+
+        // set watchlist to false if user start tv show watching by selecting an episode
+        if (watched)
+            tvShowData.watchlist = false
+        else {
+            if (watchedCount == 0)
+                tvShowData.watchlist = tvShowEntity.watchlist
+            else
+                tvShowData.watchlist = false
+        }
+
+        // increment genre count while user click on current episode.
+        // for this tv show clicking on episode is the first action
+        if (localTvShowData == null) {
+            tvShowEntity.genres.map {
+                genreDao.incrementCount(it.id, 1)
+            }
+        } else {
+
+            // tv show already exists in database -> genre already incremented
+            // at this step check of clicking on episode set watched to count to zero the decrement by -1
+            if (watchedCount == 0) {
+                tvShowEntity.genres.map {
+                    genreDao.incrementCount(it.id, -1)
+                }
+            }
+
+            // if user has removed all episodes and decide to re-add one
+            // tv show entity is already saved
+            // then check if user clicked on watched true with watched count == 1 else it will increment when downsize watched count to 1
+            if (watchedCount == 1 && watched) {
+                tvShowEntity.genres.map {
+                    genreDao.incrementCount(it.id, 1)
+                }
+            }
+
+        }
 
         try {
             tvDao.saveTv(tvShowData)

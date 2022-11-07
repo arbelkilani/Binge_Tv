@@ -6,6 +6,7 @@ import com.arbelkilani.bingetv.data.mappers.episode.EpisodeMapper
 import com.arbelkilani.bingetv.data.mappers.season.SeasonMapper
 import com.arbelkilani.bingetv.data.mappers.tv.TvShowMapper
 import com.arbelkilani.bingetv.data.source.local.episode.EpisodeDao
+import com.arbelkilani.bingetv.data.source.local.genre.GenreDao
 import com.arbelkilani.bingetv.data.source.local.season.SeasonDao
 import com.arbelkilani.bingetv.data.source.local.tv.TvDao
 import com.arbelkilani.bingetv.data.source.remote.apiservice.ApiTmdbService
@@ -17,12 +18,15 @@ class SeasonRepositoryImp(
     private val apiTmdbService: ApiTmdbService,
     private val seasonDao: SeasonDao,
     private val episodeDao: EpisodeDao,
-    private val tvDao: TvDao
+    private val tvDao: TvDao,
+    private val genreDao: GenreDao
 ) : SeasonRepository {
 
     private val seasonMapper = SeasonMapper()
     private val tvShowMapper = TvShowMapper()
     private val episodeMapper = EpisodeMapper()
+
+    private var initialWatchListState: Boolean = false
 
     companion object {
         private const val TAG = "SeasonRepository"
@@ -33,6 +37,8 @@ class SeasonRepositoryImp(
         seasonEntity: SeasonEntity,
         tvShowEntity: TvShowEntity
     ): SeasonEntity? {
+
+        initialWatchListState = tvShowEntity.watchlist
 
         tvShowEntity.seasons.map {
             if (it.id == seasonEntity.id) {
@@ -77,6 +83,47 @@ class SeasonRepositoryImp(
         }
 
         tvShowEntity.watchedCount = tvShowWatchedCount
+
+        //TODO check case where user select a season and un-select it
+        // tv show should return to watchlist initial state -> case where watchlist = true
+        val watchlistState: Boolean
+        watchlistState = if (watched) {
+            false
+        } else {
+            if (tvShowWatchedCount == 0) {
+                initialWatchListState
+            } else {
+                false
+            }
+        }
+
+        tvShowEntity.watchlist = watchlistState
+
+
+        // increment genres count if user start tv show by selecting a season as watched.
+        if (localTvShow == null) {
+            tvShowEntity.genres.map {
+                genreDao.incrementCount(it.id, 1)
+            }
+        } else {
+
+            // tv show already exists in database -> genre already incremented
+            // at this step check of clicking on episode set watched to count to zero the decrement by -1
+            if (tvShowWatchedCount == 0) {
+                tvShowEntity.genres.map {
+                    genreDao.incrementCount(it.id, -1)
+                }
+            }
+
+            // if user has removed all episodes and decide to re-add one
+            // tv show entity is already saved
+            // then check if user clicked on watched true with watched count == clicked season episode count else it will increment when downsize watched count to 1
+            if (tvShowWatchedCount == seasonEntity.episodeCount && watched) {
+                tvShowEntity.genres.map {
+                    genreDao.incrementCount(it.id, 1)
+                }
+            }
+        }
 
         tvDao.saveTv(tvShowMapper.mapFromEntity(tvShowEntity)) // save tvShow item
 

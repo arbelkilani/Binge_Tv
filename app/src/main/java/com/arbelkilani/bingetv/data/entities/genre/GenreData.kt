@@ -11,10 +11,25 @@ data class GenreData(
     @PrimaryKey
     @ColumnInfo(name = "id")
     @SerializedName("id")
-    var id: Int,
+    var id: Int = -1,
 
     @ColumnInfo(name = "name")
     @SerializedName("name")
-    val name: String
+    var name: String = "",
 
-)
+    @ColumnInfo(name = "count")
+    var count: Int = 0,
+
+    var percentage: Float = 0f
+
+) {
+
+    fun mapOf(): Map<String, String> {
+        return mapOf(
+            "id" to id.toString(),
+            "name" to name,
+            "count" to count.toString(),
+            "percentage" to percentage.toString()
+        )
+    }
+}

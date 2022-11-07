@@ -9,9 +9,11 @@ import android.graphics.Rect
 import android.graphics.Typeface.ITALIC
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.GradientDrawable
+import android.net.Uri
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
+import android.text.format.DateUtils
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.util.DisplayMetrics
@@ -19,7 +21,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewTreeObserver
 import android.view.animation.AccelerateDecelerateInterpolator
-import android.view.animation.AlphaAnimation
 import android.view.animation.BounceInterpolator
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
@@ -34,15 +35,16 @@ import com.arbelkilani.bingetv.data.entities.tv.Network
 import com.arbelkilani.bingetv.data.entities.tv.maze.details.NextEpisodeData
 import com.arbelkilani.bingetv.domain.entities.genre.GenreEntity
 import com.arbelkilani.bingetv.presentation.listeners.KeyboardListener
+import com.arbelkilani.bingetv.presentation.listeners.OnProfilePopupClicked
 import com.google.android.flexbox.FlexboxLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.firebase.auth.FirebaseUser
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.details_bottom_sheet_seasons.view.*
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
-
 
 @BindingAdapter(value = ["custom:src_poster", "custom:size_poster"], requireAll = false)
 fun bindPoster(view: ImageView, url: String?, sizePoster: String?) {
@@ -60,12 +62,58 @@ fun bindPoster(view: ImageView, url: String?, sizePoster: String?) {
 @BindingAdapter("android:src_backdrop")
 fun bindBackdrop(view: ImageView, url: String?) {
     url?.let {
-        Picasso.get().load(url)
+        val link = String.format("https://image.tmdb.org/t/p/%s%s", "w780", it)
+        Picasso.get().load(link)
             .placeholder(R.drawable.placeholder_large)
             .error(R.drawable.placeholder_large)
             .into(view)
     }
 }
+
+@BindingAdapter("custom:profile_photo")
+fun bindProfilePhoto(view: ImageView, url: Uri?) {
+    url?.let {
+        Picasso.get().load(url)
+            .placeholder(R.drawable.placeholder)
+            .error(R.drawable.placeholder)
+            .into(view)
+    }
+}
+
+@BindingAdapter(value = ["custom:sign_in", "custom:sign_in_listener"], requireAll = true)
+fun bindSignIn(view: TextView, user: FirebaseUser?, listener: OnProfilePopupClicked?) {
+    if (listener == null)
+        return
+
+    if (user == null) {
+        view.text = view.context.getString(R.string.label_sign_in)
+        view.setOnClickListener { listener.signIn() }
+    } else {
+        view.text = view.context.getString(R.string.label_sign_out)
+        view.setOnClickListener { listener.signOut() }
+    }
+}
+
+@BindingAdapter("custom:next_episode")
+fun bindNextEpisode(view: TextView, nextEpisode: NextEpisodeData?) {
+    if (nextEpisode == null)
+        return
+
+    val formatter =
+        SimpleDateFormat("EEEE, d MMMM yyyy 'at' HH:mm a", Locale.getDefault())
+
+    val text = String.format(
+        view.context.getString(R.string.next_episode_message),
+        nextEpisode.season,
+        nextEpisode.number,
+        nextEpisode.name,
+        formatter.format(nextEpisode.time)
+    )
+
+    view.text = text
+
+}
+
 
 @BindingAdapter("custom:vote_average")
 fun bindVoteAverage(view: TextView, average: Double?) {
@@ -85,7 +133,6 @@ fun bindCount(view: TextView, count: Int?) {
     }
 
     valueAnimator.start()
-
 }
 
 @BindingAdapter(value = ["custom:watched", "custom:count"], requireAll = true)
@@ -151,7 +198,7 @@ fun setRadioVisibility(view: ImageView, airDate: String?) {
     }
 }
 
-fun checkAirDate(airDate: String?): Boolean {
+fun filterEpisodeAirDate(airDate: String?): Boolean {
     if (airDate.isNullOrEmpty())
         return false
 
@@ -159,7 +206,7 @@ fun checkAirDate(airDate: String?): Boolean {
     val today = Calendar.getInstance().time
 
     date?.let {
-        return it > today
+        return it.time + DateUtils.DAY_IN_MILLIS > today.time
     }
 
     return false
@@ -243,6 +290,29 @@ fun returnDuration(dateToValue: String): String {
     val duration =
         TimeUnit.DAYS.convert((dateTo.time - currentDate.time), TimeUnit.MILLISECONDS) + 1
     return duration.toString()
+}
+
+@BindingAdapter("custom:favorite_genre")
+fun setFavoriteGenres(view: FlexboxLayout, list: List<GenreEntity>?) {
+    if (list.isNullOrEmpty())
+        return
+
+    view.removeAllViews()
+    for (item in list) {
+        val textView =
+            TextView(ContextThemeWrapper(view.context, R.style.TextView_Genre_Favorite), null, 0)
+        val text = String.format(
+            "%d. %s %d%%",
+            list.indexOf(item) + 1,
+            item.name,
+            item.percentage.toInt()
+        )
+        textView.text = text
+        view.addView(textView)
+    }
+
+    view.requestLayout()
+    view.invalidate()
 }
 
 @BindingAdapter("genres")
@@ -348,30 +418,58 @@ fun doOnBottomSheetDetailsSeason(it: View) {
     }
 }
 
-fun formatAirDate(data: NextEpisodeData?): String {
+@BindingAdapter("custom:next_episode_date")
+fun setNextEpisodeDate(view: TextView, nextEpisode: NextEpisodeData?) {
+    if (nextEpisode == null)
+        return
 
-    if (data == null) return ""
+    nextEpisode.apply {
 
-    data.apply {
+        val diff = nextEpisode.time - Calendar.getInstance().timeInMillis
 
-        if (data.airTime.isEmpty())
-            data.airTime = "00:00"
+        val days = diff / (24 * 60 * 60 * 1000)
+        val hours = diff / (1000 * 60 * 60) % 24
+        val minutes = diff / (1000 * 60) % 60
+        val seconds = (diff / 1000) % 60
 
-        val hourOfDay = airTime.substringBefore(":").toInt()
-        val minute = airTime.substringAfter(":").toInt()
+        val labelDays = if (days == 0L) "" else String.format(
+            view.resources.getQuantityString(
+                R.plurals.numberOfDays,
+                days.toInt()
+            ), days
+        )
+        val labelHours = if (hours == 0L) "" else String.format(
+            view.resources.getQuantityString(
+                R.plurals.numberOfHours,
+                hours.toInt()
+            ), hours
+        )
 
-        val year = airDate!!.substringBefore("-").toInt()
-        val month = airDate.substringBeforeLast("-").substringAfter("-").toInt()
-        val date = airDate.substringAfterLast("-").toInt()
+        view.text = String.format("Next in %s %s", labelDays, labelHours)
+    }
+}
 
-        val calendar = Calendar.getInstance(TimeZone.getTimeZone(timezone))
-        calendar.set(year, month - 1, date, hourOfDay, minute)
+fun toTime(
+    nextEpisodeData: NextEpisodeData?
+): Long {
 
-        val simpleDateFormat =
-            SimpleDateFormat("EEEE, d MMMM yyyy 'at' HH:mm a", Locale.getDefault())
+    if (nextEpisodeData == null)
+        return 0
 
-        return simpleDateFormat.format(calendar.timeInMillis)
+    nextEpisodeData.apply {
+        val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX", Locale.getDefault())
+        parser.timeZone = Calendar.getInstance().timeZone
+        val parsed = parser.parse(airStamp)!!
+        return parsed.time
+    }
+}
 
+fun NextEpisodeData.time(): Long {
+    apply {
+        val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX", Locale.getDefault())
+        parser.timeZone = Calendar.getInstance().timeZone
+        val parsed = parser.parse(airStamp)!!
+        return parsed.time
     }
 }
 
@@ -448,10 +546,6 @@ fun AppCompatActivity.interceptKeyboardVisibility(keyboardListener: KeyboardList
     })
 }
 
-fun setFadeAnimation(view: View) {
-    view.apply {
-        val anim = AlphaAnimation(0.0f, 1.0f)
-        anim.duration = 400
-        startAnimation(anim)
-    }
-}
+val Int.px: Int
+    get() = (this * Resources.getSystem().displayMetrics.density).toInt()
+
